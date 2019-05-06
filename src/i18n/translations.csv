@@ -1,0 +1,105 @@
+base,en,de
+APP_NAME,BesApp,BesApp
+FROM,From,Von
+UNTIL,Until,Bis
+OK,Ok,Ok
+CANCEL,Cancel,Abbrechen
+LOGOUT,Logout,Ausloggen
+LANGUAGE,Language,Sprache
+GERMAN,German,Deutsch
+ENGLISH,English,Englisch
+GROUP,Group,Gruppe
+ADD_GROUP,Gruppenmitlgied auswählen,Select group member
+ADD,Hinzufügen,Add
+GROUP_EDIT,Edit group,Gruppe bearbeiten
+TICKET_CHANGED,Ticket Changed,Ticket verändert
+TICKET_SYSTEM,Ticket System, Ticketsystem
+Logout,Logout,Ausloggen
+SUPPORT,Support,Support
+SETTINGS,Settings,Einstellungen
+UNDO,Undo,Rückgängig
+FIRSTNAME,Firstname,Vorname
+LASTNAME,Lastname,Nachname
+MALE,Male,male
+FEMALE,Female,female
+OTHER,Other,Andere
+COMPANY,Company,Firma
+EMAIL,Email,Email
+PHONE,Phone,Telefon
+COMMENT,Comment,Bemerkung
+GENDER,Gender,Geschlecht
+MALE,Male,Männlich
+FEMALE,Female,Weiblich
+VISITING_DATE,Visiting Appointment,Besichtigungstermin
+MOVING_DATE,Moving Date,Umzugstermin
+PACKINGSERVICE_DATE,Packing Service Appointment,Termin Einpackservice
+CARDBOARDBOX_DELIVERY_DATE,Cardboardbox Delivery Appointment,Termin Kartonlieferung
+STORAGE_DATE,Storage Appointment,Termin Einlagerung/Auslagerung
+DISPOSAL_DATE,Disposal Appointment,Entsorgungstermin
+CLEANING_DATE,Cleaning Appointment Date,Reinigungstermin
+HANDIN_DATE,Handin Appointment,Abgabetermin
+MOVE_OUT_BUILDING,Move out building,Auszugsgebäude
+MOVE_IN_BUILDING,Move in building,Einzugsgebäude
+STORAGE_BUILDING,Storage building,Lagergebäude
+CLEANING_BUILDING,Cleaning building,Reinigungsgebäude
+DISPOSAL_BUILDING,Disposal building,Entsorgungsgebäude
+SERVICES,Services,Services
+CUSTOMER,Customer,Kunde
+STREET,Street,Strasse
+CITY,City,Ort
+ZIP_CODE,Zip Code,PLZ
+ROOMS,Rooms,Anzahl Räume
+MFH,MFH,MFH
+TOTAL_AREA,Total area,Gesamtfläche
+-1_FLOOR,-1. floor,-1. Stock
+EG_FLOOR,EG. floor,Erdgeschoss
+1_FLOOR,1. floor,1. Stock
+2_FLOOR,2. floor,2. Stock
+3_FLOOR,3. floor,3. Stock
+4_FLOOR,4. floor,4. Stock
+FLAT_TYPE,flat type,Wohnungs art
+FLOOR,Floor,Stock
+PASSWORD,Password,Passwort
+SIGN_IN,Sign In,Einloggen
+HOME,Home,Home
+COMPANY_LEAD_OVERVIEW,Lead Overview,Lead Übersicht
+START_DESTINATION_ADDRESSES,Start / Destination,Von / Nach
+PROJECT_START,Project start,Projektstart
+NO_COMPANY_FOUND,No Company found,Keine Firma gefunden
+ARCHIVED,Archied,Archiviert
+VISITS,Visits,Besichtigungen
+SHOW_LEAD,Show Lead,Lead anzeigen
+EDIT_LEAD,Edit lead,Lead bearbeiten
+IS_REQUIRED,Is Required,Pflichtfeld
+EMAIL_NOT_VALID,Email not valid,Ungültige E-Mail Adresse
+AMOUNT_PEOPLE_IN_HOUSEHOLD,Amount People in Household,Anzahl Personen in Haushalt
+BUILDING_TYPE,Building Type,Wohnungsart
+ETAGE,Etage,Etage
+ELEVATOR,Elevator,Lift
+BUILDING_AGE,Building age,Gebäudealter
+METER_TO_PARKING,Meters to Parking,Anzahl Meter zum Parkplatz
+AMOUNT_STAIRS_TO_ENTRY,Amount Stairs to entry,Anzahl Treppen zum Gebäudeeingang
+BASEMENT,Basement,Keller
+ATTIC,Attic,Dachboden
+GARAGE,Garage,Garage
+GARDEN,Garden,Garten
+WINTERGARDEN,Wintergarden,Wintergarten
+FULL_NAME,Contactperson,Kontaktperson
+CONTACTPERSON_EMAIL,Contactperson E-Mail,Kontaktperson E-Mail
+CONTACT_PERSON_TEL,Contactperson Phone,Kontaktperson Telefon
+BUILDING_TYPE_DETAIL,Building Type,Wohnungsart detail
+RESTROOM_AMOUNT,Restroom amount,Anzahl Badezimmer
+BALCONY_TERRASSE,Balcony/terrasse,Balkon/Terrasse
+ROLLERBLIND,Rollerblinds,Storen
+AMOUNT_NORMAL_WINDOWS,Amount normal Windows,Anzahl Normale Fenster
+AMOUNT_HIGH_WINDOWS,Amount high Windows,Anzahl Hochfenster
+BUILTIN_WARDROBE,Builtin Wardrobe,Einbauschränke
+POLLUTION_DEGREE_GENERAL,Polutiondegree General,Verschmutzungsgrad Allgemein
+PETS,Pets,Haustierhaltung
+HARDENED_DIRT,Hardened Dirt Kitchen/Bath,verhärteter Dreck Küche/Bad
+MOLD_AT_WALL,Mold Wall,Schimmel Wand
+MOLD_AT_WINDOW,Mold Window,Schimmel Wand
+SMOKED,smoked,geraucht
+EMAIL_CONFIRMATION,E-Mail confirmation,E-Mail Bestätigung
+FRENCH,French,Französisch
+ITALIAN,Italian,Italienisch
