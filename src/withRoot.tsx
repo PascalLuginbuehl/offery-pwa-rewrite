@@ -5,6 +5,7 @@ import * as React from 'react'
 // import { HashRouter } from 'react-router-dom'
 // import { ResourceProvider } from 'providers/withResource';
 import { HashRouter } from 'react-router-dom';
+import { ResourceProvider } from './providers/withResource';
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -30,7 +31,7 @@ function withRoot<P>(Component: React.ComponentType<P>) {
       <MuiThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        {/* <ResourceProvider> */}
+        <ResourceProvider>
           <HashRouter>
             <Component {...props} />
           </HashRouter>
@@ -40,7 +41,7 @@ function withRoot<P>(Component: React.ComponentType<P>) {
             {/* <Component {...props} /> */}
           {/* </BrowserRouter> */}
           {/* </HashRouter> */}
-        {/* </ResourceProvider> */}
+        </ResourceProvider>
       </MuiThemeProvider>
     )
   }

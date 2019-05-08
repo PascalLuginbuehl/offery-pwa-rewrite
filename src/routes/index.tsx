@@ -8,6 +8,7 @@ import withRoot from '../withRoot'
 
 import { withLanguage, WithLanguageProps } from '../providers/withLanguage'
 import Navigation from '../components/Navigation';
+import IntlTypography from '../components/IntlTypography';
 
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
@@ -84,7 +85,7 @@ interface State {
   navPortal: HTMLDivElement | null
 }
 
-interface Props extends WithStyles<typeof styles>, InjectedIntlProps, WithLanguageProps {
+interface Props extends WithStyles<typeof styles>, WithLanguageProps {
 
 }
 
@@ -116,11 +117,9 @@ class Index extends React.Component<Props, State> {
             </IconButton>
 
             <Link to="/" className={classes.toolbarTitle}>
-              <Typography variant="h6" noWrap={true} color="inherit">
-                <FormattedMessage
-                  id='APP_NAME'
-                />
-              </Typography>
+              <IntlTypography variant="h6" noWrap={true} color="inherit">
+                APP_NAME
+              </IntlTypography>
             </Link>
 
             {/* <UserDisplay /> */}
@@ -172,4 +171,4 @@ class Index extends React.Component<Props, State> {
   }
 }
 
-export default withRoot(withLanguage(injectIntl(withStyles(styles)(Index))))
+export default withRoot(withLanguage(withStyles(styles)(Index)))
