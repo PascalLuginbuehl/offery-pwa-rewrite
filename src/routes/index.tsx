@@ -3,12 +3,13 @@ import MenuIcon from '@material-ui/icons/Menu'
 import * as React from 'react'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { Link, Route, Switch } from 'react-router-dom'
-import withRoot from '../withRoot'
+import withRoot from '../components/WithRoot'
 
 
 import { withLanguage, WithLanguageProps } from '../providers/withLanguage'
 import Navigation from '../components/Navigation';
 import IntlTypography from '../components/IntlTypography';
+import UserDisplay from '../components/Navigation/UserDisplay';
 
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
@@ -122,7 +123,7 @@ class Index extends React.Component<Props, State> {
               </IntlTypography>
             </Link>
 
-            {/* <UserDisplay /> */}
+            <UserDisplay />
           </Toolbar>
         </AppBar>
         <Hidden mdUp>

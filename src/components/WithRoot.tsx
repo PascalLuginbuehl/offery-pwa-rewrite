@@ -5,7 +5,7 @@ import * as React from 'react'
 // import { HashRouter } from 'react-router-dom'
 // import { ResourceProvider } from 'providers/withResource';
 import { HashRouter } from 'react-router-dom';
-import { ResourceProvider } from './providers/withResource';
+import { ResourceProvider } from '../providers/withResource';
 
 // A theme with custom primary and secondary color.
 // It's optional.
