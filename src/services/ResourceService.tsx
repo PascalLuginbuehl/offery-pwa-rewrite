@@ -27,7 +27,33 @@ class ResourceService {
         resolve(data)
       } catch (e) {
         reject(e)
-        console.error(e)
+      }
+    })
+  }
+
+  public fetchResourceWithOffline(): Promise<IResource> {
+    return new Promise(async (resolve, reject) => {
+      // @ts-ignore localStorage can return null... JSON.parse can handle it
+      // Get from offline storage, need to rewrite to check if HTTP Error
+      // const resource = JSON.parse(localStorage.getItem("resource"))
+      // if (resource) {
+      //   console.log("FUCK")
+      //   resolve(resource)
+      // }
+
+      // Run this anyway... so it can update all se sings and localStorage
+      const resourceAwait = this.fetchResource()
+      try {
+
+        const resource = await resourceAwait
+        localStorage.setItem("resource", JSON.stringify(resource))
+
+        resolve(resource)
+      } catch (e) {
+        // Prolly offline / not logged in
+        // Check error message
+
+        reject(e)
       }
     })
   }

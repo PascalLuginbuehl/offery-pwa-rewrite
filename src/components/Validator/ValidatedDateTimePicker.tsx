@@ -1,4 +1,4 @@
-import { DatePicker as DatePickerOriginal, DatePickerProps } from "@material-ui/pickers"
+import { DateTimePicker as DatePickerOriginal, DateTimePickerProps } from "@material-ui/pickers"
 import * as React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { Grid } from "@material-ui/core"
@@ -7,7 +7,7 @@ import { WithFormContext, withValidator } from '.';
 import { Omit } from 'react-router';
 import Validations from "./Validations";
 
-interface Props extends InjectedIntlProps, Omit<DatePickerProps, "onChange">, WithFormContext {
+interface Props extends InjectedIntlProps, Omit<DateTimePickerProps, "onChange">, WithFormContext {
   onChange: (value: any, target: any) => void
   label: string
 
@@ -20,7 +20,7 @@ interface State {
   dirty: boolean
 }
 
-class ValidatedDatePickerType extends React.Component<Props, State> {
+class ValidatedDateTimePickerType extends React.Component<Props, State> {
   state: State = {
     errorMessage: null,
     dirty: false,
@@ -97,12 +97,10 @@ class ValidatedDatePickerType extends React.Component<Props, State> {
           //@ts-ignore
           label={intl.formatMessage({ id: label })}
 
-          leftArrowIcon="&#xe60a;"
-          rightArrowIcon="&#xe60b;"
           // okLabel={currentLocale.messages.OK}
           // cancelLabel={currentLocale.messages.CANCEL}
-          views={["year", "month", "day"]}
-          format={"dd.MM.yyyy"}
+          // views={["year", "month", "day"]}
+          // format={"dd.MM.yyyy"}
 
           id={label}
 
@@ -120,6 +118,6 @@ class ValidatedDatePickerType extends React.Component<Props, State> {
 
 // export default injectIntl(DatePicker)
 
-export { ValidatedDatePickerType }
+export { ValidatedDateTimePickerType }
 
-export default withValidator(injectIntl(ValidatedDatePickerType))
+export default withValidator(injectIntl(ValidatedDateTimePickerType))

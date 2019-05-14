@@ -92,10 +92,9 @@ class LanguageProvider extends React.Component<Props, State> {
           locale={locale}
           messages={messages}
         >
+          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
             {this.props.children}
-          {/* <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}> */}
-          {/* </MuiPickersUtilsProvider> */}
-
+          </MuiPickersUtilsProvider>
         </IntlProvider>
       </Provider>
     )

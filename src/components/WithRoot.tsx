@@ -11,10 +11,6 @@ import { ResourceProvider } from '../providers/withResource';
 // It's optional.
 
 const theme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
-
   overrides: {
     MuiFormControl: { // Name of the component ⚛️ / style sheet
       root: { // Name of the rule

@@ -16,7 +16,6 @@ export interface Token {
 }
 
 class LoginService {
-
   private static ACCESS_TOKEN_NAME = "BEARER_TOKEN"
 
   private set token(value: Token ) {

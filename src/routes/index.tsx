@@ -10,6 +10,7 @@ import { withLanguage, WithLanguageProps } from '../providers/withLanguage'
 import Navigation from '../components/Navigation';
 import IntlTypography from '../components/IntlTypography';
 import UserDisplay from '../components/Navigation/UserDisplay';
+import Lead from './Lead';
 
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
@@ -55,8 +56,8 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       // padding: theme.spacing.unit * 2,
       [theme.breakpoints.down("sm")]: {
-        paddingLeft: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
+        paddingLeft: theme.spacing(1),
+        paddingRight: theme.spacing(1),
       },
       [theme.breakpoints.down("xs")]: {
         // paddingLeft: theme.spacing.unit / 2,
@@ -164,7 +165,7 @@ class Index extends React.Component<Props, State> {
             {/* <Route path="/lead/:id" component={Lead} /> */}
             {/* <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} /> */}
 
-            {/* <Route exact path="" component={Dashboard} /> */}
+            <Route exact path="" component={Lead} />
           </Switch>
         </main>
       </div>

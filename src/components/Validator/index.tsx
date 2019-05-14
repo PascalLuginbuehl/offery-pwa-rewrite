@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ValidatedTextField } from './ValidatedTextField'
-import { ValidatedDatePicker } from './ValidatedDatePicker'
+import { ValidatedDatePickerType } from './ValidatedDatePicker'
+import { ValidatedDateTimePickerType } from './ValidatedDateTimePicker'
 import { ValidatedSelect } from './ValidatedSelect';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
   // onChange: (target: string, value: any) => void
 }
 
-type ValidatedFields = ValidatedTextField | ValidatedDatePicker | ValidatedSelect
+type ValidatedFields = ValidatedTextField | ValidatedDatePickerType | ValidatedDateTimePickerType | ValidatedSelect
 
 export interface FormContext {
   registerField: (element: ValidatedFields) => void

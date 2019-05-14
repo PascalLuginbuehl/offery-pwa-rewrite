@@ -39,39 +39,8 @@ export class ResourceProvider extends React.Component<Props, State> {
     loggedIn: true,
   }
 
-  constructor(props: Props) {
-    super(props)
-
-
-    this.state.resourceAwait = this.fetch()
-  }
-
-  fetchResources(): Promise<IResource> {
-    return new Promise(async (resolve, reject) => {
-      // @ts-ignore localStorage can return null... JSON.parse can handle it
-      const resource = JSON.parse(localStorage.getItem("resource"))
-      if (resource) {
-        resolve(resource)
-      }
-
-      // Run this anyway... so it can update all se sings and localStorage
-      const resourceAwait = ResourceService.fetchResource()
-      try {
-
-        const resource = await resourceAwait
-        localStorage.setItem("resource", JSON.stringify(resource))
-
-        resolve(resource)
-      } catch(e) {
-        // Prolly offline / not logged in
-        // Check error message
-        reject(e)
-      }
-    })
-  }
-
-  fetch = () => {
-    const resourceAwait = this.fetchResources()
+  componentDidMount() {
+    const resourceAwait = ResourceService.fetchResourceWithOffline()
 
     resourceAwait.then((resource) => {
       // Select company
@@ -103,8 +72,9 @@ export class ResourceProvider extends React.Component<Props, State> {
     return resourceAwait
   }
 
+
   handleLoginSuccess = () => {
-    this.setState({ loggedIn: true, resourceAwait: this.fetch()})
+    this.setState({ loggedIn: true, resourceAwait: this.componentDidMount()})
   }
 
   public render() {
@@ -126,6 +96,7 @@ export class ResourceProvider extends React.Component<Props, State> {
     // thanks to React context.
 
     const texts = resource ? resource.Texts : []
+
     if(loggedIn) {
       return (
       <LanguageProvider defaultLocale={locale} additionalTranlations={texts}>
