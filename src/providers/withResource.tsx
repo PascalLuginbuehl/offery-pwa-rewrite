@@ -36,7 +36,7 @@ export class ResourceProvider extends React.Component<Props, State> {
     resource: null,
     selectedCompany: null,
     resourceAwait: null,
-    loggedIn: true,
+    loggedIn: false,
   }
 
   componentDidMount() {
@@ -60,7 +60,7 @@ export class ResourceProvider extends React.Component<Props, State> {
       // localStorage.setItem("selectedCompany", selectedCompany.CompanyId.toString())
 
       if (selectedCompany) {
-        this.setState({ resource, selectedCompany: selectedCompany })
+        this.setState({ resource, selectedCompany: selectedCompany, loggedIn: true })
       }
 
     }).catch(() => {

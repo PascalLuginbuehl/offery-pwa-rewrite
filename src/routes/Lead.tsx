@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Grid } from '@material-ui/core'
-import { IPostLead, emptyLead } from '../interfaces/ILead';
+import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import IntlTypography from '../components/IntlTypography';
 import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
-
+import { get } from 'idb-keyval'
 
 interface State extends IPostLead {
 
@@ -15,11 +15,51 @@ interface Props {
 
 }
 
+interface LeadContainer {
+  lastUpdated: Date
+  Lead: ILead
+}
+
+// Can NOT CREATE!
+
+// Only gets called to save into Offline Storage
+FetchFromOnline() {
+
+}
+
+// Gets Called to Get Data From Offline
+FetchFromOffline () {
+
+}
+
+// Saves it in Offline Storage
+SaveToOffline() {
+
+}
+
+// Checks if data changed on the API side from first Fetch
+CheckAgainstAPI() {
+
+}
+
+// Sends all new Data to the API
+SaveToApi() {
+
+}
+
+
+
 class Lead extends Component<Props, State> {
   state = emptyLead
 
   handleSubmit() {
 
+  }
+
+  getData() {
+    // Storing all Information here
+
+    get()
   }
 
   public handleChange = handleChangeFunction<State>(this)
