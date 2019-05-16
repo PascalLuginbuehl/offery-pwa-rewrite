@@ -18,6 +18,31 @@ export interface Token {
 class LoginService {
   private static ACCESS_TOKEN_NAME = "BEARER_TOKEN"
 
+  public AuthorizedFetch = async (requestUrl: string, options?: RequestInit): Promise<Response> => {
+    try {
+      // Empty thing correction
+      if (!options) {
+        options = {}
+      }
+
+      options.headers = new Headers(options.headers)
+
+      // const email = this.email
+      // if (!email) return reject("lol")
+      // options.headers.set("EMAIL", email)
+
+      options.headers.set("Accept", 'application/json')
+      options.headers.set("Content-Type", "application/json")
+
+    } catch (e) {
+      // TODO Redirect to login
+      throw new Error("Authentication failed")
+    }
+
+    return fetch(API_URL + requestUrl, await this.authorizeRequest(options)).then(errorFunction)
+  }
+
+
   private set token(value: Token ) {
     localStorage.setItem(LoginService.ACCESS_TOKEN_NAME, JSON.stringify(value))
   }

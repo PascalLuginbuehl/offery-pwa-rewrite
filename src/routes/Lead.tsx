@@ -5,62 +5,80 @@ import IntlTypography from '../components/IntlTypography';
 import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
-import { get } from 'idb-keyval'
+import { get, set } from 'idb-keyval'
+import { IMoveOutBuilding } from '../interfaces/IBuilding';
+import BuildingService from '../services/BuildingService';
+import { RouteComponentProps } from 'react-router';
+import LeadService from '../services/LeadService';
 
-interface State extends IPostLead {
-
-}
-
-interface Props {
-
-}
 
 interface LeadContainer {
   lastUpdated: Date
   Lead: ILead
+
+  moveOut: IMoveOutBuilding | null
 }
 
-// Can NOT CREATE!
-
-// Only gets called to save into Offline Storage
-FetchFromOnline() {
-
-}
-
-// Gets Called to Get Data From Offline
-FetchFromOffline () {
+interface State extends LeadContainer {
 
 }
 
-// Saves it in Offline Storage
-SaveToOffline() {
+interface Props extends RouteComponentProps<{ id?: string }> {
 
 }
-
-// Checks if data changed on the API side from first Fetch
-CheckAgainstAPI() {
-
-}
-
-// Sends all new Data to the API
-SaveToApi() {
-
-}
-
-
 
 class Lead extends Component<Props, State> {
-  state = emptyLead
-
   handleSubmit() {
 
   }
 
-  getData() {
-    // Storing all Information here
+  componentDidMount() {
+    const idString = this.props.match.params.id
+    const potentialLeadId = parseInt(idString ? idString : "")
 
-    get()
+    if (!isNaN(potentialLeadId)) {
+      const lead = await this.FetchFromOnline(potentialLeadId)
+
+      this.SaveToOffline(potentialLeadId, lead)
+    } else {
+      console.log("Is not a leadId", potentialLeadId)
+    }
   }
+
+  // Can NOT CREATE!
+
+  // Only gets called to save into Offline Storage
+  FetchFromOnline(leadId: number): Promise<LeadContainer> {
+    return Promise.all([
+      LeadService.fetchCustomer(leadId),
+      BuildingService.fetchMoveOutBuilding(leadId),
+    ]).then(([Lead, moveOut, moveIn, storageIn, disposalOut, cleaning]): LeadContainer => ({
+      lastUpdated: new Date(),
+      Lead,
+      moveOut,
+    })
+  }
+
+  // Gets Called to Get Data From Offline
+  FetchFromOffline (leadId: number) {
+    get(leadId)
+  }
+
+  // Saves it in Offline Storage
+  SaveToOffline(leadId: number, lead: LeadContainer) {
+    set(leadId, lead)
+  }
+
+  // Checks if data changed on the API side from first Fetch
+  CheckAgainstAPI() {
+
+  }
+
+  // Sends all new Data to the API
+  SaveToApi() {
+
+  }
+
 
   public handleChange = handleChangeFunction<State>(this)
 

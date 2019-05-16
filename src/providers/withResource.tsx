@@ -69,12 +69,12 @@ export class ResourceProvider extends React.Component<Props, State> {
       })
     })
 
-    return resourceAwait
+    this.setState({resourceAwait})
   }
 
 
   handleLoginSuccess = () => {
-    this.setState({ loggedIn: true, resourceAwait: this.componentDidMount()})
+    this.componentDidMount()
   }
 
   public render() {
@@ -110,7 +110,9 @@ export class ResourceProvider extends React.Component<Props, State> {
     } else {
       return (
         <LanguageProvider defaultLocale={locale}>
-          <Login onLoginSuccess={this.handleLoginSuccess} />
+          <Loading await={resourceAwait} size={80}>
+            <Login onLoginSuccess={this.handleLoginSuccess} />
+          </Loading>
         </LanguageProvider>
         )
       }

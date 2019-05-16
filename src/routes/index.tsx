@@ -162,10 +162,10 @@ class Index extends React.Component<Props, State> {
             {/* <Route path="/login" component={login} /> */}
             {/* <Route path="/shop" component={shop} /> */}
             {/* <Route path="/lead/move-out-building" component={moveOutBuilding} /> */}
-            {/* <Route path="/lead/:id" component={Lead} /> */}
+            <Route path="/lead/:id" component={Lead} />
             {/* <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} /> */}
 
-            <Route exact path="" component={Lead} />
+            {/* <Route exact path="" component={Lead} /> */}
           </Switch>
         </main>
       </div>
