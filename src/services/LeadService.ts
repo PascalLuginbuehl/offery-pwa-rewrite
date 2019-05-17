@@ -1,6 +1,6 @@
 import { IVisitConfirmation } from '../interfaces/IVisitConfirmation';
 import { errorFunction } from "./errorFunction"
-import { ILead, IPostLead, IUpdateLead } from "interfaces/ILead"
+import { ILead, IPostLead, IUpdateLead } from "../interfaces/ILead"
 import LoginService from "./LoginService"
 import { format } from "date-fns/esm"
 
