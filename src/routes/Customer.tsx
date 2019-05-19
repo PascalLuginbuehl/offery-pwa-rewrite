@@ -9,27 +9,33 @@ import { get } from 'idb-keyval'
 import { RouteComponentProps } from 'react-router';
 import { ILeadContainer } from './Lead';
 
-interface State extends ILead {
-  initialAwait: Promise<any>
+interface State extends IPostLead {
+  initialAwait: Promise<any> | null
 }
 
 interface Props extends RouteComponentProps {
-  get: () => Promise<ILead>
-  save: (data: ILead) => Promise<void>
+  get: () => Promise<IPostLead>
+  save: (data: IPostLead) => Promise<void>
 }
 
 class Customer extends Component<Props, State> {
+  state: State = {
+    initialAwait: null,
+    ...emptyLead
+  }
+
   handleSubmit() {
 
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { get } = this.props
     const initialAwait = get()
 
-    this.setState({ initialAwait ...emptyLead})
+    this.setState({ initialAwait, ...emptyLead})
 
-    // this.setState(getData().Lead)
+    const Lead = await initialAwait
+    this.setState(Lead)
   }
 
   public handleChange = handleChangeFunction<State>(this)

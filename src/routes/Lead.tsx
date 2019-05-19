@@ -19,12 +19,10 @@ export interface ILeadContainer {
   Lead: ILead | null
 
   moveOut: IMoveOutBuilding | null
-
-  initialAwait: Promise<any>
 }
 
 interface State extends ILeadContainer {
-
+  initialAwait: Promise<any> | null
 }
 
 interface Props extends RouteComponentProps<{ id?: string }> {
@@ -32,6 +30,8 @@ interface Props extends RouteComponentProps<{ id?: string }> {
 }
 
 class Lead extends Component<Props, State> {
+  state: State = {lastUpdated: new Date(), Lead: null, moveOut: null, initialAwait: null}
+
   handleSubmit() {
 
   }
@@ -41,12 +41,22 @@ class Lead extends Component<Props, State> {
     const potentialLeadId = parseInt(idString ? idString : "")
 
     if (!isNaN(potentialLeadId)) {
-      await this.FetchFromOffline(potentialLeadId)
+      const promiseOffline = this.FetchFromOffline(potentialLeadId)
+      // this.setState({initialAwait: promiseOffline})
+
+      const offline = await promiseOffline
 
       // Check if 404 or no connection. Decide on whatever happened
-      const lead = await this.FetchFromOnline(potentialLeadId)
+      const  promiseOnline =  this.FetchFromOnline(potentialLeadId)
+
+      this.setState({ initialAwait: promiseOffline })
+      const lead = await promiseOnline
+
+      this.setState(lead)
+
 
       this.SaveToOffline(potentialLeadId, lead)
+
     } else {
       console.log("Is not a leadId", potentialLeadId)
       throw Error("Did not find a lead")
@@ -92,12 +102,14 @@ class Lead extends Component<Props, State> {
 
   public render() {
     const { Lead, initialAwait } = this.state
+    const { match } = this.props
 
+    console.log("Hi", Lead, initialAwait)
     return (
       <Loading await={initialAwait}>
         {
           Lead != null ?
-            <Route path="/customer/" render={(routeProps) => <Customer {...routeProps} get={() => Promise.resolve(Lead)} save={(data) => Promise.resolve()} />} />
+            <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} get={() => Promise.resolve(Lead)} save={(data) => Promise.resolve()} />} />
           :
             "No Lead found"
         }
