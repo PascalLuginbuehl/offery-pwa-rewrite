@@ -11,13 +11,16 @@ import BuildingService from '../services/BuildingService';
 import { RouteComponentProps, Route } from 'react-router';
 import LeadService from '../services/LeadService';
 import Customer from './Customer';
+import Loading from '../components/Loading';
 
 
 export interface ILeadContainer {
   lastUpdated: Date
-  Lead: ILead
+  Lead: ILead | null
 
   moveOut: IMoveOutBuilding | null
+
+  initialAwait: Promise<any>
 }
 
 interface State extends ILeadContainer {
@@ -46,6 +49,7 @@ class Lead extends Component<Props, State> {
       this.SaveToOffline(potentialLeadId, lead)
     } else {
       console.log("Is not a leadId", potentialLeadId)
+      throw Error("Did not find a lead")
     }
   }
 
@@ -87,10 +91,17 @@ class Lead extends Component<Props, State> {
   public handleChange = handleChangeFunction<State>(this)
 
   public render() {
-    // const {  } = this.state
+    const { Lead, initialAwait } = this.state
 
     return (
-      <Route path="/customer/" render={(routeProps) => <Customer {...routeProps} />} />
+      <Loading await={initialAwait}>
+        {
+          Lead != null ?
+            <Route path="/customer/" render={(routeProps) => <Customer {...routeProps} get={() => Promise.resolve(Lead)} save={(data) => Promise.resolve()} />} />
+          :
+            "No Lead found"
+        }
+      </Loading>
     )
   }
 }

@@ -14,22 +14,22 @@ interface State extends ILead {
 }
 
 interface Props extends RouteComponentProps {
-  onSave: (data: ILead) => void
-  getData: () => Promise<ILeadContainer>
+  get: () => Promise<ILead>
+  save: (data: ILead) => Promise<void>
 }
 
 class Customer extends Component<Props, State> {
-
   handleSubmit() {
 
   }
 
   componentDidMount() {
-    const { getData } = this.props
-    const initialAwait = getData()
+    const { get } = this.props
+    const initialAwait = get()
 
-    this.setState({initialAwait})
-    this.setState(getData().Lead)
+    this.setState({ initialAwait ...emptyLead})
+
+    // this.setState(getData().Lead)
   }
 
   public handleChange = handleChangeFunction<State>(this)
