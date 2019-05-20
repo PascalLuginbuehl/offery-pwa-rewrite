@@ -8,6 +8,7 @@ import Wrapper from '../components/Form/Wrapper';
 import { get } from 'idb-keyval'
 import { RouteComponentProps } from 'react-router';
 import { ILeadContainer } from './Lead';
+import Submit from '../components/Validator/Submit';
 
 interface State extends IPostLead {
   initialAwait: Promise<any> | null
@@ -39,6 +40,18 @@ class Customer extends Component<Props, State> {
   }
 
   public handleChange = handleChangeFunction<State>(this)
+
+  save = () => {
+    const { save } = this.props
+
+    const awaitSave = save(this.state)
+
+    awaitSave.then(() => {
+      console.log("saved")
+    })
+
+    return awaitSave
+  }
 
   public render() {
     const { Customer, VisitDate, MoveDate, PackServiceDate, DisposalDate, StorageDate, CleaningDate, HandOverDate, DeliveryDate, HasCleaningBuilding, HasDisposalOutBuilding, HasMoveInBuilding, HasMoveOutBuilding, HasStorageInBuilding } = this.state
@@ -131,6 +144,7 @@ class Customer extends Component<Props, State> {
         </BigCheckbox> */}
 
 
+        <Submit onSubmit={this.save} />
         {/* <NextDial awaitLoading={saveAwait} /> */}
       </Wrapper>
     )
