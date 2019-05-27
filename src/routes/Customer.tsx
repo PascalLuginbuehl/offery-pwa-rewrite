@@ -15,8 +15,8 @@ interface State extends IPostLead {
 }
 
 interface Props extends RouteComponentProps {
-  get: () => Promise<IPostLead>
-  save: (data: IPostLead) => Promise<void>
+  data: IPostLead
+  onChange: (data: IPostLead) => Promise<void>
 }
 
 class Customer extends Component<Props, State> {
@@ -30,21 +30,17 @@ class Customer extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    const { get } = this.props
-    const initialAwait = get()
+    const { data } = this.props
 
-    this.setState({ initialAwait, ...emptyLead})
-
-    const Lead = await initialAwait
-    this.setState(Lead)
+    this.setState( data )
   }
 
   public handleChange = handleChangeFunction<State>(this)
 
   save = () => {
-    const { save } = this.props
+    const { onChange } = this.props
 
-    const awaitSave = save(this.state)
+    const awaitSave = onChange(this.state)
 
     awaitSave.then(() => {
       console.log("saved")
@@ -57,7 +53,7 @@ class Customer extends Component<Props, State> {
     const { Customer, VisitDate, MoveDate, PackServiceDate, DisposalDate, StorageDate, CleaningDate, HandOverDate, DeliveryDate, HasCleaningBuilding, HasDisposalOutBuilding, HasMoveInBuilding, HasMoveOutBuilding, HasStorageInBuilding } = this.state
 
     return (
-      <Wrapper initialLoading={Promise.resolve()}>
+      <>
         <Grid item xs={12}>
           <IntlTypography variant="h5">CUSTOMER</IntlTypography>
         </Grid>
@@ -146,7 +142,7 @@ class Customer extends Component<Props, State> {
 
         <Submit onSubmit={this.save} />
         {/* <NextDial awaitLoading={saveAwait} /> */}
-      </Wrapper>
+        </>
     )
   }
 }

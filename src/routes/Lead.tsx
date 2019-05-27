@@ -47,13 +47,12 @@ class Lead extends Component<Props, State> {
       const offline = await promiseOffline
 
       // Check if 404 or no connection. Decide on whatever happened
-      const  promiseOnline =  this.FetchFromOnline(potentialLeadId)
+      const  promiseOnline = this.FetchFromOnline(potentialLeadId)
 
-      this.setState({ initialAwait: promiseOffline })
+      this.setState({ initialAwait: promiseOnline })
       const lead = await promiseOnline
 
       this.setState(lead)
-
 
       this.SaveToOffline(potentialLeadId, lead)
 
@@ -106,14 +105,14 @@ class Lead extends Component<Props, State> {
 
     console.log("Hi", Lead, initialAwait)
     return (
-      <Loading await={initialAwait}>
-        {
-          Lead != null ?
-            <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} get={() => Promise.resolve(Lead)} save={(data) => Promise.resolve()} />} />
-          :
-            "No Lead found"
-        }
-      </Loading>
+        <Wrapper initialLoading={initialAwait}>
+          {
+            Lead != null ?
+              <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} data={Lead} onChange={(data) => Promise.resolve()} />} />
+            :
+              "No Lead found"
+          }
+        </Wrapper>
     )
   }
 }
