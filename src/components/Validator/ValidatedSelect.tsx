@@ -23,8 +23,10 @@ interface Props extends InjectedIntlProps, Omit<DatePickerProps, "onChange">, Wi
 
   isMulti?: boolean
 
+  translatedLabel?: boolean
+
   toOptions: (option: any) => {value: string, label: string}
-  toValue: (value: {value: string}) => any
+  toValue: (value: {value: any}) => any
 }
 
 interface State {
@@ -97,7 +99,7 @@ class ValidatedSelect extends React.Component<Props, State> {
 
   public render() {
      // removing unused properties
-    const { required = false, classes, disabled = false, isMulti = false, toOptions, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, ...props } = this.props
+    const { required = false, classes, disabled = false, isMulti = false, toOptions, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
     const { errorMessage } = this.state
 
     console.log(classes)
@@ -121,7 +123,7 @@ class ValidatedSelect extends React.Component<Props, State> {
           }}
           required={required}
 
-          options={options.map(toOptions)}
+          options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
 
           value={value ? isMulti ? value.map(toOptions) : toOptions(value) : null}
           isMulti={isMulti}

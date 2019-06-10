@@ -9,38 +9,24 @@ import { get } from 'idb-keyval'
 import { RouteComponentProps } from 'react-router';
 import { ILeadContainer } from './Lead';
 import Submit from '../components/Validator/Submit';
-
-interface State extends IPostLead {
-  initialAwait: Promise<any> | null
-}
+import CustomerField from '../components/Form/Bundled/CustomerField';
 
 interface Props extends RouteComponentProps {
   data: IPostLead
-  onChange: (data: IPostLead) => Promise<void>
+  onChange: (data: IPostLead) => void
+  save: () => Promise<void>
 }
 
-class Customer extends Component<Props, State> {
-  state: State = {
-    initialAwait: null,
-    ...emptyLead
+class Customer extends Component<Props> {
+
+  private handleChange = (value: string, target: string) => {
+    this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
+    const { save } = this.props
 
-  }
-
-  async componentDidMount() {
-    const { data } = this.props
-
-    this.setState( data )
-  }
-
-  public handleChange = handleChangeFunction<State>(this)
-
-  save = () => {
-    const { onChange } = this.props
-
-    const awaitSave = onChange(this.state)
+    const awaitSave = save()
 
     awaitSave.then(() => {
       console.log("saved")
@@ -50,7 +36,7 @@ class Customer extends Component<Props, State> {
   }
 
   public render() {
-    const { Customer, VisitDate, MoveDate, PackServiceDate, DisposalDate, StorageDate, CleaningDate, HandOverDate, DeliveryDate, HasCleaningBuilding, HasDisposalOutBuilding, HasMoveInBuilding, HasMoveOutBuilding, HasStorageInBuilding } = this.state
+    const { Customer, VisitDate, MoveDate, PackServiceDate, DisposalDate, StorageDate, CleaningDate, HandOverDate, DeliveryDate, HasCleaningBuilding, HasDisposalOutBuilding, HasMoveInBuilding, HasMoveOutBuilding, HasStorageInBuilding } = this.props.data
 
     return (
       <>
@@ -58,7 +44,11 @@ class Customer extends Component<Props, State> {
           <IntlTypography variant="h5">CUSTOMER</IntlTypography>
         </Grid>
 
-        {/* <CustomerField customer={Customer} onChange={this.handleChange} name="Customer" /> */}
+        <CustomerField
+          customer={Customer}
+          onChange={this.handleChange}
+          name="Customer"
+        />
 
         <ValidatedDateTimePicker
           label="VISITING_DATE"
@@ -140,7 +130,7 @@ class Customer extends Component<Props, State> {
         </BigCheckbox> */}
 
 
-        <Submit onSubmit={this.save} />
+        <Submit onSubmit={this.handleSubmit} />
         {/* <NextDial awaitLoading={saveAwait} /> */}
         </>
     )

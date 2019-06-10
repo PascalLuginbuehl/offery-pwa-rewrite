@@ -1,7 +1,8 @@
 import { DatePicker as DatePickerOriginal, DatePickerProps } from "@material-ui/pickers"
+import CloseIcon from "@material-ui/icons/Close"
 import * as React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
-import { Grid } from "@material-ui/core"
+import { Grid, InputAdornment, IconButton } from "@material-ui/core"
 // import { injectIntl } from "react-intl"
 import { WithFormContext, withValidator } from '.';
 import { Omit } from 'react-router';
@@ -79,9 +80,15 @@ class ValidatedDatePickerType extends React.Component<Props, State> {
     this.props.onChange(value, this.props.name)
   }
 
+  setNull = (event: React.MouseEvent) => {
+    this.newOnChange(null)
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
   public render() {
      // removing noGrid property
-    const { isValid, label, intl, noGrid = false, registerField, unregisterField, ...props } = this.props
+    const { value, isValid, label, intl, noGrid = false, registerField, unregisterField, ...props } = this.props
     const { errorMessage } = this.state
 
     return (
@@ -92,6 +99,7 @@ class ValidatedDatePickerType extends React.Component<Props, State> {
           // BUgfix so it has key, check later TODO
           key={1}
 
+          value={value}
 
           onChange={this.newOnChange}
           //@ts-ignore
@@ -112,6 +120,18 @@ class ValidatedDatePickerType extends React.Component<Props, State> {
           helperText={errorMessage ? intl.formatMessage({ id: errorMessage }) : null}
 
           fullWidth
+
+          InputProps={value ? {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={this.setNull}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          } : {}}
         />
       </Grid>
     )
