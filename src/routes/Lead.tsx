@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Grid } from '@material-ui/core'
+import ReactDOM from 'react-dom';
+import { Grid, ListSubheader, Collapse } from '@material-ui/core'
 import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import IntlTypography from '../components/IntlTypography';
 import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
@@ -13,6 +14,8 @@ import LeadService from '../services/LeadService';
 import Customer from './Customer';
 import Loading from '../components/Loading';
 import MoveOutBuilding from './Customer/MoveOutBuilding';
+import { FormattedMessage } from 'react-intl';
+import NavItem from '../components/Navigation/NavItem';
 
 
 export interface ILeadContainer {
@@ -27,14 +30,15 @@ export interface ILeadContainer {
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
   leadId: number | null
+  loadedFromOffline: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }> {
-
+  portal: HTMLDivElement | null
 }
 
 class Lead extends Component<Props, State> {
-  state: State = { lastUpdated: new Date(), Lead: null, moveOut: null, initialAwait: null, leadId: null, onlySavedOffline: false}
+  state: State = { lastUpdated: new Date(), Lead: null, moveOut: null, initialAwait: null, leadId: null, onlySavedOffline: false, loadedFromOffline: true}
 
   public handleChange = handleChangeFunction<State>(this)
 
@@ -58,10 +62,13 @@ class Lead extends Component<Props, State> {
       if (offline && offline.onlySavedOffline) {
         try {
           await this.SaveToApi(potentialLeadId, offline)
-          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId })
+
+          // Removed onlySavedOfflineProperty
+          await this.SaveToOffline(potentialLeadId, { ...offline, onlySavedOffline: false })
+          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId, loadedFromOffline: true })
           resolve()
         } catch (e) {
-          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId })
+          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId, loadedFromOffline: true })
           resolve()
         }
 
@@ -71,7 +78,7 @@ class Lead extends Component<Props, State> {
         this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
-        this.setState({ ...lead, leadId: potentialLeadId })
+        this.setState({ ...lead, leadId: potentialLeadId, loadedFromOffline: false })
 
         await this.SaveToOffline(potentialLeadId, lead)
 
@@ -92,7 +99,7 @@ class Lead extends Component<Props, State> {
       lastUpdated: new Date(),
       Lead,
       moveOut,
-      onlySavedOffline: false
+      onlySavedOffline: false,
     }))
   }
 
@@ -132,6 +139,7 @@ class Lead extends Component<Props, State> {
             // Check error message
             try {
               await this.SaveToOffline(leadId, { ...container, onlySavedOffline: true })
+              this.setState({ onlySavedOffline: true})
               console.log("saved to offline")
               resolve()
             } catch (e) {
@@ -155,11 +163,14 @@ class Lead extends Component<Props, State> {
   }
 
   public render() {
-    const { Lead, moveOut, initialAwait } = this.state
-    const { match } = this.props
+    const { Lead, moveOut, initialAwait, onlySavedOffline, loadedFromOffline } = this.state
+    const { match, portal } = this.props
 
     return (
+      <>
         <Wrapper initialLoading={initialAwait}>
+          {onlySavedOffline ? "Saved in cache, not saved Online!" : null}
+          {loadedFromOffline ? "Loaed from cahce" : null}
           {
             Lead != null ?
             <>
@@ -170,6 +181,28 @@ class Lead extends Component<Props, State> {
               "No Lead found"
           }
         </Wrapper>
+
+        {/* Navigation */}
+        {portal ? ReactDOM.createPortal(<>
+          <ListSubheader><FormattedMessage id="EDIT_LEAD" /></ListSubheader>
+
+          <NavItem to={`${match.url}/customer`} title="CUSTOMER">
+            <Collapse in={true}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested /></Collapse>
+            {/* {lead ? (
+              <>
+                <Collapse in={lead.HasMoveOutBuilding}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested /></Collapse>
+                <Collapse in={lead.HasMoveInBuilding}><NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested /></Collapse>
+                <Collapse in={lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested /></Collapse>
+                <Collapse in={lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested /></Collapse>
+                <Collapse in={lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested /></Collapse>
+                <NavItem to={`${match.url}/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
+              </>
+            ) : null} */}
+            {/* */}
+          </NavItem>
+          <NavItem to={"lead/" + match.params.id + "/service"} title="SERVICES" />
+        </>, portal) : null}
+      </>
     )
   }
 }
