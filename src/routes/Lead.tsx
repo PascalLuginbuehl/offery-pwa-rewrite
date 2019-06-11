@@ -38,43 +38,47 @@ class Lead extends Component<Props, State> {
 
   public handleChange = handleChangeFunction<State>(this)
 
-  handleSubmit() {
-
-  }
-
   async componentDidMount() {
     const idString = this.props.match.params.id
     const potentialLeadId = parseInt(idString ? idString : "")
 
     if (!isNaN(potentialLeadId)) {
-      const promiseOffline = this.FetchFromOffline(potentialLeadId)
-      // this.setState({initialAwait: promiseOffline})
 
-      const offline = await promiseOffline
+      this.setState({initialAwait: this.loadFromOfflineOrOnline(potentialLeadId)})
+    } else {
+      console.log("Is not a leadId", potentialLeadId)
+      throw Error("Did not find a lead")
+    }
+  }
 
-      // Check if 404 or no connection. Decide on whatever happened
-      try {
+  loadFromOfflineOrOnline = (potentialLeadId: number): Promise<void> => {
+    return new Promise(async(resolve, reject) => {
+
+      const offline = await this.FetchFromOffline(potentialLeadId)
+      if (offline && offline.onlySavedOffline) {
+        try {
+          await this.SaveToApi(potentialLeadId, offline)
+          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId })
+          resolve()
+        } catch (e) {
+          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId })
+          resolve()
+        }
+
+      } else {
         const promiseOnline = this.FetchFromOnline(potentialLeadId)
 
         this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
-        this.setState({...lead, leadId: potentialLeadId})
+        this.setState({ ...lead, leadId: potentialLeadId })
 
-        this.SaveToOffline(potentialLeadId, lead)
+        await this.SaveToOffline(potentialLeadId, lead)
 
-      } catch (e) {
-        // Does lead even exist in offline cache
-        try {
-          this.FetchFromOffline(potentialLeadId)
-        } catch(e) {
-
-        }
+        resolve()
       }
-    } else {
-      console.log("Is not a leadId", potentialLeadId)
-      throw Error("Did not find a lead")
-    }
+    })
+
   }
 
   // Can NOT CREATE!
@@ -93,7 +97,7 @@ class Lead extends Component<Props, State> {
   }
 
   // Gets Called to Get Data From Offline
-  FetchFromOffline = (leadId: number) => {
+  FetchFromOffline = (leadId: number): Promise<ILeadContainer> => {
     return get(leadId)
   }
 
@@ -108,27 +112,46 @@ class Lead extends Component<Props, State> {
   }
 
   // Sends all new Data to the API
-  SaveToApi = (): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
-      const { Lead, moveOut, leadId } = this.state
+  SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
+    return new Promise<void>(async (resolve, reject) => {
+
+      const { Lead, moveOut } = container
       if(Lead && moveOut && leadId) {
-        return Promise.all([
-          LeadService.saveCustomer(Lead),
-          BuildingService.saveMoveOutBuilding(moveOut, leadId),
-        ]).then(() => {
+        try {
+          await Promise.all([
+            LeadService.saveCustomer(Lead),
+            BuildingService.saveMoveOutBuilding(moveOut, leadId),
+          ])
+
           console.log("Test")
-        }).catch(e => {
-          if(e) { // If offline
+          resolve()
+        } catch(e) {
+          console.log("Offline error?", e)
+          console.dir(e)
+          if (e) { // If offline
             // Check error message
-            this.SaveToOffline(leadId, this.state)
+            try {
+              await this.SaveToOffline(leadId, { ...container, onlySavedOffline: true })
+              console.log("saved to offline")
+              resolve()
+            } catch (e) {
+              console.log("couldn't save offline", e)
+              reject("couldn't save offline")
+            }
           }
-        })
+        }
       }
     })
   }
 
-  Save = () => {
+  Save = (): Promise<void> => {
+    const {leadId, initialAwait, ...lead} = this.state
+    if(leadId) {
 
+      return this.SaveToApi(leadId, lead)
+    }
+
+    return Promise.reject()
   }
 
   public render() {
@@ -140,8 +163,8 @@ class Lead extends Component<Props, State> {
           {
             Lead != null ?
             <>
-              <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} data={Lead} onChange={(data) => this.handleChange(data, "Lead")} save={this.SaveToApi} />} />
-              <Route path={`${match.url}/move-out`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.SaveToApi} /> : "No move out"} />
+              <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} data={Lead} onChange={(data) => this.handleChange(data, "Lead")} save={this.Save} />} />
+              <Route path={`${match.url}/move-out`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
             </>
             :
               "No Lead found"
