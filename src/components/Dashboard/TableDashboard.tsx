@@ -32,12 +32,10 @@ interface Props extends WithStyles<typeof styles> {
   leads: ILead[]
 }
 
-class Loading extends React.Component<Props, State> {
+class TableDashboard extends React.Component<Props, State> {
 
   public render() {
     const { classes, leads } = this.props
-    const {  } = this.state
-
 
     return (
       <Table>
@@ -83,4 +81,4 @@ class Loading extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(Loading)
+export default withStyles(styles)(TableDashboard)

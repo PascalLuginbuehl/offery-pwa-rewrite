@@ -5,9 +5,9 @@ import { IPostCleaningBuilding, emptyCleaningBuilding } from '../../interfaces/I
 import AddressField from '../../components/Form/Bundled/AddressFields';
 import { withResource, WithResourceProps } from '../../providers/withResource';
 import Submit from '../../components/Validator/Submit';
-import { ValidatedSelect } from '../../components/Validator/Select/ValidatedSelect';
-import { ValidatedTextField } from '../../components/Validator/ValidatedTextField';
-import ValidatedSelectTo from '../../components/Validator/Select/ValidatedSelectTo';
+import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
+import ValidatedTextField from '../../components/Validator/ValidatedTextField';
+import Switch from '../../components/Validator/Switch';
 
 interface State {
 
@@ -41,14 +41,13 @@ class CleaningBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <ValidatedSelectTo
+        <ValidatedSelect
           label="BUILDING_TYPE"
           value={BuildingTypeId}
           name="BuildingTypeId"
           onChange={this.handleChange}
-          options={resource.BuildingTypes}
 
-          keyName={"BuildingTypeId"}
+          options={resource.BuildingTypes.map(e => ({ ...e, id: e.BuildingTypeId }))}
           required
         />
 

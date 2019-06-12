@@ -8,7 +8,6 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import AddressField from '../../components/Form/Bundled/AddressFields';
 import Switch from '../../components/Validator/Switch'
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
-import ValidatedSelectTo from '../../components/Validator/Select/ValidatedSelectTo';
 
 interface State {
 
@@ -41,14 +40,12 @@ class MoveInBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <ValidatedSelectTo<typeof resource.BuildingTypes[0]>
+        <ValidatedSelect
           label="BUILDING_TYPE"
           value={BuildingTypeId}
           name="BuildingTypeId"
           onChange={this.handleChange}
-          options={resource.BuildingTypes}
-
-          keyName={"BuildingTypeId"}
+          options={resource.BuildingTypes.map(e => ({ ...e, id: e.BuildingTypeId }))}
 
           required
         />
@@ -84,10 +81,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           name="EtageId"
           onChange={this.handleChange}
           required
-          options={resource.Etages}
-
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.EtageId })}
-          toValue={value => resource.Etages.find(elevator => value.value == elevator.EtageId)}
+          options={resource.Etages.map(e => ({ ...e, id: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -95,11 +89,9 @@ class MoveInBuilding extends React.Component<Props, State> {
           value={ElevatorId}
           name="ElevatorId"
           onChange={this.handleChange}
-          required
-          options={resource.Elevators}
+          options={resource.Elevators.map(e => ({ ...e, id: e.ElevatorId }))}
 
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.ElevatorId })}
-          toValue={value => resource.Elevators.find(elevator => value.value == elevator.ElevatorId)}
+          required
         />
 
         <ValidatedTextField
@@ -124,10 +116,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           name="BuildingAgeId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingAges}
-
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.BuildingAgeId })}
-          toValue={value => resource.BuildingAges.find(elevator => value.value == elevator.BuildingAgeId)}
+          options={resource.BuildingAges.map(e => ({ ...e, id: e.BuildingAgeId }))}
         />
 
         <Switch

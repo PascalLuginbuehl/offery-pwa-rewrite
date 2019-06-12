@@ -10,6 +10,7 @@ import { RouteComponentProps } from 'react-router';
 import { ILeadContainer } from '../Lead';
 import Submit from '../../components/Validator/Submit';
 import CustomerField from '../../components/Form/Bundled/CustomerField';
+import BigCheckbox from '../../components/Validator/BigCheckbox';
 
 interface Props extends RouteComponentProps {
   data: IPostLead
@@ -109,7 +110,7 @@ class Customer extends Component<Props> {
           onChange={this.handleChange}
         />
 
-        {/* <BigCheckbox name="HasMoveOutBuilding" value={HasMoveOutBuilding} onChange={this.handleChange}>
+        <BigCheckbox name="HasMoveOutBuilding" value={HasMoveOutBuilding} onChange={this.handleChange}>
           MOVE_OUT_BUILDING
         </BigCheckbox>
 
@@ -127,7 +128,7 @@ class Customer extends Component<Props> {
 
         <BigCheckbox name="HasDisposalOutBuilding" value={HasDisposalOutBuilding} onChange={this.handleChange}>
           DISPOSAL_BUILDING
-        </BigCheckbox> */}
+        </BigCheckbox>
 
 
         <Submit onSubmit={this.handleSubmit} />

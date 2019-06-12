@@ -26,8 +26,8 @@ export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> 
 
   translatedLabel?: boolean
 
-  toOptions: (option: any) => { value: string, label: string }
-  toValue: (value: { value: any }) => any
+  // toOptions: (option: any) => { value: string, label: string }
+  // toValue: (value: { value: any }) => any
 }
 
 
@@ -105,10 +105,10 @@ class ValidatedSelect extends React.Component<Props, State> {
 
   public render() {
      // removing unused properties
-    const { required = false, classes, disabled = false, isMulti = false, toOptions, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
+    const { required = false, classes, disabled = false, isMulti = false, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
     const { errorMessage } = this.state
 
-    console.log(classes)
+    console.log(options)
     return (
       <Grid xs={12} sm={6} item>
         <Select
@@ -129,9 +129,11 @@ class ValidatedSelect extends React.Component<Props, State> {
           }}
           required={required}
 
-          options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
+          options={options.map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.NameTextKey }) : label, }))}
+          // options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
 
-          value={value ? isMulti ? value.map(toOptions) : toOptions(value) : null}
+          value={value}
+          // value={value ? isMulti ? value.map(toOptions) : toOptions(value) : null}
           isMulti={isMulti}
           // placeholder="Search a country (start with a)"
 
@@ -148,9 +150,9 @@ class ValidatedSelect extends React.Component<Props, State> {
   selectOnChange = (value: ValueType<DataParsing>) => {
     if(value){
       if(!Array.isArray(value)) {
-        this.props.onChange(this.props.toValue(value), this.props.name)
+        this.props.onChange(value, this.props.name)
       } else {
-        this.props.onChange(value.map(this.props.toValue), this.props.name)
+        this.props.onChange(value, this.props.name)
       }
     }
   }

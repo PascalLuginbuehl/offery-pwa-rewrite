@@ -4,7 +4,7 @@ import { Switch as OriginalSwitch, FormControlLabel, Grid, Omit } from '@materia
 import { SwitchProps } from '@material-ui/core/Switch'
 
 interface Props extends InjectedIntlProps, Omit<SwitchProps, "onChange"> {
-  onChange: (target: string, value: any) => void
+  onChange: (value: any, target: string) => void
   label: string
   name: string
   value: boolean
@@ -18,7 +18,7 @@ interface Props extends InjectedIntlProps, Omit<SwitchProps, "onChange"> {
 class Switch extends React.Component<Props> {
 
   private newOnChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>, checked: boolean) => {
-    this.props.onChange(event.target.name, checked)
+    this.props.onChange(checked, event.target.name)
   }
 
   public render() {

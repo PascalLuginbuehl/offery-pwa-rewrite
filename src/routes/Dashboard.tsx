@@ -7,6 +7,7 @@ import { ILead } from '../interfaces/ILead';
 import DashboardService from '../services/LeadService'
 import IntlTypography from '../components/Intl/IntlTypography';
 import Wrapper from '../components/Form/Wrapper';
+import TableDashboard from '../components/Dashboard/TableDashboard';
 
 
 const styles = (theme: Theme) =>
@@ -87,7 +88,7 @@ class Dashboard extends React.Component<Props, State> {
           <Grid item xs={12}>
             {
               leads && currentTab === 0 ?
-                "asd"
+                <TableDashboard leads={leads} />
                 // isWidthUp('sm', width) ? ("asd") : ("asd")
               :
                 <Typography>Error :(</Typography>

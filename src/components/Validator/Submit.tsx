@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl'
 import { WithFormContext, withValidator } from '.'
-import { Button } from '@material-ui/core'
+import { Button, Grid } from '@material-ui/core'
 import Loading from '../Loading'
 
 
@@ -35,11 +35,13 @@ class Submit extends React.Component<Props, State> {
     const { label="SUBMIT_FORM", children, intl, isValid, onSubmit, registerField, unregisterField, ...props } = this.props
 
     return (
-      <Loading await={saveAwait} disableCenter>
-        <Button variant="contained" color="primary" type="submit" onClick={this.handleSubmit} {...props}>
-          <FormattedMessage id={label} />
-        </Button>
-      </Loading>
+      <Grid item xs={12} sm={6}>
+        <Loading await={saveAwait} disableCenter>
+          <Button variant="contained" color="primary" type="submit" onClick={this.handleSubmit} {...props}>
+            <FormattedMessage id={label} />
+          </Button>
+        </Loading>
+      </Grid>
     )
   }
 }

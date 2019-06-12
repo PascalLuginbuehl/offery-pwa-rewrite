@@ -25,7 +25,7 @@ class MoveOutBuilding extends React.Component<Props, State> {
   }
 
   public render() {
-    const { resource } = this.props
+    const { resource, save } = this.props
     const { Address, RoomAmount, TotalArea, PeopleLivingAmount, BuildingTypeId, EtageId, ElevatorId, BuildingAgeId, MetersToParking, StairsToEntryAmount, HasBasement, HasAttic, HasGarage, HasGarden, HasWinterGarden } = this.props.data
 
     return (
@@ -46,11 +46,8 @@ class MoveOutBuilding extends React.Component<Props, State> {
           name="BuildingTypeId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingTypes}
+          options={resource.BuildingTypes.map(e => ({ ...e, id: e.BuildingTypeId }))}
           translatedLabel
-
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.BuildingTypeId })}
-          toValue={value => resource.BuildingTypes.find(elevator => value.value == elevator.BuildingTypeId)}
         />
 
         <ValidatedTextField
@@ -84,11 +81,9 @@ class MoveOutBuilding extends React.Component<Props, State> {
           name="EtageId"
           onChange={this.handleChange}
           required
-          options={resource.Etages}
           translatedLabel
 
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.EtageId })}
-          toValue={value => resource.Etages.find(elevator => value.value == elevator.EtageId)}
+          options={resource.Etages.map(e => ({ ...e, id: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -97,11 +92,9 @@ class MoveOutBuilding extends React.Component<Props, State> {
           name="ElevatorId"
           onChange={this.handleChange}
           required
-          options={resource.Elevators}
           translatedLabel
+          options={resource.Elevators.map(e => ({ ...e, id: e.ElevatorId }))}
 
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.ElevatorId })}
-          toValue={value => resource.Elevators.find(elevator => value.value == elevator.ElevatorId)}
         />
 
         <ValidatedTextField
@@ -134,11 +127,9 @@ class MoveOutBuilding extends React.Component<Props, State> {
           name="BuildingAgeId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingAges}
           translatedLabel
 
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.BuildingAgeId })}
-          toValue={value => resource.BuildingAges.find(elevator => value.value == elevator.BuildingAgeId)}
+          options={resource.BuildingAges.map(e => ({ ...e, id: e.BuildingAgeId }))}
         />
 
         <Switch
@@ -176,7 +167,7 @@ class MoveOutBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <Submit onSubmit={() => Promise.resolve()}  />
+        <Submit onSubmit={save}  />
      </>
     )
   }
