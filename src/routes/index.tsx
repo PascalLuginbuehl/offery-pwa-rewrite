@@ -8,9 +8,10 @@ import withRoot from '../components/WithRoot'
 
 import { withLanguage, WithLanguageProps } from '../providers/withLanguage'
 import Navigation from '../components/Navigation';
-import IntlTypography from '../components/IntlTypography';
+import IntlTypography from '../components/Intl/IntlTypography';
 import UserDisplay from '../components/Navigation/UserDisplay';
 import Lead from './Lead';
+import Dashboard from './Dashboard';
 
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
@@ -163,6 +164,7 @@ class Index extends React.Component<Props, State> {
             {/* <Route path="/shop" component={shop} /> */}
             {/* <Route path="/lead/move-out-building" component={moveOutBuilding} /> */}
             <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} />
+            <Route path="/" component={Dashboard} />
 
             {/* <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} /> */}
 

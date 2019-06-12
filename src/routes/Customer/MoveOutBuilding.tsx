@@ -4,10 +4,10 @@ import { IPostMoveOutBuilding, emptyMoveOutBuilding } from '../../interfaces/IBu
 import { withResource, WithResourceProps } from '../../providers/withResource';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import Submit from '../../components/Validator/Submit';
-import IntlTypography from '../../components/IntlTypography';
+import IntlTypography from '../../components/Intl/IntlTypography';
 import AddressField from '../../components/Form/Bundled/AddressFields';
 import Switch from '../../components/Validator/Switch'
-import ValidatedSelect from '../../components/Validator/ValidatedSelect';
+import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 
 interface State {
 

@@ -119,7 +119,7 @@ class LeadService {
     })
   }
 
-  public fetchCompanyLeads(companyId: number) {
+  public fetchCompanyLeads(companyId: number): Promise<ILead[]> {
     return new Promise<ILead[]>(async (resolve, reject) => {
       try {
         const data = await fetch(API_URL + '/lead/company/' + companyId, await LoginService.authorizeRequest())

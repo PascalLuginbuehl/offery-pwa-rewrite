@@ -10,7 +10,7 @@ import React, { MouseEvent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import LoginService, { LoginInformation } from '../services/LoginService'
-import IntlTypography from './IntlTypography';
+import IntlTypography from './Intl/IntlTypography';
 import Validator from './Validator';
 import Submit from './Validator/Submit';
 import ValidatedTextField from './Validator/ValidatedTextField';

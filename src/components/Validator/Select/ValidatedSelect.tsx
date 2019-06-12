@@ -3,14 +3,15 @@ import * as React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { Grid, WithStyles, withStyles } from "@material-ui/core"
 // import { injectIntl } from "react-intl"
-import { WithFormContext, withValidator } from '.';
+import { WithFormContext, withValidator } from '..';
 import { Omit } from 'react-router';
-import Validations from "./Validations";
-import { components, styles } from '../ReactSelectComponents';
+import Validations from "../Validations";
+import { components, styles } from '../../ReactSelectComponents';
 import Select from 'react-select';
 import { ActionMeta, ValueType } from 'react-select/lib/types';
 
-interface Props extends InjectedIntlProps, Omit<DatePickerProps, "onChange">, WithFormContext, WithStyles<typeof styles> {
+// Custom validation to export without ProviderProps
+export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> {
   onChange: (value: any, target: any) => void
   label: string
 
@@ -25,8 +26,13 @@ interface Props extends InjectedIntlProps, Omit<DatePickerProps, "onChange">, Wi
 
   translatedLabel?: boolean
 
-  toOptions: (option: any) => {value: string, label: string}
-  toValue: (value: {value: any}) => any
+  toOptions: (option: any) => { value: string, label: string }
+  toValue: (value: { value: any }) => any
+}
+
+
+interface Props extends InjectedIntlProps, WithFormContext, WithStyles<typeof styles>, ValidatedSelectProps {
+
 }
 
 interface State {

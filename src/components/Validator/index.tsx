@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ValidatedTextField } from './ValidatedTextField'
 import { ValidatedDatePickerType } from './ValidatedDatePicker'
 import { ValidatedDateTimePickerType } from './ValidatedDateTimePicker'
-import { ValidatedSelect } from './ValidatedSelect';
+import { ValidatedSelect } from './Select/ValidatedSelect';
 
 interface Props {
   children: any

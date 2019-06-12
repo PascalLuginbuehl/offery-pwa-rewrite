@@ -4,10 +4,11 @@ import { IPostMoveInBuilding, emptyMoveInBuilding } from '../../interfaces/IBuil
 import { withResource, WithResourceProps } from '../../providers/withResource';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import Submit from '../../components/Validator/Submit';
-import IntlTypography from '../../components/IntlTypography';
+import IntlTypography from '../../components/Intl/IntlTypography';
 import AddressField from '../../components/Form/Bundled/AddressFields';
 import Switch from '../../components/Validator/Switch'
-import ValidatedSelect from '../../components/Validator/ValidatedSelect';
+import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
+import ValidatedSelectTo from '../../components/Validator/Select/ValidatedSelectTo';
 
 interface State {
 
@@ -40,16 +41,16 @@ class MoveInBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <ValidatedSelect
+        <ValidatedSelectTo<typeof resource.BuildingTypes[0]>
           label="BUILDING_TYPE"
           value={BuildingTypeId}
           name="BuildingTypeId"
           onChange={this.handleChange}
-          required
           options={resource.BuildingTypes}
 
-          toOptions={(option) => ({ label: option.NameTextKey, value: option.BuildingTypeId })}
-          toValue={value => resource.BuildingTypes.find(elevator => value.value == elevator.BuildingTypeId)}
+          keyName={"BuildingTypeId"}
+
+          required
         />
 
         <ValidatedTextField

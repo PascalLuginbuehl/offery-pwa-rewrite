@@ -1,4 +1,3 @@
-import { createStyles, Theme, WithStyles, withStyles, CircularProgress } from '@material-ui/core'
 import * as React from 'react'
 import { green } from '@material-ui/core/colors';
 import ExpandLess from '@material-ui/icons/ExpandLess'
@@ -10,6 +9,8 @@ import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye'
 import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import ContactsIcon from '@material-ui/icons/Contacts'
 import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse } from '@material-ui/core'
+import IntlTooltip from '../Intl/IntlTooltip';
+import { ILead } from '../../interfaces/ILead';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -24,24 +25,18 @@ const styles = (theme: Theme) =>
   })
 
 interface State {
-  complete: boolean
+
 }
 
 interface Props extends WithStyles<typeof styles> {
-  await: Promise<any> | null
-  children: any
-  size?: number
-  disableCenter?: boolean
+  leads: ILead[]
 }
 
 class Loading extends React.Component<Props, State> {
-  state: State = {
-    complete: false
-  }
 
   public render() {
-    const { classes, children, size, disableCenter } = this.props
-    const { complete } = this.state
+    const { classes, leads } = this.props
+    const {  } = this.state
 
 
     return (

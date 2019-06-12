@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Grid } from '@material-ui/core'
-import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
-import IntlTypography from '../components/IntlTypography';
-import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
-import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
-import Wrapper from '../components/Form/Wrapper';
+import { IPostLead, emptyLead, ILead } from '../../interfaces/ILead';
+import IntlTypography from '../../components/Intl/IntlTypography';
+import ValidatedDateTimePicker from '../../components/Validator/ValidatedDateTimePicker';
+import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
+import Wrapper from '../../components/Form/Wrapper';
 import { get } from 'idb-keyval'
 import { RouteComponentProps } from 'react-router';
-import { ILeadContainer } from './Lead';
-import Submit from '../components/Validator/Submit';
-import CustomerField from '../components/Form/Bundled/CustomerField';
+import { ILeadContainer } from '../Lead';
+import Submit from '../../components/Validator/Submit';
+import CustomerField from '../../components/Form/Bundled/CustomerField';
 
 interface Props extends RouteComponentProps {
   data: IPostLead

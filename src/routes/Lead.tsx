@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, ListSubheader, Collapse } from '@material-ui/core'
 import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
-import IntlTypography from '../components/IntlTypography';
+import IntlTypography from '../components/Intl/IntlTypography';
 import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
