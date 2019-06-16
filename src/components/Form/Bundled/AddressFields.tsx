@@ -9,14 +9,14 @@ interface State extends IPostAddress {
 
 interface Props {
   value: IPostAddress
-  onChange: (target: string, value: any) => void
+  onChange: (value: any, target: string) => void
   name: string
 }
 
 class AddressField extends React.Component<Props, State> {
 
-  private handleChange = (target: string, value: string) => {
-    this.props.onChange(this.props.name, Object.assign({}, this.props.value, { [target]: value }))
+  private handleChange = (value: string, target: string) => {
+    this.props.onChange(Object.assign({}, this.props.value, { [target]: value }), this.props.name)
   }
 
   public render() {

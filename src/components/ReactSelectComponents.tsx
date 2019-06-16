@@ -1,16 +1,29 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Theme, createStyles } from '@material-ui/core/styles';
+import React, { CSSProperties, HTMLAttributes } from 'react';
+import clsx from 'clsx';
+import Select from 'react-select';
+import { createStyles, emphasize, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
+import NoSsr from '@material-ui/core/NoSsr';
+import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
-// import CancelIcon from '@material-ui/icons/Cancel';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
-import { Icon } from '@material-ui/core';
+import CancelIcon from '@material-ui/icons/Cancel';
+import PropTypes from 'prop-types';
+import { ValueContainerProps } from 'react-select/lib/components/containers';
+import { ControlProps } from 'react-select/lib/components/Control';
+import { MenuProps, NoticeProps } from 'react-select/lib/components/Menu';
+import { MultiValueProps } from 'react-select/lib/components/MultiValue';
+import { OptionProps } from 'react-select/lib/components/Option';
+import { PlaceholderProps } from 'react-select/lib/components/Placeholder';
+import { SingleValueProps } from 'react-select/lib/components/SingleValue';
+import { ValueType } from 'react-select/lib/types';
 
+
+interface OptionType {
+  label: string;
+  value: string;
+}
 
 export const styles = (theme: Theme) =>
   createStyles({
@@ -21,6 +34,7 @@ export const styles = (theme: Theme) =>
     input: {
       display: 'flex',
       padding: 0,
+      height: 'auto',
     },
     valueContainer: {
       display: 'flex',
@@ -30,24 +44,24 @@ export const styles = (theme: Theme) =>
       overflow: 'hidden',
     },
     chip: {
-      margin: `${theme.spacing(1) / 2}px ${theme.spacing(1) / 4}px`,
+      margin: theme.spacing(0.5, 0.25),
     },
     chipFocused: {
-      // @ts-ignore
       backgroundColor: emphasize(
         theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
         0.08,
       ),
     },
     noOptionsMessage: {
-      padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+      padding: theme.spacing(1, 2),
     },
     singleValue: {
       fontSize: 16,
     },
     placeholder: {
       position: 'absolute',
-      left: 18,
+      left: 2,
+      bottom: 6,
       fontSize: 16,
     },
     paper: {
@@ -60,10 +74,10 @@ export const styles = (theme: Theme) =>
     divider: {
       height: theme.spacing(2),
     },
-  });
+  })
 
-// @ts-ignore
-function NoOptionsMessage(props) {
+
+function NoOptionsMessage(props: NoticeProps<OptionType>) {
   return (
     <Typography
       color="textSecondary"
@@ -75,35 +89,58 @@ function NoOptionsMessage(props) {
   );
 }
 
-// @ts-ignore
-function inputComponent({ inputRef, ...props }) {
+NoOptionsMessage.propTypes = {
+  children: PropTypes.node,
+  innerProps: PropTypes.object,
+  selectProps: PropTypes.object.isRequired,
+} as any;
+
+type InputComponentProps = Pick<BaseTextFieldProps, 'inputRef'> & HTMLAttributes<HTMLDivElement>;
+
+function inputComponent({ inputRef, ...props }: InputComponentProps) {
   return <div ref={inputRef} {...props} />;
 }
 
-// @ts-ignore
-function Control(props) {
+inputComponent.propTypes = {
+  inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+} as any;
+
+function Control(props: ControlProps<OptionType>) {
+  const {
+    children,
+    innerProps,
+    innerRef,
+    selectProps: { classes, TextFieldProps },
+  } = props;
+
   return (
     <TextField
       fullWidth
       InputProps={{
         inputComponent,
         inputProps: {
-          className: props.selectProps.classes.input,
-          inputRef: props.innerRef,
-          children: props.children,
-          ...props.innerProps,
+          className: classes.input,
+          ref: innerRef,
+          children,
+          ...innerProps,
         },
       }}
-      {...props.selectProps.TextFieldProps}
+      {...TextFieldProps}
     />
   );
 }
 
-// @ts-ignore
-function Option(props) {
+Control.propTypes = {
+  children: PropTypes.node,
+  innerProps: PropTypes.object,
+  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  selectProps: PropTypes.object.isRequired,
+} as any;
+
+function Option(props: OptionProps<OptionType>) {
   return (
     <MenuItem
-      buttonRef={props.innerRef}
+      ref={props.innerRef}
       selected={props.isFocused}
       component="div"
       style={{
@@ -116,8 +153,15 @@ function Option(props) {
   );
 }
 
-// @ts-ignore
-function Placeholder(props) {
+Option.propTypes = {
+  children: PropTypes.node,
+  innerProps: PropTypes.object,
+  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  isFocused: PropTypes.bool,
+  isSelected: PropTypes.bool,
+} as any;
+
+function Placeholder(props: PlaceholderProps<OptionType>) {
   return (
     <Typography
       color="textSecondary"
@@ -129,8 +173,13 @@ function Placeholder(props) {
   );
 }
 
-// @ts-ignore
-function SingleValue(props) {
+Placeholder.propTypes = {
+  children: PropTypes.node,
+  innerProps: PropTypes.object,
+  selectProps: PropTypes.object.isRequired,
+} as any;
+
+function SingleValue(props: SingleValueProps<OptionType>) {
   return (
     <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
       {props.children}
@@ -138,34 +187,55 @@ function SingleValue(props) {
   );
 }
 
-// @ts-ignore
-function ValueContainer(props) {
+SingleValue.propTypes = {
+  children: PropTypes.node,
+  innerProps: PropTypes.object,
+  selectProps: PropTypes.object.isRequired,
+} as any;
+
+function ValueContainer(props: ValueContainerProps<OptionType>) {
   return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
 
-// @ts-ignore
-function MultiValue(props) {
+ValueContainer.propTypes = {
+  children: PropTypes.node,
+  selectProps: PropTypes.object.isRequired,
+} as any;
+
+function MultiValue(props: MultiValueProps<OptionType>) {
   return (
     <Chip
       tabIndex={-1}
       label={props.children}
-      className={classNames(props.selectProps.classes.chip, {
+      className={clsx(props.selectProps.classes.chip, {
         [props.selectProps.classes.chipFocused]: props.isFocused,
       })}
       onDelete={props.removeProps.onClick}
-      deleteIcon={<Icon {...props.removeProps}>close</Icon>}
+      deleteIcon={<CancelIcon {...props.removeProps} />}
     />
   );
 }
 
-// @ts-ignore
-function Menu(props) {
+MultiValue.propTypes = {
+  children: PropTypes.node,
+  isFocused: PropTypes.bool,
+  removeProps: PropTypes.object.isRequired,
+  selectProps: PropTypes.object.isRequired,
+} as any;
+
+function Menu(props: MenuProps<OptionType>) {
   return (
     <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
       {props.children}
     </Paper>
   );
 }
+
+Menu.propTypes = {
+  children: PropTypes.node,
+  innerProps: PropTypes.object,
+  selectProps: PropTypes.object,
+} as any;
 
 export const components = {
   Control,

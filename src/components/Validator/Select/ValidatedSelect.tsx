@@ -108,7 +108,6 @@ class ValidatedSelect extends React.Component<Props, State> {
     const { required = false, classes, disabled = false, isMulti = false, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
     const { errorMessage } = this.state
 
-    console.log(options)
     return (
       <Grid xs={12} sm={6} item>
         <Select
