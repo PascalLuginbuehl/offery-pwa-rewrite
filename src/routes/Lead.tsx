@@ -7,7 +7,7 @@ import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePi
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
 import { get, set } from 'idb-keyval'
-import { IMoveOutBuilding } from '../interfaces/IBuilding';
+import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding } from '../interfaces/IBuilding';
 import BuildingService from '../services/BuildingService';
 import { RouteComponentProps, Route } from 'react-router';
 import LeadService from '../services/LeadService';
@@ -16,6 +16,8 @@ import Loading from '../components/Loading';
 import MoveOutBuilding from './Customer/MoveOutBuilding';
 import { FormattedMessage } from 'react-intl';
 import NavItem from '../components/Navigation/NavItem';
+import MoveInBuilding from './Customer/MoveInBuilding';
+import CleaningBuilding from './Customer/CleaningBuilding';
 
 
 export interface ILeadContainer {
@@ -25,6 +27,10 @@ export interface ILeadContainer {
   Lead: ILead | null
 
   moveOut: IMoveOutBuilding | null
+  moveIn: IMoveInBuilding | null
+  cleaning: ICleaningBuilding | null
+  disposal: IDisposalOutBuilding | null
+  storage: IStorageBuilding | null
 }
 
 interface State extends ILeadContainer {
@@ -38,7 +44,20 @@ interface Props extends RouteComponentProps<{ id?: string }> {
 }
 
 class Lead extends Component<Props, State> {
-  state: State = { lastUpdated: new Date(), Lead: null, moveOut: null, initialAwait: null, leadId: null, onlySavedOffline: false, loadedFromOffline: true}
+  state: State = {
+    lastUpdated: new Date(),
+    leadId: null,
+    Lead: null,
+    moveOut: null,
+    moveIn: null,
+    disposal: null,
+    storage: null,
+    cleaning: null,
+
+    initialAwait: null,
+    onlySavedOffline: false,
+    loadedFromOffline: true
+  }
 
   public handleChange = handleChangeFunction<State>(this)
 
@@ -95,10 +114,18 @@ class Lead extends Component<Props, State> {
     return Promise.all([
       LeadService.fetchCustomer(leadId),
       BuildingService.fetchMoveOutBuilding(leadId),
-    ]).then(([Lead, moveOut]): ILeadContainer => ({
+      BuildingService.fetchMoveInBuilding(leadId),
+      BuildingService.fetchCleaningBuilding(leadId),
+      BuildingService.fetchStorageBuilding(leadId),
+      BuildingService.fetchDisposalOutBuilding(leadId),
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal]): ILeadContainer => ({
       lastUpdated: new Date(),
       Lead,
       moveOut,
+      moveIn,
+      cleaning,
+      disposal,
+      storage,
       onlySavedOffline: false,
     }))
   }
@@ -163,7 +190,18 @@ class Lead extends Component<Props, State> {
   }
 
   public render() {
-    const { Lead, moveOut, initialAwait, onlySavedOffline, loadedFromOffline } = this.state
+    const {
+      Lead,
+      moveOut,
+      moveIn,
+      cleaning,
+      storage,
+      disposal,
+
+      initialAwait,
+      onlySavedOffline,
+      loadedFromOffline
+    } = this.state
     const { match, portal } = this.props
 
     return (
@@ -175,7 +213,11 @@ class Lead extends Component<Props, State> {
             Lead != null ?
             <>
               <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} data={Lead} onChange={(data) => this.handleChange(data, "Lead")} save={this.Save} />} />
-              <Route path={`${match.url}/move-out`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
+              <Route path={`${match.url}/building/move-out`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveIn")} save={this.Save} /> : "No move out"} />
+              <Route path={`${match.url}/building/move-in`} render={(routeProps) => moveIn ? <MoveInBuilding {...routeProps} data={moveIn} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
+              <Route path={`${match.url}/building/storage`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
+                <Route path={`${match.url}/building/disposal`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
+              <Route path={`${match.url}/building/cleaning`} render={(routeProps) => cleaning ? <CleaningBuilding {...routeProps} data={cleaning} onChange={(data) => this.handleChange(data, "cleaning")} save={this.Save} /> : "No move out"} />
             </>
             :
               "No Lead found"
@@ -186,19 +228,19 @@ class Lead extends Component<Props, State> {
         {portal ? ReactDOM.createPortal(<>
           <ListSubheader><FormattedMessage id="EDIT_LEAD" /></ListSubheader>
 
-          <NavItem to={`${match.url}/customer`} title="CUSTOMER">
-            {Lead ? (
-              <>
-                <Collapse in={Lead.HasMoveOutBuilding}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested /></Collapse>
-                <Collapse in={Lead.HasMoveInBuilding}><NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested /></Collapse>
-                <Collapse in={Lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested /></Collapse>
-                <Collapse in={Lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested /></Collapse>
-                <Collapse in={Lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested /></Collapse>
-                <NavItem to={`${match.url}/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
-              </>
-            ) : null}
-            {/* */}
-          </NavItem>
+            <NavItem to={`${match.url}/customer`} title="CUSTOMER">
+              {Lead ? (
+                <>
+                  <Collapse in={Lead.HasMoveOutBuilding}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested /></Collapse>
+                  <Collapse in={Lead.HasMoveInBuilding}><NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested /></Collapse>
+                  <Collapse in={Lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested /></Collapse>
+                  <Collapse in={Lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested /></Collapse>
+                  <Collapse in={Lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested /></Collapse>
+                  <NavItem to={`${match.url}/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
+                </>
+              ) : null}
+              {/* */}
+            </NavItem>
           <NavItem to={"lead/" + match.params.id + "/service"} title="SERVICES" />
         </>, portal) : null}
       </>

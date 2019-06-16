@@ -14,12 +14,13 @@ class BuildingService {
     return json
   }
 
-  async fetchService<Type>(url: string, middleWare?: (data: any) => any): Promise<Type> {
+  async fetchService<Type>(url: string, middleWare?: (data: any) => any): Promise<Type | null> {
     return fetch(url, await LoginService.authorizeRequest())
       .then(errorFunction)
       .then((response) => response.json())
       // .then(middleWare)
       .then(json => this.toSpecificType<Type>(json))
+      .catch(e => null)
   }
 
   async createService<Type>(url: string, body: any, middleWare?: (data: any) => any): Promise<Type> {
@@ -52,7 +53,7 @@ class BuildingService {
 
 
   // MoveOut
-  public fetchMoveOutBuilding = (id: number): Promise<IMoveOutBuilding> => {
+  public fetchMoveOutBuilding = (id: number): Promise<IMoveOutBuilding | null> => {
     return this.fetchService<IMoveOutBuilding>(
       API_URL + '/building/moveout/' + id,
     )
@@ -73,7 +74,7 @@ class BuildingService {
   }
 
   // Move In
-  public fetchMoveInBuilding = (id: number): Promise<IMoveInBuilding> => {
+  public fetchMoveInBuilding = (id: number): Promise<IMoveInBuilding | null> => {
     return this.fetchService<IMoveInBuilding>(
       API_URL + '/building/movein/' + id,
     )
@@ -94,7 +95,7 @@ class BuildingService {
   }
 
   // Storage Building
-  public fetchStorageBuilding = (id: number): Promise<IStorageBuilding> => {
+  public fetchStorageBuilding = (id: number): Promise<IStorageBuilding | null> => {
     return this.fetchService<IStorageBuilding>(
       API_URL + '/building/storagein/' + id,
     )
@@ -115,7 +116,7 @@ class BuildingService {
   }
 
   // DisposalOut Building
-  public fetchDisposalOutBuilding = (id: number): Promise<IDisposalOutBuilding> => {
+  public fetchDisposalOutBuilding = (id: number): Promise<IDisposalOutBuilding | null> => {
     return this.fetchService<IDisposalOutBuilding>(
       API_URL + '/building/disposalout/' + id,
     )
@@ -136,7 +137,7 @@ class BuildingService {
   }
 
   // Cleaning Building
-  public fetchCleaningBuilding = (id: number): Promise<ICleaningBuilding> => {
+  public fetchCleaningBuilding = (id: number): Promise<ICleaningBuilding | null> => {
     return this.fetchService<ICleaningBuilding>(
       API_URL + '/building/cleaning/' + id,
     )
