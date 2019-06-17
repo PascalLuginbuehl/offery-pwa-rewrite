@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Grid, ListSubheader, Collapse } from '@material-ui/core'
+import { Grid, ListSubheader, Collapse, Icon } from '@material-ui/core'
 import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import IntlTypography from '../components/Intl/IntlTypography';
 import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
@@ -32,7 +32,10 @@ import CleaningBuilding from './Customer/CleaningBuilding';
 import DisposalOutBuilding from './Customer/DisposalOutBuilding';
 import StorageBuilding from './Customer/StorageBuilding';
 import EmailConfirmation from './Customer/EmailConfirmation';
-
+import SuccessSnackbar from '../components/SuccessSnackbar';
+import OfflinePinIcon from '@material-ui/icons/OfflinePin'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import IntlTooltip from '../components/Intl/IntlTooltip';
 
 export interface ILeadContainer {
   lastUpdated: Date
@@ -51,6 +54,8 @@ interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
   leadId: number | null
   loadedFromOffline: boolean
+
+  successOpen: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }> {
@@ -70,7 +75,12 @@ class Lead extends Component<Props, State> {
 
     initialAwait: null,
     onlySavedOffline: false,
-    loadedFromOffline: true
+    loadedFromOffline: true,
+    successOpen: false,
+  }
+
+  handleClose = () => {
+    this.setState({successOpen: false})
   }
 
   public handleChange = handleChangeFunction<State>(this)
@@ -215,15 +225,32 @@ class Lead extends Component<Props, State> {
 
       initialAwait,
       onlySavedOffline,
-      loadedFromOffline
+      loadedFromOffline,
+      successOpen,
     } = this.state
     const { match, portal } = this.props
 
     return (
       <>
+      {/* "Saved in cache, not saved Online!" */}
         <Wrapper initialLoading={initialAwait}>
-          {onlySavedOffline ? "Saved in cache, not saved Online!" : null}
-          {loadedFromOffline ? "Loaded from cache" : null}
+          {onlySavedOffline ?
+            <IntlTooltip title="NOT_SAVED_ONLINE">
+              <OfflinePinIcon color="error" />
+            </IntlTooltip>
+          :
+            null
+          }
+
+          {loadedFromOffline ?
+            <IntlTooltip title="LOADED_FROM_CACHE">
+              <CloudUploadIcon color="secondary" />
+            </IntlTooltip>
+          :
+            null
+          }
+
+
           {
             Lead != null ?
             <>
@@ -347,6 +374,13 @@ class Lead extends Component<Props, State> {
             </NavItem>
           <NavItem to={"lead/" + match.params.id + "/service"} title="SERVICES" />
         </>, portal) : null}
+
+        <SuccessSnackbar
+          open={successOpen}
+          onClose={this.handleClose}
+          variant="success"
+          message="This is a success message!"
+          />
       </>
     )
   }
