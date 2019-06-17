@@ -32,7 +32,7 @@ class Submit extends React.Component<Props, State> {
   public render() {
     const { saveAwait } = this.state
     // remove properties from object
-    const { label="SUBMIT_FORM", children, intl, isValid, onSubmit, registerField, unregisterField, ...props } = this.props
+    const { label = "NEXT", children, intl, isValid, onSubmit, registerField, unregisterField, ...props } = this.props
 
     return (
       <Grid item xs={12} sm={6}>

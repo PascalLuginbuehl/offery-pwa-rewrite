@@ -1,63 +1,55 @@
 import { Grid, Typography } from '@material-ui/core'
-import IntlTypography from 'components/Intl/IntlTypography'
+import IntlTypography from '../../components/Intl/IntlTypography'
 import * as React from 'react'
-import NextDial from 'components/NextDial'
-import BaseForm, { BaseFormProps, BaseFormState } from 'components/Form/BaseForm'
-import Wrapper from 'components/Form/Wrapper'
-import { withResource, WithResourceProps } from 'providers/withResource'
-import { ILead } from 'interfaces/ILead'
-import { IMoveOutBuilding, IMoveInBuilding, IStorageBuilding, IDisposalOutBuilding, ICleaningBuilding } from 'interfaces/IBuilding';
-import Select from 'components/Form/Elements/Select';
-import TextField from 'components/Form/Elements/TextField';
+import { withResource, WithResourceProps } from '../../providers/withResource'
+import { ILead } from '../../interfaces/ILead'
+import { IMoveOutBuilding, IMoveInBuilding, IStorageBuilding, IDisposalOutBuilding, ICleaningBuilding } from '../../interfaces/IBuilding';
 import { FormattedDate } from 'react-intl';
+import Submit from '../../components/Validator/Submit';
+import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
+import ValidatedTextField from '../../components/Validator/ValidatedTextField';
+import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
 
-export interface Addresses {
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}
+
+interface State {
+  AddressId: number | null
+  Comment: string
+}
+
+interface Props extends WithResourceProps {
   CleaningBuilding: ICleaningBuilding | null
   MoveOutBuilding: IMoveOutBuilding | null
   MoveInBuilding: IMoveInBuilding | null
   StorageInBuilding: IStorageBuilding | null
   DisposalOutBuilding: IDisposalOutBuilding | null
   Lead: ILead | null
-  Comment: string
-  AddressId: number
   LeadId: number
 }
 
-function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-  return value !== null && value !== undefined
-}
-
-interface State extends Addresses, BaseFormState<Addresses> {
-
-}
-
-interface Props extends BaseFormProps<Addresses>, WithResourceProps {
-
-}
-
-class EmailConfirmation extends BaseForm<Props, State, Addresses> {
-  constructor(props: Props) {
-    super(props, {
-      CleaningBuilding: null,
-      MoveOutBuilding: null,
-      MoveInBuilding: null,
-      StorageInBuilding: null,
-      DisposalOutBuilding: null,
-      Lead: null,
-      Comment: "",
-      AddressId: 1,
-      LeadId: 0,
-    })
+class EmailConfirmation extends React.Component<Props, State> {
+  state: State = {
+    AddressId: null,
+    Comment: '',
   }
+  private handleChange = handleChangeFunction<State>(this)
+
+  send = () => {
+    return Promise.resolve()
+  }
+
 
   public render() {
     const { selectedCompany } = this.props
-    const { initialAwait, saveAwait, AddressId, Comment, Lead } = this.state
-    const { CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding } = this.state
+    const { AddressId, Comment } = this.state
+    const { Lead, CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding } = this.props
 
     const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
+
     return (
-      <Wrapper onSubmit={this.handleSubmit} initialLoading={initialAwait}>
+      <>
         <Grid item xs={12}>
           <IntlTypography variant="h5">EMAIL_CONFIRMATION</IntlTypography>
         </Grid>
@@ -75,7 +67,7 @@ class EmailConfirmation extends BaseForm<Props, State, Addresses> {
           </IntlTypography>
         </Grid>
 
-        <Select
+        <ValidatedSelect
           label="BUILDING_TYPE"
           value={AddressId}
           name="AddressId"
@@ -84,15 +76,15 @@ class EmailConfirmation extends BaseForm<Props, State, Addresses> {
           options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map(e => ({id: e.Address.AddressId, NameTextKey: e.Address.Street + ", " + e.Address.PLZ + " " + e.Address.City, OrderNumber: 0}))}
         />
 
-        <TextField
+        <ValidatedTextField
           label="COMMENT"
           value={Comment}
           name="Comment"
           onChange={this.handleChange}
         />
 
-        <NextDial awaitLoading={saveAwait} />
-     </Wrapper>
+        <Submit onSubmit={this.send}/>
+     </>
     )
   }
 }
