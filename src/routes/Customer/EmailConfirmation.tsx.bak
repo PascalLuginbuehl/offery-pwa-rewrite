@@ -1,0 +1,100 @@
+import { Grid, Typography } from '@material-ui/core'
+import IntlTypography from 'components/Intl/IntlTypography'
+import * as React from 'react'
+import NextDial from 'components/NextDial'
+import BaseForm, { BaseFormProps, BaseFormState } from 'components/Form/BaseForm'
+import Wrapper from 'components/Form/Wrapper'
+import { withResource, WithResourceProps } from 'providers/withResource'
+import { ILead } from 'interfaces/ILead'
+import { IMoveOutBuilding, IMoveInBuilding, IStorageBuilding, IDisposalOutBuilding, ICleaningBuilding } from 'interfaces/IBuilding';
+import Select from 'components/Form/Elements/Select';
+import TextField from 'components/Form/Elements/TextField';
+import { FormattedDate } from 'react-intl';
+
+export interface Addresses {
+  CleaningBuilding: ICleaningBuilding | null
+  MoveOutBuilding: IMoveOutBuilding | null
+  MoveInBuilding: IMoveInBuilding | null
+  StorageInBuilding: IStorageBuilding | null
+  DisposalOutBuilding: IDisposalOutBuilding | null
+  Lead: ILead | null
+  Comment: string
+  AddressId: number
+  LeadId: number
+}
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}
+
+interface State extends Addresses, BaseFormState<Addresses> {
+
+}
+
+interface Props extends BaseFormProps<Addresses>, WithResourceProps {
+
+}
+
+class EmailConfirmation extends BaseForm<Props, State, Addresses> {
+  constructor(props: Props) {
+    super(props, {
+      CleaningBuilding: null,
+      MoveOutBuilding: null,
+      MoveInBuilding: null,
+      StorageInBuilding: null,
+      DisposalOutBuilding: null,
+      Lead: null,
+      Comment: "",
+      AddressId: 1,
+      LeadId: 0,
+    })
+  }
+
+  public render() {
+    const { selectedCompany } = this.props
+    const { initialAwait, saveAwait, AddressId, Comment, Lead } = this.state
+    const { CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding } = this.state
+
+    const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
+    return (
+      <Wrapper onSubmit={this.handleSubmit} initialLoading={initialAwait}>
+        <Grid item xs={12}>
+          <IntlTypography variant="h5">EMAIL_CONFIRMATION</IntlTypography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <IntlTypography>
+            {EmailBodyContentIntroductionTextKey}
+          </IntlTypography>
+          <IntlTypography>
+            {EmailSubjectTextKey}
+          </IntlTypography>
+          {Lead && Lead.VisitDate ? (<><IntlTypography>VISITING_DATE</IntlTypography><Typography><FormattedDate value={Lead.VisitDate} /></Typography></>) : null}
+          <IntlTypography>
+            {EmailBodyContentOutroductionTextKey}
+          </IntlTypography>
+        </Grid>
+
+        <Select
+          label="BUILDING_TYPE"
+          value={AddressId}
+          name="AddressId"
+          onChange={this.handleChange}
+          required
+          options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map(e => ({id: e.Address.AddressId, NameTextKey: e.Address.Street + ", " + e.Address.PLZ + " " + e.Address.City, OrderNumber: 0}))}
+        />
+
+        <TextField
+          label="COMMENT"
+          value={Comment}
+          name="Comment"
+          onChange={this.handleChange}
+        />
+
+        <NextDial awaitLoading={saveAwait} />
+     </Wrapper>
+    )
+  }
+}
+
+export default withResource(EmailConfirmation)

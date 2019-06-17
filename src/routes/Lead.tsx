@@ -7,7 +7,18 @@ import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePi
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
 import { get, set } from 'idb-keyval'
-import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding } from '../interfaces/IBuilding';
+import {
+  IMoveOutBuilding,
+  IMoveInBuilding,
+  ICleaningBuilding,
+  IDisposalOutBuilding,
+  IStorageBuilding,
+  emptyDisposalOutBuilding,
+  emptyMoveInBuilding,
+  emptyMoveOutBuilding,
+  emptyStorageBuilding,
+  emptyCleaningBuilding
+} from '../interfaces/IBuilding';
 import BuildingService from '../services/BuildingService';
 import { RouteComponentProps, Route } from 'react-router';
 import LeadService from '../services/LeadService';
@@ -18,6 +29,8 @@ import { FormattedMessage } from 'react-intl';
 import NavItem from '../components/Navigation/NavItem';
 import MoveInBuilding from './Customer/MoveInBuilding';
 import CleaningBuilding from './Customer/CleaningBuilding';
+import DisposalOutBuilding from './Customer/DisposalOutBuilding';
+import StorageBuilding from './Customer/StorageBuilding';
 
 
 export interface ILeadContainer {
@@ -192,6 +205,7 @@ class Lead extends Component<Props, State> {
   public render() {
     const {
       Lead,
+      leadId,
       moveOut,
       moveIn,
       cleaning,
@@ -213,11 +227,11 @@ class Lead extends Component<Props, State> {
             Lead != null ?
             <>
               <Route path={`${match.url}/customer`} render={(routeProps) => <Customer {...routeProps} data={Lead} onChange={(data) => this.handleChange(data, "Lead")} save={this.Save} />} />
-              <Route path={`${match.url}/building/move-out`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveIn")} save={this.Save} /> : "No move out"} />
-              <Route path={`${match.url}/building/move-in`} render={(routeProps) => moveIn ? <MoveInBuilding {...routeProps} data={moveIn} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
-              <Route path={`${match.url}/building/storage`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
-                <Route path={`${match.url}/building/disposal`} render={(routeProps) => moveOut ? <MoveOutBuilding {...routeProps} data={moveOut} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} /> : "No move out"} />
-              <Route path={`${match.url}/building/cleaning`} render={(routeProps) => cleaning ? <CleaningBuilding {...routeProps} data={cleaning} onChange={(data) => this.handleChange(data, "cleaning")} save={this.Save} /> : "No move out"} />
+              <Route path={`${match.url}/building/move-out`} render={(routeProps) => <MoveOutBuilding {...routeProps} data={moveOut ? moveOut : emptyMoveOutBuilding(Lead.LeadId)} onChange={(data) => this.handleChange(data, "moveOut")} save={this.Save} />} />
+              <Route path={`${match.url}/building/move-in`} render={(routeProps) => <MoveInBuilding {...routeProps} data={moveIn ? moveIn : emptyMoveInBuilding(Lead.LeadId)} onChange={(data) => this.handleChange(data, "moveIn")} save={this.Save} />} />
+              <Route path={`${match.url}/building/storage`} render={(routeProps) => <StorageBuilding {...routeProps} data={storage ? storage : emptyStorageBuilding(Lead.LeadId)} onChange={(data) => this.handleChange(data, "storage")} save={this.Save} />} />
+              <Route path={`${match.url}/building/disposal`} render={(routeProps) => <DisposalOutBuilding {...routeProps} data={disposal ? disposal : emptyDisposalOutBuilding(Lead.LeadId)} onChange={(data) => this.handleChange(data, "disposal")} save={this.Save} />} />
+              <Route path={`${match.url}/building/cleaning`} render={(routeProps) => <CleaningBuilding {...routeProps} data={cleaning ? cleaning : emptyCleaningBuilding(Lead.LeadId)} onChange={(data) => this.handleChange(data, "cleaning")} save={this.Save} />} />
             </>
             :
               "No Lead found"
