@@ -2,7 +2,7 @@ import { Grid, Typography } from '@material-ui/core'
 import IntlTypography from '../../components/Intl/IntlTypography'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource'
-import { ILead } from '../../interfaces/ILead'
+import { ILead, IPostLead } from '../../interfaces/ILead'
 import { IMoveOutBuilding, IMoveInBuilding, IStorageBuilding, IDisposalOutBuilding, ICleaningBuilding } from '../../interfaces/IBuilding';
 import { FormattedDate } from 'react-intl';
 import Submit from '../../components/Validator/Submit';
@@ -25,7 +25,7 @@ interface Props extends WithResourceProps {
   MoveInBuilding: IMoveInBuilding | null
   StorageInBuilding: IStorageBuilding | null
   DisposalOutBuilding: IDisposalOutBuilding | null
-  Lead: ILead | null
+  Lead: IPostLead | null
   LeadId: number
 }
 

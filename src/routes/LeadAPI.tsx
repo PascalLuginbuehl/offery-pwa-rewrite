@@ -15,7 +15,7 @@ export interface ILeadContainer {
   lastUpdated: Date
   onlySavedOffline: boolean
 
-  Lead: ILead | null
+  Lead: IPostLead | null
 
   moveOut: IMoveOutBuilding | null
   moveIn: IMoveInBuilding | null
