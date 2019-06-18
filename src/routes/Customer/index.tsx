@@ -7,7 +7,6 @@ import { handleChangeFunction } from '../../components/Validator/HandleChangeFun
 import Wrapper from '../../components/Form/Wrapper';
 import { get } from 'idb-keyval'
 import { RouteComponentProps } from 'react-router';
-import { ILeadContainer } from '../Lead';
 import Submit from '../../components/Validator/Submit';
 import CustomerField from '../../components/Form/Bundled/CustomerField';
 import BigCheckbox from '../../components/Validator/BigCheckbox';

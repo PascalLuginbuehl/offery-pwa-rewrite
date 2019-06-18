@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, ListSubheader, Collapse, Icon } from '@material-ui/core'
-import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import IntlTypography from '../components/Intl/IntlTypography';
 import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
-import { get, set } from 'idb-keyval'
 import {
-  IMoveOutBuilding,
-  IMoveInBuilding,
-  ICleaningBuilding,
-  IDisposalOutBuilding,
-  IStorageBuilding,
   emptyDisposalOutBuilding,
   emptyMoveInBuilding,
   emptyMoveOutBuilding,
@@ -36,19 +29,7 @@ import SuccessSnackbar from '../components/SuccessSnackbar';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import IntlTooltip from '../components/Intl/IntlTooltip';
-
-export interface ILeadContainer {
-  lastUpdated: Date
-  onlySavedOffline: boolean
-
-  Lead: ILead | null
-
-  moveOut: IMoveOutBuilding | null
-  moveIn: IMoveInBuilding | null
-  cleaning: ICleaningBuilding | null
-  disposal: IDisposalOutBuilding | null
-  storage: IStorageBuilding | null
-}
+import LeadAPI, { ILeadContainer } from './LeadAPI';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -101,29 +82,32 @@ class Lead extends Component<Props, State> {
   loadFromOfflineOrOnline = (potentialLeadId: number): Promise<void> => {
     return new Promise(async(resolve, reject) => {
 
-      const offline = await this.FetchFromOffline(potentialLeadId)
+      const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
+
       if (offline && offline.onlySavedOffline) {
         try {
           await this.SaveToApi(potentialLeadId, offline)
 
+          const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
           // Removed onlySavedOfflineProperty
-          await this.SaveToOffline(potentialLeadId, { ...offline, onlySavedOffline: false })
-          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId, loadedFromOffline: true })
+          await LeadAPI.SaveToOffline(potentialLeadId, { ...lead, onlySavedOffline: false })
+          this.setState({ ...lead, onlySavedOffline: false, leadId: potentialLeadId, loadedFromOffline: false })
           resolve()
         } catch (e) {
-          this.setState({ ...offline, onlySavedOffline: false, leadId: potentialLeadId, loadedFromOffline: true })
+          // Stilloffline
+          this.setState({ ...offline, onlySavedOffline: true, leadId: potentialLeadId, loadedFromOffline: true })
           resolve()
         }
 
       } else {
-        const promiseOnline = this.FetchFromOnline(potentialLeadId)
+        const promiseOnline = LeadAPI.FetchFromOnline(potentialLeadId)
 
         this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
         this.setState({ ...lead, leadId: potentialLeadId, loadedFromOffline: false })
 
-        await this.SaveToOffline(potentialLeadId, lead)
+        await LeadAPI.SaveToOffline(potentialLeadId, lead)
 
         resolve()
       }
@@ -131,43 +115,6 @@ class Lead extends Component<Props, State> {
 
   }
 
-  // Can NOT CREATE!
-
-  // Only gets called to save into Offline Storage
-  FetchFromOnline(leadId: number): Promise<ILeadContainer> {
-    return Promise.all([
-      LeadService.fetchCustomer(leadId),
-      BuildingService.fetchMoveOutBuilding(leadId),
-      BuildingService.fetchMoveInBuilding(leadId),
-      BuildingService.fetchCleaningBuilding(leadId),
-      BuildingService.fetchStorageBuilding(leadId),
-      BuildingService.fetchDisposalOutBuilding(leadId),
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal]): ILeadContainer => ({
-      lastUpdated: new Date(),
-      Lead,
-      moveOut,
-      moveIn,
-      cleaning,
-      disposal,
-      storage,
-      onlySavedOffline: false,
-    }))
-  }
-
-  // Gets Called to Get Data From Offline
-  FetchFromOffline = (leadId: number): Promise<ILeadContainer> => {
-    return get(leadId)
-  }
-
-  // Saves it in Offline Storage
-  SaveToOffline = (leadId: number, lead: ILeadContainer) => {
-    return set(leadId, lead)
-  }
-
-  // Checks if data changed on the API side from first Fetch
-  CheckAgainstAPI() {
-
-  }
 
   // Sends all new Data to the API
   SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
@@ -189,7 +136,7 @@ class Lead extends Component<Props, State> {
           if (e) { // If offline
             // Check error message
             try {
-              await this.SaveToOffline(leadId, { ...container, onlySavedOffline: true })
+              await LeadAPI.SaveToOffline(leadId, { ...container, onlySavedOffline: true })
               this.setState({ onlySavedOffline: true})
               console.log("saved to offline")
               resolve()
@@ -232,11 +179,10 @@ class Lead extends Component<Props, State> {
 
     return (
       <>
-      {/* "Saved in cache, not saved Online!" */}
         <Wrapper initialLoading={initialAwait}>
           {onlySavedOffline ?
             <IntlTooltip title="NOT_SAVED_ONLINE">
-              <OfflinePinIcon color="error" />
+              <CloudUploadIcon color="error"  />
             </IntlTooltip>
           :
             null
@@ -244,7 +190,7 @@ class Lead extends Component<Props, State> {
 
           {loadedFromOffline ?
             <IntlTooltip title="LOADED_FROM_CACHE">
-              <CloudUploadIcon color="secondary" />
+              <OfflinePinIcon color="primary" />
             </IntlTooltip>
           :
             null
