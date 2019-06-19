@@ -21,5 +21,9 @@
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "src/sw-build.js",
+    "src/sw-template.js"
   ]
 }
