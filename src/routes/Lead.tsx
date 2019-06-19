@@ -31,6 +31,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import IntlTooltip from '../components/Intl/IntlTooltip';
 import LeadAPI, { ILeadContainer } from './LeadAPI';
 import { emptyLead } from '../interfaces/ILead';
+import Service from './Service';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -313,6 +314,12 @@ class Lead extends Component<Props, State> {
                   />
                 }
               />
+
+              {/* Serivices */}
+              <Route
+                path={`${match.url}/service`}
+                component={Service}
+              />
             </>
             :
               this.props.match.params.id === "new" && Lead ? (
@@ -349,7 +356,7 @@ class Lead extends Component<Props, State> {
               ) : null}
               {/* */}
             </NavItem>
-          <NavItem to={"lead/" + match.params.id + "/service"} title="SERVICES" />
+          <NavItem to={`${match.url}/service`} title="SERVICES" />
         </>, portal) : null}
 
         <SuccessSnackbar
