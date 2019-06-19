@@ -29,15 +29,14 @@ import SuccessSnackbar from '../components/SuccessSnackbar';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import IntlTooltip from '../components/Intl/IntlTooltip';
-import LeadAPI, { ILeadContainer } from './LeadAPI';
+import LeadAPI, { ILeadContainer, emptyLeadContainer } from './LeadAPI';
 import { emptyLead } from '../interfaces/ILead';
 import Service from './Service';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
-  leadId: number | null
-  loadedFromOffline: boolean
 
+  loadedFromOffline: boolean
   successOpen: boolean
 }
 
@@ -47,17 +46,9 @@ interface Props extends RouteComponentProps<{ id?: string }> {
 
 class Lead extends Component<Props, State> {
   state: State = {
-    lastUpdated: new Date(),
-    leadId: null,
-    Lead: null,
-    moveOut: null,
-    moveIn: null,
-    disposal: null,
-    storage: null,
-    cleaning: null,
+    ...emptyLeadContainer,
 
     initialAwait: null,
-    onlySavedOffline: false,
     loadedFromOffline: false,
     successOpen: false,
   }
@@ -120,13 +111,38 @@ class Lead extends Component<Props, State> {
   }
 
   Save = (): Promise<void> => {
-    const {leadId, initialAwait, ...lead} = this.state
-    if(leadId) {
+    return new Promise(async (resolve, reject) => {
+      const { initialAwait, successOpen, loadedFromOffline, ...lead} = this.state
 
-      return LeadAPI.SaveToApi(leadId, lead)
-    }
+      if(lead.leadId) {
+        try {
+          await LeadAPI.SaveToApi(lead.leadId, lead)
+          resolve()
 
-    return Promise.reject()
+
+        } catch (e) {
+          // TODO Check what type of error
+          console.log("Offline error?")
+          console.dir(e)
+
+          if (e) { // If offline
+            // Check error message
+            try {
+              LeadAPI.SaveToOffline(lead.leadId, { ...lead, onlySavedOffline: true })
+              this.setState({ onlySavedOffline: true })
+              console.log("saved to offline")
+              resolve()
+
+            } catch (e) {
+              // Major upsie // TODO: Handle this
+              console.log("couldn't save offline", e)
+              reject("Couldn't save offline")
+            }
+          }
+        }
+      }
+    })
+
   }
 
   Create = (): Promise<any> => {
@@ -203,7 +219,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <MoveOutBuilding
                     {...routeProps}
-                    data={moveOut ? moveOut : emptyMoveOutBuilding(leadId)}
+                    data={moveOut}
                     onChange={(data) => this.handleChange(data, "moveOut")}
                     save={this.Save}
                   />
@@ -216,7 +232,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <MoveInBuilding
                     {...routeProps}
-                    data={moveIn ? moveIn : emptyMoveInBuilding(leadId)}
+                    data={moveIn}
                     onChange={(data) => this.handleChange(data, "moveIn")}
                     save={this.Save}
                   />
@@ -229,7 +245,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <StorageBuilding
                     {...routeProps}
-                    data={storage ? storage : emptyStorageBuilding(leadId)}
+                    data={storage}
                     onChange={(data) => this.handleChange(data, "storage")}
                     save={this.Save}
                   />
@@ -242,7 +258,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <DisposalOutBuilding
                     {...routeProps}
-                    data={disposal ? disposal : emptyDisposalOutBuilding(leadId)}
+                    data={disposal}
                     onChange={(data) => this.handleChange(data, "disposal")}
                     save={this.Save}
                   />
@@ -255,7 +271,7 @@ class Lead extends Component<Props, State> {
                  render={(routeProps) =>
                   <CleaningBuilding
                     {...routeProps}
-                     data={cleaning ? cleaning : emptyCleaningBuilding(leadId)}
+                     data={cleaning}
                     onChange={(data) => this.handleChange(data, "cleaning")}
                     save={this.Save}
                   />
@@ -268,13 +284,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <EmailConfirmation
                     {...routeProps}
-                    CleaningBuilding={cleaning}
-                    DisposalOutBuilding={disposal}
-                    Lead={Lead}
-                    LeadId={leadId}
-                    MoveInBuilding={moveIn}
-                    MoveOutBuilding={moveOut}
-                    StorageInBuilding={storage}
+                    container={this.state}
                   />
                 }
               />

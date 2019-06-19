@@ -8,7 +8,7 @@ import { Omit } from 'react-router';
 import Validations from "../Validations";
 import { components, styles } from '../../ReactSelectComponents';
 import Select from 'react-select';
-import { ActionMeta, ValueType } from 'react-select/lib/types';
+import { ActionMeta, ValueType, OptionsType } from 'react-select/lib/types';
 
 // Custom validation to export without ProviderProps
 export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> {
@@ -19,7 +19,7 @@ export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> 
   required?: boolean
 
   // Custom thing
-  options: any[]
+  options: Array<{value: number, label: string}>
   value: any | any[]
 
   isMulti?: boolean
@@ -107,7 +107,8 @@ class ValidatedSelect extends React.Component<Props, State> {
      // removing unused properties
     const { required = false, classes, disabled = false, isMulti = false, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
     const { errorMessage } = this.state
-
+    console.log(value)
+    console.log(options.map(e => ({ value: e.value, label: translatedLabel ? intl.formatMessage({ id: e.label }) : e.label, })))
     return (
       <Grid xs={12} sm={6} item>
         <Select
@@ -128,7 +129,9 @@ class ValidatedSelect extends React.Component<Props, State> {
           }}
           required={required}
 
-          options={options.map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.NameTextKey }) : label, }))}
+          // kwikfix to stay int
+          // @ts-ignore
+          options={options.map(e => ({ value: e.value, label: translatedLabel ? intl.formatMessage({ id: e.label }) : e.label, }))}
           // options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
 
           value={value}
@@ -147,9 +150,10 @@ class ValidatedSelect extends React.Component<Props, State> {
   }
 
   selectOnChange = (value: ValueType<DataParsing>) => {
+    console.log(value)
     if(value){
       if(!Array.isArray(value)) {
-        this.props.onChange(value, this.props.name)
+        this.props.onChange(value.value, this.props.name)
       } else {
         this.props.onChange(value, this.props.name)
       }

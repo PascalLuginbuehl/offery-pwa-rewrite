@@ -46,7 +46,7 @@ class MoveOutBuilding extends React.Component<Props, State> {
           name="BuildingTypeId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingTypes.map(e => ({ ...e, id: e.BuildingTypeId }))}
+          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
           translatedLabel
         />
 
@@ -83,7 +83,7 @@ class MoveOutBuilding extends React.Component<Props, State> {
           required
           translatedLabel
 
-          options={resource.Etages.map(e => ({ ...e, id: e.EtageId }))}
+          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -93,8 +93,7 @@ class MoveOutBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
           required
           translatedLabel
-          options={resource.Elevators.map(e => ({ ...e, id: e.ElevatorId }))}
-
+          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
         />
 
         <ValidatedTextField
@@ -129,7 +128,7 @@ class MoveOutBuilding extends React.Component<Props, State> {
           required
           translatedLabel
 
-          options={resource.BuildingAges.map(e => ({ ...e, id: e.BuildingAgeId }))}
+          options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
         />
 
         <Switch

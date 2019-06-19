@@ -66,7 +66,8 @@ class BuildingService {
     )
   }
 
-  public saveMoveOutBuilding = (toMoveOutBuilding: IUpdateMoveOutBuilding, leadId: number) => {
+  public saveMoveOutBuilding = (buildingId: number, toMoveOutBuilding: IPostMoveOutBuilding) => {
+    const test: IUpdateMoveOutBuilding = { MoveOutBuildingId: buildingId, ...toMoveOutBuilding}
     return this.saveService<IMoveOutBuilding>(
       API_URL + '/building/moveout',
       toMoveOutBuilding

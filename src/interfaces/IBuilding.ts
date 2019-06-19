@@ -3,8 +3,6 @@ import { IStorageCompany, emptyStorageCompany, IPostStorageCompany } from './ISt
 import { Omit } from 'react-router';
 
 export interface BaseBuilding {
-  LeadId: number
-
   Address: IPostAddress
   ElevatorId: number
   RoomAmount: number
@@ -28,8 +26,7 @@ interface MoveBuildingBase extends BaseBuilding {
   HasWinterGarden: boolean
 }
 
-const emptyBuilding = (LeadId: number): BaseBuilding => ({
-  LeadId,
+const emptyBuilding: BaseBuilding = {
   EtageId: 1,
   ElevatorId: 1,
   Comment: "",
@@ -40,10 +37,10 @@ const emptyBuilding = (LeadId: number): BaseBuilding => ({
   MetersToParking: 0,
 
   Address: { ...emtpyAddress },
-})
+}
 
-const emptyMoveBuildingBase = (LeadId: number): MoveBuildingBase => ({
-  ...emptyBuilding(LeadId),
+const emptyMoveBuildingBase: MoveBuildingBase = {
+  ...emptyBuilding,
 
   BuildingTypeId: 1,
   BuildingAgeId: 1,
@@ -53,14 +50,14 @@ const emptyMoveBuildingBase = (LeadId: number): MoveBuildingBase => ({
   HasGarage: false,
   HasGarden: false,
   HasWinterGarden: false,
-})
+}
 
 // MoveOutBuilding
 export interface IPostMoveOutBuilding extends MoveBuildingBase {
   PeopleLivingAmount: number
 }
 
-export interface IUpdateMoveOutBuilding extends Omit<IPostMoveOutBuilding, "LeadId"> {
+export interface IUpdateMoveOutBuilding extends IPostMoveOutBuilding {
   MoveOutBuildingId: number
 }
 
@@ -70,18 +67,18 @@ export interface IMoveOutBuilding extends IUpdateMoveOutBuilding {
   Address: IAddress
 }
 
-export const emptyMoveOutBuilding = (LeadId: number): IPostMoveOutBuilding => ({
-  ...emptyMoveBuildingBase(LeadId),
+export const emptyMoveOutBuilding: IPostMoveOutBuilding = {
+  ...emptyMoveBuildingBase,
 
   PeopleLivingAmount: 4,
-})
+}
 
 // Move In building
 export interface IPostMoveInBuilding extends MoveBuildingBase {
 
 }
 
-export interface IUpdateMoveInBuilding extends Omit<IPostMoveInBuilding, "LeadId"> {
+export interface IUpdateMoveInBuilding extends IPostMoveInBuilding {
   MoveInBuildingId: number
 }
 
@@ -91,14 +88,14 @@ export interface IMoveInBuilding extends IUpdateMoveInBuilding {
   Address: IAddress
 }
 
-export const emptyMoveInBuilding = (LeadId: number): IPostMoveInBuilding => emptyMoveBuildingBase(LeadId)
+export const emptyMoveInBuilding: IPostMoveInBuilding = emptyMoveBuildingBase
 
 // Storage Building
 export interface IPostStorageBuilding extends BaseBuilding {
   StorageCompany: IPostStorageCompany
 }
 
-export interface IUpdateStorageBuilding extends Omit<IPostStorageBuilding, "LeadId"> {
+export interface IUpdateStorageBuilding extends IPostStorageBuilding {
   StorageBuildingId: number
 }
 
@@ -109,10 +106,10 @@ export interface IStorageBuilding extends IUpdateStorageBuilding {
   StorageCompany: IStorageCompany
 }
 
-export const emptyStorageBuilding = (LeadId: number): IPostStorageBuilding => ({
-  ...emptyBuilding(LeadId),
+export const emptyStorageBuilding: IPostStorageBuilding = {
+  ...emptyBuilding,
   StorageCompany: emptyStorageCompany,
-})
+}
 
 
 // Disposal
@@ -121,7 +118,7 @@ export interface IPostDisposalOutBuilding extends BaseBuilding {
   BuildingTypeId: number
 }
 
-export interface IUpdateDisposalOutBuilding extends Omit<IPostDisposalOutBuilding, "LeadId"> {
+export interface IUpdateDisposalOutBuilding extends IPostDisposalOutBuilding {
   DisposalOutBuildingId: number
 }
 
@@ -131,11 +128,11 @@ export interface IDisposalOutBuilding extends IUpdateDisposalOutBuilding {
   Address: IAddress
 }
 
-export const emptyDisposalOutBuilding = (LeadId: number): IPostDisposalOutBuilding => ({
-  ...emptyBuilding(LeadId),
+export const emptyDisposalOutBuilding : IPostDisposalOutBuilding = {
+  ...emptyBuilding,
   PeopleLivingAmount: 0,
   BuildingTypeId: 0,
-})
+}
 
 //Cleaning
 export interface IPostCleaningBuilding {
@@ -160,8 +157,6 @@ export interface IPostCleaningBuilding {
   PollutionDegreeId: number
   BuiltinWardrobeRangeId: number
 
-  LeadId: number
-
   Address: IPostAddress
   RoomAmount: number
   TotalArea: number
@@ -169,18 +164,18 @@ export interface IPostCleaningBuilding {
   Comment: string
 }
 
-export interface IUpdateCleaningBuilding extends Omit<IPostCleaningBuilding, "LeadId"> {
+export interface IUpdateCleaningBuilding extends IPostCleaningBuilding {
   CleaningBuildingId: number
 }
 
 export interface ICleaningBuilding extends IUpdateCleaningBuilding {
-  CompanyId: number
   LeadId: number
+  CompanyId: number
   Address: IAddress
 }
 
-export const emptyCleaningBuilding = (LeadId: number): IPostCleaningBuilding => ({
-  ...emptyBuilding(LeadId),
+export const emptyCleaningBuilding: IPostCleaningBuilding ={
+  ...emptyBuilding,
   RestroomAmount: 0,
   WindowNormalAmount: 0,
   WindowHightVerticalAmount: 0,
@@ -203,4 +198,4 @@ export const emptyCleaningBuilding = (LeadId: number): IPostCleaningBuilding => 
   GarageTypeId: 1,
   PollutionDegreeId: 1,
   BuiltinWardrobeRangeId: 1,
-})
+}

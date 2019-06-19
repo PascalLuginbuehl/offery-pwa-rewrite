@@ -47,7 +47,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           name="BuildingTypeId"
           onChange={this.handleChange}
 
-          options={resource.BuildingTypes.map(e => ({ ...e, id: e.BuildingTypeId }))}
+          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
           required
         />
 
@@ -57,7 +57,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           name="BuildingTypeDetailId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingTypeDetails.map(e => ({ ...e, id: e.BuildingTypeDetailId }))}
+          options={resource.BuildingTypeDetails.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeDetailId }))}
         />
 
         <ValidatedTextField
@@ -98,7 +98,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           value={BalconyId}
           name="BalconyId"
           onChange={this.handleChange}
-          options={resource.Balconies.map(e => ({ ...e, id: e.BalconyId }))}
+          options={resource.Balconies.map(e => ({ label: e.NameTextKey, value: e.BalconyId }))}
 
           required
         />
@@ -108,7 +108,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           value={FloorTypeId}
           name="FloorTypeId"
           onChange={this.handleChange}
-          options={resource.FloorTypes.map(e => ({ ...e, id: e.FloorTypeId }))}
+          options={resource.FloorTypes.map(e => ({ label: e.NameTextKey, value: e.FloorTypeId }))}
 
           required
         />
@@ -118,7 +118,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           value={RollerBlindTypeId}
           name="RollerBlindTypeId"
           onChange={this.handleChange}
-          options={resource.RollerBlindTypes.map(e => ({ ...e, id: e.RollerBlindTypeId }))}
+          options={resource.RollerBlindTypes.map(e => ({ label: e.NameTextKey, value: e.RollerBlindTypeId }))}
 
           required
         />
@@ -144,7 +144,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           value={GarageTypeId}
           name="GarageTypeId"
           onChange={this.handleChange}
-          options={resource.GarageTypes.map(e => ({ ...e, id: e.GarageTypeId }))}
+          options={resource.GarageTypes.map(e => ({ label: e.NameTextKey, value: e.GarageTypeId }))}
 
           required
         />
@@ -154,7 +154,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           value={BuiltinWardrobeRangeId}
           name="BuiltinWardrobeRangeId"
           onChange={this.handleChange}
-          options={resource.BuiltInWardrobeRanges.map(e => ({ ...e, id: e.BuiltInWardrobeRangeId }))}
+          options={resource.BuiltInWardrobeRanges.map(e => ({ label: e.NameTextKey, value: e.BuiltInWardrobeRangeId }))}
 
           required
         />
@@ -164,7 +164,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           value={PollutionDegreeId}
           name="PollutionDegreeId"
           onChange={this.handleChange}
-          options={resource.PollutionDegrees.map(e => ({ ...e, id: e.PollutionDegreeId }))}
+          options={resource.PollutionDegrees.map(e => ({ label: e.NameTextKey, value: e.PollutionDegreeId }))}
 
           required
         />

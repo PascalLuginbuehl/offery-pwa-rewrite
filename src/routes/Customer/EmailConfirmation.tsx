@@ -3,12 +3,13 @@ import IntlTypography from '../../components/Intl/IntlTypography'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource'
 import { ILead, IPostLead } from '../../interfaces/ILead'
-import { IMoveOutBuilding, IMoveInBuilding, IStorageBuilding, IDisposalOutBuilding, ICleaningBuilding } from '../../interfaces/IBuilding';
+import { IMoveOutBuilding, IMoveInBuilding, IStorageBuilding, IDisposalOutBuilding, ICleaningBuilding, IPostCleaningBuilding, IPostMoveInBuilding, IPostStorageBuilding, IPostDisposalOutBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
 import { FormattedDate } from 'react-intl';
 import Submit from '../../components/Validator/Submit';
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
+import { ILeadContainer } from '../LeadAPI';
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -20,13 +21,7 @@ interface State {
 }
 
 interface Props extends WithResourceProps {
-  CleaningBuilding: ICleaningBuilding | null
-  MoveOutBuilding: IMoveOutBuilding | null
-  MoveInBuilding: IMoveInBuilding | null
-  StorageInBuilding: IStorageBuilding | null
-  DisposalOutBuilding: IDisposalOutBuilding | null
-  Lead: IPostLead | null
-  LeadId: number
+  container: ILeadContainer
 }
 
 class EmailConfirmation extends React.Component<Props, State> {
@@ -44,7 +39,7 @@ class EmailConfirmation extends React.Component<Props, State> {
   public render() {
     const { selectedCompany } = this.props
     const { AddressId, Comment } = this.state
-    const { Lead, CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding } = this.props
+    const { Lead } = this.props.container
 
     const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
 
@@ -61,20 +56,22 @@ class EmailConfirmation extends React.Component<Props, State> {
           <IntlTypography>
             {EmailSubjectTextKey}
           </IntlTypography>
+
           {Lead && Lead.VisitDate ? (<><IntlTypography>VISITING_DATE</IntlTypography><Typography><FormattedDate value={Lead.VisitDate} /></Typography></>) : null}
+
           <IntlTypography>
             {EmailBodyContentOutroductionTextKey}
           </IntlTypography>
         </Grid>
 
-        <ValidatedSelect
+        {/* <ValidatedSelect
           label="BUILDING_TYPE"
           value={AddressId}
           name="AddressId"
           onChange={this.handleChange}
           required
-          options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map(e => ({id: e.Address.AddressId, NameTextKey: e.Address.Street + ", " + e.Address.PLZ + " " + e.Address.City, OrderNumber: 0}))}
-        />
+          options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map((e, index) => ({id: e.Address.AddressId, NameTextKey: e.Address.Street + ", " + e.Address.PLZ + " " + e.Address.City}))}
+        /> */}
 
         <ValidatedTextField
           label="COMMENT"

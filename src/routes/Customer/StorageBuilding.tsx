@@ -79,7 +79,7 @@ class StorageBuilding extends React.Component<Props, State> {
           name="EtageId"
           onChange={this.handleChange}
           required
-          options={resource.Etages.map(e => ({...e, id: e.EtageId }))}
+          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -88,7 +88,7 @@ class StorageBuilding extends React.Component<Props, State> {
           name="ElevatorId"
           onChange={this.handleChange}
           required
-          options={resource.Elevators.map(e => ({ ...e, id: e.ElevatorId }))}
+          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
         />
 
         <ValidatedTextField

@@ -76,8 +76,7 @@ class Index extends React.Component<WithStyles<typeof styles>, State> {
     // TestService.fetchStuff()
 
     return (
-      <ResponsiveContainer>
-
+      <>
         <GridSelect options={Index.options} onSelect={this.addToCart} />
 
         <Tabs
@@ -102,7 +101,7 @@ class Index extends React.Component<WithStyles<typeof styles>, State> {
         </div> */}
 
         {/* <NextDial /> */}
-      </ResponsiveContainer>
+      </>
     )
   }
 }

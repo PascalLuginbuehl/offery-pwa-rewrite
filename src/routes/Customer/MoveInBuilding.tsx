@@ -45,7 +45,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           value={BuildingTypeId}
           name="BuildingTypeId"
           onChange={this.handleChange}
-          options={resource.BuildingTypes.map(e => ({ ...e, id: e.BuildingTypeId }))}
+          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
 
           required
         />
@@ -81,7 +81,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           name="EtageId"
           onChange={this.handleChange}
           required
-          options={resource.Etages.map(e => ({ ...e, id: e.EtageId }))}
+          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -89,7 +89,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           value={ElevatorId}
           name="ElevatorId"
           onChange={this.handleChange}
-          options={resource.Elevators.map(e => ({ ...e, id: e.ElevatorId }))}
+          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
 
           required
         />
@@ -116,7 +116,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           name="BuildingAgeId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingAges.map(e => ({ ...e, id: e.BuildingAgeId }))}
+          options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
         />
 
         <Switch
