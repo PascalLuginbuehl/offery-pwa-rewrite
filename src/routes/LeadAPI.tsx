@@ -51,6 +51,21 @@ class LeadAPI {
   }
 
 
+  // Sends all new Data to the API
+  SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
+    const { Lead, moveOut } = container
+    if (Lead && moveOut && leadId) {
+      return Promise.all([
+        // convert to lead
+        LeadService.saveCustomer({ LeadId: leadId, ...Lead }),
+        BuildingService.saveMoveOutBuilding(moveOut, leadId),
+      ]).then()
+    }
+
+    return Promise.reject()
+  }
+
+
   // Gets Called to Get Data From Offline
   FetchFromOffline = (leadId: number): Promise<ILeadContainer> => {
     return get(leadId)

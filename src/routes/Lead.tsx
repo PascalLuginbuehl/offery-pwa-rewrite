@@ -90,7 +90,7 @@ class Lead extends Component<Props, State> {
 
       if (offline && offline.onlySavedOffline) {
         try {
-          await this.SaveToApi(potentialLeadId, offline)
+          await LeadAPI.SaveToApi(potentialLeadId, offline)
 
           const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
           // Removed onlySavedOfflineProperty
@@ -119,47 +119,11 @@ class Lead extends Component<Props, State> {
 
   }
 
-
-  // Sends all new Data to the API
-  SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
-    return new Promise<void>(async (resolve, reject) => {
-
-      const { Lead, moveOut } = container
-      if(Lead && moveOut && leadId) {
-        try {
-          await Promise.all([
-            // convert to lead
-            LeadService.saveCustomer({LeadId: leadId, ...Lead}),
-            BuildingService.saveMoveOutBuilding(moveOut, leadId),
-          ])
-
-          console.log("Test")
-          resolve()
-        } catch(e) {
-          console.log("Offline error?", e)
-          console.dir(e)
-          if (e) { // If offline
-            // Check error message
-            try {
-              await LeadAPI.SaveToOffline(leadId, { ...container, onlySavedOffline: true })
-              this.setState({ onlySavedOffline: true})
-              console.log("Saved to offline")
-              resolve()
-            } catch (e) {
-              console.log("couldn't save offline", e)
-              reject("Couldn't save offline")
-            }
-          }
-        }
-      }
-    })
-  }
-
   Save = (): Promise<void> => {
     const {leadId, initialAwait, ...lead} = this.state
     if(leadId) {
 
-      return this.SaveToApi(leadId, lead)
+      return LeadAPI.SaveToApi(leadId, lead)
     }
 
     return Promise.reject()
