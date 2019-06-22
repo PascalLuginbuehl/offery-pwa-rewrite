@@ -32,6 +32,7 @@ import IntlTooltip from '../components/Intl/IntlTooltip';
 import LeadAPI, { ILeadContainer, emptyLeadContainer } from './LeadAPI';
 import { emptyLead } from '../interfaces/ILead';
 import Service from './Service';
+import { conditionalExpression } from '@babel/types';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -74,37 +75,79 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  loadFromOfflineOrOnline = (potentialLeadId: number): Promise<void> => {
-    return new Promise(async(resolve, reject) => {
-
-      const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
-
-      if (offline && offline.onlySavedOffline) {
-        try {
-          await LeadAPI.SaveToApi(potentialLeadId, offline)
-
-          const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
-          // Removed onlySavedOfflineProperty
-          await LeadAPI.SaveToOffline(potentialLeadId, { ...lead, onlySavedOffline: false })
-          this.setState({ ...lead, onlySavedOffline: false, leadId: potentialLeadId, loadedFromOffline: false })
-          resolve()
-        } catch (e) {
-          // Stilloffline
-          this.setState({ ...offline, onlySavedOffline: true, leadId: potentialLeadId, loadedFromOffline: true })
-          resolve()
-        }
-
-      } else {
+  loadFromOnline(potentialLeadId: number) {
+    return new Promise(async (resolve, reject) => {
+      try {
         const promiseOnline = LeadAPI.FetchFromOnline(potentialLeadId)
 
         this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
-        this.setState({ ...lead, leadId: potentialLeadId, loadedFromOffline: false })
+        this.setState({ ...lead, leadId: potentialLeadId, loadedFromOffline: false, onlySavedOffline: false })
 
         await LeadAPI.SaveToOffline(potentialLeadId, lead)
 
         resolve()
+      } catch(e) {
+        reject(e)
+      }
+    })
+  }
+
+  loadFromOfflineOrOnline = (potentialLeadId: number): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+
+      const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
+
+      if (offline && offline.onlySavedOffline) {
+        // Upload
+        try {
+          await LeadAPI.SaveToApi(potentialLeadId, offline)
+
+          try {
+            await this.loadFromOnline(potentialLeadId)
+          } catch (e) {
+
+            console.log("Saving success but loading failed")
+            console.dir(e)
+
+            this.setState({ ...offline, onlySavedOffline: true, leadId: potentialLeadId, loadedFromOffline: true })
+          }
+
+        } catch(e) {
+          if (e.message == "Failed to fetch") {
+            console.log("Still not online to reupload")
+
+            this.setState({ ...offline, onlySavedOffline: true, leadId: potentialLeadId, loadedFromOffline: true })
+          }
+        }
+
+        resolve()
+      } else {
+        // Loading Data directly from online
+        try {
+          await this.loadFromOnline(potentialLeadId)
+          resolve()
+        } catch(e) {
+          if (e.message == "Failed to fetch") {
+            if (offline) {
+              console.log("Client offline, loading from offlinestorage")
+              this.setState({ ...offline, leadId: potentialLeadId, loadedFromOffline: true })
+
+              resolve()
+            } else {
+              console.log("Client offline, nothing saved")
+              console.log("Failed loading due to not cached and offline")
+
+              reject()
+            }
+
+
+          } else {
+            console.log("Lead does not exist")
+            reject()
+          }
+        }
       }
     })
 
@@ -119,25 +162,25 @@ class Lead extends Component<Props, State> {
           await LeadAPI.SaveToApi(lead.leadId, lead)
           resolve()
 
-
         } catch (e) {
-          // TODO Check what type of error
-          console.log("Offline error?")
-          console.dir(e)
-
-          if (e) { // If offline
-            // Check error message
+          if (e.message == "Failed to fetch") {
             try {
               LeadAPI.SaveToOffline(lead.leadId, { ...lead, onlySavedOffline: true })
               this.setState({ onlySavedOffline: true })
-              console.log("saved to offline")
+
+              console.log("Saved to offline storage")
               resolve()
 
             } catch (e) {
               // Major upsie // TODO: Handle this
-              console.log("couldn't save offline", e)
+              console.log("Couldn't save offline", e)
               reject("Couldn't save offline")
             }
+          } else {
+            // Other type of error message
+
+            console.log("Unknown error:")
+            console.dir(e)
           }
         }
       }
@@ -152,6 +195,13 @@ class Lead extends Component<Props, State> {
       promise.then(e => {
         this.setState({leadId: e.LeadId})
         this.props.history.replace("/lead/" + e.LeadId + "/customer")
+      }).catch(e => {
+        if (e.message == "Failed to fetch") {
+          console.log("Cannot create from offline")
+        } else {
+          console.log("Couldn't create")
+          console.dir(e)
+        }
       })
 
       return promise

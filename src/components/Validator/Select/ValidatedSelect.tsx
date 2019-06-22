@@ -24,7 +24,7 @@ export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> 
 
   isMulti?: boolean
 
-  translatedLabel?: boolean
+  notTranslatedLabel?: boolean
 
   // toOptions: (option: any) => { value: string, label: string }
   // toValue: (value: { value: any }) => any
@@ -105,11 +105,9 @@ class ValidatedSelect extends React.Component<Props, State> {
 
   public render() {
      // removing unused properties
-    const { required = false, classes, disabled = false, isMulti = false, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
+    const { required = false, classes, disabled = false, isMulti = false, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, notTranslatedLabel = true, ...props } = this.props
     const { errorMessage } = this.state
 
-    console.log(value)
-    console.log(options.filter(({ value: valueId }) => valueId === value))
     return (
       <Grid xs={12} sm={6} item>
         <Select
@@ -135,7 +133,7 @@ class ValidatedSelect extends React.Component<Props, State> {
           options={options}
 
           // options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
-          getOptionLabel={({ label }) => translatedLabel ? intl.formatMessage({ id: label }) : label}
+          getOptionLabel={({ label }) => notTranslatedLabel ? intl.formatMessage({ id: label }) : label}
           getOptionValue={({ value }) => value}
 
           //@ts-ignore
@@ -155,7 +153,6 @@ class ValidatedSelect extends React.Component<Props, State> {
   }
 
   selectOnChange = (value: ValueType<DataParsing>) => {
-    console.log(value)
     if(value){
       if(!Array.isArray(value)) {
         this.props.onChange(value.value, this.props.name)

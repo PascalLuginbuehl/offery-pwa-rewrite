@@ -121,7 +121,7 @@ class LeadAPI {
 
 
   // Gets Called to Get Data From Offline
-  FetchFromOffline = (leadId: number): Promise<ILeadContainer> => {
+  FetchFromOffline = (leadId: number): Promise<ILeadContainer | undefined> => {
     return get(leadId)
   }
 
