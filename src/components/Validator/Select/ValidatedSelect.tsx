@@ -19,8 +19,8 @@ export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> 
   required?: boolean
 
   // Custom thing
-  options: Array<{value: number, label: string}>
-  value: any | any[]
+  options: Array<{ value: number, label: string}>
+  value: number | any[]
 
   isMulti?: boolean
 
@@ -107,8 +107,9 @@ class ValidatedSelect extends React.Component<Props, State> {
      // removing unused properties
     const { required = false, classes, disabled = false, isMulti = false, value, options, isValid, label, intl, noGrid = false, registerField, unregisterField, translatedLabel = false, ...props } = this.props
     const { errorMessage } = this.state
+
     console.log(value)
-    console.log(options.map(e => ({ value: e.value, label: translatedLabel ? intl.formatMessage({ id: e.label }) : e.label, })))
+    console.log(options.filter(({ value: valueId }) => valueId === value))
     return (
       <Grid xs={12} sm={6} item>
         <Select
@@ -131,10 +132,14 @@ class ValidatedSelect extends React.Component<Props, State> {
 
           // kwikfix to stay int
           // @ts-ignore
-          options={options.map(e => ({ value: e.value, label: translatedLabel ? intl.formatMessage({ id: e.label }) : e.label, }))}
-          // options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
+          options={options}
 
-          value={value}
+          // options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
+          getOptionLabel={({ label }) => translatedLabel ? intl.formatMessage({ id: label }) : label}
+          getOptionValue={({ value }) => value}
+
+          //@ts-ignore
+          value={options.filter(({ value: valueId }) => valueId === value)}
           // value={value ? isMulti ? value.map(toOptions) : toOptions(value) : null}
           isMulti={isMulti}
           // placeholder="Search a country (start with a)"
