@@ -60,7 +60,12 @@ class TableDashboard extends React.Component<Props, State> {
                 <TableCell>-</TableCell>
 
                 <TableCell padding="checkbox">
-                  <IntlTooltip title="SHOW_LEAD"><NavLink to={`/lead/${lead.LeadId}/customer`}><IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton></NavLink></IntlTooltip>
+                  <NavLink to={`/lead/${lead.LeadId}/customer`}>
+                    <IntlTooltip title="SHOW_LEAD">
+                       <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
+                    </IntlTooltip>
+                  </NavLink>
+
                   <IconButton><ContactsIcon fontSize="small" /></IconButton>
                 </TableCell>
               </TableRow>

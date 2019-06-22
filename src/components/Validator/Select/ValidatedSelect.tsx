@@ -155,6 +155,7 @@ class ValidatedSelect extends React.Component<Props, State> {
   selectOnChange = (value: ValueType<DataParsing>) => {
     if(value){
       if(!Array.isArray(value)) {
+        // @ts-ignore
         this.props.onChange(value.value, this.props.name)
       } else {
         this.props.onChange(value, this.props.name)

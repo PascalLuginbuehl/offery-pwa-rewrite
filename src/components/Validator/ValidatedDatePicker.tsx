@@ -109,7 +109,7 @@ class ValidatedDatePickerType extends React.Component<Props, State> {
           rightArrowIcon="&#xe60b;"
           // okLabel={currentLocale.messages.OK}
           // cancelLabel={currentLocale.messages.CANCEL}
-          views={["year", "month", "day"]}
+          views={["year", "month", "date"]}
           format={"dd.MM.yyyy"}
 
           id={label}
