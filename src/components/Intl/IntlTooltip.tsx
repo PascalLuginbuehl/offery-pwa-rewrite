@@ -9,7 +9,7 @@ interface Props extends TooltipProps, InjectedIntlProps {
 class IntlTooltip extends React.Component<Props> {
   public render() {
     const { intl, title, ...props } = this.props
-    console.log(this.props.children)
+
     return (
       <Tooltip {...props} title={intl.formatMessage({ id: title })} aria-label={intl.formatMessage({ id: title })} />
     )

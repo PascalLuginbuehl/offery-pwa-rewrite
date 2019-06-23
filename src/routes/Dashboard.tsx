@@ -9,6 +9,7 @@ import IntlTypography from '../components/Intl/IntlTypography';
 import Wrapper from '../components/Form/Wrapper';
 import TableDashboard from '../components/Dashboard/TableDashboard';
 import MobileDashboard from '../components/Dashboard/MobileDashboard';
+import { keys, get } from 'idb-keyval';
 
 
 const styles = (theme: Theme) =>
@@ -45,17 +46,14 @@ class Dashboard extends React.Component<Props, State> {
     openListActions: null,
   }
 
-  constructor(props: Props) {
-    super(props)
-
-  }
-
   componentDidMount() {
     // if (props.selectedCompany != null) {
     const leadsAwait = DashboardService.fetchCompanyLeads(1)
     leadsAwait.then(leads => this.setState({ leads }))
 
     this.setState({leadsAwait})
+
+    this.getOfflineLead()
     // } else {
 
     // }
@@ -65,10 +63,19 @@ class Dashboard extends React.Component<Props, State> {
     this.setState({ currentTab: value })
   }
 
+  async getOfflineLead() {
+    const offlineKeys = await keys()
+    const offlineSaved = await Promise.all(offlineKeys.map(key => get(key)))
+
+    console.log(offlineSaved)
+  }
+
+
   public render() {
     // const { classes, value, onClick } = this.props
     const { classes, intl, width } = this.props
     const { leadsAwait, leads, currentTab, openListActions } = this.state
+
 
 
     return (
