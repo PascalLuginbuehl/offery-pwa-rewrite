@@ -8,20 +8,13 @@ import AddIcon from '@material-ui/icons/Add'
 import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye'
 import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import ContactsIcon from '@material-ui/icons/Contacts'
-import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse } from '@material-ui/core'
+import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter } from '@material-ui/core'
 import IntlTooltip from '../Intl/IntlTooltip';
 import { ILead } from '../../interfaces/ILead';
 
 const styles = (theme: Theme) =>
   createStyles({
-    progress: {
-      position: "absolute",
-      left: "calc(50% - 20px)",
-      top: "calc(50% - 20px)",
-      // position: 'fixed',
-      // bottom: theme.spacing.unit * 2,
-      // right: theme.spacing.unit * 3,
-    },
+
   })
 
 interface State {
@@ -46,7 +39,6 @@ class TableDashboard extends React.Component<Props, State> {
               <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
               <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
               <TableCell><FormattedMessage id="PROJECT_START" /></TableCell>
-              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -75,14 +67,26 @@ class TableDashboard extends React.Component<Props, State> {
                 </TableRow>
               )
             })}
+
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell variant="footer" />
+              <TableCell variant="footer" />
+              <TableCell variant="footer" />
+
+              <TableCell variant="footer" align="right">
+                <NavLink to="/lead/new/customer">
+                  <Fab color="primary" size="small">
+                    <AddIcon fontSize="small" />
+                  </Fab>
+                </NavLink>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
 
-        <NavLink to="/lead/new/customer">
-          <Fab color="primary" size="small">
-            <AddIcon fontSize="small" />
-          </Fab>
-        </NavLink>
+
       </>
     )
   }

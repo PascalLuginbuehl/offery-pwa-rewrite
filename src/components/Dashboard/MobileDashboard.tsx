@@ -25,6 +25,12 @@ const styles = (theme: Theme) =>
       paddingTop: 0,
       paddingBottom: 0,
     },
+
+    fab: {
+      position: 'fixed',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+    },
   })
 
 interface State {
@@ -45,42 +51,40 @@ class TableDashboard extends React.Component<Props, State> {
     const { classes, leads, intl } = this.props
 
     return (
-      <List className={classes.root}>
-        {leads.map(lead => (
-          <>
-            <ListItem key={lead.LeadId} disableGutters>
-              <Avatar style={{ backgroundColor: green[500] }}>
-                <RemoveRedEyeIcon fontSize="small" />
-              </Avatar>
-              <ListItemText primary={lead.Customer.Firstname + " " + lead.Customer.Lastname} secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate) : null} />
-              <ListItemSecondaryAction>
-                <IconButton onClick={() => this.setState({ openListActions: openListActions === lead.LeadId ? null : lead.LeadId })}>
-                  {openListActions === lead.LeadId ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
-              <List disablePadding>
-                <ListItem className={classes.nested} selected>
-                  <NavLink to={`/lead/${lead.LeadId}/customer`}><IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton></NavLink>
-                  <IconButton><ContactsIcon fontSize="small" /></IconButton>
-                  <IconButton><ContactsIcon fontSize="small" /></IconButton>
-                </ListItem>
-              </List>
-            </Collapse>
-          </>))
-        }
-        <ListItem>
-          <ListItemSecondaryAction>
-            <NavLink to="/lead/new/customer">
-              <Fab color="primary" size="small">
-                <AddIcon fontSize="small" />
-              </Fab>
-            </NavLink>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
+      <>
+        <List className={classes.root}>
+          {leads.map(lead => (
+            <>
+              <ListItem key={lead.LeadId} disableGutters>
+                <Avatar style={{ backgroundColor: green[500] }}>
+                  <RemoveRedEyeIcon fontSize="small" />
+                </Avatar>
+                <ListItemText primary={lead.Customer.Firstname + " " + lead.Customer.Lastname} secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate) : null} />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => this.setState({ openListActions: openListActions === lead.LeadId ? null : lead.LeadId })}>
+                    {openListActions === lead.LeadId ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
+                <List disablePadding>
+                  <ListItem className={classes.nested} selected>
+                    <NavLink to={`/lead/${lead.LeadId}/customer`}><IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton></NavLink>
+                    <IconButton><ContactsIcon fontSize="small" /></IconButton>
+                    <IconButton><ContactsIcon fontSize="small" /></IconButton>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </>))
+          }
+        </List>
 
+        <NavLink to="/lead/new/customer" className={classes.fab}>
+          <Fab color="primary" >
+            <AddIcon />
+          </Fab>
+        </NavLink>
+      </>
     )
   }
 }
