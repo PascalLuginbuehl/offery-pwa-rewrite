@@ -10,6 +10,7 @@ import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
 import { ILeadContainer } from '../LeadAPI';
+import FormTemplate from './FormTemplate';
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -24,7 +25,7 @@ interface Props extends WithResourceProps {
   container: ILeadContainer
 }
 
-class EmailConfirmation extends React.Component<Props, State> {
+class EmailConfirmation extends FormTemplate<Props, State> {
   state: State = {
     AddressId: null,
     Comment: '',
@@ -32,7 +33,9 @@ class EmailConfirmation extends React.Component<Props, State> {
   private handleChange = handleChangeFunction<State>(this)
 
   send = () => {
+    this.saveFunction()
     return Promise.resolve()
+
   }
 
 

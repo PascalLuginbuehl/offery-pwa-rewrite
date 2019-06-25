@@ -10,6 +10,7 @@ import { RouteComponentProps } from 'react-router';
 import Submit from '../../components/Validator/Submit';
 import CustomerField from '../../components/Form/Bundled/CustomerField';
 import BigCheckbox from '../../components/Validator/BigCheckbox';
+import FormTemplate from './FormTemplate';
 
 interface Props extends RouteComponentProps {
   data: IPostLead
@@ -17,22 +18,10 @@ interface Props extends RouteComponentProps {
   save: () => Promise<void>
 }
 
-class Customer extends Component<Props> {
+class Customer extends FormTemplate<Props, {}> {
 
   private handleChange = (value: string, target: string) => {
     this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
-  }
-
-  handleSubmit = () => {
-    const { save } = this.props
-
-    const awaitSave = save()
-
-    awaitSave.then(() => {
-      console.log("saved")
-    })
-
-    return awaitSave
   }
 
   public render() {
@@ -130,7 +119,7 @@ class Customer extends Component<Props> {
         </BigCheckbox>
 
 
-        <Submit onSubmit={this.handleSubmit} />
+        <Submit onSubmit={this.saveFunction} />
         {/* <NextDial awaitLoading={saveAwait} /> */}
         </>
     )

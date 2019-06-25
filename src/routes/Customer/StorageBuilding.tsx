@@ -9,6 +9,7 @@ import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect'
 import ValidatedTextField from '../../components/Validator/ValidatedTextField'
 import { IPostStorageBuilding } from '../../interfaces/IBuilding'
 import StorageCompanyField from '../../components/Form/Bundled/StorageCompanyField';
+import FormTemplate from './FormTemplate';
 
 interface State {
 
@@ -20,7 +21,7 @@ interface Props extends WithResourceProps {
   save: () => Promise<void>
 }
 
-class StorageBuilding extends React.Component<Props, State> {
+class StorageBuilding extends FormTemplate<Props, State> {
   private handleChange = (value: string, target: string) => {
     this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
   }
@@ -107,7 +108,7 @@ class StorageBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <Submit onSubmit={this.props.save} />
+        <Submit onSubmit={this.saveFunction} />
      </>
     )
   }

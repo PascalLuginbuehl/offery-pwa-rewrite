@@ -8,6 +8,7 @@ import Submit from '../../components/Validator/Submit';
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import Switch from '../../components/Validator/Switch';
+import FormTemplate from './FormTemplate';
 
 interface State {
 
@@ -19,7 +20,7 @@ interface Props extends WithResourceProps {
   save: () => Promise<void>
 }
 
-class CleaningBuilding extends React.Component<Props, State> {
+class CleaningBuilding extends FormTemplate<Props, State> {
   private handleChange = (value: string, target: string) => {
     this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
   }
@@ -233,7 +234,7 @@ class CleaningBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <Submit onSubmit={this.props.save} />
+        <Submit onSubmit={this.saveFunction} />
      </>
     )
   }

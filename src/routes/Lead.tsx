@@ -259,6 +259,7 @@ class Lead extends Component<Props, State> {
                     data={Lead}
                     onChange={(data) => this.handleChange(data, "Lead")}
                     save={this.Save}
+                    nextPage={`${match.url}/building/move-out`}
                   />
                 }
               />
@@ -272,6 +273,7 @@ class Lead extends Component<Props, State> {
                     data={moveOut}
                     onChange={(data) => this.handleChange(data, "moveOut")}
                     save={this.Save}
+                    nextPage={`${match.url}/building/move-in`}
                   />
                 }
               />
@@ -285,6 +287,7 @@ class Lead extends Component<Props, State> {
                     data={moveIn}
                     onChange={(data) => this.handleChange(data, "moveIn")}
                     save={this.Save}
+                    nextPage={`${match.url}/building/storage`}
                   />
                 }
               />
@@ -298,6 +301,7 @@ class Lead extends Component<Props, State> {
                     data={storage}
                     onChange={(data) => this.handleChange(data, "storage")}
                     save={this.Save}
+                    nextPage={`${match.url}/building/disposal`}
                   />
                 }
               />
@@ -311,6 +315,7 @@ class Lead extends Component<Props, State> {
                     data={disposal}
                     onChange={(data) => this.handleChange(data, "disposal")}
                     save={this.Save}
+                    nextPage={`${match.url}/building/cleaning`}
                   />
                 }
               />
@@ -324,6 +329,7 @@ class Lead extends Component<Props, State> {
                      data={cleaning}
                     onChange={(data) => this.handleChange(data, "cleaning")}
                     save={this.Save}
+                    nextPage={`${match.url}/building/disposal`}
                   />
                 }
               />
@@ -334,7 +340,9 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <EmailConfirmation
                     {...routeProps}
+                    save={this.Save}
                     container={this.state}
+                    nextPage={`${match.url}/service`}
                   />
                 }
               />
@@ -343,6 +351,7 @@ class Lead extends Component<Props, State> {
               <Route
                 path={`${match.url}/service`}
                 component={Service}
+                nextPage={`${match.url}/building/disposal`}
               />
             </>
             :
@@ -355,6 +364,7 @@ class Lead extends Component<Props, State> {
                     data={Lead}
                     onChange={(data) => this.handleChange(data, "Lead")}
                     save={this.Create}
+                    nextPage={`${match.url}/building/disposal`}
                   />
                 }
               />)

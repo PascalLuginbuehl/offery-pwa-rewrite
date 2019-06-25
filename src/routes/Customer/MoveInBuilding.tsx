@@ -8,6 +8,7 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import AddressField from '../../components/Form/Bundled/AddressFields';
 import Switch from '../../components/Validator/Switch'
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
+import FormTemplate from './FormTemplate';
 
 interface State {
 
@@ -19,7 +20,7 @@ interface Props extends WithResourceProps {
   save: () => Promise<void>
 }
 
-class MoveInBuilding extends React.Component<Props, State> {
+class MoveInBuilding extends FormTemplate<Props, State> {
   private handleChange = (value: string, target: string) => {
     this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
   }
@@ -154,7 +155,7 @@ class MoveInBuilding extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        <Submit onSubmit={() => Promise.resolve()} />
+        <Submit onSubmit={this.saveFunction} />
      </>
     )
   }
