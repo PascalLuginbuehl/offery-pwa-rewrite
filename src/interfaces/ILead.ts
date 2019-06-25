@@ -1,3 +1,6 @@
+import { IPostAddress, IAddress } from "./IAddress";
+import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions } from "./IConditions";
+
 export interface IPostCustomer {
   Firstname: string
   Lastname: string
@@ -57,7 +60,16 @@ export interface ILead extends IUpdateLead {
     StatusHistoryId: number
     Created: Date,
     Status: Status
-  }>,
+  }>
+
+  FromAddress: IAddress | null
+  ToAddress: IAddress | null
+
+  MoveServiceConditions: IMoveServiceConditions | null
+  PackServiceConditions: IPackServiceConditions | null
+  DisposalServiceConditions: IDisposalServiceConditions | null
+  StorageServiceConditions: IStorageServiceConditions | null
+  CleaningServiceConditions: ICleaningServiceConditions | null
 }
 
 

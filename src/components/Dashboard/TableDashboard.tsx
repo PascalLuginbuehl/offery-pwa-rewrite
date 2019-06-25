@@ -38,50 +38,52 @@ class TableDashboard extends React.Component<Props, State> {
     const { classes, leads } = this.props
 
     return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell><FormattedMessage id="CUSTOMER" /></TableCell>
-            <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
-            <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
-            <TableCell><FormattedMessage id="PROJECT_START" /></TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {leads.map(lead => {
-            return (
-              <TableRow key={lead.LeadId}>
-                <TableCell component="th" scope="row">
-                  {lead.Customer.Firstname + " " + lead.Customer.Lastname}
-                </TableCell>
-                <TableCell>{lead.VisitDate ? <FormattedDate value={lead.VisitDate} /> : <FormattedMessage id="NOT DEFINED" />}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
+      <>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><FormattedMessage id="CUSTOMER" /></TableCell>
+              <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
+              <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
+              <TableCell><FormattedMessage id="PROJECT_START" /></TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {leads.map(lead => {
+              return (
+                <TableRow key={lead.LeadId}>
+                  <TableCell component="th" scope="row">
+                    {lead.Customer.Firstname + " " + lead.Customer.Lastname}
+                  </TableCell>
+                  <TableCell>{lead.VisitDate ? <FormattedDate value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
+                  <TableCell>
+                    {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
+                    /
+                    {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
+                  </TableCell>
 
-                <TableCell padding="checkbox">
-                  <NavLink to={`/lead/${lead.LeadId}/customer`}>
-                    <IntlTooltip title="SHOW_LEAD">
-                       <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
-                    </IntlTooltip>
-                  </NavLink>
+                  <TableCell padding="checkbox">
+                    <NavLink to={`/lead/${lead.LeadId}/customer`}>
+                      <IntlTooltip title="SHOW_LEAD">
+                        <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
+                      </IntlTooltip>
+                    </NavLink>
 
-                  <IconButton><ContactsIcon fontSize="small" /></IconButton>
-                </TableCell>
-              </TableRow>
-            )
-          })}
-          <TableRow>
-            <TableCell padding="checkbox">
-              <NavLink to="/lead/new/customer">
-                <Fab color="primary" size="small">
-                  <AddIcon fontSize="small" />
-                </Fab>
-              </NavLink>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+                    <IconButton><ContactsIcon fontSize="small" /></IconButton>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+
+        <NavLink to="/lead/new/customer">
+          <Fab color="primary" size="small">
+            <AddIcon fontSize="small" />
+          </Fab>
+        </NavLink>
+      </>
     )
   }
 }
