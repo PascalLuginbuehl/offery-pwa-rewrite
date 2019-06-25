@@ -51,7 +51,7 @@ class TableDashboard extends React.Component<Props, State> {
                   <TableCell>{lead.VisitDate ? <FormattedDate value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
                   <TableCell>
                     {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
-                    /
+                    &nbsp;/&nbsp;
                     {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
                   </TableCell>
 

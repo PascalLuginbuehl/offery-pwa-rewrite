@@ -73,7 +73,7 @@ class Dashboard extends React.Component<Props, State> {
 
   public render() {
     // const { classes, value, onClick } = this.props
-    const { classes, intl, width } = this.props
+    const { classes, intl, width, selectedCompany } = this.props
     const { leadsAwait, leads, currentTab, openListActions } = this.state
 
 
@@ -82,7 +82,7 @@ class Dashboard extends React.Component<Props, State> {
       <Wrapper initialLoading={leadsAwait}>
         <Grid container spacing={2} className={classes.root}>
           <Grid item xs={12}>
-            {/* <Typography variant="h5">{selectedCompany.Name}</Typography> */}
+            <Typography variant="h5">{selectedCompany.Name}</Typography>
             <IntlTypography variant="caption">COMPANY_LEAD_OVERVIEW</IntlTypography>
           </Grid>
 

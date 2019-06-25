@@ -6,6 +6,8 @@ import Loading from '../components/Loading';
 import Login from '../components/Login';
 // import { get, set } from 'idb-keyval'
 import { LanguageProvider } from '../providers/withLanguage'
+import SelectCompany from '../components/SelectCompany';
+import Wrapper from '../components/Form/Wrapper';
 
 interface Props {
 
@@ -44,25 +46,20 @@ export class ResourceProvider extends React.Component<Props, State> {
 
     resourceAwait.then((resource) => {
       // Select company
-      // if (resource.CurrentCompanies.length > 1) {
-      //   const companyIdString = localStorage.getItem("selectedCompany")
-      //   const companyId = parseInt(companyIdString ? companyIdString : "")
+      const companyIdString = localStorage.getItem("selectedCompany")
+      const companyId = parseInt(companyIdString ? companyIdString : "")
 
-      //   if (!isNaN(companyId)) {
-      //     const selectedCompany = resource.CurrentCompanies.find(company => company.CompanyId === companyId)
-      //     if (selectedCompany) {
-      //       return this.setState({ selectedCompany, resource })
-      //     }
-      //   }
-      // }
+      if (!isNaN(companyId)) {
+        const selectedCompany = resource.CurrentCompanies.find(company => company.CompanyId === companyId)
 
-      const selectedCompany = resource.CurrentCompanies[0]
-      // localStorage.setItem("selectedCompany", selectedCompany.CompanyId.toString())
-
-      if (selectedCompany) {
-        this.setState({ resource, selectedCompany: selectedCompany, loggedIn: true })
+        if (selectedCompany) {
+          this.setState({ selectedCompany })
+        }
+      } else if (resource.CurrentCompanies.length === 1) {
+        this.selectCompany(resource.CurrentCompanies[0])
       }
 
+      this.setState({ resource, loggedIn: true })
     }).catch(() => {
       this.setState({
         loggedIn: false,
@@ -70,6 +67,13 @@ export class ResourceProvider extends React.Component<Props, State> {
     })
 
     this.setState({resourceAwait})
+  }
+
+
+  selectCompany = (selectedCompany: ICompany) => {
+    localStorage.setItem("selectedCompany", selectedCompany.CompanyId.toString())
+
+    this.setState({selectedCompany})
   }
 
 
@@ -97,16 +101,24 @@ export class ResourceProvider extends React.Component<Props, State> {
 
     const texts = resource ? resource.Texts : []
 
-    if(loggedIn) {
-      return (
-      <LanguageProvider defaultLocale={locale} additionalTranlations={texts}>
-        <Loading await={resourceAwait} size={80}>
-          <Provider value={{ resource, selectedCompany }}>
-            {this.props.children}
-          </Provider>
-        </Loading>
-      </LanguageProvider>
-    )
+    if(loggedIn && resource) {
+      if(selectedCompany) {
+        return (
+          <LanguageProvider defaultLocale={locale} additionalTranlations={texts}>
+            <Loading await={resourceAwait} size={80}>
+              <Provider value={{ resource, selectedCompany }}>
+                {this.props.children}
+              </Provider>
+            </Loading>
+          </LanguageProvider>
+        )
+      } else {
+        return (
+          <Wrapper initialLoading={resourceAwait}>
+            <SelectCompany companies={resource.CurrentCompanies} onSelect={this.selectCompany} />
+          </Wrapper>
+        )
+      }
     } else {
       return (
         <LanguageProvider defaultLocale={locale}>
