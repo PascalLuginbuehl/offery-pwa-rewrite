@@ -2,6 +2,8 @@ import { createStyles, Paper, Theme, WithStyles, withStyles, Grid } from '@mater
 import * as React from 'react'
 import IntlTypography from './../Intl/IntlTypography';
 import { OnChangeEvent } from '../../interfaces/OnChangeEvent';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 // import { Link } from 'react-router-dom';
 
 const styles = (theme: Theme) =>
@@ -32,6 +34,11 @@ class BigCheckbox extends React.Component<Props> {
     return (
       <Grid item xs={12} sm={6}>
         <Paper elevation={1} className={classes.root + " " + (value ? classes.checked : "")} onClick={e => { onChange(!value, name)}}>
+          {/* {value
+          <HighlightOffIcon />
+          :
+          <CheckCircleIcon />
+          } */}
           <IntlTypography variant="h5">{children}</IntlTypography>
         </Paper>
       </Grid>

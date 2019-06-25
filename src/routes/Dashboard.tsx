@@ -10,7 +10,8 @@ import Wrapper from '../components/Form/Wrapper';
 import TableDashboard from '../components/Dashboard/TableDashboard';
 import MobileDashboard from '../components/Dashboard/MobileDashboard';
 import { keys, get } from 'idb-keyval';
-
+import CloudOffIcon from '@material-ui/icons/CloudOff'
+import ArchiveIcon from '@material-ui/icons/Archive'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -71,12 +72,26 @@ class Dashboard extends React.Component<Props, State> {
   }
 
 
-  public render() {
-    // const { classes, value, onClick } = this.props
+  leads = () => {
     const { classes, intl, width, selectedCompany } = this.props
     const { leadsAwait, leads, currentTab, openListActions } = this.state
 
 
+    if(currentTab == 0) {
+      if(leads) {
+        return isWidthUp('sm', width) ? <TableDashboard leads={leads} /> : <MobileDashboard leads={leads} />
+      } else {
+        return <Typography color="textSecondary" variant="h4" >Error, no leads found</Typography>
+      }
+    } else if(currentTab == 1) {
+      return <Typography color="textSecondary" variant="h4"><ArchiveIcon /> Noting Archived yet</Typography>
+    }
+  }
+
+  public render() {
+    // const { classes, value, onClick } = this.props
+    const { classes, intl, width, selectedCompany } = this.props
+    const { leadsAwait, leads, currentTab, openListActions } = this.state
 
     return (
       <Wrapper initialLoading={leadsAwait}>
@@ -94,15 +109,10 @@ class Dashboard extends React.Component<Props, State> {
           </Grid>
 
           <Grid item xs={12}>
-            {
-              leads && currentTab === 0 ?
-                isWidthUp('sm', width) ? <TableDashboard leads={leads} /> : <MobileDashboard leads={leads} />
-              :
-                <Typography>Error :(</Typography>
-            }
+            {this.leads()}
           </Grid>
+          {/* <CloudOffIcon /> */}
 
-          {currentTab === 1 && "item 1"}
         </Grid>
       </Wrapper>
     )
