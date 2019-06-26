@@ -10,8 +10,10 @@ export default class FormTemplate<Props, State> extends Component<Props & localP
   saveFunction = () => {
     const { nextPage, save, history } = this.props
     const savePromise = save()
+    console.log("asvi")
 
     savePromise.then(() => {
+      console.log("HI")
       history.push(nextPage)
     })
 

@@ -29,7 +29,7 @@ class Index extends React.Component<Props, State> {
   }
 
   private handleChange = (value: string, target: string) => {
-    this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
+    // this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
   }
 
   public render() {
@@ -40,9 +40,9 @@ class Index extends React.Component<Props, State> {
           <IntlTypography variant="h5">SERVICES</IntlTypography>
         </Grid>
 
-        <BigCheckbox name="HasDisposalOutBuilding" value={HasDisposalOutBuilding} onChange={this.handleChange}>
+        {/* <BigCheckbox name="HasDisposalOutBuilding" value={HasDisposalOutBuilding} onChange={this.handleChange}>
           DISPOSAL_BUILDING
-        </BigCheckbox>
+        </BigCheckbox> */}
 
 
       </>
