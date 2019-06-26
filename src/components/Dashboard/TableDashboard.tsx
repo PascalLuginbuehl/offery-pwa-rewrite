@@ -44,6 +44,7 @@ class TableDashboard extends React.Component<Props, State> {
               <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
               <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
               <TableCell><FormattedMessage id="PROJECT_START" /></TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,7 +70,9 @@ class TableDashboard extends React.Component<Props, State> {
                     {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
                   </TableCell>
 
-                  <TableCell padding="checkbox">
+                  <TableCell></TableCell>
+
+                  <TableCell padding="checkbox" style={{whiteSpace: "nowrap"}}>
                     <NavLink to={`/lead/${lead.LeadId}/customer`}>
                       <IntlTooltip title="SHOW_LEAD">
                         <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
@@ -85,6 +88,8 @@ class TableDashboard extends React.Component<Props, State> {
           </TableBody>
           <TableFooter>
             <TableRow>
+              <TableCell variant="footer" />
+              <TableCell variant="footer" />
               <TableCell variant="footer" />
               <TableCell variant="footer" />
               <TableCell variant="footer" />

@@ -186,7 +186,6 @@ class Lead extends Component<Props, State> {
         }
       }
     })
-
   }
 
   Create = (): Promise<any> => {
@@ -244,7 +243,6 @@ class Lead extends Component<Props, State> {
           :
             null
           }
-
 
           {
             Lead != null ?

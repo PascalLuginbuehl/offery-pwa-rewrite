@@ -41,32 +41,49 @@ export class ResourceProvider extends React.Component<Props, State> {
     loggedIn: false,
   }
 
-  componentDidMount() {
-    const resourceAwait = ResourceService.fetchResourceWithOffline()
+  setResource = (resource: IResource) => {
+    // Select company
+    const companyIdString = localStorage.getItem("selectedCompany")
+    const companyId = parseInt(companyIdString ? companyIdString : "")
 
-    resourceAwait.then((resource) => {
-      // Select company
-      const companyIdString = localStorage.getItem("selectedCompany")
-      const companyId = parseInt(companyIdString ? companyIdString : "")
+    if (!isNaN(companyId)) {
+      const selectedCompany = resource.CurrentCompanies.find(company => company.CompanyId === companyId)
 
-      if (!isNaN(companyId)) {
-        const selectedCompany = resource.CurrentCompanies.find(company => company.CompanyId === companyId)
-
-        if (selectedCompany) {
-          this.setState({ selectedCompany })
-        }
-      } else if (resource.CurrentCompanies.length === 1) {
-        this.selectCompany(resource.CurrentCompanies[0])
+      if (selectedCompany) {
+        this.setState({ selectedCompany })
       }
+    } else if (resource.CurrentCompanies.length === 1) {
+      this.selectCompany(resource.CurrentCompanies[0])
+    }
 
-      this.setState({ resource, loggedIn: true })
-    }).catch(() => {
-      this.setState({
-        loggedIn: false,
-      })
+    this.setState({ resource, loggedIn: true })
+  }
+
+  componentDidMount() {
+    // @ts-ignore localStorage can return null... JSON.parse can handle it
+    const resource = JSON.parse(localStorage.getItem("resource")) as IResource | null
+
+
+    const resourceAwait = ResourceService.fetchResourceWithOffline()
+    resourceAwait.then(this.setResource)
+
+    resourceAwait.catch((e) => {
+      if(e.message == "Failed to fetch") {
+        // U r now offline, keep offline
+      } else {
+        this.setState({
+          loggedIn: false,
+        })
+      }
     })
 
-    this.setState({resourceAwait})
+    if(resource) {
+      this.setResource(resource)
+    } else {
+      // Don't show loader if already using offline
+      this.setState({resourceAwait})
+    }
+
   }
 
 
