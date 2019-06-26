@@ -12,6 +12,7 @@ import MobileDashboard from '../components/Dashboard/MobileDashboard';
 import { keys, get } from 'idb-keyval';
 import CloudOffIcon from '@material-ui/icons/CloudOff'
 import ArchiveIcon from '@material-ui/icons/Archive'
+import LeadAPI, { ILeadContainer } from './LeadAPI';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -29,8 +30,10 @@ const styles = (theme: Theme) =>
   })
 
 interface State {
-  leadsAwait: Promise<ILead[]> | null
-  leads: ILead[] | null
+  leadsAwait: Promise<any> | null
+  leads: IOfflineLead[] | null
+  onlyShowOffline: boolean
+
   currentTab: number
   openListActions: number | null
 }
@@ -38,6 +41,11 @@ interface State {
 interface Props extends WithStyles<typeof styles>, WithResourceProps, InjectedIntlProps, WithWidth {
 
 }
+export interface IOfflineLead {
+  Lead: ILead,
+  isCached: boolean,
+}
+
 
 class Dashboard extends React.Component<Props, State> {
   public state: State = {
@@ -45,32 +53,61 @@ class Dashboard extends React.Component<Props, State> {
     leads: null,
     currentTab: 0,
     openListActions: null,
+    onlyShowOffline: false,
   }
 
   componentDidMount() {
-    // if (props.selectedCompany != null) {
-    const leadsAwait = DashboardService.fetchCompanyLeads(1)
-    leadsAwait.then(leads => this.setState({ leads }))
+    const leadsAwait = DashboardService.fetchCompanyLeads(this.props.selectedCompany.CompanyId).catch(e => {
+      return null;
+    })
 
-    this.setState({leadsAwait})
 
-    this.getOfflineLead()
-    // } else {
+    const offlineLeadsAwait = this.getOfflineLead()
 
-    // }
+    const allAwait = Promise.all([leadsAwait, offlineLeadsAwait])
+
+    this.setState({leadsAwait: allAwait})
+
+    allAwait.then(([leads, offlineLead]) => {
+      if(leads) {
+        this.setState({
+          leads: leads.map((lead) => ({
+            Lead: lead,
+            isCached: offlineLead.findIndex(offline => offline.leadId == lead.LeadId) !== -1,
+          }))
+        })
+      } else {
+        this.setState({
+          leads: offlineLead.map(offline => ({
+            Lead: offline.Lead,
+            isCached: true,
+          }))
+        })
+      }
+    })
+
+    allAwait.catch((e) => {
+      console.log("Unexpected error with Dashboard leads")
+      console.dir(e)
+      if(e) {
+        this.setState({onlyShowOffline: true})
+      }
+    })
   }
 
   handleTabChange = (event: React.ChangeEvent<{}>, value: number) => {
     this.setState({ currentTab: value })
   }
 
-  async getOfflineLead() {
-    const offlineKeys = await keys()
-    const offlineSaved = await Promise.all(offlineKeys.map(key => get(key)))
+  getOfflineLead(): Promise<ILeadContainer[]> {
+    return new Promise(async (resolve, reject) => {
+      const offlineKeys = await keys()
+      const offlineSaved = await Promise.all(offlineKeys.map(key => LeadAPI.FetchFromOffline(parseInt(key.toString()))))
 
-    console.log(offlineSaved)
+      // Tyescript compiler fix for undefined elements
+      resolve(offlineSaved.filter(e => !!e) as ILeadContainer[])
+    })
   }
-
 
   leads = () => {
     const { classes, intl, width, selectedCompany } = this.props
@@ -91,7 +128,7 @@ class Dashboard extends React.Component<Props, State> {
   public render() {
     // const { classes, value, onClick } = this.props
     const { classes, intl, width, selectedCompany } = this.props
-    const { leadsAwait, leads, currentTab, openListActions } = this.state
+    const { leadsAwait, leads, currentTab, openListActions, offlineLeads, onlyShowOffline } = this.state
 
     return (
       <Wrapper initialLoading={leadsAwait}>
