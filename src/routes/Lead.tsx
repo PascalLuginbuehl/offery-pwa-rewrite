@@ -83,7 +83,7 @@ class Lead extends Component<Props, State> {
         this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
-        this.setState({ ...lead, leadId: potentialLeadId, loadedFromOffline: false, onlySavedOffline: false })
+        this.setState({ ...lead, loadedFromOffline: false, onlySavedOffline: false })
 
         await LeadAPI.SaveToOffline(potentialLeadId, lead)
 
@@ -111,14 +111,14 @@ class Lead extends Component<Props, State> {
             console.log("Saving success but loading failed")
             console.dir(e)
 
-            this.setState({ ...offline, onlySavedOffline: true, leadId: potentialLeadId, loadedFromOffline: true })
+            this.setState({ ...offline, onlySavedOffline: true, loadedFromOffline: true })
           }
 
         } catch(e) {
           if (e.message == "Failed to fetch") {
             console.log("Still not online to reupload")
 
-            this.setState({ ...offline, onlySavedOffline: true, leadId: potentialLeadId, loadedFromOffline: true })
+            this.setState({ ...offline, onlySavedOffline: true, loadedFromOffline: true })
           }
         }
 
@@ -132,7 +132,7 @@ class Lead extends Component<Props, State> {
           if (e.message == "Failed to fetch") {
             if (offline) {
               console.log("Client offline, loading from offlinestorage")
-              this.setState({ ...offline, leadId: potentialLeadId, loadedFromOffline: true })
+              this.setState({ ...offline, loadedFromOffline: true })
 
               resolve()
             } else {
@@ -157,15 +157,16 @@ class Lead extends Component<Props, State> {
     return new Promise(async (resolve, reject) => {
       const { initialAwait, successOpen, loadedFromOffline, ...lead} = this.state
 
-      if(lead.leadId) {
+      if(lead.originalCachedData) {
+        const { Lead } = lead.originalCachedData
         try {
-          await LeadAPI.SaveToApi(lead.leadId, lead)
+          await LeadAPI.SaveToApi(Lead.LeadId, lead)
           resolve()
 
         } catch (e) {
           if (e.message == "Failed to fetch") {
             try {
-              LeadAPI.SaveToOffline(lead.leadId, { ...lead, onlySavedOffline: true })
+              LeadAPI.SaveToOffline(Lead.LeadId, { ...lead, onlySavedOffline: true })
               this.setState({ onlySavedOffline: true })
 
               console.log("Saved to offline storage")
@@ -192,9 +193,9 @@ class Lead extends Component<Props, State> {
     if (this.state.Lead) {
       const promise = LeadService.createCustomer(this.state.Lead, 1)
 
-      promise.then(e => {
-        this.setState({leadId: e.LeadId})
-        this.props.history.replace("/lead/" + e.LeadId + "/customer")
+      promise.then(lead => {
+        this.setState({originalCachedData: {Lead: lead, moveIn: null, cleaning: null, disposal: null, moveOut: null, storage: null}})
+        this.props.history.replace("/lead/" + lead.LeadId + "/customer")
       }).catch(e => {
         if (e.message == "Failed to fetch") {
           console.log("Cannot create from offline")
@@ -212,7 +213,6 @@ class Lead extends Component<Props, State> {
   public render() {
     const {
       Lead,
-      leadId,
       moveOut,
       moveIn,
       cleaning,
@@ -247,7 +247,7 @@ class Lead extends Component<Props, State> {
 
 
           {
-            Lead != null && leadId != null ?
+            Lead != null ?
             <>
 
               {/* Customer */}

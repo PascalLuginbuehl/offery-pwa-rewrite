@@ -20,29 +20,31 @@ import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
 
+export interface IOriginalCachedData {
+
+  Lead: ILead
+  moveOut: IMoveOutBuilding | null
+  moveIn: IMoveInBuilding | null
+  cleaning: ICleaningBuilding | null
+  disposal: IDisposalOutBuilding | null
+  storage: IStorageBuilding | null
+
+}
 
 export interface ILeadContainer {
   lastUpdated: Date
   onlySavedOffline: boolean
 
   Lead: IPostLead
-  leadId: number | null
-
-
   moveOut: IPostMoveOutBuilding
-  moveOutId: number | null
-
   moveIn: IPostMoveInBuilding
-  moveInId: number | null
-
   cleaning: IPostCleaningBuilding
-  cleaningId: number | null
-
   disposal: IPostDisposalOutBuilding
-  disposalId: number | null
-
   storage: IPostStorageBuilding
-  storageId: number | null
+
+
+  originalCachedData: IOriginalCachedData | null
+  // unsavedChanges:
 }
 
 export const emptyLeadContainer: ILeadContainer = {
@@ -50,22 +52,14 @@ export const emptyLeadContainer: ILeadContainer = {
   onlySavedOffline: false,
 
   Lead: emptyLead,
-  leadId: null,
 
   moveOut: emptyMoveOutBuilding,
-  moveOutId: null,
-
   moveIn: emptyMoveInBuilding,
-  moveInId: null,
-
   cleaning: emptyCleaningBuilding,
-  cleaningId: null,
-
   disposal: emptyDisposalOutBuilding,
-  disposalId: null,
-
   storage: emptyStorageBuilding,
-  storageId: null
+
+  originalCachedData: null
 }
 
 
@@ -84,35 +78,40 @@ class LeadAPI {
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
-      leadId: Lead ? Lead.LeadId : null,
       Lead: Lead ? Lead : emptyLeadContainer.Lead,
 
-      moveOutId: moveOut ? moveOut.MoveOutBuildingId : null,
       moveOut: moveOut ? moveOut : emptyLeadContainer.moveOut,
 
-      moveInId: moveIn ? moveIn.MoveInBuildingId : null,
       moveIn: moveIn ? moveIn : emptyLeadContainer.moveIn,
 
-      cleaningId: cleaning ? cleaning.CleaningBuildingId : null,
       cleaning: cleaning ? cleaning : emptyLeadContainer.cleaning,
 
-      disposalId: disposal ? disposal.DisposalOutBuildingId : null,
       disposal: disposal ? disposal : emptyLeadContainer.disposal,
 
-      storageId: storage ? storage.StorageBuildingId : null,
       storage: storage ? storage : emptyLeadContainer.storage,
+
+      originalCachedData: {
+        Lead,
+        moveOut,
+        moveIn,
+        cleaning,
+        storage,
+        disposal,
+      }
     }))
   }
 
 
   // Sends all new Data to the API
   SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
-    const { Lead, moveOut, moveOutId } = container
-    if (Lead && moveOut && leadId) {
+    const { Lead, originalCachedData, moveOut} = container
+    if (Lead && originalCachedData) {
       return Promise.all([
         // convert to lead
         LeadService.saveCustomer({ LeadId: leadId, ...Lead }),
-        moveOutId ? BuildingService.saveMoveOutBuilding(moveOutId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId),
+
+        originalCachedData.moveOut ? BuildingService.saveMoveOutBuilding(originalCachedData.moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId),
+
       ]).then()
     }
 

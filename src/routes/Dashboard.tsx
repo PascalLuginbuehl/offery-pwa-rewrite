@@ -12,7 +12,7 @@ import MobileDashboard from '../components/Dashboard/MobileDashboard';
 import { keys, get } from 'idb-keyval';
 import CloudOffIcon from '@material-ui/icons/CloudOff'
 import ArchiveIcon from '@material-ui/icons/Archive'
-import LeadAPI, { ILeadContainer } from './LeadAPI';
+import LeadAPI, { ILeadContainer, IOriginalCachedData } from './LeadAPI';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -61,7 +61,6 @@ class Dashboard extends React.Component<Props, State> {
       return null;
     })
 
-
     const offlineLeadsAwait = this.getOfflineLead()
 
     const allAwait = Promise.all([leadsAwait, offlineLeadsAwait])
@@ -70,16 +69,20 @@ class Dashboard extends React.Component<Props, State> {
 
     allAwait.then(([leads, offlineLead]) => {
       if(leads) {
+
         this.setState({
           leads: leads.map((lead) => ({
             Lead: lead,
-            isCached: offlineLead.findIndex(offline => offline.leadId == lead.LeadId) !== -1,
+            isCached: offlineLead.findIndex(offline => offline.originalCachedData ? offline.originalCachedData.Lead.LeadId == lead.LeadId : false) !== -1,
           }))
         })
       } else {
+        console.log("Couldn't load from online. Error")
+        const filteredToCached = offlineLead.filter(offline => offline.originalCachedData) as Array<{ originalCachedData: IOriginalCachedData }>
+
         this.setState({
-          leads: offlineLead.map(offline => ({
-            Lead: offline.Lead,
+          leads: filteredToCached.map(offline => ({
+            Lead: offline.originalCachedData.Lead,
             isCached: true,
           }))
         })
@@ -128,7 +131,7 @@ class Dashboard extends React.Component<Props, State> {
   public render() {
     // const { classes, value, onClick } = this.props
     const { classes, intl, width, selectedCompany } = this.props
-    const { leadsAwait, leads, currentTab, openListActions, offlineLeads, onlyShowOffline } = this.state
+    const { leadsAwait, leads, currentTab, openListActions, onlyShowOffline } = this.state
 
     return (
       <Wrapper initialLoading={leadsAwait}>

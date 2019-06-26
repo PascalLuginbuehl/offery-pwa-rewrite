@@ -11,6 +11,7 @@ import { green } from '@material-ui/core/colors';
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { IOfflineLead } from '../../routes/Dashboard';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,7 +39,7 @@ interface State {
 }
 
 interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
-  leads: ILead[]
+  leads: IOfflineLead[]
 }
 
 class TableDashboard extends React.Component<Props, State> {
@@ -53,7 +54,7 @@ class TableDashboard extends React.Component<Props, State> {
     return (
       <>
         <List className={classes.root}>
-          {leads.map(lead => (
+          {leads.map(({Lead: lead}) => (
             <>
               <ListItem key={lead.LeadId} disableGutters>
                 <Avatar style={{ backgroundColor: green[500] }}>

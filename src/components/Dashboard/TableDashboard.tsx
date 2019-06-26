@@ -11,6 +11,8 @@ import ContactsIcon from '@material-ui/icons/Contacts'
 import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter } from '@material-ui/core'
 import IntlTooltip from '../Intl/IntlTooltip';
 import { ILead } from '../../interfaces/ILead';
+import { IOfflineLead } from '../../routes/Dashboard';
+import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -22,7 +24,7 @@ interface State {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  leads: ILead[]
+  leads: IOfflineLead[]
 }
 
 class TableDashboard extends React.Component<Props, State> {
@@ -35,6 +37,9 @@ class TableDashboard extends React.Component<Props, State> {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>
+                <OfflinePinIcon/>
+              </TableCell>
               <TableCell><FormattedMessage id="CUSTOMER" /></TableCell>
               <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
               <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
@@ -42,9 +47,18 @@ class TableDashboard extends React.Component<Props, State> {
             </TableRow>
           </TableHead>
           <TableBody>
-            {leads.map(lead => {
+            {leads.map(({isCached, Lead: lead}) => {
               return (
                 <TableRow key={lead.LeadId}>
+                  <TableCell component="th" scope="row">
+
+                    {isCached ? (
+                      <IntlTooltip title="LOADED_FROM_CACHE">
+                        <OfflinePinIcon color="primary" />
+                      </IntlTooltip>
+                      ) : null
+                    }
+                  </TableCell>
                   <TableCell component="th" scope="row">
                     {lead.Customer.Firstname + " " + lead.Customer.Lastname}
                   </TableCell>
