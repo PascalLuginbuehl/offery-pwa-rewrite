@@ -19,6 +19,7 @@
     "classnames": "^2.2.6",
     "csv-loader": "^3.0.2",
     "date-fns": "^2.0.0-alpha.27",
+    "fetch-timeout": "0.0.2",
     "idb-keyval": "^3.2.0",
     "papaparse": "^5.0.0",
     "react": "^16.8.6",

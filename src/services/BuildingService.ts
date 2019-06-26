@@ -67,10 +67,9 @@ class BuildingService {
   }
 
   public saveMoveOutBuilding = (buildingId: number, toMoveOutBuilding: IPostMoveOutBuilding) => {
-    const test: IUpdateMoveOutBuilding = { MoveOutBuildingId: buildingId, ...toMoveOutBuilding}
     return this.saveService<IMoveOutBuilding>(
       API_URL + '/building/moveout',
-      toMoveOutBuilding
+      { MoveOutBuildingId: buildingId, ...toMoveOutBuilding}
     )
   }
 
@@ -88,10 +87,10 @@ class BuildingService {
     )
   }
 
-  public saveMoveInBuilding = (toMoveInBuilding: IUpdateMoveInBuilding, leadId: number) => {
+  public saveMoveInBuilding = (buildingId: number, toMoveInBuilding: IPostMoveInBuilding) => {
     return this.saveService<IMoveInBuilding>(
       API_URL + '/building/movein',
-      toMoveInBuilding,
+      { MoveInBuildingId: buildingId, ...toMoveInBuilding }
     )
   }
 
@@ -109,10 +108,10 @@ class BuildingService {
     )
   }
 
-  public saveStorageBuilding = (storageBuilding: IUpdateStorageBuilding, leadId: number) => {
+  public saveStorageBuilding = (buildingId: number, storageBuilding: IPostStorageBuilding) => {
     return this.saveService<IStorageBuilding>(
       API_URL + '/building/storagein',
-      storageBuilding,
+      { StorageBuildingId: buildingId, ...storageBuilding },
     )
   }
 
@@ -130,10 +129,10 @@ class BuildingService {
     )
   }
 
-  public saveDisposalOutBuilding = (disposalOutBuilding: IUpdateDisposalOutBuilding, leadId: number) => {
+  public saveDisposalOutBuilding = (buildingId: number, disposalOutBuilding: IPostDisposalOutBuilding) => {
     return this.saveService<IDisposalOutBuilding>(
       API_URL + '/building/disposalout',
-      disposalOutBuilding,
+      { DisposalOutBuildingId: buildingId, ...disposalOutBuilding },
     )
   }
 
@@ -145,16 +144,16 @@ class BuildingService {
   }
 
   public createCleaningBuilding = (toStorageBuilding: IPostCleaningBuilding, leadId: number) => {
-    return this.createService<IDisposalOutBuilding>(
+    return this.createService<ICleaningBuilding>(
       API_URL + '/building/cleaning',
       { LeadId: leadId, ...toStorageBuilding, CompanyId: 1 },
     )
   }
 
-  public saveCleaningBuilding = (disposalOutBuilding: IUpdateCleaningBuilding, leadId: number) => {
+  public saveCleaningBuilding = (buildingId: number, cleaningBuilding: IPostCleaningBuilding) => {
     return this.saveService<ICleaningBuilding>(
       API_URL + '/building/cleaning',
-      disposalOutBuilding,
+      { CleaningBuildingId: buildingId, ...cleaningBuilding },
     )
   }
 }

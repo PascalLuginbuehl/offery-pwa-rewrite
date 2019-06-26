@@ -83,6 +83,7 @@ class EmailConfirmation extends FormTemplate<Props, State> {
           onChange={this.handleChange}
         />
 
+        {/* Only available when online */}
         <Submit onSubmit={this.send}/>
      </>
     )

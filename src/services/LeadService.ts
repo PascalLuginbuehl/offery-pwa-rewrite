@@ -17,7 +17,7 @@ class LeadService {
     if (!json || typeof json !== "object") {
       throw new Error()
     }
-    console.log(json)
+
     json.DeliveryDate = this.parseDate(json.DeliveryDate)
     json.CleaningDate = this.parseDate(json.CleaningDate)
     json.DisposalDate = this.parseDate(json.DisposalDate)

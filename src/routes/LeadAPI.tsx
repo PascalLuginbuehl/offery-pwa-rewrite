@@ -104,13 +104,19 @@ class LeadAPI {
 
   // Sends all new Data to the API
   SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
-    const { Lead, originalCachedData, moveOut} = container
+    const { Lead, originalCachedData, moveOut, moveIn, storage, disposal, cleaning} = container
     if (Lead && originalCachedData) {
+
+
       return Promise.all([
         // convert to lead
         LeadService.saveCustomer({ LeadId: leadId, ...Lead }),
 
         originalCachedData.moveOut ? BuildingService.saveMoveOutBuilding(originalCachedData.moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId),
+        originalCachedData.moveIn ? BuildingService.saveMoveInBuilding(originalCachedData.moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId),
+        originalCachedData.disposal ? BuildingService.saveDisposalOutBuilding(originalCachedData.disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId),
+        originalCachedData.storage ? BuildingService.saveStorageBuilding(originalCachedData.storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId),
+        originalCachedData.cleaning ? BuildingService.saveCleaningBuilding(originalCachedData.cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId)
 
       ]).then()
     }
