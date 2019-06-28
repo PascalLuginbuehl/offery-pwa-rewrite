@@ -1,5 +1,4 @@
-export interface IMoveService {
-  MoveServiceId: number
+export interface IPostMoveService {
   MoveDate: Date
   FurnitureLiftService: boolean
   PianoService: boolean
@@ -7,4 +6,8 @@ export interface IMoveService {
   DeMontageService: boolean
   LampDemontageService: boolean
   BoreService: boolean
+}
+
+export interface IMoveService extends IPostMoveService {
+  MoveServiceId: number
 }
