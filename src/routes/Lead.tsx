@@ -156,13 +156,14 @@ class Lead extends Component<Props, State> {
     const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
 
     const order = [
-      { name: '', active: true },
-      { name: 'move-out', active: HasMoveInBuilding},
-      { name: 'move-in', active: HasMoveOutBuilding},
-      { name: 'storage', active: HasDisposalOutBuilding},
-      { name: 'disposal', active: HasStorageInBuilding},
-      { name: 'cleaning', active: HasCleaningBuilding },
-      { name: 'email-confirmation', active: true},
+      { name: '/', active: true },
+      { name: '/building/move-out', active: HasMoveInBuilding},
+      { name: '/building/move-in', active: HasMoveOutBuilding},
+      { name: '/building/storage', active: HasDisposalOutBuilding},
+      { name: '/building/disposal', active: HasStorageInBuilding},
+      { name: '/building/cleaning', active: HasCleaningBuilding },
+      { name: '/email-confirmation', active: true },
+      { name: '/service', active: true},
     ]
 
     let lastPage = { name: '' }
@@ -290,7 +291,7 @@ class Lead extends Component<Props, State> {
                     data={Lead}
                     onChange={(data) => this.handleChange(data, "Lead")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/` + this.nextPageFunction('')}
+                    nextPage={match.url + this.nextPageFunction('/')}
                   />
                 }
               />
@@ -304,7 +305,7 @@ class Lead extends Component<Props, State> {
                     data={moveOut}
                     onChange={(data) => this.handleChange(data, "moveOut")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/` + this.nextPageFunction('move-out')}
+                    nextPage={match.url + this.nextPageFunction('/building/move-out')}
                   />
                 }
               />
@@ -318,7 +319,7 @@ class Lead extends Component<Props, State> {
                     data={moveIn}
                     onChange={(data) => this.handleChange(data, "moveIn")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/` + this.nextPageFunction('move-in')}
+                    nextPage={match.url + this.nextPageFunction('/building/move-in')}
                   />
                 }
               />
@@ -332,7 +333,7 @@ class Lead extends Component<Props, State> {
                     data={storage}
                     onChange={(data) => this.handleChange(data, "storage")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/` + this.nextPageFunction('move-storage')}
+                    nextPage={match.url + this.nextPageFunction('/building/storage')}
                   />
                 }
               />
@@ -346,7 +347,7 @@ class Lead extends Component<Props, State> {
                     data={disposal}
                     onChange={(data) => this.handleChange(data, "disposal")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/cleaning` + this.nextPageFunction('disposal')}
+                    nextPage={match.url + this.nextPageFunction('/building/disposal')}
                   />
                 }
               />
@@ -360,7 +361,7 @@ class Lead extends Component<Props, State> {
                     data={cleaning}
                     onChange={(data) => this.handleChange(data, "cleaning")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/` + this.nextPageFunction('cleaning')}
+                    nextPage={match.url + this.nextPageFunction('/building/cleaning')}
                   />
                 }
               />
@@ -373,7 +374,7 @@ class Lead extends Component<Props, State> {
                     {...routeProps}
                     save={this.Save}
                     container={this.state}
-                    nextPage={`${match.url}/service`}
+                    nextPage={match.url + this.nextPageFunction('/email-confirmation')}
                   />
                 }
               />
