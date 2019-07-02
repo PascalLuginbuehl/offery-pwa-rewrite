@@ -150,7 +150,36 @@ class Lead extends Component<Props, State> {
         }
       }
     })
+  }
 
+  nextPageFunction = (current: string) => {
+    const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
+
+    const order = [
+      { name: '', active: true },
+      { name: 'move-out', active: HasMoveInBuilding},
+      { name: 'move-in', active: HasMoveOutBuilding},
+      { name: 'storage', active: HasDisposalOutBuilding},
+      { name: 'disposal', active: HasStorageInBuilding},
+      { name: 'cleaning', active: HasCleaningBuilding },
+      { name: 'email-confirmation', active: true},
+    ]
+
+    let lastPage = { name: '' }
+    for (let index = 0; index < order.length; index++) {
+      const potentialNextPage = order[index];
+
+      if(lastPage.name == current) {
+        if(potentialNextPage.active) {
+
+          return potentialNextPage.name
+        }
+      } else {
+        lastPage = potentialNextPage
+      }
+    }
+
+    return ''
   }
 
   Save = (): Promise<void> => {
@@ -261,7 +290,7 @@ class Lead extends Component<Props, State> {
                     data={Lead}
                     onChange={(data) => this.handleChange(data, "Lead")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/move-out`}
+                    nextPage={`${match.url}/building/` + this.nextPageFunction('')}
                   />
                 }
               />
@@ -275,7 +304,7 @@ class Lead extends Component<Props, State> {
                     data={moveOut}
                     onChange={(data) => this.handleChange(data, "moveOut")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/move-in`}
+                    nextPage={`${match.url}/building/` + this.nextPageFunction('move-out')}
                   />
                 }
               />
@@ -289,7 +318,7 @@ class Lead extends Component<Props, State> {
                     data={moveIn}
                     onChange={(data) => this.handleChange(data, "moveIn")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/storage`}
+                    nextPage={`${match.url}/building/` + this.nextPageFunction('move-in')}
                   />
                 }
               />
@@ -303,7 +332,7 @@ class Lead extends Component<Props, State> {
                     data={storage}
                     onChange={(data) => this.handleChange(data, "storage")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/disposal`}
+                    nextPage={`${match.url}/building/` + this.nextPageFunction('move-storage')}
                   />
                 }
               />
@@ -317,7 +346,7 @@ class Lead extends Component<Props, State> {
                     data={disposal}
                     onChange={(data) => this.handleChange(data, "disposal")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/cleaning`}
+                    nextPage={`${match.url}/building/cleaning` + this.nextPageFunction('disposal')}
                   />
                 }
               />
@@ -328,10 +357,10 @@ class Lead extends Component<Props, State> {
                  render={(routeProps) =>
                   <CleaningBuilding
                     {...routeProps}
-                     data={cleaning}
+                    data={cleaning}
                     onChange={(data) => this.handleChange(data, "cleaning")}
                     save={this.Save}
-                    nextPage={`${match.url}/building/disposal`}
+                    nextPage={`${match.url}/building/` + this.nextPageFunction('cleaning')}
                   />
                 }
               />
