@@ -20,30 +20,18 @@ import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
 
-export interface IOriginalCachedData {
-
-  Lead: ILead
-  moveOut: IMoveOutBuilding | null
-  moveIn: IMoveInBuilding | null
-  cleaning: ICleaningBuilding | null
-  disposal: IDisposalOutBuilding | null
-  storage: IStorageBuilding | null
-
-}
 
 export interface ILeadContainer {
   lastUpdated: Date
   onlySavedOffline: boolean
 
-  Lead: IPostLead
-  moveOut: IPostMoveOutBuilding
-  moveIn: IPostMoveInBuilding
-  cleaning: IPostCleaningBuilding
-  disposal: IPostDisposalOutBuilding
-  storage: IPostStorageBuilding
+  Lead: IPostLead | ILead
+  moveOut: IPostMoveOutBuilding | IMoveOutBuilding | null
+  moveIn: IPostMoveInBuilding | IMoveInBuilding | null
+  cleaning: IPostCleaningBuilding | ICleaningBuilding | null
+  disposal: IPostDisposalOutBuilding | IDisposalOutBuilding | null
+  storage: IPostStorageBuilding | IStorageBuilding | null
 
-
-  originalCachedData: IOriginalCachedData | null
   // unsavedChanges:
 }
 
@@ -53,16 +41,19 @@ export const emptyLeadContainer: ILeadContainer = {
 
   Lead: emptyLead,
 
-  moveOut: emptyMoveOutBuilding,
-  moveIn: emptyMoveInBuilding,
-  cleaning: emptyCleaningBuilding,
-  disposal: emptyDisposalOutBuilding,
-  storage: emptyStorageBuilding,
-
-  originalCachedData: null
+  moveOut: null,
+  moveIn: null,
+  cleaning: null,
+  disposal: null,
+  storage: null,
 }
 
-
+function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
+  if(typeof object === "object") {
+    return object.hasOwnProperty(key)
+  }
+  return false
+}
 class LeadAPI {
 
   // Only gets called to save into Offline Storage
@@ -80,43 +71,34 @@ class LeadAPI {
 
       Lead: Lead ? Lead : emptyLeadContainer.Lead,
 
-      moveOut: moveOut ? moveOut : emptyLeadContainer.moveOut,
+      moveOut: moveOut,
 
-      moveIn: moveIn ? moveIn : emptyLeadContainer.moveIn,
+      moveIn: moveIn,
 
-      cleaning: cleaning ? cleaning : emptyLeadContainer.cleaning,
+      cleaning: cleaning,
 
-      disposal: disposal ? disposal : emptyLeadContainer.disposal,
+      disposal: disposal,
 
-      storage: storage ? storage : emptyLeadContainer.storage,
-
-      originalCachedData: {
-        Lead,
-        moveOut,
-        moveIn,
-        cleaning,
-        storage,
-        disposal,
-      }
+      storage: storage,
     }))
   }
 
 
   // Sends all new Data to the API
   SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
-    const { Lead, originalCachedData, moveOut, moveIn, storage, disposal, cleaning} = container
-    if (Lead && originalCachedData) {
+    const { Lead, moveOut, moveIn, storage, disposal, cleaning} = container
+    if (Lead ) {
 
 
       return Promise.all([
         // convert to lead
         LeadService.saveCustomer({ LeadId: leadId, ...Lead }),
 
-        (originalCachedData.moveOut ? BuildingService.saveMoveOutBuilding(originalCachedData.moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId)).catch(() => null),
-        (originalCachedData.moveIn ? BuildingService.saveMoveInBuilding(originalCachedData.moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId)).catch(() => null),
-        (originalCachedData.disposal ? BuildingService.saveDisposalOutBuilding(originalCachedData.disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId)).catch(() => null),
-        (originalCachedData.storage ? BuildingService.saveStorageBuilding(originalCachedData.storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId)).catch(() => null),
-        (originalCachedData.cleaning ? BuildingService.saveCleaningBuilding(originalCachedData.cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId)).catch(() => null)
+        moveOut ? checkIs<IMoveOutBuilding>(moveOut, 'MoveOutBuildingId') ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId).catch(() => null) : Promise.resolve(null),
+        moveIn ? checkIs<IMoveInBuilding>(moveIn, 'MoveInBuildingId') ? BuildingService.saveMoveInBuilding(moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId).catch(() => null) : Promise.resolve(null),
+        disposal ? checkIs<IDisposalOutBuilding>(disposal, 'DisposalOutBuildingId') ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId).catch(() => null) : Promise.resolve(null),
+        storage ? checkIs<IStorageBuilding>(storage, 'StorageBuildingId') ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId).catch(() => null) : Promise.resolve(null),
+        cleaning ? checkIs<ICleaningBuilding>(cleaning, 'CleaningBuildingId') ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId).catch(() => null) : Promise.resolve(null)
 
       ]).catch().then(([lead, moveOut, moveIn, disposal, storage, cleaning]) => {
 

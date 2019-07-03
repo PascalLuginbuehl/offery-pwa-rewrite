@@ -187,8 +187,8 @@ class Lead extends Component<Props, State> {
     return new Promise(async (resolve, reject) => {
       const { initialAwait, successOpen, loadedFromOffline, ...lead} = this.state
 
-      if(lead.originalCachedData) {
-        const { Lead } = lead.originalCachedData
+      if(Lead.hasOwnProperty('LeadId')) {
+        const { Lead: ILead } = lead
         try {
           await LeadAPI.SaveToApi(Lead.LeadId, lead)
           resolve()
@@ -214,6 +214,8 @@ class Lead extends Component<Props, State> {
             console.dir(e)
           }
         }
+      } else {
+        console.log("Lead not yet created")
       }
     })
   }
