@@ -12,7 +12,7 @@ import MobileDashboard from '../components/Dashboard/MobileDashboard';
 import { keys, get } from 'idb-keyval';
 import CloudOffIcon from '@material-ui/icons/CloudOff'
 import ArchiveIcon from '@material-ui/icons/Archive'
-import LeadAPI, { ILeadContainer, IOriginalCachedData } from './LeadAPI';
+import LeadAPI, { ILeadContainer } from './LeadAPI';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -73,16 +73,16 @@ class Dashboard extends React.Component<Props, State> {
         this.setState({
           leads: leads.map((lead) => ({
             Lead: lead,
-            isCached: offlineLead.findIndex(offline => offline.originalCachedData ? offline.originalCachedData.Lead.LeadId == lead.LeadId : false) !== -1,
+            isCached: offlineLead.findIndex(offline => LeadAPI.isCompleteLead(offline.Lead) ? offline.Lead.LeadId == lead.LeadId : false) !== -1,
           }))
         })
       } else {
         console.log("Couldn't load from online. Error")
-        const filteredToCached = offlineLead.filter(offline => offline.originalCachedData) as Array<{ originalCachedData: IOriginalCachedData }>
+        const filteredToCached = offlineLead.filter(offline => LeadAPI.isCompleteLead(offline.Lead)) as Array<{Lead: ILead}>
 
         this.setState({
           leads: filteredToCached.map(offline => ({
-            Lead: offline.originalCachedData.Lead,
+            Lead: offline.Lead,
             isCached: true,
           }))
         })

@@ -25,7 +25,7 @@ export interface ILeadContainer {
   lastUpdated: Date
   onlySavedOffline: boolean
 
-  Lead: IPostLead | ILead
+  Lead: IPostLead | ILead | null
   moveOut: IPostMoveOutBuilding | IMoveOutBuilding | null
   moveIn: IPostMoveInBuilding | IMoveInBuilding | null
   cleaning: IPostCleaningBuilding | ICleaningBuilding | null
@@ -123,6 +123,13 @@ class LeadAPI {
   // Checks if data changed on the API side from first Fetch
   CheckAgainstAPI() {
 
+  }
+
+  isCompleteLead = (lead: IPostLead | ILead | null): lead is ILead => {
+    if(lead) {
+      return lead.hasOwnProperty('LeadId')
+    }
+    return false
   }
 }
 

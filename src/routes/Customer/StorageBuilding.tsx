@@ -7,7 +7,7 @@ import { withResource, WithResourceProps } from '../../providers/withResource';
 import Submit from '../../components/Validator/Submit';
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect'
 import ValidatedTextField from '../../components/Validator/ValidatedTextField'
-import { IPostStorageBuilding } from '../../interfaces/IBuilding'
+import { IPostStorageBuilding, emptyStorageBuilding } from '../../interfaces/IBuilding'
 import StorageCompanyField from '../../components/Form/Bundled/StorageCompanyField';
 import FormTemplate from './FormTemplate';
 
@@ -16,7 +16,7 @@ interface State {
 }
 
 interface Props extends WithResourceProps {
-  data: IPostStorageBuilding
+  data: IPostStorageBuilding | null
   onChange: (data: IPostStorageBuilding) => void
   save: () => Promise<void>
 }
@@ -28,7 +28,8 @@ class StorageBuilding extends FormTemplate<Props, State> {
 
   public render() {
     const { resource } = this.props
-    const { Address, RoomAmount, TotalArea, EtageId, ElevatorId, MetersToParking, StairsToEntryAmount, StorageCompany } = this.props.data
+    const data = this.props.data ? this.props.data : emptyStorageBuilding
+    const { Address, RoomAmount, TotalArea, EtageId, ElevatorId, MetersToParking, StairsToEntryAmount, StorageCompany } = data
 
 
     return (

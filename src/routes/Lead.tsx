@@ -153,30 +153,33 @@ class Lead extends Component<Props, State> {
   }
 
   nextPageFunction = (current: string) => {
-    const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
+    // Check if lead is even defined
+    if (this.state.Lead) {
+      const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
 
-    const order = [
-      { name: '/', active: true },
-      { name: '/building/move-out', active: HasMoveInBuilding},
-      { name: '/building/move-in', active: HasMoveOutBuilding},
-      { name: '/building/storage', active: HasDisposalOutBuilding},
-      { name: '/building/disposal', active: HasStorageInBuilding},
-      { name: '/building/cleaning', active: HasCleaningBuilding },
-      { name: '/email-confirmation', active: true },
-      { name: '/service', active: true},
-    ]
+      const order = [
+        { name: '/', active: true },
+        { name: '/building/move-out', active: HasMoveInBuilding },
+        { name: '/building/move-in', active: HasMoveOutBuilding },
+        { name: '/building/storage', active: HasDisposalOutBuilding },
+        { name: '/building/disposal', active: HasStorageInBuilding },
+        { name: '/building/cleaning', active: HasCleaningBuilding },
+        { name: '/email-confirmation', active: true },
+        { name: '/service', active: true },
+      ]
 
-    let lastPage = { name: '' }
-    for (let index = 0; index < order.length; index++) {
-      const potentialNextPage = order[index];
+      let lastPage = { name: '' }
+      for (let index = 0; index < order.length; index++) {
+        const potentialNextPage = order[index];
 
-      if(lastPage.name == current) {
-        if(potentialNextPage.active) {
+        if (lastPage.name == current) {
+          if (potentialNextPage.active) {
 
-          return potentialNextPage.name
+            return potentialNextPage.name
+          }
+        } else {
+          lastPage = potentialNextPage
         }
-      } else {
-        lastPage = potentialNextPage
       }
     }
 
@@ -187,8 +190,8 @@ class Lead extends Component<Props, State> {
     return new Promise(async (resolve, reject) => {
       const { initialAwait, successOpen, loadedFromOffline, ...lead} = this.state
 
-      if(Lead.hasOwnProperty('LeadId')) {
-        const { Lead: ILead } = lead
+      const { Lead } = lead
+      if(LeadAPI.isCompleteLead(Lead)) {
         try {
           await LeadAPI.SaveToApi(Lead.LeadId, lead)
           resolve()
@@ -225,7 +228,7 @@ class Lead extends Component<Props, State> {
       const promise = LeadService.createCustomer(this.state.Lead, 1)
 
       promise.then(lead => {
-        this.setState({originalCachedData: {Lead: lead, moveIn: null, cleaning: null, disposal: null, moveOut: null, storage: null}})
+        this.setState({Lead: lead, moveIn: null, cleaning: null, disposal: null, moveOut: null, storage: null})
         this.props.history.replace("/lead/" + lead.LeadId + "/customer")
       }).catch(e => {
         if (e.message == "Failed to fetch") {
