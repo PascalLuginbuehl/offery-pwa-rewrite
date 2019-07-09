@@ -16,7 +16,7 @@ import CleaningBuilding from './Customer/CleaningBuilding';
 import DisposalOutBuilding from './Customer/DisposalOutBuilding';
 import StorageBuilding from './Customer/StorageBuilding';
 import EmailConfirmation from './Customer/EmailConfirmation';
-import SuccessSnackbar from '../components/SuccessSnackbar';
+import OriginalSnackbar from '../components/SuccessSnackbar';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import IntlTooltip from '../components/Intl/IntlTooltip';
@@ -177,6 +177,18 @@ class Lead extends Component<Props, State> {
     return ''
   }
 
+  openSaveSuccess() {
+    this.setState({ successOpen: true })
+  }
+
+  openOfflineSuccess() {
+
+  }
+
+  openError() {
+
+  }
+
   Save = (): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       const { initialAwait, successOpen, loadedFromOffline, ...lead} = this.state
@@ -185,6 +197,7 @@ class Lead extends Component<Props, State> {
       if(LeadAPI.isCompleteLead(Lead)) {
         try {
           await LeadAPI.SaveToApi(Lead.LeadId, lead)
+
           resolve()
 
         } catch (e) {
@@ -235,9 +248,6 @@ class Lead extends Component<Props, State> {
     return Promise.reject()
   }
 
-  getNextPage = (current: string) => {
-
-  }
 
   public render() {
     const {
@@ -421,12 +431,26 @@ class Lead extends Component<Props, State> {
           <NavItem to={`${match.url}/service`} title="SERVICES" />
         </>, portal) : null}
 
-        <SuccessSnackbar
+        <OriginalSnackbar
           open={successOpen}
           onClose={this.handleClose}
           variant="success"
-          message="This is a success message!"
-          />
+          message="LEAD_SAVED"
+        />
+
+        <OriginalSnackbar
+          open={}
+          onClose={this.handleClose}
+          variant="warning"
+          message="LEAD_SAVED_IN_CACHE"
+        />
+
+        <OriginalSnackbar
+          open={successOpen}
+          onClose={this.handleClose}
+          variant="error"
+          message="ERROR"
+        />
       </>
     )
   }

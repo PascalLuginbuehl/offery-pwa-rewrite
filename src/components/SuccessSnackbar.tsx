@@ -8,7 +8,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
 import { amber, green } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
+import OriginalSnackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -55,13 +55,13 @@ export interface Props extends WithStyles<typeof styles> {
   variant: keyof typeof variantIcon
 }
 
-function SuccessSnackbar(props: Props) {
+function Snackbar(props: Props) {
   const classes = props.classes
   const { open, className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
   return (
-    <Snackbar
+    <OriginalSnackbar
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left',
@@ -86,9 +86,9 @@ function SuccessSnackbar(props: Props) {
         ]}
         {...other}
       />
-    </Snackbar >
+    </OriginalSnackbar >
 
   );
 }
 
-export default withStyles(styles)(SuccessSnackbar)
+export default withStyles(styles)(Snackbar)
