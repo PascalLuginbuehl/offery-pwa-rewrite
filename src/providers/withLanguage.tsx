@@ -1,5 +1,5 @@
-import { Messages, translations } from '../i18n'
 import * as React from 'react'
+import { IMessages, translations as baseTranslations, ITranslationAssortment } from '../i18n'
 import { IntlProvider } from 'react-intl'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
@@ -9,88 +9,97 @@ import { IText } from '../interfaces/IText';
 export type ChangeLanguage = (language: string) => void
 
 interface Props {
-  defaultLocale: string
   additionalTranlations?: Array<IText>
 }
 
 interface State {
-  // messages: TranslationAssortment | null
-  messages: Messages,
+  finalMessages: IMessages
   locale: string,
 }
+
 interface ContextData {
   changeLanguage: ChangeLanguage,
   locale: string,
-  messages: Messages
+  messages: IMessages
 }
+
 
 export interface WithLanguageProps {
   changeLanguage: ChangeLanguage
 }
 
 
-
-const contextData: ContextData = { changeLanguage: (language: string): boolean => false, locale: "en", messages: translations.en }
+const contextData: ContextData = { changeLanguage: (language: string): boolean => false, locale: "en", messages: baseTranslations.en }
 const { Provider, Consumer } = React.createContext(contextData)
+
 
 class LanguageProvider extends React.Component<Props, State> {
   public state: State = {
     locale: "de",
-    messages: translations.en,
+    finalMessages: baseTranslations["de"],
   }
 
-  constructor(props: Props) {
-    super(props)
+  componentDidMount() {
+    // Determin language
 
-    const { defaultLocale: locale } = props
+    const localStorageLocale = localStorage.getItem("PIKETT_TOOL_MOBILE_LOCALE")
 
-    // DO some better locale management
-    const WithoutRegionCode = locale.toLowerCase().split(/[_-]+/)[0]
+    // @ts-ignore Sets locale acording to local storage
+    const determinedLocale = localStorageLocale || navigator.s && navigator.s[0] || navigator.language || navigator.user
+
+    // Get a clean locale WithoutRegionCode
+    const cleanLocale = determinedLocale.toLowerCase().split(/[_-]+/)[0]
+
+    this.setState({locale: cleanLocale})
+
+    // Call generate funciton
+    this.generateMessagesObject(this.props.additionalTranlations, cleanLocale)
 
 
-    // const messages = translations[WithoutRegionCode] || translations[locale] || translations.en
-    const messages = translations.de
+  }
 
-    let extraMessages: Messages = {}
-    if(props.additionalTranlations) {
-      //@ts-ignore
-      props.additionalTranlations.map(e => extraMessages[e.TextKey] = e["de".toUpperCase()].replace(/(?:\r\n|\r|\n)/g, '{br}'))
+
+  generateMessagesObject = (additionalTranlations: Array<IText> | undefined, localeKey: string) => {
+    // Get only from one language, with many fallbacks
+    const messages = baseTranslations[localeKey] || baseTranslations.de
+
+    let extraMessages: IMessages = {}
+
+
+    if (additionalTranlations) {
+      // Transforms array to object by settings keys and fixing translation objects
+      //@ts-ignore Copy translations over to extraMessages
+      additionalTranlations.map(e => extraMessages[e.TextKey] = e[localeKey.toUpperCase()].replace(/(?:\r\n|\r|\n)/g, '{br}'))
     }
 
-    this.state.locale = WithoutRegionCode
 
-    this.state.messages = { ...messages, ...extraMessages}
+    // Merge translations
+    this.setState({ finalMessages: { ...messages, ...extraMessages } })
   }
 
-
-  componentWillReceiveProps(props: Props) {
-    let extraMessages: Messages = {}
-    if(props.additionalTranlations) {
-      // Makes newline visible
-      //@ts-ignore
-      props.additionalTranlations.map(e => extraMessages[e.TextKey] = e["de".toUpperCase().replace(/(?:\r\n|\r|\n)/g, '{br}')])
-    }
-
-    const messages = translations.de
-
-    this.setState({messages: { ...extraMessages, ...messages,  }})
+  // Run this function when new Additions Translations get Added Dynamicly
+  componentWillReceiveProps(nextProps: Props) {
+    this.generateMessagesObject(this.props.additionalTranlations, this.state.locale)
   }
+
 
   // you must specify what you’re adding to the context
-  public changeLanguage = (language: string) => {
-    this.setState({ messages: translations[language] })
+  public changeLanguage = (newLocale: string) => {
+    this.generateMessagesObject(this.props.additionalTranlations, newLocale)
+
+    localStorage.setItem("PIKETT_TOOL_MOBILE_LOCALE", newLocale)
+
+    this.setState({locale: newLocale})
   }
 
   public render() {
-     const { locale, messages } = this.state
-    // `Children.only` enables us not to add a <div /> for nothing
-    // return React.Children.only()
+    const { locale, finalMessages } = this.state
 
     return (
-      <Provider value={{ changeLanguage: this.changeLanguage, locale, messages }}>
+      <Provider value={{ changeLanguage: this.changeLanguage, locale, messages: finalMessages }}>
         <IntlProvider
           locale={locale}
-          messages={messages}
+          messages={finalMessages}
         >
           <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
             {this.props.children}

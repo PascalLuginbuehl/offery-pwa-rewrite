@@ -101,27 +101,13 @@ export class ResourceProvider extends React.Component<Props, State> {
   public render() {
     const { resource, selectedCompany, resourceAwait, loggedIn } = this.state
 
-    // setLocale(newLocale) {
-    //   localStorage.setItem("PIKETT_TOOL_MOBILE_LOCALE", newLocale)
-
-    //   this.setState(this.getLocaleItems(newLocale))
-    // }
-
-    // @ts-ignore Sets locale acording to local storage
-    const locale = localStorage.getItem("PIKETT_TOOL_MOBILE_LOCALE") || navigator.s && navigator.s[0] || navigator.language || navigator.user
-
-
-    // this.state = this.getLocaleItems(newLocale)
-    // window.changeThis =
-    // MuiThemeProvider makes the theme available down the React tree
-    // thanks to React context.
 
     const texts = resource ? resource.Texts : []
 
     if(loggedIn && resource) {
       if(selectedCompany) {
         return (
-          <LanguageProvider defaultLocale={locale} additionalTranlations={texts}>
+          <LanguageProvider additionalTranlations={texts}>
             <Loading await={resourceAwait} size={80}>
               <Provider value={{ resource, selectedCompany }}>
                 {this.props.children}
@@ -138,7 +124,7 @@ export class ResourceProvider extends React.Component<Props, State> {
       }
     } else {
       return (
-        <LanguageProvider defaultLocale={locale}>
+        <LanguageProvider>
           <Loading await={resourceAwait} size={80}>
             <Login onLoginSuccess={this.handleLoginSuccess} />
           </Loading>

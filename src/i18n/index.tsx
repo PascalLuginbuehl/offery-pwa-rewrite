@@ -12,11 +12,11 @@ translations.shift()
 
 // Remove ending with newLine
 translations.pop()
-export interface Messages { [keyWord: string]: string }
-export interface TranslationAssortment { [lang: string]: Messages }
+export interface IMessages { [keyWord: string]: string }
+export interface ITranslationAssortment { [lang: string]: IMessages }
 
 // Creates new Object with all translations
-const sortedTranslations: TranslationAssortment = Object.assign({}, ...langs.map((langKey: string, i: number) => {
+const sortedTranslations: ITranslationAssortment = Object.assign({}, ...langs.map((langKey: string, i: number) => {
   return { [langKey]: Object.assign({}, ...translations.map((words: string[]) => ({ [words[0]]: words[i] }))) }
 }))
 

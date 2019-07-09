@@ -64,7 +64,7 @@ class TableDashboard extends React.Component<Props, State> {
                   <TableCell component="th" scope="row">
                     {lead.Customer.Firstname + " " + lead.Customer.Lastname}
                   </TableCell>
-                  <TableCell>{lead.VisitDate ? <FormattedDate value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
+                  <TableCell>{lead.VisitDate ? <FormattedDate year="numeric" month="long" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
                   <TableCell>
                     {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
                     &nbsp;/&nbsp;
