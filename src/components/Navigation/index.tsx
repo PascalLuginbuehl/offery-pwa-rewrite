@@ -33,7 +33,7 @@ class Navigation extends React.Component<Props, State> {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          <NavItem to="/" title="HOME" nested/>
+          <NavItem to="/" title="HOME"/>
 
           {/* <ListItem button>
             <ListItemIcon>

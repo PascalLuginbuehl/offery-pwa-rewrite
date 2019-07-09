@@ -24,12 +24,14 @@ import LeadAPI, { ILeadContainer, emptyLeadContainer } from './LeadAPI';
 import { emptyLead } from '../interfaces/ILead';
 import Service from './Service';
 import { withResource, WithResourceProps } from '../providers/withResource';
+import NavFolder from '../components/Navigation/NavFolder';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
   loadedFromOffline: boolean
   successOpen: boolean
+  isOffline: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
@@ -43,6 +45,8 @@ class Lead extends Component<Props, State> {
     initialAwait: null,
     loadedFromOffline: false,
     successOpen: false,
+
+    isOffline: false
   }
 
   handleClose = () => {
@@ -149,7 +153,7 @@ class Lead extends Component<Props, State> {
       const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
 
       const order = [
-        { name: '/', active: true },
+        { name: '/building', active: true },
         { name: '/building/move-out', active: HasMoveInBuilding },
         { name: '/building/move-in', active: HasMoveOutBuilding },
         { name: '/building/storage', active: HasDisposalOutBuilding },
@@ -221,7 +225,8 @@ class Lead extends Component<Props, State> {
 
       promise.then(lead => {
         this.setState({Lead: lead, moveIn: null, cleaning: null, disposal: null, moveOut: null, storage: null})
-        this.props.history.replace("/lead/" + lead.LeadId + "/customer")
+
+        this.props.history.replace("/lead/" +  lead.LeadId + this.nextPageFunction("/"))
       }).catch(e => {
         if (e.message == "Failed to fetch") {
           console.log("Cannot create from offline")
@@ -273,19 +278,20 @@ class Lead extends Component<Props, State> {
           }
 
           {
-            Lead != null ?
+            this.props.match.params.id !== "new" && Lead != null ?
             <>
 
               {/* Customer */}
               <Route
-                path={`${match.url}/customer`}
+                exact
+                path={`${match.url}/building`}
                 render={(routeProps) =>
                   <Customer
                     {...routeProps}
                     data={Lead}
                     onChange={(data) => this.handleChange(data, "Lead")}
                     save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/')}
+                    nextPage={match.url + this.nextPageFunction('/building')}
                   />
                 }
               />
@@ -381,16 +387,16 @@ class Lead extends Component<Props, State> {
               />
             </>
             :
-              this.props.match.params.id === "new" && Lead ? (
+              Lead ? (
               <Route
-                path={`${match.url}/customer`}
+                exact
+                path={`${match.url}/building`}
                 render={(routeProps) =>
                   <Customer
                     {...routeProps}
                     data={Lead}
                     onChange={(data) => this.handleChange(data, "Lead")}
                     save={this.Create}
-                    nextPage={`${match.url}/building/disposal`}
                   />
                 }
               />)
@@ -402,21 +408,22 @@ class Lead extends Component<Props, State> {
         {/* Navigation */}
         {portal ? ReactDOM.createPortal(<>
           <ListSubheader><FormattedMessage id="EDIT_LEAD" /></ListSubheader>
+          <NavFolder to={`${match.url}/building`} title="CUSTOMER">
+            {Lead ? (
+              <>
+                <Collapse in={Lead.HasMoveOutBuilding}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested/></Collapse>
+                <Collapse in={Lead.HasMoveInBuilding}><NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested/></Collapse>
+                <Collapse in={Lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested/></Collapse>
+                <Collapse in={Lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested/></Collapse>
+                <Collapse in={Lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested/></Collapse>
+                <NavItem to={`${match.url}/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
+              </>
+            ) : null}
+          </NavFolder>
 
-            <NavItem to={`${match.url}/customer`} title="CUSTOMER">
-              {Lead ? (
-                <>
-                  <Collapse in={Lead.HasMoveOutBuilding}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested/></Collapse>
-                  <Collapse in={Lead.HasMoveInBuilding}><NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested/></Collapse>
-                  <Collapse in={Lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested/></Collapse>
-                  <Collapse in={Lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested/></Collapse>
-                  <Collapse in={Lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested/></Collapse>
-                  <NavItem to={`${match.url}/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
-                </>
-              ) : null}
-              {/* */}
-            </NavItem>
-          <NavItem to={`${match.url}/service`} title="SERVICES" />
+          <NavFolder to={`${match.url}/service`} title="SERVICES">
+            HI
+          </NavFolder>
         </>, portal) : null}
       </>
     )

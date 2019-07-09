@@ -30,7 +30,8 @@ interface State {
 interface Props extends WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
   to: string,
   title: string,
-  children?: NavItem[]
+  children: React.ReactNode
+
   nested?: boolean
 }
 
@@ -39,23 +40,16 @@ class NavItem extends React.Component<Props, State> {
     open: false,
   }
 
-  constructor(props: Props) {
-    super(props)
 
-    const { location } = props
+  componentDidMount() {
+    const { location, to } = this.props
 
-    const { to } = props
-
-    let open = false
-
-    if (location.pathname === to)
-      open = true
+    if (location.pathname.includes(to))
+      this.setState({ open: true })
 
     // FIX THIS L8ER
     // if (children && children.findIndex(value => value.props.to === to) === -1)
-    open = true
 
-    this.state.open = open
   }
 
   public handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -73,21 +67,22 @@ class NavItem extends React.Component<Props, State> {
     return (
       <>
         <NavLink to={to} activeClassName={classes.activeLink} className={classes.noLink}>
-          <ListItem selected={location.pathname === to} button className={nested ? classes.nested : undefined}>
+          <ListItem selected={location.pathname === to} button>
+
             <ListItemText primary={intl.formatMessage({ id: title })} />
-            {!nested ? <ListItemSecondaryAction>
+
+            <ListItemSecondaryAction>
               <IconButton onClick={this.handleClick}>
                 {open ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
               </IconButton>
-            </ListItemSecondaryAction> : null}
+            </ListItemSecondaryAction>
+
           </ListItem>
         </NavLink>
 
-        {children ?
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            {children}
-          </Collapse>
-          : null}
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          {children}
+        </Collapse>
 
       </>
 

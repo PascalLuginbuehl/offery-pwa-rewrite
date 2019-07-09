@@ -73,7 +73,7 @@ class TableDashboard extends React.Component<Props, State> {
                   <TableCell></TableCell>
 
                   <TableCell padding="checkbox" style={{whiteSpace: "nowrap"}}>
-                    <NavLink to={`/lead/${lead.LeadId}/customer`}>
+                    <NavLink to={`/lead/${lead.LeadId}/building`}>
                       <IntlTooltip title="SHOW_LEAD">
                         <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
                       </IntlTooltip>
@@ -95,7 +95,7 @@ class TableDashboard extends React.Component<Props, State> {
               <TableCell variant="footer" />
 
               <TableCell variant="footer" align="right">
-                <NavLink to="/lead/new/customer">
+                <NavLink to="/lead/new/building">
                   <Fab color="primary" size="small">
                     <AddIcon fontSize="small" />
                   </Fab>
