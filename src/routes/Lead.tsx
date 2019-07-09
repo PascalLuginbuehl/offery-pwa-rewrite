@@ -177,17 +177,6 @@ class Lead extends Component<Props, State> {
     return ''
   }
 
-  openSaveSuccess() {
-    this.setState({ successOpen: true })
-  }
-
-  openOfflineSuccess() {
-
-  }
-
-  openError() {
-
-  }
 
   Save = (): Promise<void> => {
     return new Promise(async (resolve, reject) => {
@@ -197,7 +186,6 @@ class Lead extends Component<Props, State> {
       if(LeadAPI.isCompleteLead(Lead)) {
         try {
           await LeadAPI.SaveToApi(Lead.LeadId, lead)
-
           resolve()
 
         } catch (e) {
@@ -430,27 +418,6 @@ class Lead extends Component<Props, State> {
             </NavItem>
           <NavItem to={`${match.url}/service`} title="SERVICES" />
         </>, portal) : null}
-
-        <OriginalSnackbar
-          open={successOpen}
-          onClose={this.handleClose}
-          variant="success"
-          message="LEAD_SAVED"
-        />
-
-        <OriginalSnackbar
-          open={}
-          onClose={this.handleClose}
-          variant="warning"
-          message="LEAD_SAVED_IN_CACHE"
-        />
-
-        <OriginalSnackbar
-          open={successOpen}
-          onClose={this.handleClose}
-          variant="error"
-          message="ERROR"
-        />
       </>
     )
   }
