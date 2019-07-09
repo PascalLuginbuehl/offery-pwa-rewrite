@@ -26,7 +26,7 @@ const styles = (theme: Theme) =>
       color: "inherit",
     },
     root: {
-      padding: theme.spacing(2)
+      padding: 0
     },
     nested: {
       paddingTop: 0,
@@ -59,14 +59,17 @@ class TableDashboard extends React.Component<Props, State> {
 
     return (
       <>
-        <List className={classes.root}>
+        <List className={classes.root} >
           {leads.map(({Lead: lead}) => (
             <>
               <ListItem key={lead.LeadId} disableGutters>
+
                 <Avatar style={{ backgroundColor: green[500] }}>
                   <RemoveRedEyeIcon fontSize="small" />
                 </Avatar>
-                <ListItemText primary={lead.Customer.Firstname + " " + lead.Customer.Lastname} secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate) : null} />
+
+                <ListItemText primary={lead.Customer.Firstname + " " + lead.Customer.Lastname} secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate, { year: "numeric", month:"long", day: "2-digit" }) : null} />
+
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => this.setState({ openListActions: openListActions === lead.LeadId ? null : lead.LeadId })}>
                     {openListActions === lead.LeadId ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
@@ -103,4 +106,4 @@ class TableDashboard extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(injectIntl(TableDashboard))
+export default injectIntl(withStyles(styles)(TableDashboard))

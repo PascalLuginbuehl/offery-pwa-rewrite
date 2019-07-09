@@ -16,17 +16,9 @@ import LeadAPI, { ILeadContainer } from './LeadAPI';
 
 const styles = (theme: Theme) =>
   createStyles({
-    noLink: {
-      textDecoration: "none",
-      color: "inherit",
-    },
     root: {
-      padding: theme.spacing(2)
-    },
-    nested: {
-      paddingTop: 0,
-      paddingBottom: 0,
-    },
+
+    }
   })
 
 interface State {
@@ -159,4 +151,4 @@ class Dashboard extends React.Component<Props, State> {
   }
 }
 
-export default injectIntl(withResource(withStyles(styles)(withWidth()(Dashboard))))
+export default withWidth()(injectIntl(withResource(withStyles(styles)(Dashboard))))
