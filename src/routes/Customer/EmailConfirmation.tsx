@@ -11,6 +11,7 @@ import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
 import { ILeadContainer } from '../LeadAPI';
 import FormTemplate from './FormTemplate';
+import { IAddress } from '../../interfaces/ICompany';
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -40,11 +41,12 @@ class EmailConfirmation extends FormTemplate<Props, State> {
 
 
   public render() {
-    const { selectedCompany } = this.props
+    const { selectedCompany, container } = this.props
     const { AddressId, Comment } = this.state
     const { Lead } = this.props.container
 
     const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
+    const { cleaning: CleaningBuilding, moveOut: MoveOutBuilding, moveIn: MoveInBuilding, storage: StorageInBuilding, disposal: DisposalOutBuilding,  } = container
 
     return (
       <>
@@ -67,14 +69,14 @@ class EmailConfirmation extends FormTemplate<Props, State> {
           </IntlTypography>
         </Grid>
 
-        {/* <ValidatedSelect
+        <ValidatedSelect
           label="BUILDING_TYPE"
           value={AddressId}
           name="AddressId"
           onChange={this.handleChange}
           required
-          options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map((e, index) => ({id: e.Address.AddressId, NameTextKey: e.Address.Street + ", " + e.Address.PLZ + " " + e.Address.City}))}
-        /> */}
+          options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map(e => e.Address).filter((e): e is IAddress => e.hasOwnProperty('AddressId')).map((e, index) => ({ value: e.AddressId, label: e.Street + ", " + e.PLZ + " " + e.City}))}
+        />
 
         <ValidatedTextField
           label="COMMENT"

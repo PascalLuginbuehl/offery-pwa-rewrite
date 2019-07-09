@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, ListSubheader, Collapse, Icon } from '@material-ui/core'
-import IntlTypography from '../components/Intl/IntlTypography';
-import ValidatedDateTimePicker from '../components/Validator/ValidatedDateTimePicker';
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
-import {
-  emptyDisposalOutBuilding,
-  emptyMoveInBuilding,
-  emptyMoveOutBuilding,
-  emptyStorageBuilding,
-  emptyCleaningBuilding
-} from '../interfaces/IBuilding';
 import BuildingService from '../services/BuildingService';
 import { RouteComponentProps, Route } from 'react-router';
 import LeadService from '../services/LeadService';
@@ -32,7 +23,7 @@ import IntlTooltip from '../components/Intl/IntlTooltip';
 import LeadAPI, { ILeadContainer, emptyLeadContainer } from './LeadAPI';
 import { emptyLead } from '../interfaces/ILead';
 import Service from './Service';
-import { conditionalExpression } from '@babel/types';
+import { withResource, WithResourceProps } from '../providers/withResource';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -41,7 +32,7 @@ interface State extends ILeadContainer {
   successOpen: boolean
 }
 
-interface Props extends RouteComponentProps<{ id?: string }> {
+interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
   portal: HTMLDivElement | null
 }
 
@@ -225,7 +216,7 @@ class Lead extends Component<Props, State> {
 
   Create = (): Promise<any> => {
     if (this.state.Lead) {
-      const promise = LeadService.createCustomer(this.state.Lead, 1)
+      const promise = LeadService.createCustomer(this.state.Lead, this.props.selectedCompany.CompanyId)
 
       promise.then(lead => {
         this.setState({Lead: lead, moveIn: null, cleaning: null, disposal: null, moveOut: null, storage: null})
@@ -269,7 +260,7 @@ class Lead extends Component<Props, State> {
         <Wrapper initialLoading={initialAwait}>
           {onlySavedOffline ?
             <IntlTooltip title="NOT_SAVED_ONLINE">
-              <CloudUploadIcon color="error"  />
+              <CloudUploadIcon color="error" />
             </IntlTooltip>
           :
             null
@@ -441,4 +432,4 @@ class Lead extends Component<Props, State> {
   }
 }
 
-export default Lead
+export default withResource(Lead)

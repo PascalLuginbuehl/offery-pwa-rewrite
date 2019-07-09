@@ -13,6 +13,8 @@ export interface IMasterThing {
   NameTextKey: string
 }
 
+export const sortMasterThing = (first: IMasterThing, second: IMasterThing) => first.OrderNumber - second.OrderNumber
+
 export interface IElevator extends IMasterThing {
   ElevatorId: number
 }

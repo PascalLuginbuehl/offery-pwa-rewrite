@@ -8,6 +8,7 @@ import { IPostDisposalOutBuilding, emptyDisposalOutBuilding } from '../../interf
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect'
 import ValidatedTextField from '../../components/Validator/ValidatedTextField'
 import FormTemplate from './FormTemplate'
+import { sortMasterThing } from '../../interfaces/IResource';
 
 interface State {
 
@@ -49,7 +50,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
           name="BuildingTypeId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
+          options={resource.BuildingTypes.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
         />
 
         <ValidatedTextField
@@ -83,7 +84,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
           name="EtageId"
           onChange={this.handleChange}
           required
-          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
+          options={resource.Etages.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -92,7 +93,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
           name="ElevatorId"
           onChange={this.handleChange}
           required
-          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
+          options={resource.Elevators.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
         />
 
         <ValidatedTextField

@@ -10,6 +10,7 @@ import ValidatedTextField from '../../components/Validator/ValidatedTextField'
 import { IPostStorageBuilding, emptyStorageBuilding } from '../../interfaces/IBuilding'
 import StorageCompanyField from '../../components/Form/Bundled/StorageCompanyField';
 import FormTemplate from './FormTemplate';
+import { sortMasterThing } from '../../interfaces/IResource';
 
 interface State {
 
@@ -81,7 +82,7 @@ class StorageBuilding extends FormTemplate<Props, State> {
           name="EtageId"
           onChange={this.handleChange}
           required
-          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
+          options={resource.Etages.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -90,7 +91,7 @@ class StorageBuilding extends FormTemplate<Props, State> {
           name="ElevatorId"
           onChange={this.handleChange}
           required
-          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
+          options={resource.Elevators.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
         />
 
         <ValidatedTextField

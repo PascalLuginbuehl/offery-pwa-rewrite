@@ -9,6 +9,7 @@ import AddressField from '../../components/Form/Bundled/AddressFields';
 import Switch from '../../components/Validator/Switch'
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import FormTemplate from './FormTemplate';
+import { sortMasterThing } from '../../interfaces/IResource';
 
 interface State {
 
@@ -83,7 +84,7 @@ class MoveOutBuilding extends FormTemplate<Props, State> {
           onChange={this.handleChange}
           required
 
-          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
+          options={resource.Etages.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
         />
 
         <ValidatedSelect
@@ -92,7 +93,7 @@ class MoveOutBuilding extends FormTemplate<Props, State> {
           name="ElevatorId"
           onChange={this.handleChange}
           required
-          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
+          options={resource.Elevators.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
         />
 
         <ValidatedTextField
@@ -126,7 +127,7 @@ class MoveOutBuilding extends FormTemplate<Props, State> {
           onChange={this.handleChange}
           required
 
-          options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
+          options={resource.BuildingAges.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
         />
 
         <Switch

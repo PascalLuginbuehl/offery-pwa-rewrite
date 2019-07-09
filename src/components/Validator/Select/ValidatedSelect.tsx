@@ -20,7 +20,7 @@ export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> 
 
   // Custom thing
   options: Array<{ value: number, label: string}>
-  value: number | any[]
+  value: number | any[] | null
 
   isMulti?: boolean
 

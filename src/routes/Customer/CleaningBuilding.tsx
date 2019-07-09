@@ -9,6 +9,7 @@ import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import Switch from '../../components/Validator/Switch';
 import FormTemplate from './FormTemplate';
+import { sortMasterThing } from '../../interfaces/IResource';
 
 interface State {
 
@@ -50,7 +51,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           name="BuildingTypeId"
           onChange={this.handleChange}
 
-          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
+          options={resource.BuildingTypes.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
           required
         />
 
@@ -60,7 +61,8 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           name="BuildingTypeDetailId"
           onChange={this.handleChange}
           required
-          options={resource.BuildingTypeDetails.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeDetailId }))}
+
+          options={resource.BuildingTypeDetails.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuildingTypeDetailId }))}
         />
 
         <ValidatedTextField
@@ -101,7 +103,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           value={BalconyId}
           name="BalconyId"
           onChange={this.handleChange}
-          options={resource.Balconies.map(e => ({ label: e.NameTextKey, value: e.BalconyId }))}
+          options={resource.Balconies.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BalconyId }))}
 
           required
         />
@@ -111,7 +113,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           value={FloorTypeId}
           name="FloorTypeId"
           onChange={this.handleChange}
-          options={resource.FloorTypes.map(e => ({ label: e.NameTextKey, value: e.FloorTypeId }))}
+          options={resource.FloorTypes.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.FloorTypeId }))}
 
           required
         />
@@ -121,7 +123,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           value={RollerBlindTypeId}
           name="RollerBlindTypeId"
           onChange={this.handleChange}
-          options={resource.RollerBlindTypes.map(e => ({ label: e.NameTextKey, value: e.RollerBlindTypeId }))}
+          options={resource.RollerBlindTypes.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.RollerBlindTypeId }))}
 
           required
         />
@@ -147,7 +149,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           value={GarageTypeId}
           name="GarageTypeId"
           onChange={this.handleChange}
-          options={resource.GarageTypes.map(e => ({ label: e.NameTextKey, value: e.GarageTypeId }))}
+          options={resource.GarageTypes.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.GarageTypeId }))}
 
           required
         />
@@ -157,7 +159,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           value={BuiltinWardrobeRangeId}
           name="BuiltinWardrobeRangeId"
           onChange={this.handleChange}
-          options={resource.BuiltInWardrobeRanges.map(e => ({ label: e.NameTextKey, value: e.BuiltInWardrobeRangeId }))}
+          options={resource.BuiltInWardrobeRanges.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuiltInWardrobeRangeId }))}
 
           required
         />
@@ -167,7 +169,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           value={PollutionDegreeId}
           name="PollutionDegreeId"
           onChange={this.handleChange}
-          options={resource.PollutionDegrees.map(e => ({ label: e.NameTextKey, value: e.PollutionDegreeId }))}
+          options={resource.PollutionDegrees.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.PollutionDegreeId }))}
 
           required
         />
