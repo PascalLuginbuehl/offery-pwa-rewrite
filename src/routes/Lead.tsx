@@ -159,7 +159,7 @@ class Lead extends Component<Props, State> {
         { name: '/building/storage', active: HasDisposalOutBuilding },
         { name: '/building/disposal', active: HasStorageInBuilding },
         { name: '/building/cleaning', active: HasCleaningBuilding },
-        { name: '/email-confirmation', active: true },
+        { name: '/building/email-confirmation', active: true },
         { name: '/service', active: true },
       ]
 
@@ -368,13 +368,13 @@ class Lead extends Component<Props, State> {
 
               {/* E-Mail */}
               <Route
-                path={`${match.url}/email-confirmation`}
+                path={`${match.url}/building/email-confirmation`}
                 render={(routeProps) =>
                   <EmailConfirmation
                     {...routeProps}
                     save={this.Save}
                     container={this.state}
-                    nextPage={match.url + this.nextPageFunction('/email-confirmation')}
+                    nextPage={match.url + this.nextPageFunction('/building/email-confirmation')}
                   />
                 }
               />
@@ -416,7 +416,7 @@ class Lead extends Component<Props, State> {
                 <Collapse in={Lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested/></Collapse>
                 <Collapse in={Lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested/></Collapse>
                 <Collapse in={Lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested/></Collapse>
-                <NavItem to={`${match.url}/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
+                <NavItem to={`${match.url}/building/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
               </>
             ) : null}
           </NavFolder>

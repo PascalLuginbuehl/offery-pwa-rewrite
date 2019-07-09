@@ -39,14 +39,13 @@ class Submit extends React.Component<Props, State> {
     const { isValid } = this.props
     const { onSubmit } = this.props
 
-    console.log(isValid())
     if (isValid()) {
       this.setState({ saveAwait: onSubmit() })
     }
   }
 
   public render() {
-    const { classes, width, label = "NEXT" } = this.props
+    const { classes, width, label = "NEXT", isValid } = this.props
     const { saveAwait } = this.state
 
     if (isWidthUp('sm', width)) {

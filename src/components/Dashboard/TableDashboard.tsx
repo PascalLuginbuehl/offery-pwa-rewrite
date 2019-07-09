@@ -14,6 +14,7 @@ import { ILead } from '../../interfaces/ILead';
 import { IOfflineLead } from '../../routes/Dashboard';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 
+
 const styles = (theme: Theme) =>
   createStyles({
 
@@ -44,7 +45,7 @@ class TableDashboard extends React.Component<Props, State> {
               <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
               <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
               <TableCell><FormattedMessage id="PROJECT_START" /></TableCell>
-              <TableCell></TableCell>
+              <TableCell><FormattedMessage id="ACTIONS" /></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,14 +73,12 @@ class TableDashboard extends React.Component<Props, State> {
 
                   <TableCell></TableCell>
 
-                  <TableCell padding="checkbox" style={{whiteSpace: "nowrap"}}>
+                  <TableCell padding="checkbox" style={{whiteSpace: "nowrap"}} align="center">
                     <NavLink to={`/lead/${lead.LeadId}/building`}>
                       <IntlTooltip title="SHOW_LEAD">
                         <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
                       </IntlTooltip>
                     </NavLink>
-
-                    <IconButton><ContactsIcon fontSize="small" /></IconButton>
                   </TableCell>
                 </TableRow>
               )
