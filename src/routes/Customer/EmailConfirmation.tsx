@@ -9,9 +9,10 @@ import Submit from '../../components/Validator/Submit';
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
-import { ILeadContainer } from '../LeadAPI';
+import LeadAPI, { ILeadContainer } from '../LeadAPI';
 import FormTemplate from './FormTemplate';
 import { IAddress } from '../../interfaces/ICompany';
+import LeadService from '../../services/LeadService';
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -33,12 +34,21 @@ class EmailConfirmation extends FormTemplate<Props, State> {
   }
   private handleChange = handleChangeFunction<State>(this)
 
-  send = () => {
-    this.saveFunction()
+  send = (): Promise<void> => {
+    const { AddressId, Comment } = this.state
+    const { Lead } = this.props.container
+
+    if (LeadAPI.isCompleteLead(Lead) && AddressId) {
+      return new Promise(async (resolve, reject) => {
+        await LeadService.sendVisitConfirmation({ LeadId: Lead.LeadId, Comment: Comment, AddressId: AddressId })
+
+        await this.saveFunction()
+        resolve()
+      })
+    }
+
     return Promise.resolve()
-
   }
-
 
   public render() {
     const { selectedCompany, container } = this.props
@@ -83,6 +93,7 @@ class EmailConfirmation extends FormTemplate<Props, State> {
           value={Comment}
           name="Comment"
           onChange={this.handleChange}
+          multiline
         />
 
         {/* Only available when online */}

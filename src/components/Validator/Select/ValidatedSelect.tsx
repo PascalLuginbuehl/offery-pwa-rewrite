@@ -140,7 +140,7 @@ class ValidatedSelect extends React.Component<Props, State> {
           value={options.filter(({ value: valueId }) => valueId === value)}
           // value={value ? isMulti ? value.map(toOptions) : toOptions(value) : null}
           isMulti={isMulti}
-          // placeholder="Search a country (start with a)"
+          placeholder={intl.formatMessage({id: "SELECT"})}
 
           onChange={this.selectOnChange}
 
