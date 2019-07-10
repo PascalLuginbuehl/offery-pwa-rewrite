@@ -42,46 +42,33 @@ class TableDashboard extends React.Component<Props, State> {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center" padding="none">
-                <OfflinePinIcon fontSize="small" />
-              </TableCell>
-              <TableCell><FormattedMessage id="CUSTOMER" /></TableCell>
-              <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
-              <TableCell><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
-              <TableCell><FormattedMessage id="PROJECT_START" /></TableCell>
-              <TableCell><FormattedMessage id="ACTIONS" /></TableCell>
+              <TableCell variant="head" align="center" padding="none"><FormattedMessage id="ACTIONS" /></TableCell>
+              <TableCell variant="head"><FormattedMessage id="CUSTOMER" /></TableCell>
+              <TableCell variant="head"><FormattedMessage id="VISITING_DATE" /></TableCell>
+              <TableCell variant="head"><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
+              <TableCell variant="head"><FormattedMessage id="PROJECT_START" /></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {leads.map(({isCached, Lead: lead}) => {
-              return (
-                <TableRow key={lead.LeadId}>
-                  <TableCell padding="none">
-                    <StatusButton lead={{isCached, Lead: lead}} />
-                  </TableCell>
+            {leads.map(({isCached, Lead}) =>
+              <TableRow key={Lead.LeadId}>
+                <TableCell padding="none" align="center">
+                  <StatusButton lead={{isCached, Lead: Lead}} />
+                </TableCell>
 
-                  <TableCell>
-                    {lead.Customer.Firstname + " " + lead.Customer.Lastname}
-                  </TableCell>
-                  <TableCell>{lead.VisitDate ? <FormattedDate year="numeric" month="long" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
-                  <TableCell>
-                    {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
-                    &nbsp;/&nbsp;
-                    {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
-                  </TableCell>
+                <TableCell>
+                  {Lead.Customer.Firstname + " " + Lead.Customer.Lastname}
+                </TableCell>
+                <TableCell>{Lead.VisitDate ? <FormattedDate year="numeric" month="long" day="2-digit" value={Lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
+                <TableCell>
+                  {Lead.FromAddress ? `${Lead.FromAddress.PLZ} ${Lead.FromAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
+                  &nbsp;/&nbsp;
+                  {Lead.ToAddress ? `${Lead.ToAddress.PLZ} ${Lead.ToAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
+                </TableCell>
 
-                  <TableCell></TableCell>
-
-                  <TableCell padding="checkbox" style={{whiteSpace: "nowrap"}} align="center">
-                    <PlainLink to={`/lead/${lead.LeadId}/building`}>
-                      <IntlTooltip title="SHOW_LEAD">
-                        <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
-                      </IntlTooltip>
-                    </PlainLink>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+                <TableCell></TableCell>
+              </TableRow>
+            )}
 
           </TableBody>
         </Table>

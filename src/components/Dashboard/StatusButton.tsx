@@ -48,14 +48,14 @@ class TableDashboard extends React.Component<Props> {
       return {
         icon: <RecordVoiceOverIcon fontSize="small" />,
         color: red[500],
-        link: '/customer',
+        link: '/building',
       }
     }
 
     return {
       icon: <RecordVoiceOverIcon fontSize="small" />,
       color: 'red',
-      link: '/customer',
+      link: '/building',
     }
     // green[500]
     {/* <IconButton><HomeIcon fontSize="small" /></IconButton>
