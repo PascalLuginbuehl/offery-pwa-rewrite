@@ -45,7 +45,7 @@ interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
   leads: IOfflineLead[]
 }
 
-class TableDashboard extends React.Component<Props, State> {
+class MobileDashboard extends React.Component<Props, State> {
   state: State = {
     openListActions: null,
   }
@@ -58,8 +58,8 @@ class TableDashboard extends React.Component<Props, State> {
       <>
         <List className={classes.root} >
           {leads.map(({isCached, Lead: lead}) => (
-            <>
-              <ListItem key={lead.LeadId} disableGutters>
+            <div key={ lead.LeadId }>
+              <ListItem disableGutters>
                 <ListItemAvatar>
                   <StatusButton lead={{ isCached, Lead: lead }} />
                 </ListItemAvatar>
@@ -87,7 +87,8 @@ class TableDashboard extends React.Component<Props, State> {
                   </ListItem>
                 </List>
               </Collapse>
-            </>))
+            </div>
+            ))
           }
         </List>
 
@@ -101,4 +102,4 @@ class TableDashboard extends React.Component<Props, State> {
   }
 }
 
-export default injectIntl(withStyles(styles)(TableDashboard))
+export default injectIntl(withStyles(styles)(MobileDashboard))
