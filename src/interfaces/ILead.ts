@@ -41,7 +41,7 @@ export interface IUpdateLead extends IPostLead {
   Customer: IUpdateCustomer
 }
 
-export interface Status {
+export interface IStatus {
   StatusId: number
   NameTextKey: string
 }
@@ -55,11 +55,11 @@ export interface ILead extends IUpdateLead {
 
   Customer: ICustomer
 
-  Status: Status
+  Status: IStatus
   StatusHistories: Array<{
     StatusHistoryId: number
     Created: Date,
-    Status: Status
+    Status: IStatus
   }>
 
   FromAddress: IAddress | null

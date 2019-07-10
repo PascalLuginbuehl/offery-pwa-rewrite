@@ -33,19 +33,12 @@ class Navigation extends React.Component<Props, State> {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          <NavItem to="/" title="HOME"/>
-
-          {/* <ListItem button>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="HOME" />
-          </ListItem> */}
+          <NavItem to="/" title="DASHBOARD"/>
 
           <Divider />
 
-
           <div ref={this.setNavigationElementPortal} />
+
         </List>
       </div>
     )

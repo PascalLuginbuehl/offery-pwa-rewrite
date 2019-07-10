@@ -112,3 +112,4 @@ SELECT,Select...,Auswählen...
 REQUIRED,Required,Pflichtfeld
 REQUIRED_SELECT,Required,Pflichtfeld
 ACTIONS,Action,Aktionen
+DASHBOARD,Dashboard,Dashboard

@@ -2,7 +2,6 @@ import * as React from 'react'
 import { green } from '@material-ui/core/colors';
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import { NavLink } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
 import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye'
@@ -13,11 +12,16 @@ import IntlTooltip from '../Intl/IntlTooltip';
 import { ILead } from '../../interfaces/ILead';
 import { IOfflineLead } from '../../routes/Dashboard';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
+import PlainLink from '../PlainLink';
+import StatusButton from './StatusButton';
 
 
 const styles = (theme: Theme) =>
   createStyles({
-
+    positionAddRight: {
+      padding: theme.spacing(2),
+      textAlign: "right",
+    }
   })
 
 interface State {
@@ -38,8 +42,8 @@ class TableDashboard extends React.Component<Props, State> {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <OfflinePinIcon/>
+              <TableCell align="center" padding="none">
+                <OfflinePinIcon fontSize="small" />
               </TableCell>
               <TableCell><FormattedMessage id="CUSTOMER" /></TableCell>
               <TableCell><FormattedMessage id="VISITING_DATE" /></TableCell>
@@ -52,16 +56,11 @@ class TableDashboard extends React.Component<Props, State> {
             {leads.map(({isCached, Lead: lead}) => {
               return (
                 <TableRow key={lead.LeadId}>
-                  <TableCell component="th" scope="row">
-
-                    {isCached ? (
-                      <IntlTooltip title="LOADED_FROM_CACHE">
-                        <OfflinePinIcon color="primary" />
-                      </IntlTooltip>
-                      ) : null
-                    }
+                  <TableCell padding="none">
+                    <StatusButton lead={{isCached, Lead: lead}} />
                   </TableCell>
-                  <TableCell component="th" scope="row">
+
+                  <TableCell>
                     {lead.Customer.Firstname + " " + lead.Customer.Lastname}
                   </TableCell>
                   <TableCell>{lead.VisitDate ? <FormattedDate year="numeric" month="long" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}</TableCell>
@@ -74,35 +73,26 @@ class TableDashboard extends React.Component<Props, State> {
                   <TableCell></TableCell>
 
                   <TableCell padding="checkbox" style={{whiteSpace: "nowrap"}} align="center">
-                    <NavLink to={`/lead/${lead.LeadId}/building`}>
+                    <PlainLink to={`/lead/${lead.LeadId}/building`}>
                       <IntlTooltip title="SHOW_LEAD">
                         <IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton>
                       </IntlTooltip>
-                    </NavLink>
+                    </PlainLink>
                   </TableCell>
                 </TableRow>
               )
             })}
 
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell variant="footer" />
-              <TableCell variant="footer" />
-              <TableCell variant="footer" />
-              <TableCell variant="footer" />
-              <TableCell variant="footer" />
-
-              <TableCell variant="footer" align="right">
-                <NavLink to="/lead/new/building">
-                  <Fab color="primary" size="small">
-                    <AddIcon fontSize="small" />
-                  </Fab>
-                </NavLink>
-              </TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
+
+        <div className={classes.positionAddRight}>
+          <PlainLink to="/lead/new/building">
+            <Fab color="primary" size="small">
+              <AddIcon fontSize="small" />
+            </Fab>
+          </PlainLink>
+        </div>
 
 
       </>
