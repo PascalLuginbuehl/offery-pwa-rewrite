@@ -113,3 +113,5 @@ REQUIRED,Required,Pflichtfeld
 REQUIRED_SELECT,Required,Pflichtfeld
 ACTIONS,Action,Aktionen
 DASHBOARD,Dashboard,Dashboard
+DULICATE,Duplice,Duplizieren
+VISIT_ADDRESS,Visit Address,Besichtigungsadresse

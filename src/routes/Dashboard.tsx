@@ -110,10 +110,10 @@ class Dashboard extends React.Component<Props, State> {
     const { classes, intl, width, selectedCompany } = this.props
     const { leadsAwait, leads, currentTab, openListActions } = this.state
 
-
     if(currentTab == 0) {
       if(leads) {
-        return isWidthUp('sm', width) ? <TableDashboard leads={leads} /> : <MobileDashboard leads={leads} />
+        const tempLeads = leads.sort(({ Lead: { VisitDate } }, { Lead: { VisitDate: VisitDate2 } }) => VisitDate && VisitDate2 ? VisitDate2.getTime() - VisitDate.getTime() : 0)
+        return isWidthUp('sm', width) ? <TableDashboard leads={tempLeads} /> : <MobileDashboard leads={tempLeads} />
       } else {
         return <Typography color="textSecondary" variant="h4" >Error, no leads found</Typography>
       }

@@ -16,8 +16,11 @@ import HomeIcon from '@material-ui/icons/Home'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ArchiveIcon from '@material-ui/icons/Archive'
+import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
+
 import PlainLink from '../PlainLink';
 import StatusButton from './StatusButton';
+import IntlTooltip from '../Intl/IntlTooltip';
 
 
 const styles = (theme: Theme) =>
@@ -45,7 +48,7 @@ interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
   leads: IOfflineLead[]
 }
 
-class TableDashboard extends React.Component<Props, State> {
+class MobileDashboard extends React.Component<Props, State> {
   state: State = {
     openListActions: null,
   }
@@ -58,8 +61,8 @@ class TableDashboard extends React.Component<Props, State> {
       <>
         <List className={classes.root} >
           {leads.map(({isCached, Lead: lead}) => (
-            <>
-              <ListItem key={lead.LeadId} disableGutters>
+            <div key={lead.LeadId}>
+              <ListItem  disableGutters>
                 <ListItemAvatar>
                   <StatusButton lead={{ isCached, Lead: lead }} />
                 </ListItemAvatar>
@@ -78,20 +81,25 @@ class TableDashboard extends React.Component<Props, State> {
                     <PlainLink to={`/lead/${lead.LeadId}/customer`}><IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton></PlainLink>
 
                     <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
-                      <IconButton><RecordVoiceOverIcon fontSize="small" /></IconButton>
+
+                      {/* <IconButton><RecordVoiceOverIcon fontSize="small" /></IconButton>
                       <IconButton><HomeIcon fontSize="small" /></IconButton>
                       <IconButton><MonetizationOnIcon fontSize="small" /></IconButton>
                       <IconButton><CheckCircleIcon fontSize="small" /></IconButton>
-                      <IconButton><ArchiveIcon fontSize="small" /></IconButton>
+                      <IconButton><ArchiveIcon fontSize="small" /></IconButton> */}
+                      <IntlTooltip title="DUPLICATE">
+                        <IconButton><ControlPointDuplicateIcon fontSize="small" /></IconButton>
+                      </IntlTooltip>
+
                     </Collapse>
                   </ListItem>
                 </List>
               </Collapse>
-            </>))
+            </div>))
           }
         </List>
 
-        <PlainLink to="/lead/new/customer" className={classes.fab}>
+        <PlainLink to="/lead/new/building" className={classes.fab}>
           <Fab color="primary" >
             <AddIcon />
           </Fab>
@@ -101,4 +109,4 @@ class TableDashboard extends React.Component<Props, State> {
   }
 }
 
-export default injectIntl(withStyles(styles)(TableDashboard))
+export default injectIntl(withStyles(styles)(MobileDashboard))
