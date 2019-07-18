@@ -31,6 +31,7 @@ interface State extends ILeadContainer {
 
   loadedFromOffline: boolean
   successOpen: boolean
+
   isOffline: boolean
 }
 
@@ -87,6 +88,12 @@ class Lead extends Component<Props, State> {
         reject(e)
       }
     })
+  }
+
+  throwGoOffline() {
+    if(this.state.isOffline) {
+      throw new Error("Should be offline")
+    }
   }
 
   loadFromOfflineOrOnline = (potentialLeadId: number): Promise<void> => {
@@ -226,7 +233,7 @@ class Lead extends Component<Props, State> {
       promise.then(lead => {
         this.setState({Lead: lead, moveIn: null, cleaning: null, disposal: null, moveOut: null, storage: null})
 
-        this.props.history.replace("/lead/" +  lead.LeadId + this.nextPageFunction("/"))
+        this.props.history.replace("/lead/" + lead.LeadId + this.nextPageFunction("/building"))
       }).catch(e => {
         if (e.message == "Failed to fetch") {
           console.log("Cannot create from offline")

@@ -80,7 +80,7 @@ class EmailConfirmation extends FormTemplate<Props, State> {
         </Grid>
 
         <ValidatedSelect
-          label="BUILDING_TYPE"
+          label="VISIT_ADDRESS"
           value={AddressId}
           name="AddressId"
           onChange={this.handleChange}
