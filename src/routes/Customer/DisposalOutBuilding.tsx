@@ -15,7 +15,7 @@ interface State {
 }
 
 interface Props extends WithResourceProps {
-  data: IPostDisposalOutBuilding | null
+  data: IPostDisposalOutBuilding
   onChange: (data: IPostDisposalOutBuilding) => void
   save: () => Promise<void>
 }
@@ -28,8 +28,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
   public render() {
     const { resource } = this.props
 
-    const data = this.props.data ? this.props.data : emptyDisposalOutBuilding
-    const { Address, RoomAmount, TotalArea, EtageId, ElevatorId, MetersToParking, StairsToEntryAmount, PeopleLivingAmount, BuildingTypeId } = data
+    const { Address, RoomAmount, TotalArea, EtageId, ElevatorId, MetersToParking, StairsToEntryAmount, PeopleLivingAmount, BuildingTypeId } = this.props.data
 
 
     return (

@@ -25,6 +25,7 @@ import { emptyLead } from '../interfaces/ILead';
 import Service from './Service';
 import { withResource, WithResourceProps } from '../providers/withResource';
 import NavFolder from '../components/Navigation/NavFolder';
+import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -309,7 +310,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <MoveOutBuilding
                     {...routeProps}
-                    data={moveOut}
+                    data={moveOut ? moveOut : emptyMoveOutBuilding}
                     onChange={(data) => this.handleChange(data, "moveOut")}
                     save={this.Save}
                     nextPage={match.url + this.nextPageFunction('/building/move-out')}
@@ -323,7 +324,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <MoveInBuilding
                     {...routeProps}
-                    data={moveIn}
+                    data={moveIn ? moveIn : emptyMoveInBuilding}
                     onChange={(data) => this.handleChange(data, "moveIn")}
                     save={this.Save}
                     nextPage={match.url + this.nextPageFunction('/building/move-in')}
@@ -337,7 +338,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <StorageBuilding
                     {...routeProps}
-                    data={storage}
+                    data={storage ? storage : emptyStorageBuilding}
                     onChange={(data) => this.handleChange(data, "storage")}
                     save={this.Save}
                     nextPage={match.url + this.nextPageFunction('/building/storage')}
@@ -351,7 +352,7 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <DisposalOutBuilding
                     {...routeProps}
-                    data={disposal}
+                    data={disposal ? disposal : emptyDisposalOutBuilding}
                     onChange={(data) => this.handleChange(data, "disposal")}
                     save={this.Save}
                     nextPage={match.url + this.nextPageFunction('/building/disposal')}
@@ -365,7 +366,7 @@ class Lead extends Component<Props, State> {
                  render={(routeProps) =>
                   <CleaningBuilding
                     {...routeProps}
-                    data={cleaning}
+                    data={cleaning ? cleaning : emptyCleaningBuilding}
                     onChange={(data) => this.handleChange(data, "cleaning")}
                     save={this.Save}
                     nextPage={match.url + this.nextPageFunction('/building/cleaning')}

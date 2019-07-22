@@ -115,7 +115,7 @@ class ValidatedTextField extends React.Component<Props, State> {
         {...props}
 
         id={label}
-        value={value}
+        value={value == null ? undefined : value}
         onChange={this.newOnChange}
         label={intl.formatMessage({ id: label })}
         name={name}

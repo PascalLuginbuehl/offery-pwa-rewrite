@@ -16,7 +16,7 @@ interface State {
 }
 
 interface Props extends WithResourceProps {
-  data: IPostCleaningBuilding | null
+  data: IPostCleaningBuilding
   onChange: (data: IPostCleaningBuilding) => void
   save: () => Promise<void>
 }
@@ -29,9 +29,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
   public render() {
     const { resource } = this.props
 
-    const data = this.props.data ? this.props.data : emptyCleaningBuilding
-    const { Address, RoomAmount, TotalArea, BuildingTypeId, HasBasement, HasAttic, HasGarden, HasWinterGarden, BuildingTypeDetailId, RestroomAmount, BalconyId, FloorTypeId, RollerBlindTypeId, WindowNormalAmount, WindowHightVerticalAmount, GarageTypeId, BuiltinWardrobeRangeId, PollutionDegreeId, HadPets, HasHardenedDirt, HasMoldAtWall, HasMoldAtWindow, HasSmoked } = data
-
+    const { Address, RoomAmount, TotalArea, BuildingTypeId, HasBasement, HasAttic, HasGarden, HasWinterGarden, BuildingTypeDetailId, RestroomAmount, BalconyId, FloorTypeId, RollerBlindTypeId, WindowNormalAmount, WindowHightVerticalAmount, GarageTypeId, BuiltinWardrobeRangeId, PollutionDegreeId, HadPets, HasHardenedDirt, HasMoldAtWall, HasMoldAtWindow, HasSmoked } = this.props.data
 
     return (
       <>
@@ -71,6 +69,8 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           name="RoomAmount"
           type="number"
           onChange={this.handleChange}
+
+          inputProps={{step: 0.5}}
         />
 
         <ValidatedTextField

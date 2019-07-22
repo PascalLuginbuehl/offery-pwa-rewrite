@@ -4,19 +4,19 @@ import { Omit } from 'react-router';
 
 export interface BaseBuilding {
   Address: IPostAddress
-  ElevatorId: number
-  RoomAmount: number
-  TotalArea: number
-  EtageId: number
-  StairsToEntryAmount: number
-  MetersToParking: number
+  ElevatorId: number | null
+  RoomAmount: number | null
+  TotalArea: number  | null
+  EtageId: number | null
+  StairsToEntryAmount: number | null
+  MetersToParking: number | null
 
   Comment: string
 }
 
 interface MoveBuildingBase extends BaseBuilding {
-  BuildingTypeId: number
-  BuildingAgeId: number
+  BuildingTypeId: number | null
+  BuildingAgeId: number | null
 
 
   HasBasement: boolean
@@ -27,14 +27,14 @@ interface MoveBuildingBase extends BaseBuilding {
 }
 
 const emptyBuilding: BaseBuilding = {
-  EtageId: 1,
-  ElevatorId: 1,
+  EtageId: null,
+  ElevatorId: null,
   Comment: "",
 
-  RoomAmount: 0,
-  TotalArea: 0,
-  StairsToEntryAmount: 0,
-  MetersToParking: 0,
+  RoomAmount: null,
+  TotalArea: null,
+  StairsToEntryAmount: null,
+  MetersToParking: null,
 
   Address: { ...emtpyAddress },
 }
@@ -54,7 +54,7 @@ const emptyMoveBuildingBase: MoveBuildingBase = {
 
 // MoveOutBuilding
 export interface IPostMoveOutBuilding extends MoveBuildingBase {
-  PeopleLivingAmount: number
+  PeopleLivingAmount: number | null
 }
 
 export interface IUpdateMoveOutBuilding extends IPostMoveOutBuilding {
@@ -70,7 +70,7 @@ export interface IMoveOutBuilding extends IUpdateMoveOutBuilding {
 export const emptyMoveOutBuilding: IPostMoveOutBuilding = {
   ...emptyMoveBuildingBase,
 
-  PeopleLivingAmount: 4,
+  PeopleLivingAmount: null,
 }
 
 // Move In building
@@ -114,8 +114,8 @@ export const emptyStorageBuilding: IPostStorageBuilding = {
 
 // Disposal
 export interface IPostDisposalOutBuilding extends BaseBuilding {
-  PeopleLivingAmount: number
-  BuildingTypeId: number
+  PeopleLivingAmount: number | null
+  BuildingTypeId: number | null
 }
 
 export interface IUpdateDisposalOutBuilding extends IPostDisposalOutBuilding {
@@ -130,15 +130,15 @@ export interface IDisposalOutBuilding extends IUpdateDisposalOutBuilding {
 
 export const emptyDisposalOutBuilding : IPostDisposalOutBuilding = {
   ...emptyBuilding,
-  PeopleLivingAmount: 0,
-  BuildingTypeId: 0,
+  PeopleLivingAmount: null,
+  BuildingTypeId: null,
 }
 
 //Cleaning
 export interface IPostCleaningBuilding {
-  RestroomAmount: number
-  WindowNormalAmount: number
-  WindowHightVerticalAmount: number
+  RestroomAmount: number | null
+  WindowNormalAmount: number | null
+  WindowHightVerticalAmount: number | null
   HasBasement: boolean
   HasAttic: boolean
   HasGarden: boolean
@@ -148,18 +148,18 @@ export interface IPostCleaningBuilding {
   HasMoldAtWall: boolean
   HasHardenedDirt: boolean
   HadPets: boolean
-  BuildingTypeId: number
-  BuildingTypeDetailId: number
-  BalconyId: number
-  FloorTypeId: number
-  RollerBlindTypeId: number
-  GarageTypeId: number
-  PollutionDegreeId: number
-  BuiltinWardrobeRangeId: number
+  BuildingTypeId: number | null
+  BuildingTypeDetailId: number | null
+  BalconyId: number | null
+  FloorTypeId: number | null
+  RollerBlindTypeId: number | null
+  GarageTypeId: number | null
+  PollutionDegreeId: number | null
+  BuiltinWardrobeRangeId: number | null
 
   Address: IPostAddress
-  RoomAmount: number
-  TotalArea: number
+  RoomAmount: number | null
+  TotalArea: number | null
 
   Comment: string
 }
@@ -176,9 +176,9 @@ export interface ICleaningBuilding extends IUpdateCleaningBuilding {
 
 export const emptyCleaningBuilding: IPostCleaningBuilding ={
   ...emptyBuilding,
-  RestroomAmount: 0,
-  WindowNormalAmount: 0,
-  WindowHightVerticalAmount: 0,
+  RestroomAmount: null,
+  WindowNormalAmount: null,
+  WindowHightVerticalAmount: null,
 
   HasBasement: false,
   HasAttic: false,
@@ -190,12 +190,12 @@ export const emptyCleaningBuilding: IPostCleaningBuilding ={
   HasHardenedDirt: false,
   HadPets: false,
 
-  BuildingTypeId: 1,
-  BuildingTypeDetailId: 1,
-  BalconyId: 1,
-  FloorTypeId: 1,
-  RollerBlindTypeId: 1,
-  GarageTypeId: 1,
-  PollutionDegreeId: 1,
-  BuiltinWardrobeRangeId: 1,
+  BuildingTypeId: null,
+  BuildingTypeDetailId: null,
+  BalconyId: null,
+  FloorTypeId: null,
+  RollerBlindTypeId: null,
+  GarageTypeId: null,
+  PollutionDegreeId: null,
+  BuiltinWardrobeRangeId: null,
 }
