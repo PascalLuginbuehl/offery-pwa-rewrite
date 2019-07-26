@@ -175,7 +175,12 @@ export interface ICleaningBuilding extends IUpdateCleaningBuilding {
 }
 
 export const emptyCleaningBuilding: IPostCleaningBuilding ={
-  ...emptyBuilding,
+  TotalArea: null,
+  RoomAmount: null,
+
+  Comment: "",
+  Address: { ...emtpyAddress },
+
   RestroomAmount: null,
   WindowNormalAmount: null,
   WindowHightVerticalAmount: null,

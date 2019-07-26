@@ -190,8 +190,8 @@ class Lead extends Component<Props, State> {
   }
 
 
-  Save = (): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
+  Save = (): Promise<any> => {
+    return (new Promise(async (resolve, reject) => {
       const { initialAwait, successOpen, loadedFromOffline, ...lead} = this.state
 
       const { Lead } = lead
@@ -214,17 +214,24 @@ class Lead extends Component<Props, State> {
               console.log("Couldn't save offline", e)
               reject("Couldn't save offline")
             }
-          } else {
+          } else if (e.message == "Could not save lead properly") {
             // Other type of error message
-
-            console.log("Unknown error:")
-            console.dir(e)
+            console.log("I need ma own error popup m8")
+            reject("Error while saving")
+          } else {
+            console.log("Unknown error:", e)
+            reject(e)
           }
         }
       } else {
         console.log("Lead not yet created")
       }
     })
+    .catch(e => {
+
+      console.log("Well, there was a litte error happening while savin m8")
+      throw Error("Error, not saved")
+    }))
   }
 
   Create = (): Promise<any> => {

@@ -28,7 +28,6 @@ class CleaningBuilding extends FormTemplate<Props, State> {
 
   public render() {
     const { resource } = this.props
-
     const { Address, RoomAmount, TotalArea, BuildingTypeId, HasBasement, HasAttic, HasGarden, HasWinterGarden, BuildingTypeDetailId, RestroomAmount, BalconyId, FloorTypeId, RollerBlindTypeId, WindowNormalAmount, WindowHightVerticalAmount, GarageTypeId, BuiltinWardrobeRangeId, PollutionDegreeId, HadPets, HasHardenedDirt, HasMoldAtWall, HasMoldAtWindow, HasSmoked } = this.props.data
 
     return (
