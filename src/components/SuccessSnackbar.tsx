@@ -14,26 +14,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { withStyles, WithStyles } from '@material-ui/styles';
 
-const variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon,
-};
-
 const styles = ((theme: Theme) => ({
-  success: {
-    backgroundColor: green[600],
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark,
-  },
-  info: {
-    backgroundColor: theme.palette.primary.dark,
-  },
-  warning: {
-    backgroundColor: amber[700],
-  },
   icon: {
     fontSize: 20,
   },
@@ -52,7 +33,6 @@ export interface Props extends WithStyles<typeof styles> {
   message?: string
   onClose?: () => void
   open: boolean
-  variant: keyof typeof variantIcon
 }
 
 function Snackbar(props: Props) {
@@ -71,14 +51,8 @@ function Snackbar(props: Props) {
       onClose={onClose}
     >
       <SnackbarContent
-        className={clsx(classes[variant], className)}
         aria-describedby="client-snackbar"
-        message={
-          <span id="client-snackbar" className={classes.message}>
-            <Icon className={clsx(classes.icon, classes.iconVariant)} />
-            {message}
-          </span>
-        }
+        message={message}
         action={[
           <IconButton key="close" aria-label="Close" color="inherit" onClick={onClose}>
             <CloseIcon className={classes.icon} />
@@ -86,7 +60,7 @@ function Snackbar(props: Props) {
         ]}
         {...other}
       />
-    </OriginalSnackbar >
+    </OriginalSnackbar>
 
   );
 }

@@ -63,8 +63,6 @@ class Index extends React.Component<Props, {}> {
         </BigCheckbox>
 
         <ValidatedDatePicker name="MoveDate" value={MoveDate} onChange={this.handleChange} label="" />
-
-
       </>
     )
   }

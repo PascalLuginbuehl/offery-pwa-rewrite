@@ -26,6 +26,7 @@ import Service from './Service';
 import { withResource, WithResourceProps } from '../providers/withResource';
 import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
+import SuccessSnackbar from '../components/SuccessSnackbar';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -230,7 +231,9 @@ class Lead extends Component<Props, State> {
     .catch(e => {
 
       console.log("Well, there was a litte error happening while savin m8")
-      throw Error("Error, not saved")
+
+
+      throw Error("Not saved")
     }))
   }
 
@@ -440,6 +443,7 @@ class Lead extends Component<Props, State> {
             HI
           </NavFolder>
         </>, portal) : null}
+        <SuccessSnackbar message="Error Occured" open={} onClose={this.}   />
       </>
     )
   }
