@@ -35,6 +35,8 @@ interface State extends ILeadContainer {
   successOpen: boolean
 
   isOffline: boolean
+
+  errorOccured: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
@@ -48,6 +50,8 @@ class Lead extends Component<Props, State> {
     initialAwait: null,
     loadedFromOffline: false,
     successOpen: false,
+
+    errorOccured: false,
 
     isOffline: false
   }
@@ -156,6 +160,10 @@ class Lead extends Component<Props, State> {
     })
   }
 
+  closeError = () => {
+    this.setState({errorOccured: false})
+  }
+
   nextPageFunction = (current: string) => {
     // Check if lead is even defined
     if (this.state.Lead) {
@@ -233,6 +241,7 @@ class Lead extends Component<Props, State> {
       console.log("Well, there was a litte error happening while savin m8")
 
 
+
       throw Error("Not saved")
     }))
   }
@@ -273,6 +282,7 @@ class Lead extends Component<Props, State> {
       onlySavedOffline,
       loadedFromOffline,
       successOpen,
+      errorOccured,
     } = this.state
     const { match, portal } = this.props
 
@@ -443,7 +453,7 @@ class Lead extends Component<Props, State> {
             HI
           </NavFolder>
         </>, portal) : null}
-        <SuccessSnackbar message="Error Occured" open={} onClose={this.}   />
+        <SuccessSnackbar message="Error Occured" open={errorOccured} onClose={this.closeError}   />
       </>
     )
   }

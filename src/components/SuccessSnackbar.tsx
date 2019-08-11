@@ -37,8 +37,7 @@ export interface Props extends WithStyles<typeof styles> {
 
 function Snackbar(props: Props) {
   const classes = props.classes
-  const { open, className, message, onClose, variant, ...other } = props;
-  const Icon = variantIcon[variant];
+  const { open, className, message, onClose, ...other } = props;
 
   return (
     <OriginalSnackbar
