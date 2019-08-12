@@ -65,17 +65,23 @@ export class ResourceProvider extends React.Component<Props, State> {
 
 
     const resourceAwait = ResourceService.fetchResourceWithOffline()
-    resourceAwait.then(this.setResource)
-
-    resourceAwait.catch((e) => {
-      if(e.message == "Failed to fetch") {
+    resourceAwait
+    .then(this.setResource)
+    .catch((e) => {
+      if (e.message == "Failed to fetch") {
         // U r now offline, keep offline
+      } else if(e.message == "Unauthorized") {
+        console.log("Session expired :(, no longer logged in")
+        this.setState({
+          loggedIn: false,
+        })
       } else {
         this.setState({
           loggedIn: false,
         })
       }
     })
+
 
     if(resource) {
       this.setResource(resource)
