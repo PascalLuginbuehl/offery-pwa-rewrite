@@ -42,8 +42,8 @@ const emptyBuilding: BaseBuilding = {
 const emptyMoveBuildingBase: MoveBuildingBase = {
   ...emptyBuilding,
 
-  BuildingTypeId: 1,
-  BuildingAgeId: 1,
+  BuildingTypeId: null,
+  BuildingAgeId: null,
 
   HasBasement: false,
   HasAttic: false,

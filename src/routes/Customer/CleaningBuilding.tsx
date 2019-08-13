@@ -69,7 +69,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
           type="number"
           onChange={this.handleChange}
 
-          inputProps={{step: 0.5}}
+          inputProps={{step: 0.5, min: 0.5}}
         />
 
         <ValidatedTextField

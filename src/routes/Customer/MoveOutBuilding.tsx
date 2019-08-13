@@ -59,6 +59,8 @@ class MoveOutBuilding extends FormTemplate<Props, State> {
           name="RoomAmount"
           type="number"
           onChange={this.handleChange}
+
+          inputProps={{ step: 0.5, min: 0.5 }}
         />
 
         <ValidatedTextField
