@@ -11,6 +11,9 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import { IPostMoveService } from '../../interfaces/IService';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
+import { Formik, FormikActions, FormikProps, Form, Field, FieldProps, ErrorMessage } from 'formik';
+import TextField from '../../components/FormikFields/TextField';
+
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -18,8 +21,8 @@ const styles = (theme: Theme) =>
   })
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
-  onChange: (data: IPostMoveService) => void
-  data: IPostMoveService
+  // onChange: (data: IPostMoveService) => void
+  // data: IPostMoveService
   save: () => Promise<void>
 }
 
@@ -30,13 +33,54 @@ class Index extends React.Component<Props, {}> {
   }
 
   public render() {
-    const { BoreService, DeMontageService, FurnitureLiftService, LampDemontageService, MontageService, MoveDate, PianoService } = this.props.data
+    // const { BoreService, DeMontageService, FurnitureLiftService, LampDemontageService, MontageService, MoveDate, PianoService } = this.props.data
+
     return (
       <>
         <Grid item xs={12}>
           <IntlTypography variant="h5">SERVICES</IntlTypography>
         </Grid>
 
+        <Grid item xs={12}>
+          <Formik
+            initialValues={ {test: 1} }
+            onSubmit={(values, actions) => {
+              // MyImaginaryRestApiCall(user.id, values).then(
+              //   updatedUser => {
+              //     actions.setSubmitting(false);
+              //     updateUser(updatedUser);
+              //     onClose();
+              //   },
+              //   error => {
+              //     actions.setSubmitting(false);
+              //     actions.setErrors(transformMyRestApiErrorsToAnObject(error));
+              //     actions.setStatus({ msg: 'Set some arbitrary status or data' });
+              //   }
+              // );
+            }}
+            render={({ errors, status, touched, isSubmitting }) => (
+              <Form>
+                <Field type="email" name="email" label="EMAIL" component={TextField} fullWidth />
+
+                <ErrorMessage name="email" component="div" />
+
+                <Field type="text" className="error" name="social.facebook" />
+
+                <ErrorMessage name="social.facebook">
+                  {errorMessage => <div className="error">{errorMessage}</div>}
+                </ErrorMessage>
+                <Field type="text" name="social.twitter" />
+                <ErrorMessage name="social.twitter" className="error" component="div" />
+                {status && status.msg && <div>{status.msg}</div>}
+                <button type="submit" disabled={isSubmitting}>
+                  Submit
+              </button>
+              </Form>
+              )}
+            />
+          </Grid>
+
+{/*
         <BigCheckbox name="BoreService" value={BoreService} onChange={this.handleChange}>
           DISPOSAL_BUILDING
         </BigCheckbox>
@@ -62,7 +106,7 @@ class Index extends React.Component<Props, {}> {
           DISPOSAL_BUILDING
         </BigCheckbox>
 
-        <ValidatedDatePicker name="MoveDate" value={MoveDate} onChange={this.handleChange} label="" />
+        <ValidatedDatePicker name="MoveDate" value={MoveDate} onChange={this.handleChange} label="" /> */}
       </>
     )
   }
