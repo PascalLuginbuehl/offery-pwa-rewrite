@@ -13,6 +13,7 @@ import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker'
 // import TestService from 'services/TestService'
 import { Formik, FormikActions, FormikProps, Form, Field, FieldProps, ErrorMessage } from 'formik';
 import TextField from '../../components/FormikFields/TextField';
+import Switch from '../../components/FormikFields/Switch';
 
 
 const styles = (theme: Theme) =>
@@ -43,8 +44,9 @@ class Index extends React.Component<Props, {}> {
 
         <Grid item xs={12}>
           <Formik
-            initialValues={ {test: 1} }
+            initialValues={ {email: "", BoreService: false} }
             onSubmit={(values, actions) => {
+
               // MyImaginaryRestApiCall(user.id, values).then(
               //   updatedUser => {
               //     actions.setSubmitting(false);
@@ -60,7 +62,9 @@ class Index extends React.Component<Props, {}> {
             }}
             render={({ errors, status, touched, isSubmitting }) => (
               <Form>
-                <Field type="email" name="email" label="EMAIL" component={TextField} fullWidth />
+                <Field name="email" label="EMAIL" component={TextField} fullWidth />
+
+                <Field name="BoreService" label="DISPOSAL_BUILDING" component={Switch} fullWidth />
 
                 <ErrorMessage name="email" component="div" />
 
@@ -81,9 +85,6 @@ class Index extends React.Component<Props, {}> {
           </Grid>
 
 {/*
-        <BigCheckbox name="BoreService" value={BoreService} onChange={this.handleChange}>
-          DISPOSAL_BUILDING
-        </BigCheckbox>
 
         <BigCheckbox name="DeMontageService" value={DeMontageService} onChange={this.handleChange}>
           DISPOSAL_BUILDING
