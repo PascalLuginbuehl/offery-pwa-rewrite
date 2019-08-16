@@ -4,6 +4,7 @@ import MuiTextField, {
 } from '@material-ui/core/TextField';
 import { FieldProps, getIn } from 'formik';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import Grid from '@material-ui/core/Grid';
 
 export type TextFieldProps = FieldProps &
   Omit<MuiTextFieldProps, 'error' | 'name' | 'onChange' | 'value'>;
@@ -43,7 +44,9 @@ const TextField: React.ComponentType<TextFieldProps> = injectIntl(({
   intl,
   ...props
 }: TextFieldProps & InjectedIntlProps) => (
-  <MuiTextField {...fieldToTextField(props, intl)}>{children}</MuiTextField>
+    <Grid item xs={12} md={6}>
+      <MuiTextField fullWidth {...fieldToTextField(props, intl)}>{children}</MuiTextField>
+    </Grid>
 ))
 
 TextField.displayName = 'FormikMaterialUITextField';

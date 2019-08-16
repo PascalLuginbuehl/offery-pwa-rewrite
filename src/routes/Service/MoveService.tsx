@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -11,9 +11,13 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import { IPostMoveService } from '../../interfaces/IService';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
-import { Formik, FormikActions, FormikProps, Form, Field, FieldProps, ErrorMessage } from 'formik';
+import { Formik, FormikActions, FormikProps, Field, FieldProps, ErrorMessage } from 'formik';
 import TextField from '../../components/FormikFields/TextField';
 import Switch from '../../components/FormikFields/Switch';
+import * as Yup from 'yup'
+import Form from '../../components/FormikFields/Form';
+import Submit from '../../components/FormikFields/Submit';
+import DatePicker from '../../components/FormikFields/DatePicker';
 
 
 const styles = (theme: Theme) =>
@@ -28,87 +32,64 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 }
 
 class Index extends React.Component<Props, {}> {
-
-  private handleChange = (value: string, target: string) => {
-    // this.props.onChange(Object.assign({}, this.props.data, { [target]: value }))
-  }
-
   public render() {
     // const { BoreService, DeMontageService, FurnitureLiftService, LampDemontageService, MontageService, MoveDate, PianoService } = this.props.data
 
     return (
-      <>
-        <Grid item xs={12}>
-          <IntlTypography variant="h5">SERVICES</IntlTypography>
+      <Grid item xs={12}>
+        <Formik
+          initialValues={{ email: "", BoreService: false, number: 0}}
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email()
+              .required(),
+            })
+          }
+          onSubmit={(values, actions) => {
+            const promise = this.props.save()
+            console.log(values)
+            // MyImaginaryRestApiCall(user.id, values).then(
+            //   updatedUser => {
+            //     actions.setSubmitting(false);
+            //     updateUser(updatedUser);
+            //     onClose();
+            //   },
+            //   error => {
+                actions.setSubmitting(false);
+                // actions.setErrors({});
+                actions.setStatus({ msg: 'Set some arbitrary status or data' });
+            //   }
+            // );
+          }}
+          render={({ errors, status, touched, isSubmitting }) => (
+            <Form>
+              <Grid item xs={12}>
+                <IntlTypography variant="h5">SERVICES</IntlTypography>
+              </Grid>
+
+
+              <Field name="BoreService" label="BORE_SERVICE" component={Switch} />
+
+              <Field name="DeMontageService" label="DE_MONTAGE_SERVICE" component={Switch} />
+
+              <Field name="FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={Switch} />
+
+              <Field name="LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={Switch} />
+
+              <Field name="MontageService" label="MONTAGE_SERVICE" component={Switch} />
+
+              <Field name="PianoService" label="PIANO_SERVICE" component={Switch} />
+
+              <Field name="MoveDate" label="MOVE_DATE" component={DatePicker} />
+
+
+              {status && status.msg && <div>{status.msg}</div>}
+
+              <Submit isSubmitting={isSubmitting}></Submit>
+            </Form>
+            )}
+          />
         </Grid>
-
-        <Grid item xs={12}>
-          <Formik
-            initialValues={ {email: "", BoreService: false} }
-            onSubmit={(values, actions) => {
-
-              // MyImaginaryRestApiCall(user.id, values).then(
-              //   updatedUser => {
-              //     actions.setSubmitting(false);
-              //     updateUser(updatedUser);
-              //     onClose();
-              //   },
-              //   error => {
-              //     actions.setSubmitting(false);
-              //     actions.setErrors(transformMyRestApiErrorsToAnObject(error));
-              //     actions.setStatus({ msg: 'Set some arbitrary status or data' });
-              //   }
-              // );
-            }}
-            render={({ errors, status, touched, isSubmitting }) => (
-              <Form>
-                <Field name="email" label="EMAIL" component={TextField} fullWidth />
-
-                <Field name="BoreService" label="DISPOSAL_BUILDING" component={Switch} fullWidth />
-
-                <ErrorMessage name="email" component="div" />
-
-                <Field type="text" className="error" name="social.facebook" />
-
-                <ErrorMessage name="social.facebook">
-                  {errorMessage => <div className="error">{errorMessage}</div>}
-                </ErrorMessage>
-                <Field type="text" name="social.twitter" />
-                <ErrorMessage name="social.twitter" className="error" component="div" />
-                {status && status.msg && <div>{status.msg}</div>}
-                <button type="submit" disabled={isSubmitting}>
-                  Submit
-              </button>
-              </Form>
-              )}
-            />
-          </Grid>
-
-{/*
-
-        <BigCheckbox name="DeMontageService" value={DeMontageService} onChange={this.handleChange}>
-          DISPOSAL_BUILDING
-        </BigCheckbox>
-
-
-        <BigCheckbox name="FurnitureLiftService" value={FurnitureLiftService} onChange={this.handleChange}>
-          DISPOSAL_BUILDING
-        </BigCheckbox>
-
-        <BigCheckbox name="LampDemontageService" value={LampDemontageService} onChange={this.handleChange}>
-          DISPOSAL_BUILDING
-        </BigCheckbox>
-
-        <BigCheckbox name="MontageService" value={MontageService} onChange={this.handleChange}>
-          DISPOSAL_BUILDING
-        </BigCheckbox>
-
-        <BigCheckbox name="PianoService" value={PianoService} onChange={this.handleChange}>
-          DISPOSAL_BUILDING
-        </BigCheckbox>
-
-        <ValidatedDatePicker name="MoveDate" value={MoveDate} onChange={this.handleChange} label="" /> */}
-      </>
     )
   }
 }

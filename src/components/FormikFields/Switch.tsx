@@ -5,6 +5,7 @@ import MuiSwitch, {
 import { FieldProps } from 'formik';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
 
 export interface SwitchProps
   extends FieldProps,
@@ -35,12 +36,16 @@ const Switch: React.ComponentType<SwitchProps & {label: string}> = injectIntl((
     label,
     ...props
   }: SwitchProps & InjectedIntlProps & {label: string}
-) => <FormControlLabel
-  control={
-    <MuiSwitch {...fieldToSwitch(props)} />
-  }
-  label={intl.formatMessage({ id: label })}
-/>)
+) =>
+  <Grid item xs={6} sm={4} md={3} >
+    <FormControlLabel
+      control={
+        <MuiSwitch {...fieldToSwitch(props)} />
+      }
+      label={intl.formatMessage({ id: label })}
+    />
+  </Grid>
+)
 
 Switch.displayName = 'FormikMaterialUISwitch';
 
