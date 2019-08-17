@@ -1,109 +1,74 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
 import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
 import * as React from 'react'
+import BigCheckbox from '../../components/Validator/BigCheckbox';
+import { withResource, WithResourceProps } from '../../providers/withResource';
+import { IPostMoveInBuilding } from '../../interfaces/IBuilding';
+import IntlTypography from '../../components/Intl/IntlTypography';
+import { IPostMoveService } from '../../interfaces/IService';
+import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
+import { Formik, FormikActions, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
+import TextField from '../../components/FormikFields/TextField';
+import Switch from '../../components/FormikFields/Switch';
+import * as Yup from 'yup'
+import Form from '../../components/FormikFields/Form';
+import Submit from '../../components/FormikFields/Submit';
+import DatePicker from '../../components/FormikFields/DatePicker';
+
 
 const styles = (theme: Theme) =>
   createStyles({
-    floatingButton: {
-      position: "fixed",
-      bottom: 10,
-      right: 10,
-    }
+
   })
 
-
-interface State {
-  cartSelected: Cart[]
+interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedFormikProps<{}, IPostMoveService> {
+  onChange: (data: IPostMoveService) => void
+  data: IPostMoveService
+  save: () => Promise<void>
 }
 
-class Index extends React.Component<WithStyles<typeof styles>, State> {
-
-  public static options = [{
-    id: "chair",
-    name: "Stuhl",
-  }, {
-    id: "table",
-    name: "Tisch"
-  }, {
-    id: "test1",
-    name: "Test1",
-  }, {
-    id: "test2",
-    name: "Test2"
-  }, {
-    id: "test3",
-    name: "Test3"
-  }, {
-    id: "test4",
-    name: "Test4"
-  }, {
-    id: "test5",
-    name: "Test7"
-  }]
-
-  public state: State = {
-    cartSelected: []
-  }
-
-  public addToCart = (item: GridSelectItem) => {
-    const cartSelected = [...this.state.cartSelected]
-
-    const itemIndex = cartSelected.findIndex(e => e.id == item.id)
-
-    if (itemIndex !== -1) {
-      const original = cartSelected[itemIndex]
-
-      cartSelected.splice(itemIndex, 1)
-      const newItem = Object.assign({}, original, { quantity: original.quantity + 1 })
-
-      cartSelected.unshift(newItem)
-    } else {
-      cartSelected.unshift({ id: item.id, name: item.name, quantity: 1 })
-    }
-
-
-    this.setState({ cartSelected })
-  }
-
+class Index extends React.Component<Props, {}> {
   public render() {
-    // const { classes } = this.props
-    const { cartSelected } = this.state
-
-    // TestService.fetchStuff()
-
+    const {errors, status, touched, isSubmitting} = this.props
+    console.log(props)
     return (
-      <>
-        <GridSelect options={Index.options} onSelect={this.addToCart} />
+      <Grid item xs={12}>
+        <Form>
+          <Grid item xs={12}>
+            <IntlTypography variant="h5">SERVICES</IntlTypography>
+          </Grid>
 
-        <Tabs
-          value={0}
-          // onChange={this.handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          // fullWidth
-          centered
-        >
-          <Tab label="Umzug" />
-          <Tab label="Enstorgung" />
-          <Tab label="Lager" />
-        </Tabs>
 
-        <CounterTable cart={cartSelected} />
+          <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
 
-        {/* <div>
-          <Button variant="fab" color="primary" aria-label="Next" className={classes.floatingButton}>
-            <NavigateNextIcon />
-          </Button>
-        </div> */}
+          <Field name="HasPackServiceEnabled" label="PACK" component={Switch} />
 
-        {/* <NextDial /> */}
-      </>
+          <Field name="HasStorageServiceEnabled" label="STORAGE" component={Switch} />
+
+          <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={Switch} />
+
+          <Field name="HasCleaningServiceEnabled" label="CLEANING" component={Switch} />
+
+          {status && status.msg && <div>{status.msg}</div>}
+
+          <Submit isSubmitting={isSubmitting}></Submit>
+        </Form>
+      </Grid>
     )
   }
 }
 
-export default withStyles(styles)(Index)
+export default withStyles(styles)(withResource(withFormik({
+  validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email()
+        .required(),
+    }),
+    handleSubmit: (values, actions) => {
+
+    }
+})(Index)))
