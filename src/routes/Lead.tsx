@@ -101,7 +101,7 @@ class Lead extends Component<Props, State> {
       try {
         const promiseOnline = LeadAPI.FetchFromOnline(potentialLeadId)
 
-        this.setState({ initialAwait: promiseOnline })
+        // this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
         this.setState({ ...lead, loadedFromOffline: false, onlySavedOffline: false })
