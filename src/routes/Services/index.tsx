@@ -38,17 +38,22 @@ class Index extends React.Component<Props, {}> {
     return (
       <Grid item xs={12}>
         <Formik<IPutServices>
-          initialValues={emptyServices}
+          initialValues={data}
           validationSchema={
             Yup.object().shape({
-              email: Yup.string()
-                .email()
-                .required(),
+              // email: Yup.string()
+              //   .email()
+              //   .required(),
             })
           }
-          onSubmit={(values, actions) => {
 
+          onSubmit={(values, actions) => {
+            this.props.onChange(values)
+            console.log(values)
+
+            actions.setSubmitting(false)
           }}
+
           render={({ errors, status, touched, isSubmitting }) => (
             <Form>
               <Grid item xs={12}>
