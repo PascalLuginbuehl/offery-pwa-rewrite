@@ -76,4 +76,14 @@ export interface IPutServices {
   HasCleaningServiceEnabled: boolean
 }
 
-  LeadId: 1
+export interface IServices extends IPutServices {
+  LeadId: number
+}
+
+export const emptyServices: IPutServices = {
+  HasMoveServiceEnabled: false,
+  HasPackServiceEnabled: false,
+  HasStorageServiceEnabled: false,
+  HasDisposalServiceEnabled: false,
+  HasCleaningServiceEnabled: false,
+}

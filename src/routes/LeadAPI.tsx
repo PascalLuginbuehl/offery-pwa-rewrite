@@ -19,6 +19,8 @@ import {
 import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
+import ServicesService from '../services/ServicesService';
+import { emptyServices, IPutServices, IServices } from '../interfaces/IService';
 
 
 export interface ILeadContainer {
@@ -31,6 +33,8 @@ export interface ILeadContainer {
   cleaning: IPostCleaningBuilding | ICleaningBuilding | null
   disposal: IPostDisposalOutBuilding | IDisposalOutBuilding | null
   storage: IPostStorageBuilding | IStorageBuilding | null
+
+  services: IPutServices | IServices
 
   // unsavedChanges:
 }
@@ -46,6 +50,8 @@ export const emptyLeadContainer: ILeadContainer = {
   cleaning: null,
   disposal: null,
   storage: null,
+
+  services: emptyServices
 }
 
 function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -54,6 +60,7 @@ function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
   }
   return false
 }
+
 class LeadAPI {
 
   // Only gets called to save into Offline Storage
@@ -65,7 +72,8 @@ class LeadAPI {
       BuildingService.fetchCleaningBuilding(leadId),
       BuildingService.fetchStorageBuilding(leadId),
       BuildingService.fetchDisposalOutBuilding(leadId),
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal]): ILeadContainer => ({
+      ServicesService.fetchServices(leadId),
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
@@ -80,6 +88,8 @@ class LeadAPI {
       disposal: disposal,
 
       storage: storage,
+
+      services: services
     }))
   }
 
@@ -114,10 +124,6 @@ class LeadAPI {
     }
 
     return Promise.reject()
-  }
-
-  saveServiceToApi = () => {
-
   }
 
 

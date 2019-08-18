@@ -22,12 +22,12 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import IntlTooltip from '../components/Intl/IntlTooltip';
 import LeadAPI, { ILeadContainer, emptyLeadContainer } from './LeadAPI';
 import { emptyLead } from '../interfaces/ILead';
-import Service from './Service';
+import Services from './Services';
 import { withResource, WithResourceProps } from '../providers/withResource';
 import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 import SuccessSnackbar from '../components/SuccessSnackbar';
-import MoveService from './Service/MoveService';
+import MoveService from './Services/MoveService';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -196,7 +196,7 @@ class Lead extends Component<Props, State> {
         { name: '/building/disposal', active: HasStorageInBuilding },
         { name: '/building/cleaning', active: HasCleaningBuilding },
         { name: '/building/email-confirmation', active: true },
-        { name: '/service', active: true },
+        { name: '/services', active: true },
       ]
 
       let lastPage = { name: '' }
@@ -296,6 +296,7 @@ class Lead extends Component<Props, State> {
       cleaning,
       storage,
       disposal,
+      services,
 
       initialAwait,
       onlySavedOffline,
@@ -426,11 +427,18 @@ class Lead extends Component<Props, State> {
                 }
               />
 
-              {/* Serivices */}
+              {/* Services */}
               <Route
-                path={`${match.url}/service`}
-                component={Service}
-                nextPage={`${match.url}/building/disposal`}
+                path={`${match.url}/services`}
+                render={(routeProps) =>
+                  <Services
+                    {...routeProps}
+                    save={this.Save}
+                    data={services}
+                    onChange={(data) => this.handleChange(data, "services")}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                  />
+                }
               />
 
               {/* MoveService */}
@@ -482,7 +490,7 @@ class Lead extends Component<Props, State> {
             ) : null}
           </NavFolder>
 
-          <NavFolder to={`${match.url}/service`} title="SERVICES">
+          <NavFolder to={`${match.url}/services`} title="SERVICES">
             HI
           </NavFolder>
         </>, portal) : null}

@@ -1,11 +1,12 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding";
+import { IServices, IPutServices } from "../interfaces/IService";
 
 const API_URL = process.env.REACT_APP_API_URL
 
 
-class ServiceService {
+class ServicesService {
   private toSpecificType<Type>(json: any): Type {
     if (!json || typeof json !== "object") {
       throw new Error()
@@ -52,28 +53,26 @@ class ServiceService {
   }
 
 
-  // MoveOut
-  public fetchMoveOutBuilding = (id: number): Promise<IMoveOutBuilding | null> => {
-    return this.fetchService<IMoveOutBuilding>(
-      API_URL + '/building/moveout/' + id,
-    )
+  // Services
+  public fetchServices = (leadId: number): Promise<IServices> => {
+    return this.fetchService<IServices>(
+      API_URL + '/lead/' + leadId + '/services',
+    ).then(e => {
+      if(e == null) {
+        throw new Error("Empty Service return not allowed")
+      } else {
+        return e
+      }
+    })
   }
 
-  public createMoveOutBuilding = (toMoveOutBuilding: IPostMoveOutBuilding, leadId: number) => {
-    return this.createService<IMoveOutBuilding>(
-      API_URL + '/building/moveout',
-      { LeadId: leadId, ...toMoveOutBuilding, CompanyId: 1 },
-    )
-  }
-
-  public saveMoveOutBuilding = (buildingId: number, toMoveOutBuilding: IPostMoveOutBuilding) => {
+  public saveServices = (leadId: number, services: IPutServices) => {
     return this.saveService<IMoveOutBuilding>(
-      API_URL + '/building/moveout',
-      { MoveOutBuildingId: buildingId, ...toMoveOutBuilding }
+      API_URL + '/lead/' + leadId + '/services',
+      services
     )
   }
-
 }
 
 
-export default new ServiceService()
+export default new ServicesService()
