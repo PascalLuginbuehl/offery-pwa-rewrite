@@ -33,42 +33,49 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedFo
 
 class Index extends React.Component<Props, {}> {
   public render() {
-    const {errors, status, touched, isSubmitting} = this.props
-    console.log(props)
+    const { data } = this.props
+
+    console.log(this.props)
     return (
       <Grid item xs={12}>
-        <Form>
-          <Grid item xs={12}>
-            <IntlTypography variant="h5">SERVICES</IntlTypography>
-          </Grid>
+        <Formik
+          initialValues={{ email: "", BoreService: false, number: 0 }}
+          validationSchema={
+            Yup.object().shape({
+              email: Yup.string()
+                .email()
+                .required(),
+            })
+          }
+          onSubmit={(values, actions) => {
+
+          }}
+          render={({ errors, status, touched, isSubmitting }) => (
+            <Form>
+              <Grid item xs={12}>
+                <IntlTypography variant="h5">SERVICES</IntlTypography>
+              </Grid>
 
 
-          <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
+              <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
 
-          <Field name="HasPackServiceEnabled" label="PACK" component={Switch} />
+              <Field name="HasPackServiceEnabled" label="PACK" component={Switch} />
 
-          <Field name="HasStorageServiceEnabled" label="STORAGE" component={Switch} />
+              <Field name="HasStorageServiceEnabled" label="STORAGE" component={Switch} />
 
-          <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={Switch} />
+              <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={Switch} />
 
-          <Field name="HasCleaningServiceEnabled" label="CLEANING" component={Switch} />
+              <Field name="HasCleaningServiceEnabled" label="CLEANING" component={Switch} />
 
-          {status && status.msg && <div>{status.msg}</div>}
+              {status && status.msg && <div>{status.msg}</div>}
 
-          <Submit isSubmitting={isSubmitting}></Submit>
-        </Form>
+              <Submit isSubmitting={isSubmitting}></Submit>
+            </Form>
+          )}
+        />
       </Grid>
     )
   }
 }
 
-export default withStyles(styles)(withResource(withFormik({
-  validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email()
-        .required(),
-    }),
-    handleSubmit: (values, actions) => {
-
-    }
-})(Index)))
+export default withStyles(styles)(withResource(Index))
