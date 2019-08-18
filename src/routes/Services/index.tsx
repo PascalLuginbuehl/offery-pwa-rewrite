@@ -25,9 +25,8 @@ const styles = (theme: Theme) =>
   })
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
-  onChange: (data: IPutServices) => void
   data: IPutServices
-  save: () => Promise<void>
+  onChangeAndSave: (data: IPutServices) => void
 }
 
 class Index extends React.Component<Props, {}> {
@@ -47,9 +46,9 @@ class Index extends React.Component<Props, {}> {
             })
           }
 
-          onSubmit={(values, actions) => {
-            this.props.onChange(values)
+          onSubmit={async (values, actions) => {
             console.log(values)
+            await this.props.onChangeAndSave(values)
 
             actions.setSubmitting(false)
           }}

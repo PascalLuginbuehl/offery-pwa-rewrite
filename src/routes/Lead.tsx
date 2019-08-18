@@ -20,8 +20,8 @@ import OriginalSnackbar from '../components/SuccessSnackbar';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import IntlTooltip from '../components/Intl/IntlTooltip';
-import LeadAPI, { ILeadContainer, emptyLeadContainer } from './LeadAPI';
-import { emptyLead } from '../interfaces/ILead';
+import LeadAPI, { ILeadContainer, emptyLeadContainer, checkIs } from './LeadAPI';
+import { emptyLead, ILead } from '../interfaces/ILead';
 import Services from './Services';
 import { withResource, WithResourceProps } from '../providers/withResource';
 import NavFolder from '../components/Navigation/NavFolder';
@@ -101,7 +101,6 @@ class Lead extends Component<Props, State> {
       try {
         const promiseOnline = LeadAPI.FetchFromOnline(potentialLeadId)
 
-        // this.setState({ initialAwait: promiseOnline })
         const lead = await promiseOnline
 
         this.setState({ ...lead, loadedFromOffline: false, onlySavedOffline: false })
@@ -433,9 +432,8 @@ class Lead extends Component<Props, State> {
                 render={(routeProps) =>
                   <Services
                     {...routeProps}
-                    save={this.Save}
                     data={services}
-                    onChange={(data) => this.handleChange(data, "services")}
+                    onChangeAndSave={(serviceData) => { if (checkIs<ILead>(Lead, "LeadId")) { this.handleChange(serviceData, "services"); return LeadAPI.SaveServices(Lead.LeadId, serviceData)}}}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                   />
                 }

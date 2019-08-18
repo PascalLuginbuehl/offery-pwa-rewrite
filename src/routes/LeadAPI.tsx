@@ -54,7 +54,7 @@ export const emptyLeadContainer: ILeadContainer = {
   services: emptyServices
 }
 
-function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
+export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
   if(typeof object === "object") {
     return object.hasOwnProperty(key)
   }
@@ -118,13 +118,16 @@ class LeadAPI {
         disposal ? checkIs<IDisposalOutBuilding>(disposal, 'DisposalOutBuildingId') ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
         storage ? checkIs<IStorageBuilding>(storage, 'StorageBuildingId') ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
         cleaning ? checkIs<ICleaningBuilding>(cleaning, 'CleaningBuildingId') ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
-
-        ServicesService.saveServices(leadId, services),
+        this.SaveServices(leadId, services)
       ])
       .then(() => {})
     }
 
     return Promise.reject()
+  }
+
+  SaveServices = (leadId: number, services: IPutServices) => {
+    return ServicesService.saveServices(leadId, services)
   }
 
 
