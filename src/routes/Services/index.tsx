@@ -29,55 +29,67 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
   onChangeAndSave: (data: IPutServices) => void
 }
 
-class Index extends React.Component<Props, {}> {
+class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
   public render() {
+    const {
+      values,
+      errors,
+      touched,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      isSubmitting,
+      status,
+    } = this.props
+
     const { data } = this.props
 
     console.log(this.props)
     return (
       <Grid item xs={12}>
-        <Formik<IPutServices>
-          initialValues={data}
-          validationSchema={
-            Yup.object().shape({
-              // email: Yup.string()
-              //   .email()
-              //   .required(),
-            })
-          }
+        <Form>
+          <Grid item xs={12}>
+            <IntlTypography variant="h5">SERVICES</IntlTypography>
+          </Grid>
 
-          onSubmit={async (values, actions) => {
-            console.log(values)
-            await this.props.onChangeAndSave(values)
+          <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
 
-            actions.setSubmitting(false)
-          }}
+          <Field name="HasPackServiceEnabled" label="PACK" component={Switch} />
 
-          render={({ errors, status, touched, isSubmitting }) => (
-            <Form>
-              <Grid item xs={12}>
-                <IntlTypography variant="h5">SERVICES</IntlTypography>
-              </Grid>
+          <Field name="HasStorageServiceEnabled" label="STORAGE" component={Switch} />
 
-              <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
+          <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={Switch} />
 
-              <Field name="HasPackServiceEnabled" label="PACK" component={Switch} />
+          <Field name="HasCleaningServiceEnabled" label="CLEANING" component={Switch} />
 
-              <Field name="HasStorageServiceEnabled" label="STORAGE" component={Switch} />
+          {status && status.msg && <div>{status.msg}</div>}
 
-              <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={Switch} />
-
-              <Field name="HasCleaningServiceEnabled" label="CLEANING" component={Switch} />
-
-              {status && status.msg && <div>{status.msg}</div>}
-
-              <Submit isSubmitting={isSubmitting}></Submit>
-            </Form>
-          )}
-        />
+          <Submit isSubmitting={isSubmitting}></Submit>
+        </Form>
       </Grid>
     )
   }
 }
 
-export default withStyles(styles)(withResource(Index))
+export default withStyles(styles)(
+  withResource(
+    withFormik<Props, IPutServices>({
+      validationSchema: Yup.object().shape({
+        // email: Yup.string()
+        //   .email()
+        //   .required(),
+      }),
+
+      mapPropsToValues: props => props.data,
+
+      handleSubmit: async (values, actions) => {
+        console.log(values)
+        // actions.props.
+        await actions.props.onChangeAndSave(values)
+
+        actions.setSubmitting(false)
+      }
+
+    })(Index)
+  )
+)
