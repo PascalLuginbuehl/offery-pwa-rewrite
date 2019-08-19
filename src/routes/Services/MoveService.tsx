@@ -6,89 +6,114 @@ import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSe
 import * as React from 'react'
 import BigCheckbox from '../../components/Validator/BigCheckbox';
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding } from '../../interfaces/IBuilding';
+import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
 import IntlTypography from '../../components/Intl/IntlTypography';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
-import { Formik, FormikActions, FormikProps, Field, FieldProps, ErrorMessage } from 'formik';
+import { Formik, FormikActions, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import TextField from '../../components/FormikFields/TextField';
 import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
 import DatePicker from '../../components/FormikFields/DatePicker';
-
+import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/IService';
+import MoveInBuilding from '../Customer/MoveInBuilding';
+import CustomSelect from '../../components/FormikFields/Select';
 
 const styles = (theme: Theme) =>
   createStyles({
 
   })
 
-interface Props extends WithResourceProps, WithStyles<typeof styles> {
-  // onChange: (data: IPostMoveService) => void
-  // data: IPostMoveService
-  save: () => Promise<void>
+interface Values {
+  moveService: IPutMoveService
+  moveIn: IPostMoveInBuilding | null
+  moveOut: IPostMoveOutBuilding | null
 }
 
-class Index extends React.Component<Props, {}> {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
+  onChangeAndSave: (data: IPutMoveService) => void
+}
+
+class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
+    const {
+      values,
+      errors,
+      touched,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      isSubmitting,
+      status,
+      resource
+    } = this.props
+
+    // const { data } = this.props
+
+    console.log(this.props)
     return (
       <Grid item xs={12}>
-        <Formik
-          initialValues={{ email: "", BoreService: false, number: 0}}
-          validationSchema={Yup.object().shape({
-            email: Yup.string()
-              .email()
-              .required(),
-            })
-          }
-          onSubmit={(values, actions) => {
-            const promise = this.props.save()
-            console.log(values)
-            // MyImaginaryRestApiCall(user.id, values).then(
-            //   updatedUser => {
-            //     actions.setSubmitting(false);
-            //     updateUser(updatedUser);
-            //     onClose();
-            //   },
-            //   error => {
-                actions.setSubmitting(false);
-                // actions.setErrors({});
-                actions.setStatus({ msg: 'Set some arbitrary status or data' });
-            //   }
-            // );
-          }}
-          render={({ errors, status, touched, isSubmitting }) => (
-            <Form>
-              <Grid item xs={12}>
-                <IntlTypography variant="h5">SERVICES</IntlTypography>
-              </Grid>
+        <Form>
+          <Grid item xs={12}>
+            <IntlTypography variant="h5">SERVICES</IntlTypography>
+          </Grid>
+
+          <Field name="moveService.BoreService" label="BORE_SERVICE" component={Switch} />
+
+          <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={Switch} />
+
+          <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={Switch} />
+
+          <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={Switch} />
+
+          <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={Switch} />
+
+          <Field name="moveService.PianoService" label="PIANO_SERVICE" component={Switch} />
+
+          <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
 
 
-              <Field name="BoreService" label="BORE_SERVICE" component={Switch} />
-
-              <Field name="DeMontageService" label="DE_MONTAGE_SERVICE" component={Switch} />
-
-              <Field name="FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={Switch} />
-
-              <Field name="LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={Switch} />
-
-              <Field name="MontageService" label="MONTAGE_SERVICE" component={Switch} />
-
-              <Field name="PianoService" label="PIANO_SERVICE" component={Switch} />
-
-              <Field name="MoveDate" label="MOVE_DATE" component={DatePicker} />
 
 
-              {status && status.msg && <div>{status.msg}</div>}
+          <Field label="BUILDING_TYPE" name="moveOut.BuildingTypeId" component={CustomSelect} options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))} />
 
-              <Submit isSubmitting={isSubmitting}></Submit>
-            </Form>
-            )}
-          />
-        </Grid>
+            {/* <AddressField
+              value={Address}
+              name="Address"
+              onChange={this.handleChange}
+            /> */}
+
+
+          {status && status.msg && <div>{status.msg}</div>}
+
+          <Submit isSubmitting={isSubmitting}></Submit>
+        </Form>
+      </Grid>
     )
   }
 }
 
-export default withStyles(styles)(withResource(Index))
+export default withStyles(styles)(
+  withResource(
+    withFormik<Props, Values>({
+      validationSchema: Yup.object().shape({
+        // email: Yup.string()
+        //   .email()
+        //   .required(),
+      }),
+
+      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService}),
+
+      handleSubmit: async (values, actions) => {
+        console.log(values)
+        // actions.props.
+        // await actions.props.onChangeAndSave(values)
+
+        actions.setSubmitting(false)
+      }
+
+    })(Index)
+  )
+)

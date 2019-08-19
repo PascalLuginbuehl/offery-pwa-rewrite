@@ -20,7 +20,7 @@ import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
 import ServicesService from '../services/ServicesService';
-import { emptyServices, IPutServices, IServices } from '../interfaces/IService';
+import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService } from '../interfaces/IService';
 
 
 export interface ILeadContainer {
@@ -35,6 +35,7 @@ export interface ILeadContainer {
   storage: IPostStorageBuilding | IStorageBuilding | null
 
   services: IPutServices | IServices
+  moveService: IPutMoveService | IMoveService
 
   // unsavedChanges:
 }
@@ -51,7 +52,9 @@ export const emptyLeadContainer: ILeadContainer = {
   disposal: null,
   storage: null,
 
-  services: emptyServices
+
+  services: emptyServices,
+  moveService: emptyMoveService,
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -73,7 +76,8 @@ class LeadAPI {
       BuildingService.fetchStorageBuilding(leadId),
       BuildingService.fetchDisposalOutBuilding(leadId),
       ServicesService.fetchServices(leadId),
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services]): ILeadContainer => ({
+      ServicesService.fetchMoveService(leadId),
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
@@ -89,7 +93,9 @@ class LeadAPI {
 
       storage: storage,
 
-      services: services
+      services: services,
+
+      moveService: moveService,
     }))
   }
 

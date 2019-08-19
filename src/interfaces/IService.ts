@@ -1,5 +1,5 @@
 export interface IPutMoveService {
-  MoveDate: Date
+  MoveDate: Date | null
   FurnitureLiftService: boolean
   PianoService: boolean
   MontageService: boolean
@@ -86,4 +86,14 @@ export const emptyServices: IPutServices = {
   HasStorageServiceEnabled: false,
   HasDisposalServiceEnabled: false,
   HasCleaningServiceEnabled: false,
+}
+
+export const emptyMoveService: IPutMoveService = {
+  BoreService: false,
+  DeMontageService: false,
+  FurnitureLiftService: false,
+  LampDemontageService: false,
+  MontageService: false,
+  PianoService: false,
+  MoveDate: null,
 }

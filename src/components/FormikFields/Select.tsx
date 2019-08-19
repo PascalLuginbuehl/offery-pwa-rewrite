@@ -13,7 +13,7 @@ interface CustomSelectProps extends FieldProps {
   isMulti?: boolean;
 }
 
-export const CustomSelect = ({
+const CustomSelect = ({
   field,
   form,
   options,
@@ -48,3 +48,5 @@ export const CustomSelect = ({
     />
   );
 };
+
+export default CustomSelect

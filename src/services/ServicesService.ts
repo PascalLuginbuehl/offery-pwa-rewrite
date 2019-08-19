@@ -1,7 +1,7 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding";
-import { IServices, IPutServices } from "../interfaces/IService";
+import { IServices, IPutServices, IMoveService, IPutMoveService } from "../interfaces/IService";
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -69,6 +69,26 @@ class ServicesService {
   public saveServices = (leadId: number, services: IPutServices) => {
     return this.saveService<IMoveOutBuilding>(
       API_URL + '/lead/' + leadId + '/services',
+      services
+    )
+  }
+
+  // Services
+  public fetchMoveService = (leadId: number): Promise<IMoveService> => {
+    return this.fetchService<IMoveService>(
+      API_URL + '/lead/' + leadId + '/moveservice',
+    ).then(e => {
+      if (e == null) {
+        throw new Error("Empty Service return not allowed")
+      } else {
+        return e
+      }
+    })
+  }
+
+  public saveMoveService = (leadId: number, services: IPutMoveService) => {
+    return this.saveService<IPutMoveService>(
+      API_URL + '/lead/' + leadId + '/moveservice',
       services
     )
   }

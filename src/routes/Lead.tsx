@@ -296,6 +296,7 @@ class Lead extends Component<Props, State> {
       storage,
       disposal,
       services,
+      moveService,
 
       initialAwait,
       onlySavedOffline,
@@ -325,7 +326,7 @@ class Lead extends Component<Props, State> {
           }
 
           {
-            this.props.match.params.id !== "new" && Lead != null ?
+            this.props.match.params.id !== "new" && Lead != null && checkIs<ILead>(Lead, "LeadId") ?
             <>
 
               {/* Customer */}
@@ -433,7 +434,7 @@ class Lead extends Component<Props, State> {
                   <Services
                     {...routeProps}
                     data={services}
-                    onChangeAndSave={(serviceData) => { if (checkIs<ILead>(Lead, "LeadId")) { this.handleChange(serviceData, "services"); return LeadAPI.SaveServices(Lead.LeadId, serviceData)}}}
+                    onChangeAndSave={(serviceData) => { this.handleChange(serviceData, "services"); return LeadAPI.SaveServices(Lead.LeadId, serviceData)}}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                   />
                 }
@@ -441,11 +442,16 @@ class Lead extends Component<Props, State> {
 
               {/* MoveService */}
               <Route
-                path={`${match.url}/service`}
+                path={`${match.url}/services/move`}
                 render={(routeProps) =>
                   <MoveService
                     {...routeProps}
-                    save={this.Save}
+
+                    moveOut={moveOut}
+                    moveIn={moveIn}
+                    moveService={moveService}
+
+                    onChangeAndSave={(serviceData) => { }}
                     // data={}
                     // container={this.state}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}
