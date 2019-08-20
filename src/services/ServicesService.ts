@@ -74,16 +74,10 @@ class ServicesService {
   }
 
   // Services
-  public fetchMoveService = (leadId: number): Promise<IMoveService> => {
-    return this.fetchService<IMoveService>(
+  public fetchMoveService = (leadId: number): Promise<IMoveService | null> => {
+    return this.fetchService<IMoveService | null> (
       API_URL + '/lead/' + leadId + '/moveservice',
-    ).then(e => {
-      if (e == null) {
-        throw new Error("Empty Service return not allowed")
-      } else {
-        return e
-      }
-    })
+    )
   }
 
   public saveMoveService = (leadId: number, services: IPutMoveService) => {

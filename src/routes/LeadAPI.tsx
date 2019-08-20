@@ -35,7 +35,7 @@ export interface ILeadContainer {
   storage: IPostStorageBuilding | IStorageBuilding | null
 
   services: IPutServices | IServices
-  moveService: IPutMoveService | IMoveService
+  moveService: IPutMoveService | IMoveService | null
 
   // unsavedChanges:
 }
