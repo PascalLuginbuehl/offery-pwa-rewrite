@@ -120,3 +120,10 @@ PACK,Pack,Einpackservice
 STORAGE,Storage,Lagerung
 DISPOSAL,Disposal,Enstorgung
 CLEANING,Cleaning,Reinigung
+BORE_SERVICE,Bore,Bohren
+DE_MONTAGE_SERVICE,Demontage,Demontage
+FURNITURE_LIFT_SERVICE,Furniture Lift,Möbellift
+LAMP_DEMONTAGE_SERVICE,Lampe demontage,Lampen abmontieren
+MONTAGE_SERVICE,Montage,Montage
+PIANO_SERVICE,Piano,Klavier
+MOVE_DATE,Move date,Umzugstermin

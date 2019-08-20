@@ -28,6 +28,7 @@ import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
+import { emptyMoveService } from '../interfaces/IService';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -449,7 +450,7 @@ class Lead extends Component<Props, State> {
 
                     moveOut={moveOut}
                     moveIn={moveIn}
-                    moveService={moveService}
+                    moveService={moveService ? moveService : emptyMoveService}
 
                     onChangeAndSave={(serviceData) => { }}
                     // data={}

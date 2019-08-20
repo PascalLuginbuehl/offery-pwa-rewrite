@@ -79,7 +79,7 @@ class Select extends React.Component<Props> {
           name={field.name}
           value={getValue()}
           onChange={onChange}
-          options={options}
+          options={options.map(e => ({ ...e, label: intl.formatMessage({id: e.label})}))}
           isMulti={isMulti}
 
 
