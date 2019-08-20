@@ -96,7 +96,7 @@ class Select extends React.Component<Props> {
 
             error: showError,
             helperText: showError ? fieldError : props.helperText,
-            disable: isDisabled,
+            disabled: isDisabled,
 
             ...field,
             ...props,
