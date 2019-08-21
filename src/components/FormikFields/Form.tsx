@@ -12,7 +12,7 @@ class Form extends React.Component<Props, {}> {
 
     return (
       <FormikForm>
-        <Grid container>
+        <Grid container spacing={2}>
           {this.props.children}
         </Grid>
       </FormikForm>

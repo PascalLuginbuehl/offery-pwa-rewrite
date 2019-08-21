@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -20,6 +20,7 @@ import DatePicker from '../../components/FormikFields/DatePicker';
 import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
+import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -74,15 +75,13 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
 
-
-          <Field label="BUILDING_TYPE" name="moveOut.BuildingTypeId" component={Select} options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))} />
-
-            {/* <AddressField
-              value={Address}
-              name="Address"
-              onChange={this.handleChange}
-            /> */}
-
+          {/* MoveOut */}
+          {/* <AddressField
+            value={Address}
+            name="Address"
+            onChange={this.handleChange}
+          /> */}
+          <MoveOut prefix={'moveOut'} resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
 

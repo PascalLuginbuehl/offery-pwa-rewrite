@@ -35,7 +35,7 @@ class Select extends React.Component<Props> {
 
       field,
       form,
-      options,
+      options: tempOptions,
       isMulti = false,
       classes,
 
@@ -58,6 +58,8 @@ class Select extends React.Component<Props> {
       );
     };
 
+    const options = tempOptions.map(e => ({ ...e, label: intl.formatMessage({ id: e.label }) }))
+
     const getValue = () => {
       if (options) {
         return isMulti
@@ -79,10 +81,8 @@ class Select extends React.Component<Props> {
           name={field.name}
           value={getValue()}
           onChange={onChange}
-          options={options.map(e => ({ ...e, label: intl.formatMessage({id: e.label})}))}
+          options={options}
           isMulti={isMulti}
-
-
 
           classes={classes}
           // styles={selectStyles}

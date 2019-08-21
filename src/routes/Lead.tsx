@@ -430,6 +430,7 @@ class Lead extends Component<Props, State> {
 
               {/* Services */}
               <Route
+                exact
                 path={`${match.url}/services`}
                 render={(routeProps) =>
                   <Services
@@ -496,7 +497,8 @@ class Lead extends Component<Props, State> {
           </NavFolder>
 
           <NavFolder to={`${match.url}/services`} title="SERVICES">
-            HI
+            <Collapse in={services.HasMoveServiceEnabled}><NavItem to={`${match.url}/services/move`} title="MOVE" nested /></Collapse>
+
           </NavFolder>
         </>, portal) : null}
         <SuccessSnackbar message="Error Occured" open={errorOccured} onClose={this.closeError}   />

@@ -52,7 +52,6 @@ export const emptyLeadContainer: ILeadContainer = {
   disposal: null,
   storage: null,
 
-
   services: emptyServices,
   moveService: emptyMoveService,
 }
