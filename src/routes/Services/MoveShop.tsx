@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow  } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -38,7 +38,15 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 }
 
 
-class Index extends React.Component<Props & FormikProps<Values>, {}> {
+const CustomTableRow = withStyles(theme => ({
+  [theme.breakpoints.down("sm")]: {
+    root: {
+      height: 24,
+    },
+  }
+}))(TableRow)
+
+class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
   addItemToList = (product: IProduct) => {
     const { handleChange, values } = this.props
 
@@ -92,37 +100,34 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <FieldArray
             name="Items"
             render={(arrayHelpers: ArrayHelpers) => (
-              <div>
-                {values.Items && values.Items.length > 0 ? (
-                  values.Items.map((item, index) => (
-                    <div key={index}>
-                      {item.ProductId}
-                      {item.Amount}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Item</TableCell>
+                    <TableCell align="right">QT.</TableCell>
+                  </TableRow>
+                </TableHead>
 
-                      <button
-                        type="button"
-                        onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-                      >
-                        -
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
-                      >
-                        +
-                      </button>
-                    </div>
-                  ))
-                ) : (
-                    <button type="button" onClick={() => arrayHelpers.push('')}>
-                      {/* show this when user has removed all friends from the list */}
-                      Add a friend
-                  </button>
-                  )}
-                <div>
-                  <button type="submit">Submit</button>
-                </div>
-              </div>
+                <TableBody>
+                  {values.Items && values.Items.length > 0 ? (
+                    values.Items.map((item, index) => (
+
+                      <CustomTableRow key={index}>
+                        <TableCell>{item.ProductId}</TableCell>
+                        <TableCell align="right">{item.Amount}</TableCell>
+                        <TableCell align="right">
+                          {/* <Button
+                            type="button"
+                            onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                          >
+                            -
+                          </Button> */}
+                        </TableCell>
+                      </CustomTableRow>
+                    ))
+                  ) : "No items added"}
+                </TableBody>
+              </Table>
             )}
           />
 
@@ -143,7 +148,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
   }
 }
 
-export default withStyles(styles)(
+export default withStyles(styles, {name: "MoveShop"})(
   withResource(
     withFormik<Props, Values>({
       validationSchema: Yup.object().shape({
@@ -162,6 +167,6 @@ export default withStyles(styles)(
         actions.setSubmitting(false)
       }
 
-    })(Index)
+    })(MoveShop)
   )
 )
