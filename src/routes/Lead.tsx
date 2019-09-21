@@ -29,6 +29,7 @@ import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyD
 import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
 import { emptyMoveService } from '../interfaces/IService';
+import MoveShop from './Services/MoveShop';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -457,6 +458,22 @@ class Lead extends Component<Props, State> {
                     // data={}
                     // container={this.state}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                  />
+                }
+              />
+
+              {/* MoveShop */}
+              <Route
+                path={`${match.url}/services/moveShop`}
+                render={(routeProps) =>
+                  <MoveShop
+                    {...routeProps}
+
+
+                    onChangeAndSave={(serviceData) => { }}
+                  // data={}
+                  // container={this.state}
+                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                   />
                 }
               />
