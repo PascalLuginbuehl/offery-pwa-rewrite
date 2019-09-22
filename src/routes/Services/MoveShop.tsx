@@ -122,7 +122,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {ShopProducts.map((product, index) => (
-                <SelectGridItem product={product} onSelectProduct={(amount) => this.addItemToList(product)} />
+                <SelectGridItem product={product} onSelectProduct={(amount) => this.addItemToList(product)} key={index} />
               ))}
             </Grid>
           </Grid>
@@ -164,7 +164,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
                         return (
 
                         <CustomTableRow key={index}>
-                          <TableCell>{product.NameTextKey}</TableCell>
+                          <TableCell><FormattedMessage id={product.NameTextKey}/></TableCell>
                           <TableCell align="right">{item.Amount} Stk.</TableCell>
                             <TableCell align="right">
                               <FormattedNumber
@@ -188,7 +188,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
                             </TableCell>
                         </CustomTableRow>
                       )})
-                    ) : "No items added"}
+                    ) : <CustomTableRow><TableCell><IntlTypography>EMPTY</IntlTypography></TableCell></CustomTableRow>}
                   </TableBody>
                 </Table>
               )}
