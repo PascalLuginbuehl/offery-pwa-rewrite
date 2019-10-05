@@ -198,6 +198,8 @@ class Lead extends Component<Props, State> {
         { name: '/building/cleaning', active: HasCleaningBuilding },
         { name: '/building/email-confirmation', active: true },
         { name: '/services', active: true },
+        { name: '/services/move', active: true },
+        { name: '/services/move-shop', active: true },
       ]
 
       let lastPage = { name: '' }
@@ -464,11 +466,10 @@ class Lead extends Component<Props, State> {
 
               {/* MoveShop */}
               <Route
-                path={`${match.url}/services/moveShop`}
+                path={`${match.url}/services/move-shop`}
                 render={(routeProps) =>
                   <MoveShop
                     {...routeProps}
-
 
                     onChangeAndSave={(serviceData) => { }}
                   // data={}

@@ -68,12 +68,12 @@ class GridSelect extends React.Component<Props, State> {
     return (
       <Grid item xs={4} sm={3} md={2} lg={2} >
         {/* Button exported into better position so it isn't child of something */}
-        <IconButton
+        {/* <IconButton
           onClick={this.handleOpenAmount}
           className={classes.buttonCorner}
         >
           <Filter9PlusIcon />
-        </IconButton>
+        </IconButton> */}
 
         <ButtonBase className={classes.fullButton}>
           <Paper elevation={1} onClick={() => onSelectProduct(amount)} className={classes.fullPaper}>

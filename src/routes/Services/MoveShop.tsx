@@ -117,7 +117,6 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
 
     const newItems = [...items.map((item, itemIndex) => {
       if (index == itemIndex) {
-        console.log("Found")
         return {
           ...item,
           Amount: item.Amount - 1,
@@ -169,10 +168,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
     const { currentlyOpen } = this.state
 
     const ShopProducts = selectedCompany.ShopProducts
-    console.log()
-    // const { data } = this.props
 
-    console.log(this.props)
     return (
       <Grid item xs={12}>
         <Form>
@@ -216,7 +212,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                       <TableCell><FormattedMessage id="ITEM" /></TableCell>
                       <TableCell align="right"><FormattedMessage id="QUANTITY" /></TableCell>
                       <TableCell align="right"><FormattedMessage id="PRICE" /></TableCell>
-                      <TableCell align="center"><FormattedMessage id="Actions" /></TableCell>
+                      <TableCell align="center"><FormattedMessage id="ACTIONS" /></TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -249,13 +245,14 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
 
 
                             </TableCell>
-                            <TableCell padding="none" align="center">
+
+                            <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
                               <IconButton
                                 onClick={() => this.removeOneItem(item.originalIndex)}
                               >
                                 <RemoveCircleOutlineIcon />
-
                               </IconButton>
+
                               <IconButton
                                 onClick={() => arrayHelpers.remove(item.originalIndex)}
                               >
@@ -276,14 +273,6 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
               )}
             />
           </Grid>
-
-
-          {/* MoveOut */}
-          {/* <AddressField
-            value={Address}
-            name="Address"
-            onChange={this.handleChange}
-          /> */}
 
           {status && status.msg && <div>{status.msg}</div>}
 
