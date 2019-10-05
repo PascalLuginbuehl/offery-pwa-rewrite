@@ -47,7 +47,7 @@ interface State {
   currentlyOpen: CurrentlyOpenStateEnum
 }
 
-class MoveShop extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
+class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
 
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
@@ -172,7 +172,7 @@ class MoveShop extends React.Component<Props & FormikProps<IMaterialOrder>, Stat
       <Grid item xs={12}>
         <Form>
           <Grid item xs={12}>
-            <IntlTypography variant="h5">MOVE_SHOP</IntlTypography>
+            <IntlTypography variant="h5">MATERIAL_SHOP</IntlTypography>
           </Grid>
 
           <Grid item xs={12}>
@@ -301,7 +301,7 @@ injectIntl(
           actions.setSubmitting(false)
         }
 
-      })(MoveShop)
+      })(MaterialShop)
     )
   )
 )
