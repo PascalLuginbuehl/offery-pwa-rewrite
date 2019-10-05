@@ -110,20 +110,19 @@ class LeadAPI {
 
   // Sends all new Data to the API
   SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
-    const { Lead, moveOut, moveIn, storage, disposal, cleaning, services} = container
+    const { Lead, moveOut, moveIn, storage, disposal, cleaning, services, moveService} = container
     if (Lead) {
-
-
       return Promise.all([
         // convert to lead
         LeadService.saveCustomer({ LeadId: leadId, ...Lead }),
 
-        moveOut ? checkIs<IMoveOutBuilding>(moveOut, 'MoveOutBuildingId') ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
-        moveIn ? checkIs<IMoveInBuilding>(moveIn, 'MoveInBuildingId') ? BuildingService.saveMoveInBuilding(moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
-        disposal ? checkIs<IDisposalOutBuilding>(disposal, 'DisposalOutBuildingId') ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
-        storage ? checkIs<IStorageBuilding>(storage, 'StorageBuildingId') ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
-        cleaning ? checkIs<ICleaningBuilding>(cleaning, 'CleaningBuildingId') ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId).catch(this.Catch400Errors) : Promise.resolve(null),
-        this.SaveServices(leadId, services)
+        this.SaveMoveOut(moveOut, leadId),
+        this.SaveMoveIn(moveIn, leadId),
+        this.SaveDisposal(disposal, leadId),
+        this.SaveStorage(storage, leadId),
+        this.SaveCleaning(cleaning, leadId),
+        this.SaveServices(leadId, services),
+        this.SaveMoveService(leadId, moveService),
       ])
       .then(() => {})
     }
@@ -131,9 +130,38 @@ class LeadAPI {
     return Promise.reject()
   }
 
+
+
+  SaveMoveOut = (moveOut: IMoveOutBuilding | IPostMoveOutBuilding | null, leadId: number): Promise<unknown> => {
+    return moveOut ? checkIs<IMoveOutBuilding>(moveOut, 'MoveOutBuildingId') ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId).catch(this.Catch400Errors) : Promise.resolve(null)
+  }
+
+  SaveMoveIn = (moveIn: IMoveInBuilding | IPostMoveInBuilding | null, leadId: number): Promise<unknown> => {
+    return moveIn ? checkIs<IMoveInBuilding>(moveIn, 'MoveInBuildingId') ? BuildingService.saveMoveInBuilding(moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId).catch(this.Catch400Errors) : Promise.resolve(null)
+  }
+
+  SaveDisposal = (disposal: IDisposalOutBuilding | IPostDisposalOutBuilding | null, leadId: number): Promise<unknown> => {
+    return disposal ? checkIs<IDisposalOutBuilding>(disposal, 'DisposalOutBuildingId') ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId).catch(this.Catch400Errors) : Promise.resolve(null)
+  }
+
+  SaveStorage = (storage: IStorageBuilding | IPostStorageBuilding | null, leadId: number): Promise<unknown> => {
+    return storage ? checkIs<IStorageBuilding>(storage, 'StorageBuildingId') ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId).catch(this.Catch400Errors) : Promise.resolve(null)
+  }
+
+  SaveCleaning = (cleaning: ICleaningBuilding | IPostCleaningBuilding | null, leadId: number): Promise<unknown> => {
+    return cleaning ? checkIs<ICleaningBuilding>(cleaning, 'CleaningBuildingId') ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId).catch(this.Catch400Errors) : Promise.resolve(null)
+  }
+
   SaveServices = (leadId: number, services: IPutServices) => {
     return ServicesService.saveServices(leadId, services)
   }
+
+  SaveMoveService = (leadId: number, moveService: IPutMoveService | null) => {
+    return moveService ? ServicesService.saveMoveService(leadId, moveService) : Promise.resolve(null)
+  }
+
+
+
 
 
   // Gets Called to Get Data From Offline

@@ -456,7 +456,17 @@ class Lead extends Component<Props, State> {
                     moveIn={moveIn}
                     moveService={moveService ? moveService : emptyMoveService}
 
-                    onChangeAndSave={(serviceData) => { }}
+                    onChangeAndSave={(serviceData, moveIn, moveOut) => {
+                      this.handleChange(serviceData, "services");
+                      this.handleChange(moveOut, "moveOut");
+                      this.handleChange(moveIn, "moveIn");
+
+                      return Promise.all([
+                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
+                        LeadAPI.SaveMoveIn(moveIn, Lead.LeadId),
+                        LeadAPI.SaveMoveService(Lead.LeadId, serviceData),
+                      ])
+                    }}
                     // data={}
                     // container={this.state}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}

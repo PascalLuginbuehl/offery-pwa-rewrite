@@ -242,8 +242,6 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                                 :
                                 "-"
                               }
-
-
                             </TableCell>
 
                             <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>

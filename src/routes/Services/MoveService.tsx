@@ -34,7 +34,7 @@ interface Values {
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
-  onChangeAndSave: (data: IPutMoveService) => void
+  onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding | null, moveOut: IPostMoveOutBuilding | null) => void
 }
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
@@ -106,7 +106,7 @@ export default withStyles(styles)(
       handleSubmit: async (values, actions) => {
         console.log(values)
         // actions.props.
-        // await actions.props.onChangeAndSave(values)
+        await actions.props.onChangeAndSave(values.moveService, values.moveIn, values.moveOut)
 
         actions.setSubmitting(false)
       }
