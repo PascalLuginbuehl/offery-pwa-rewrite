@@ -91,8 +91,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
         Amount: 1,
         IsForFree: currentlyOpen == CurrentlyOpenStateEnum.Free,
         IsRent: currentlyOpen == CurrentlyOpenStateEnum.Rent,
-        OrderPositionId: 1,
-        ProductId: product.ProductId
+        ProductId: product.ProductId,
       }
 
       items.push(order)
@@ -122,7 +121,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
         ||
       (currentlyOpen == CurrentlyOpenStateEnum.Free && item.IsForFree)
         ||
-      (currentlyOpen == CurrentlyOpenStateEnum.Buy)
+      (currentlyOpen == CurrentlyOpenStateEnum.Buy && !item.IsForFree && !item.IsRent)
     ) {
       return true
     }
@@ -197,38 +196,51 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Item</TableCell>
-                      <TableCell align="right">QT.</TableCell>
-                      <TableCell align="right">QT.</TableCell>
-                      <TableCell align="right">QT.</TableCell>
+                      <TableCell><FormattedMessage id="ITEM" /></TableCell>
+                      <TableCell align="right"><FormattedMessage id="QUANTITY" /></TableCell>
+                      <TableCell align="right"><FormattedMessage id="PRICE" /></TableCell>
+                      <TableCell align="right"><FormattedMessage id="Actions" /></TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     {values.Items && values.Items.length > 0 ? (
-                      values.Items.filter(this.filterShowList(currentlyOpen)).map((item, index) => {
+                      values.Items
+                      .map((item, index) => ({originalIndex: index, ...item}))
+                      .filter(this.filterShowList(currentlyOpen))
+                      .map((item) => {
                         const product = this.getCorrespondingProduct(item)
                         return (
 
-                        <CustomTableRow key={index}>
+                        <CustomTableRow key={item.originalIndex}>
                           <TableCell><FormattedMessage id={product.NameTextKey}/></TableCell>
                           <TableCell align="right">{item.Amount} Stk.</TableCell>
                             <TableCell align="right">
-                              <FormattedNumber
-                                value={product.RentPrice * item.Amount}
-                                style="currency"
-                                currency="CHF"
-                              />
+                              {
+                                currentlyOpen != CurrentlyOpenStateEnum.Free ?
+                                <FormattedNumber
+                                  value={
+                                    (currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice)
+                                    * item.Amount
+                                  }
+                                  style="currency"
+                                  currency="CHF"
+                                />
+                                :
+                                null
+                              }
+
+
                             </TableCell>
                             <TableCell padding="none" align="center">
                               <IconButton
-                                onClick={() => this.removeOneItem(item)} // remove a friend from the list
+                                onClick={() => this.removeOneItem(item)}
                               >
                                 <RemoveCircleOutlineIcon />
 
                               </IconButton>
                               <IconButton
-                                onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                                onClick={() => arrayHelpers.remove(item.originalIndex)}
                               >
                                 <DeleteForeverIcon />
                               </IconButton>

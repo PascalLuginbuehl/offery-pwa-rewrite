@@ -1,5 +1,4 @@
 export interface IOrderPosition {
-  OrderPositionId: number
   Amount: number
   IsRent: boolean
   IsForFree: boolean

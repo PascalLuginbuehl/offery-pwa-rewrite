@@ -79,7 +79,7 @@ class GridSelect extends React.Component<Props, State> {
           <Paper elevation={1} onClick={() => onSelectProduct(amount)} className={classes.fullPaper}>
             <IntlTypography variant="h6">{product.NameTextKey}</IntlTypography>
 
-            {currentlyOpenState == CurrentlyOpenStateEnum.Buy ?
+            {currentlyOpenState == CurrentlyOpenStateEnum.Rent ?
               <Typography variant="body2">
                 <FormattedMessage id={"RENT"} />
                 :&nbsp;
@@ -94,7 +94,7 @@ class GridSelect extends React.Component<Props, State> {
               : null
             }
 
-            {currentlyOpenState == CurrentlyOpenStateEnum.Rent ?
+            {currentlyOpenState == CurrentlyOpenStateEnum.Buy ?
               <Typography variant="body2">
                 <FormattedMessage id={"BUY"} />
                 :&nbsp;
