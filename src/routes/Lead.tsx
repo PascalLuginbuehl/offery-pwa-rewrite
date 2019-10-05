@@ -200,7 +200,7 @@ class Lead extends Component<Props, State> {
         { name: '/building/email-confirmation', active: true },
         { name: '/services', active: true },
         { name: '/services/move', active: true },
-        { name: '/services/move-shop', active: true },
+        { name: '/services/move/material-shop', active: true },
       ]
 
       let lastPage = { name: '' }
@@ -449,6 +449,7 @@ class Lead extends Component<Props, State> {
 
               {/* MoveService */}
               <Route
+                exact
                 path={`${match.url}/services/move`}
                 render={(routeProps) =>
                   <MoveService
@@ -478,7 +479,8 @@ class Lead extends Component<Props, State> {
 
               {/* MoveShop */}
               <Route
-                path={`${match.url}/services/move/shop`}
+                exact
+                path={`${match.url}/services/move/material-shop`}
                 render={(routeProps) =>
                   <MaterialShop
                     {...routeProps}
@@ -487,7 +489,7 @@ class Lead extends Component<Props, State> {
                     onChangeAndSave={(materialOrder) => {
                       this.handleChange(materialOrder, "materialOrder")
 
-                      LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
+                      return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Move}
                   // data={}
@@ -535,31 +537,31 @@ class Lead extends Component<Props, State> {
           <NavFolder to={`${match.url}/services`} title="SERVICES">
             <Collapse in={services.HasMoveServiceEnabled}>
               <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move-shop`} title="MATERIAL_SHOP" nested />
+                <NavItem to={`${match.url}/services/move/material-shop`} title="MATERIAL_SHOP" nested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasPackServiceEnabled}>
-              <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/pack`} title="MOVE" nested>
+                <NavItem to={`${match.url}/services/pack/material-shop`} title="MATERIAL_SHOP" nested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasStorageServiceEnabled}>
-              <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/storage`} title="MOVE" nested>
+                <NavItem to={`${match.url}/services/storage/material-shop`} title="MATERIAL_SHOP" nested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasDisposalServiceEnabled}>
-              <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/disposal`} title="MOVE" nested>
+                <NavItem to={`${match.url}/services/disposal/material-shop`} title="MATERIAL_SHOP" nested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/cleaning`} title="MOVE" nested>
+                <NavItem to={`${match.url}/services/cleaning/material-shop`} title="MATERIAL_SHOP" nested />
               </NavFolder>
             </Collapse>
 
