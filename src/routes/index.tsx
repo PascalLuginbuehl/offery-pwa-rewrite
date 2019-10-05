@@ -42,10 +42,19 @@ const styles = (theme: Theme) =>
       },
     },
 
-    toolbar: theme.mixins.toolbar,
+    toolbar: {
+      ...theme.mixins.toolbar,
+      paddingLeft: 0,
+
+    },
 
     toolbarTitle: {
-      flexGrow: 1,
+      // flexGrow: 1,
+      padding: theme.spacing(2),
+      [theme.breakpoints.up('sm')]: {
+        paddingLeft: theme.spacing(3),
+      },
+
       color: "white",
       textDecoration: "none",
     },
