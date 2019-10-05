@@ -132,3 +132,6 @@ BUY,Buy,Kaufen
 SHOP,Shop,Shop
 INCLUSIVE,Inclusive,Inklusive
 EMPTY,Empty,Leer
+PRICE,Price,Preis
+QUANTITY,Quantity,Anzahl
+ITEM,Item,Artikel

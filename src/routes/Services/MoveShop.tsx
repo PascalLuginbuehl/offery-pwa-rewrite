@@ -111,8 +111,25 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
     }
   }
 
-  removeOneItem = (item: IOrderPosition) => {
+  removeOneItem = (index: number) => {
+    const { handleChange, values } = this.props
+    let items = values.Items
 
+    const newItems = [...items.map((item, itemIndex) => {
+      if (index == itemIndex) {
+        console.log("Found")
+        return {
+          ...item,
+          Amount: item.Amount - 1,
+        }
+      }
+
+      return item
+    })]
+    // Filter for Amount 0
+    .filter(item => item.Amount > 0)
+
+    handleChange({ target: { value: newItems, name: "Items" } })
   }
 
   filterShowList = (currentlyOpen: CurrentlyOpenStateEnum) => (item: IOrderPosition) => {
@@ -199,7 +216,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                       <TableCell><FormattedMessage id="ITEM" /></TableCell>
                       <TableCell align="right"><FormattedMessage id="QUANTITY" /></TableCell>
                       <TableCell align="right"><FormattedMessage id="PRICE" /></TableCell>
-                      <TableCell align="right"><FormattedMessage id="Actions" /></TableCell>
+                      <TableCell align="center"><FormattedMessage id="Actions" /></TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -227,14 +244,14 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                                   currency="CHF"
                                 />
                                 :
-                                null
+                                "-"
                               }
 
 
                             </TableCell>
                             <TableCell padding="none" align="center">
                               <IconButton
-                                onClick={() => this.removeOneItem(item)}
+                                onClick={() => this.removeOneItem(item.originalIndex)}
                               >
                                 <RemoveCircleOutlineIcon />
 
