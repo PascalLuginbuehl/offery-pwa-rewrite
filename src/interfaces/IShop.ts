@@ -15,3 +15,9 @@ export interface IMaterialOrder {
   PackServicePositions: IOrderPosition[]
   StorageServicePositions: IOrderPosition[]
 }
+
+export enum CurrentlyOpenStateEnum {
+  Buy,
+  Rent,
+  Free,
+}

@@ -21,12 +21,12 @@ import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/I
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import { IOrderPosition } from '../../interfaces/IShop';
+import { IOrderPosition, CurrentlyOpenStateEnum } from '../../interfaces/IShop';
 import { IProduct } from '../../interfaces/IProduct';
 import Filter9PlusIcon from '@material-ui/icons/Filter9Plus'
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import { FormattedNumber, FormattedMessage } from 'react-intl';
+import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import SelectGridItem from '../../components/ShopElements/SelectGridItem';
 
 
@@ -39,7 +39,7 @@ interface Values {
   Items: IOrderPosition[]
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles> {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   onChangeAndSave: (data: IPutMoveService) => void
 }
 
@@ -52,16 +52,32 @@ const CustomTableRow = withStyles(theme => ({
   }
 }))(TableRow)
 
-class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
+interface State {
+  currentlyOpen: CurrentlyOpenStateEnum
+}
+
+class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
+
+  state: State = {
+    currentlyOpen: CurrentlyOpenStateEnum.Buy,
+  }
+
   addItemToList = (product: IProduct) => {
     const { handleChange, values } = this.props
+    const { currentlyOpen } = this.state
 
     let items = values.Items
 
     // Merge item with new Products
     let itemNotInList = true
     items = items.map(item => {
-      if(item.ProductId == product.ProductId) {
+      if(
+        item.ProductId == product.ProductId
+        &&
+        item.IsForFree == (CurrentlyOpenStateEnum.Free == currentlyOpen)
+        &&
+        item.IsRent == (CurrentlyOpenStateEnum.Rent == currentlyOpen)
+      ) {
         itemNotInList = false
         return { ...item, Amount: item.Amount + 1}
       } else {
@@ -69,8 +85,16 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
       }
     })
 
+
     if (itemNotInList) {
-      const order: IOrderPosition = { Amount: 1, IsForFree: false, IsRent: false, OrderPositionId: 1, ProductId: product.ProductId }
+      const order: IOrderPosition = {
+        Amount: 1,
+        IsForFree: currentlyOpen == CurrentlyOpenStateEnum.Free,
+        IsRent: currentlyOpen == CurrentlyOpenStateEnum.Rent,
+        OrderPositionId: 1,
+        ProductId: product.ProductId
+      }
+
       items.push(order)
     }
 
@@ -92,6 +116,24 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
 
   }
 
+  filterShowList = (currentlyOpen: CurrentlyOpenStateEnum) => (item: IOrderPosition) => {
+    if (
+      (currentlyOpen == CurrentlyOpenStateEnum.Rent && item.IsRent)
+        ||
+      (currentlyOpen == CurrentlyOpenStateEnum.Free && item.IsForFree)
+        ||
+      (currentlyOpen == CurrentlyOpenStateEnum.Buy)
+    ) {
+      return true
+    }
+
+    return false
+  }
+
+  handleTabChange = (e: React.ChangeEvent<{}>, value: CurrentlyOpenStateEnum) => {
+    this.setState({currentlyOpen: value})
+  }
+
   public render() {
     const {
       values,
@@ -104,8 +146,11 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       resource,
       selectedCompany,
+      intl,
 
     } = this.props
+
+    const { currentlyOpen } = this.state
 
     const ShopProducts = selectedCompany.ShopProducts
     console.log()
@@ -122,7 +167,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {ShopProducts.map((product, index) => (
-                <SelectGridItem product={product} onSelectProduct={(amount) => this.addItemToList(product)} key={index} />
+                <SelectGridItem product={product} onSelectProduct={(amount) => this.addItemToList(product)} key={index} currentlyOpenState={currentlyOpen} />
               ))}
             </Grid>
           </Grid>
@@ -132,16 +177,16 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Grid item xs={12}>
             <Tabs
-              value={0}
-              // onChange={this.handleChange}
+              value={currentlyOpen}
+              onChange={this.handleTabChange}
               indicatorColor="primary"
               textColor="primary"
               variant="fullWidth"
               centered
             >
-              <Tab label="Umzug" />
-              <Tab label="Enstorgung" />
-              <Tab label="Lager" />
+              <Tab label={intl.formatMessage({ id: "BUY" })} value={CurrentlyOpenStateEnum.Buy} />
+              <Tab label={intl.formatMessage({ id: "RENT" })} value={CurrentlyOpenStateEnum.Rent} />
+              <Tab label={intl.formatMessage({ id: "INCLUSIVE" })} value={CurrentlyOpenStateEnum.Free} />
             </Tabs>
           </Grid>
 
@@ -154,12 +199,14 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
                     <TableRow>
                       <TableCell>Item</TableCell>
                       <TableCell align="right">QT.</TableCell>
+                      <TableCell align="right">QT.</TableCell>
+                      <TableCell align="right">QT.</TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     {values.Items && values.Items.length > 0 ? (
-                      values.Items.map((item, index) => {
+                      values.Items.filter(this.filterShowList(currentlyOpen)).map((item, index) => {
                         const product = this.getCorrespondingProduct(item)
                         return (
 
@@ -173,7 +220,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
                                 currency="CHF"
                               />
                             </TableCell>
-                            <TableCell align="center">
+                            <TableCell padding="none" align="center">
                               <IconButton
                                 onClick={() => this.removeOneItem(item)} // remove a friend from the list
                               >
@@ -188,7 +235,13 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
                             </TableCell>
                         </CustomTableRow>
                       )})
-                    ) : <CustomTableRow><TableCell><IntlTypography>EMPTY</IntlTypography></TableCell></CustomTableRow>}
+                    ) : (
+                      <CustomTableRow>
+                        <TableCell rowSpan={10} colSpan={5} align="center">
+                          <IntlTypography>EMPTY</IntlTypography>
+                        </TableCell>
+                      </CustomTableRow>
+                    )}
                   </TableBody>
                 </Table>
               )}
@@ -212,25 +265,27 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, {}> {
   }
 }
 
-export default withStyles(styles, {name: "MoveShop"})(
-  withResource(
-    withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
+export default injectIntl(
+    withStyles(styles, {name: "MoveShop"})(
+    withResource(
+      withFormik<Props, Values>({
+        validationSchema: Yup.object().shape({
+          // email: Yup.string()
+          //   .email()
+          //   .required(),
+        }),
 
-      mapPropsToValues: props => ({ Items: [] }),
+        mapPropsToValues: props => ({ Items: [] }),
 
-      handleSubmit: async (values, actions) => {
-        console.log(values)
-        // actions.props.
-        // await actions.props.onChangeAndSave(values)
+        handleSubmit: async (values, actions) => {
+          console.log(values)
+          // actions.props.
+          // await actions.props.onChangeAndSave(values)
 
-        actions.setSubmitting(false)
-      }
+          actions.setSubmitting(false)
+        }
 
-    })(MoveShop)
+      })(MoveShop)
+    )
   )
 )

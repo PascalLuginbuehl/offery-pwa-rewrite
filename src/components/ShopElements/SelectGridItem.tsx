@@ -7,6 +7,7 @@ import { FormattedMessage, FormattedNumber } from 'react-intl';
 import Filter9PlusIcon from '@material-ui/icons/Filter9Plus'
 import { thisExpression } from '@babel/types';
 import { TextFieldProps } from '@material-ui/core/TextField';
+import { CurrentlyOpenStateEnum } from '../../interfaces/IShop';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -18,12 +19,14 @@ const styles = (theme: Theme) =>
     },
     fullPaper: {
       width: "100%",
-      padding: theme.spacing(2)
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
     },
     buttonCorner: {
       position: "absolute",
       right: 0,
       top: 0,
+
     }
   })
 
@@ -35,6 +38,7 @@ interface State {
 interface Props extends WithStyles<typeof styles> {
   onSelectProduct: (amount: number) => void
   product: IProduct
+  currentlyOpenState: CurrentlyOpenStateEnum
 }
 
 class GridSelect extends React.Component<Props, State> {
@@ -58,48 +62,53 @@ class GridSelect extends React.Component<Props, State> {
   }
 
   public render() {
-    const { classes, product, onSelectProduct } = this.props
+    const { classes, product, onSelectProduct, currentlyOpenState } = this.props
     const { amount, amountOpen } = this.state
 
     return (
       <Grid item xs={4} sm={3} md={2} lg={2} >
+        {/* Button exported into better position so it isn't child of something */}
+        <IconButton
+          onClick={this.handleOpenAmount}
+          className={classes.buttonCorner}
+        >
+          <Filter9PlusIcon />
+        </IconButton>
+
         <ButtonBase className={classes.fullButton}>
           <Paper elevation={1} onClick={() => onSelectProduct(amount)} className={classes.fullPaper}>
-
-            <IconButton
-              onClick={this.handleOpenAmount}
-              className={classes.buttonCorner}
-            >
-              <Filter9PlusIcon />
-            </IconButton>
             <IntlTypography variant="h6">{product.NameTextKey}</IntlTypography>
 
+            {currentlyOpenState == CurrentlyOpenStateEnum.Buy ?
+              <Typography variant="body2">
+                <FormattedMessage id={"RENT"} />
+                :&nbsp;
+                <FormattedNumber
+                  value={product.RentPrice}
+                  style="currency"
+                  currency="CHF"
+                  minimumFractionDigits={0}
+                  maximumFractionDigits={2}
+                />
+              </Typography>
+              : null
+            }
 
+            {currentlyOpenState == CurrentlyOpenStateEnum.Rent ?
+              <Typography variant="body2">
+                <FormattedMessage id={"BUY"} />
+                :&nbsp;
+                <FormattedNumber
+                  value={product.SellPrice}
+                  style="currency"
+                  currency="CHF"
+                  minimumFractionDigits={0}
+                  maximumFractionDigits={2}
+                />
+              </Typography>
+              : null
+            }
 
-            <Typography variant="body2">
-              <FormattedMessage id={"BUY"} />
-              :&nbsp;
-              <FormattedNumber
-                value={product.RentPrice}
-                style="currency"
-                currency="CHF"
-                minimumFractionDigits={0}
-                maximumFractionDigits={2}
-              />
-            </Typography>
-
-
-            <Typography variant="body2">
-              <FormattedMessage id={"RENT"} />
-              :&nbsp;
-              <FormattedNumber
-                value={product.SellPrice}
-                style="currency"
-                currency="CHF"
-                minimumFractionDigits={0}
-                maximumFractionDigits={2}
-              />
-            </Typography>
 
             { amountOpen ?
             <MuiTextfield
