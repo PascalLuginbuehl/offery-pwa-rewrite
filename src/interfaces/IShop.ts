@@ -6,8 +6,8 @@ export interface IOrderPosition {
 }
 
 export interface IMaterialOrder {
-  MaterialOrderId: number
-  DeliveryDate: string
+  // MaterialOrderId: number
+  DeliveryDate: Date
   DeliveryCostFix: number
   Comment: string
   MoveServicePositions: IOrderPosition[]
@@ -19,4 +19,20 @@ export enum CurrentlyOpenStateEnum {
   Buy,
   Rent,
   Free,
+}
+
+export enum ShopTypeEnum {
+  Move = "MoveServicePositions",
+  Pack = "PackServicePositions",
+  Storage = "StorageServicePositions",
+}
+
+
+export const emptyMaterialOrder: IMaterialOrder = {
+  DeliveryDate: new Date(),
+  DeliveryCostFix: 0,
+  Comment: "",
+  MoveServicePositions: [],
+  PackServicePositions: [],
+  StorageServicePositions: [],
 }

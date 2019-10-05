@@ -30,6 +30,7 @@ import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
 import { emptyMoveService } from '../interfaces/IService';
 import MoveShop from './Services/MoveShop';
+import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -301,6 +302,7 @@ class Lead extends Component<Props, State> {
       disposal,
       services,
       moveService,
+      materialOrder,
 
       initialAwait,
       onlySavedOffline,
@@ -481,7 +483,13 @@ class Lead extends Component<Props, State> {
                   <MoveShop
                     {...routeProps}
 
-                    onChangeAndSave={(serviceData) => { }}
+                    materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
+                    onChangeAndSave={(materialOrder) => {
+                      this.handleChange(materialOrder, "materialOrder")
+
+                      LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
+                    }}
+                    shopTypeKey={ShopTypeEnum.Move}
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}
@@ -526,6 +534,7 @@ class Lead extends Component<Props, State> {
 
           <NavFolder to={`${match.url}/services`} title="SERVICES">
             <Collapse in={services.HasMoveServiceEnabled}><NavItem to={`${match.url}/services/move`} title="MOVE" nested /></Collapse>
+            <Collapse in={services.HasMoveServiceEnabled}><NavItem to={`${match.url}/services/move-shop`} title="MOVE_SHOP" nested /></Collapse>
 
           </NavFolder>
         </>, portal) : null}

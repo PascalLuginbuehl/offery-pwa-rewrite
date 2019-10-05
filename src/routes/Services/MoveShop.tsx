@@ -21,7 +21,7 @@ import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/I
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import { IOrderPosition, CurrentlyOpenStateEnum } from '../../interfaces/IShop';
+import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder, ShopTypeEnum } from '../../interfaces/IShop';
 import { IProduct } from '../../interfaces/IProduct';
 import Filter9PlusIcon from '@material-ui/icons/Filter9Plus'
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'
@@ -35,38 +35,29 @@ const styles = (theme: Theme) =>
 
   })
 
-interface Values {
-  Items: IOrderPosition[]
-}
+
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
-  onChangeAndSave: (data: IPutMoveService) => void
+  onChangeAndSave: (data: IMaterialOrder) => void,
+  shopTypeKey: ShopTypeEnum,
+  materialOrder: IMaterialOrder,
 }
-
-
-const CustomTableRow = withStyles(theme => ({
-  [theme.breakpoints.down("sm")]: {
-    root: {
-      height: 24,
-    },
-  }
-}))(TableRow)
 
 interface State {
   currentlyOpen: CurrentlyOpenStateEnum
 }
 
-class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
+class MoveShop extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
 
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
   }
 
   addItemToList = (product: IProduct) => {
-    const { handleChange, values } = this.props
+    const { handleChange, values, shopTypeKey } = this.props
     const { currentlyOpen } = this.state
 
-    let items = values.Items
+    let items = this.getSelectedList()
 
     // Merge item with new Products
     let itemNotInList = true
@@ -97,7 +88,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
       items.push(order)
     }
 
-    handleChange({ target: { value: items, name: "Items" } })
+    handleChange({ target: { value: items, name: shopTypeKey } })
   }
 
   getCorrespondingProduct = (order: IOrderPosition): IProduct => {
@@ -112,8 +103,8 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
   }
 
   removeOneItem = (index: number) => {
-    const { handleChange, values } = this.props
-    let items = values.Items
+    const { handleChange, values, shopTypeKey } = this.props
+    let items = this.getSelectedList()
 
     const newItems = [...items.map((item, itemIndex) => {
       if (index == itemIndex) {
@@ -128,7 +119,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
     // Filter for Amount 0
     .filter(item => item.Amount > 0)
 
-    handleChange({ target: { value: newItems, name: "Items" } })
+    handleChange({ target: { value: newItems, name: shopTypeKey } })
   }
 
   filterShowList = (currentlyOpen: CurrentlyOpenStateEnum) => (item: IOrderPosition) => {
@@ -149,6 +140,12 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
     this.setState({currentlyOpen: value})
   }
 
+  getSelectedList = (): IOrderPosition[] => {
+    const { shopTypeKey, values} = this.props
+
+    return values[shopTypeKey]
+  }
+
   public render() {
     const {
       values,
@@ -162,18 +159,20 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
       resource,
       selectedCompany,
       intl,
-
+      shopTypeKey
     } = this.props
 
-    const { currentlyOpen } = this.state
 
+    const selectedItemList = this.getSelectedList()
+
+    const { currentlyOpen } = this.state
     const ShopProducts = selectedCompany.ShopProducts
 
     return (
       <Grid item xs={12}>
         <Form>
           <Grid item xs={12}>
-            <IntlTypography variant="h5">SHOP</IntlTypography>
+            <IntlTypography variant="h5">MOVE_SHOP</IntlTypography>
           </Grid>
 
           <Grid item xs={12}>
@@ -204,7 +203,7 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
 
           <Grid item xs={12}>
             <FieldArray
-              name="Items"
+              name={shopTypeKey}
               render={(arrayHelpers: ArrayHelpers) => (
                 <Table>
                   <TableHead>
@@ -217,15 +216,15 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                   </TableHead>
 
                   <TableBody>
-                    {values.Items && values.Items.length > 0 ? (
-                      values.Items
+                    {selectedItemList && selectedItemList.length > 0 ? (
+                      selectedItemList
                       .map((item, index) => ({originalIndex: index, ...item}))
                       .filter(this.filterShowList(currentlyOpen))
                       .map((item) => {
                         const product = this.getCorrespondingProduct(item)
                         return (
 
-                        <CustomTableRow key={item.originalIndex}>
+                        <TableRow key={item.originalIndex}>
                           <TableCell><FormattedMessage id={product.NameTextKey}/></TableCell>
                           <TableCell align="right">{item.Amount} Stk.</TableCell>
                             <TableCell align="right">
@@ -257,14 +256,14 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
                                 <DeleteForeverIcon />
                               </IconButton>
                             </TableCell>
-                        </CustomTableRow>
+                          </TableRow>
                       )})
                     ) : (
-                      <CustomTableRow>
+                      <TableRow>
                         <TableCell rowSpan={10} colSpan={5} align="center">
                           <IntlTypography>EMPTY</IntlTypography>
                         </TableCell>
-                      </CustomTableRow>
+                      </TableRow>
                     )}
                   </TableBody>
                 </Table>
@@ -281,22 +280,23 @@ class MoveShop extends React.Component<Props & FormikProps<Values>, State> {
   }
 }
 
-export default injectIntl(
-    withStyles(styles, {name: "MoveShop"})(
+export default
+injectIntl(
+  withStyles(styles, {name: "MoveShop"})(
     withResource(
-      withFormik<Props, Values>({
+      withFormik<Props, IMaterialOrder>({
         validationSchema: Yup.object().shape({
           // email: Yup.string()
           //   .email()
           //   .required(),
         }),
 
-        mapPropsToValues: props => ({ Items: [] }),
+        mapPropsToValues: props => props.materialOrder,
 
         handleSubmit: async (values, actions) => {
           console.log(values)
           // actions.props.
-          // await actions.props.onChangeAndSave(values)
+          await actions.props.onChangeAndSave(values)
 
           actions.setSubmitting(false)
         }

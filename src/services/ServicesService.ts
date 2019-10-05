@@ -2,6 +2,7 @@ import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding";
 import { IServices, IPutServices, IMoveService, IPutMoveService } from "../interfaces/IService";
+import { IMaterialOrder } from "../interfaces/IShop";
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -73,6 +74,7 @@ class ServicesService {
     )
   }
 
+
   // Services
   public fetchMoveService = (leadId: number): Promise<IMoveService | null> => {
     return this.fetchService<IMoveService | null> (
@@ -84,6 +86,21 @@ class ServicesService {
     return this.saveService<IPutMoveService>(
       API_URL + '/lead/' + leadId + '/moveservice',
       services
+    )
+  }
+
+
+  // MaterialOrder
+  public fetchMaterialOrder = (leadId: number): Promise<IMaterialOrder | null> => {
+    return this.fetchService<IMaterialOrder | null>(
+      API_URL + '/lead/' + leadId + '/materialorder',
+    )
+  }
+
+  public saveMaterialOrder = (leadId: number, materialOrder: IMaterialOrder) => {
+    return this.saveService<IPutMoveService>(
+      API_URL + '/lead/' + leadId + '/materialorder',
+      materialOrder
     )
   }
 }

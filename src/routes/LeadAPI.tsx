@@ -21,6 +21,7 @@ import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
 import ServicesService from '../services/ServicesService';
 import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService } from '../interfaces/IService';
+import { IMaterialOrder } from '../interfaces/IShop';
 
 
 export interface ILeadContainer {
@@ -36,6 +37,7 @@ export interface ILeadContainer {
 
   services: IPutServices | IServices
   moveService: IPutMoveService | IMoveService | null
+  materialOrder: IMaterialOrder | null
 
   // unsavedChanges:
 }
@@ -54,6 +56,8 @@ export const emptyLeadContainer: ILeadContainer = {
 
   services: emptyServices,
   moveService: emptyMoveService,
+
+  materialOrder: null
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -76,7 +80,8 @@ class LeadAPI {
       BuildingService.fetchDisposalOutBuilding(leadId),
       ServicesService.fetchServices(leadId),
       ServicesService.fetchMoveService(leadId),
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService]): ILeadContainer => ({
+      ServicesService.fetchMaterialOrder(leadId),
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
@@ -95,6 +100,8 @@ class LeadAPI {
       services: services,
 
       moveService: moveService,
+
+      materialOrder: materialOrder,
     }))
   }
 
@@ -160,8 +167,9 @@ class LeadAPI {
     return moveService ? ServicesService.saveMoveService(leadId, moveService) : Promise.resolve(null)
   }
 
-
-
+  SaveMaterialOrderService = (leadId: number, materialOrder: IMaterialOrder | null) => {
+    return materialOrder ? ServicesService.saveMaterialOrder(leadId, materialOrder) : Promise.resolve(null)
+  }
 
 
   // Gets Called to Get Data From Offline
