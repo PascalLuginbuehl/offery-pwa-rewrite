@@ -28,7 +28,10 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import SelectGridItem from '../../components/ShopElements/SelectGridItem';
-
+import InventoryCategoryFolder from '../../components/Inventory/InventoryCategoryFolder';
+import { IFurnitureCategory, IFurniture } from '../../interfaces/IResource';
+import InventoryItems from '../../components/Inventory/InventoryItems';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -45,12 +48,14 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 interface State {
   currentlyOpen: CurrentlyOpenStateEnum
+  selectedFurnitureCategory: IFurnitureCategory | null
 }
 
 class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
 
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
+    selectedFurnitureCategory: null
   }
 
 
@@ -63,6 +68,14 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
     const { shopTypeKey, values } = this.props
 
     return values[shopTypeKey]
+  }
+
+  openCatergory = (category: IFurnitureCategory | null) => {
+    this.setState({selectedFurnitureCategory: category})
+  }
+
+  addFurniture = (furniture: IFurniture) => {
+
   }
 
   public render() {
@@ -84,8 +97,8 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 
     const selectedItemList = this.getSelectedList()
 
-    const { currentlyOpen } = this.state
-    const ShopProducts = selectedCompany.ShopProducts
+    const { currentlyOpen, selectedFurnitureCategory } = this.state
+    const FurnitureCategories = resource.FurnitureCategories
 
     return (
       <Grid item xs={12}>
@@ -95,10 +108,25 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
           </Grid>
 
           <Grid item xs={12}>
+
+            <IconButton onClick={() => this.openCatergory(null)}>
+              <ArrowBackIcon />
+            </IconButton>
+
+            <IntlTypography>Test</IntlTypography>
+
             <Grid container spacing={1}>
-              {ShopProducts.map((product, index) => (
-                <SelectGridItem product={product} onSelectProduct={(amount) => this.addItemToList(product)} key={index} currentlyOpenState={currentlyOpen} />
-              ))}
+              {!selectedFurnitureCategory ?
+              FurnitureCategories.map((category, index) => (
+                <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
+              ))
+              :
+              selectedFurnitureCategory.Furnitures.map((furniture, index) => (
+                <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
+              ))
+            }
+
+              {}
             </Grid>
           </Grid>
 
@@ -135,7 +163,7 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
                   </TableHead>
 
                   <TableBody>
-                    {selectedItemList && selectedItemList.length > 0 ? (
+                    {/* {selectedItemList && selectedItemList.length > 0 ? (
                       selectedItemList
                         .map((item, index) => ({ originalIndex: index, ...item }))
                         .filter(this.filterShowList(currentlyOpen))
@@ -184,7 +212,7 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
                             <IntlTypography>EMPTY</IntlTypography>
                           </TableCell>
                         </TableRow>
-                      )}
+                      )} */}
                   </TableBody>
                 </Table>
               )}

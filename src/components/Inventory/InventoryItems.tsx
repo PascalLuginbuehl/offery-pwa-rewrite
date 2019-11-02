@@ -7,7 +7,7 @@ import Filter9PlusIcon from '@material-ui/icons/Filter9Plus'
 import { thisExpression } from '@babel/types';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import { CurrentlyOpenStateEnum } from '../../interfaces/IShop';
-import { IFurnitureCategory } from '../../interfaces/IResource';
+import { IFurnitureCategory, IFurniture } from '../../interfaces/IResource';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -30,10 +30,10 @@ interface State {
 
 interface Props extends WithStyles<typeof styles> {
   onSelect: () => void
-  category: IFurnitureCategory
+  furniture: IFurniture
 }
 
-class InventoryCategoryFolder extends React.Component<Props, State> {
+class InventoryItems extends React.Component<Props, State> {
   state: State = {
 
   }
@@ -53,13 +53,17 @@ class InventoryCategoryFolder extends React.Component<Props, State> {
   }
 
   public render() {
-    const { classes, category, onSelect } = this.props
+    const { classes, furniture, onSelect } = this.props
 
     return (
       <Grid item xs={4} sm={3} md={2} lg={2} >
         <ButtonBase className={classes.fullButton}>
           <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
-            <IntlTypography variant="h6">{category.NameTextKey}</IntlTypography>
+            <IntlTypography variant="h6">{furniture.NameTextKey}</IntlTypography>
+
+            {furniture.FMaterials.map(e => e.NameTextKey)}
+
+            {furniture.FSizes.map(e => e.NameTextKey)}
           </Paper>
         </ButtonBase>
       </Grid>
@@ -67,6 +71,6 @@ class InventoryCategoryFolder extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(InventoryCategoryFolder)
+export default withStyles(styles)(InventoryItems)
 
 

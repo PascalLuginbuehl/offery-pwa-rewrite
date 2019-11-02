@@ -55,8 +55,8 @@ export interface IFurniture {
   FurnitureId: number
   NameTextKey: string
   IconName: string
-  FSizes: IFSize
-  FMaterials: IFMaterial
+  FSizes: IFSize[]
+  FMaterials: IFMaterial[]
 }
 
 export interface IFurnitureCategory {
