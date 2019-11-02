@@ -11,7 +11,7 @@ export interface IFMaterial {
 }
 
 export interface IInventar {
-  InventarId: number
+  // InventarId: number
 
   Amount: number
   FurnitureId: number
@@ -28,4 +28,12 @@ export interface IInventars {
 
   StorageServiceInventars: IInventar
   StorageServiceComment: string
+}
+
+
+
+export enum InventoryKeysEnum {
+  Move = "MoveServiceInventars",
+  Pack = "DisposalServiceInventars",
+  Storage = "StorageServiceInventars",
 }

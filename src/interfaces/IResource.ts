@@ -1,6 +1,7 @@
 import { ICompany } from "./ICompany"
 import { IText } from "./IText"
 import { IUser } from "./IUser"
+import { IFSize, IFMaterial } from "./IInventars";
 
 export interface IBuildingAge {
   BuildingAgeId: number
@@ -50,6 +51,20 @@ export interface IBuildingTypeDetail extends IMasterThing {
   BuildingTypeDetailId: number
 }
 
+export interface IFurniture {
+  FurnitureId: number
+  NameTextKey: string
+  IconName: string
+  FSizes: IFSize
+  FMaterials: IFMaterial
+}
+
+export interface IFurnitureCategory {
+  FurnitureCategoryId: number
+  NameTextKey: string
+  Furnitures:  IFurniture[]
+}
+
 export interface IResource {
   CurrentUser: IUser
   CurrentCompanies: ICompany[]
@@ -65,4 +80,5 @@ export interface IResource {
   FloorTypes: IFloorType[]
   BuiltInWardrobeRanges: IBuiltInWardrobeRange[]
   BuildingTypeDetails: IBuildingTypeDetail[]
+  FurnitureCategories: IFurnitureCategory[]
 }

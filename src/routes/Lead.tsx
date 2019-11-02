@@ -31,6 +31,7 @@ import MoveService from './Services/MoveService';
 import { emptyMoveService } from '../interfaces/IService';
 import MaterialShop from './Services/MaterialShop';
 import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
+import Inventory from './Services/Inventory';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -499,12 +500,12 @@ class Lead extends Component<Props, State> {
                 }
               />
 
-              {/* MoveShop */}
+              {/* Move Inventory */}
               <Route
                 exact
                 path={`${match.url}/services/move/inventory`}
                 render={(routeProps) =>
-                  <MaterialShop
+                  <Inventory
                     {...routeProps}
 
                     materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
