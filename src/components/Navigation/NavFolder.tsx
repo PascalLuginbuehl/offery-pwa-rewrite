@@ -67,7 +67,7 @@ class NavItem extends React.Component<Props, State> {
     return (
       <>
         <NavLink to={to} activeClassName={classes.activeLink} className={classes.noLink}>
-          <ListItem selected={location.pathname === to} button>
+          <ListItem selected={location.pathname === to} button className={nested ? classes.nested : ""}>
 
             <ListItemText primary={intl.formatMessage({ id: title })} />
 

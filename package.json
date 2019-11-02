@@ -57,7 +57,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9000/",
+  "proxy": "https://offery.azurewebsites.net",
   "devDependencies": {
     "workbox-build": "^4.3.1"
   }

@@ -52,10 +52,8 @@ class LanguageProvider extends React.Component<Props, State> {
 
     this.setState({locale: cleanLocale})
 
-    // Call generate funciton
+    // Call generate function
     this.generateMessagesObject(this.props.additionalTranlations, cleanLocale)
-
-
   }
 
 

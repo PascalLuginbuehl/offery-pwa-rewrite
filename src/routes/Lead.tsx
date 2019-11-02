@@ -498,6 +498,74 @@ class Lead extends Component<Props, State> {
                   />
                 }
               />
+
+              {/* MoveShop */}
+              <Route
+                exact
+                path={`${match.url}/services/move/inventory`}
+                render={(routeProps) =>
+                  <MaterialShop
+                    {...routeProps}
+
+                    materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
+                    onChangeAndSave={(materialOrder) => {
+                      this.handleChange(materialOrder, "materialOrder")
+
+                      return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
+                    }}
+                    shopTypeKey={ShopTypeEnum.Move}
+                  // data={}
+                  // container={this.state}
+                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                  />
+                }
+              />
+
+
+              {/* PackShop */}
+              <Route
+                exact
+                path={`${match.url}/services/pack/material-shop`}
+                render={(routeProps) =>
+                  <MaterialShop
+                    {...routeProps}
+
+                    materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
+                    onChangeAndSave={(materialOrder) => {
+                      this.handleChange(materialOrder, "materialOrder")
+
+                      return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
+                    }}
+                    shopTypeKey={ShopTypeEnum.Pack}
+                  // data={}
+                  // container={this.state}
+                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                  />
+                }
+              />
+
+
+              {/* StorageShop */}
+              <Route
+                exact
+                path={`${match.url}/services/storage/material-shop`}
+                render={(routeProps) =>
+                  <MaterialShop
+                    {...routeProps}
+
+                    materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
+                    onChangeAndSave={(materialOrder) => {
+                      this.handleChange(materialOrder, "materialOrder")
+
+                      return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
+                    }}
+                    shopTypeKey={ShopTypeEnum.Storage}
+                  // data={}
+                  // container={this.state}
+                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                  />
+                }
+              />
             </>
             :
               Lead ? (
@@ -537,31 +605,30 @@ class Lead extends Component<Props, State> {
           <NavFolder to={`${match.url}/services`} title="SERVICES">
             <Collapse in={services.HasMoveServiceEnabled}>
               <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move/material-shop`} title="MATERIAL_SHOP" nested />
+                <NavItem to={`${match.url}/services/move/material-shop`} title="MATERIAL_SHOP" doubleNested />
+                <NavItem to={`${match.url}/services/move/inventory`} title="INVENTORY" doubleNested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasPackServiceEnabled}>
-              <NavFolder to={`${match.url}/services/pack`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/pack/material-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/pack`} title="PACK" nested>
+                <NavItem to={`${match.url}/services/pack/material-shop`} title="MATERIAL_SHOP" doubleNested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasStorageServiceEnabled}>
-              <NavFolder to={`${match.url}/services/storage`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/storage/material-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/storage`} title="STORAGE" nested>
+                <NavItem to={`${match.url}/services/storage/material-shop`} title="MATERIAL_SHOP" doubleNested />
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasDisposalServiceEnabled}>
-              <NavFolder to={`${match.url}/services/disposal`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/disposal/material-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/disposal`} title="DISPOSAL" nested>
               </NavFolder>
             </Collapse>
 
             <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavFolder to={`${match.url}/services/cleaning`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/cleaning/material-shop`} title="MATERIAL_SHOP" nested />
+              <NavFolder to={`${match.url}/services/cleaning`} title="CLEANING" nested>
               </NavFolder>
             </Collapse>
 

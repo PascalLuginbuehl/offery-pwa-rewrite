@@ -21,6 +21,9 @@ const styles = (theme: Theme) =>
     nested: {
       paddingLeft: theme.spacing(4),
     },
+    doubleNested: {
+      paddingLeft: theme.spacing(8),
+    }
   })
 
 
@@ -28,17 +31,18 @@ interface Props extends WithStyles<typeof styles>, InjectedIntlProps, RouteCompo
   to: string,
   title: string,
   nested?: boolean
+  doubleNested?: boolean
 }
 
 class NavItem extends React.Component<Props> {
 
   public render() {
-    const { classes, to, title, intl, children, nested, location } = this.props
+    const { classes, to, title, intl, children, nested, doubleNested, location } = this.props
 
     return (
       <>
         <NavLink to={to} activeClassName={classes.activeLink} className={classes.noLink}>
-          <ListItem selected={location.pathname === to} button className={nested ? classes.nested : undefined}>
+          <ListItem selected={location.pathname === to} button className={nested ? classes.nested : (doubleNested ? classes.doubleNested : "")}>
             <ListItemText primary={intl.formatMessage({ id: title })} />
           </ListItem>
         </NavLink>
