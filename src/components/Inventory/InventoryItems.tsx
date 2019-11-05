@@ -61,9 +61,9 @@ class InventoryItems extends React.Component<Props, State> {
           <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
             <IntlTypography variant="h6">{furniture.NameTextKey}</IntlTypography>
 
-            {furniture.FMaterials.map(e => e.NameTextKey)}
+            {/* {furniture.FMaterials.map(e => e.NameTextKey)} */}
 
-            {furniture.FSizes.map(e => e.NameTextKey)}
+            {/* {furniture.FSizes.map(e => e.NameTextKey)} */}
           </Paper>
         </ButtonBase>
       </Grid>

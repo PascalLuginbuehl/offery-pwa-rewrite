@@ -32,6 +32,8 @@ import InventoryCategoryFolder from '../../components/Inventory/InventoryCategor
 import { IFurnitureCategory, IFurniture } from '../../interfaces/IResource';
 import InventoryItems from '../../components/Inventory/InventoryItems';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import chunk from 'chunk'
+import SwipeableViews from 'react-swipeable-views';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -115,19 +117,29 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 
             <IntlTypography>Test</IntlTypography>
 
-            <Grid container spacing={1}>
+
+
+          </Grid>
+
+          <Grid item xs={12}>
+
               {!selectedFurnitureCategory ?
-              FurnitureCategories.map((category, index) => (
-                <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
-              ))
-              :
-              selectedFurnitureCategory.Furnitures.map((furniture, index) => (
-                <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
-              ))
-            }
+                FurnitureCategories.map((category, index) => (
+                  <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
+                ))
+                :
+                <SwipeableViews>
+                {
+                  chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
+                  <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
+                )), 10)
+                  .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
+                  }
+                </SwipeableViews>
+
+              }
 
               {}
-            </Grid>
           </Grid>
 
 
