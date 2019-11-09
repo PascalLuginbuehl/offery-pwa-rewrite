@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, ButtonBase, Paper, IconButton, TextField as MuiTextfield } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, ButtonBase, Paper, IconButton, TextField as MuiTextfield, Toolbar, Divider } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -137,15 +137,15 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
           </Grid>
 
           <Grid item xs={12}>
+            <Toolbar disableGutters>
+              <IconButton onClick={() => this.openCatergory(null)}>
+                <ArrowBackIcon />
+              </IconButton>
+              &nbsp;
 
-            <IconButton onClick={() => this.openCatergory(null)}>
-              <ArrowBackIcon />
-            </IconButton>
-
-            <IntlTypography>Test</IntlTypography>
-
-
-
+              <IntlTypography variant="h6">{selectedFurnitureCategory ? selectedFurnitureCategory.NameTextKey : "SELECT_CATEGORY" }</IntlTypography>
+            </Toolbar>
+            <Divider />
           </Grid>
 
           <Grid item xs={12} style={{width: "calc(7vw - 5px)", maxWidth: 1050}}>
@@ -156,7 +156,7 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
                 ))
                 :
                 <>
-                  <IconButton onClick={(e) => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
+                  <IconButton onClick={() => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
                     <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                       {
                         chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
@@ -165,7 +165,7 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
                         .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
                       }
                     </SwipeableViews>
-                  <IconButton onClick={(e) => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
+                  <IconButton onClick={() => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
                   {
                     new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
                       if(index == i) {
