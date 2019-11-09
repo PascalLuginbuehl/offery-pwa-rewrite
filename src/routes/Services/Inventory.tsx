@@ -34,6 +34,7 @@ import InventoryItems from '../../components/Inventory/InventoryItems';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import chunk from 'chunk'
 import SwipeableViews from 'react-swipeable-views';
+import withWidth, { WithWidthProps, isWidthUp, isWidthDown } from '@material-ui/core/withWidth'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -42,7 +43,7 @@ const styles = (theme: Theme) =>
 
 
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
   onChangeAndSave: (data: IMaterialOrder) => void,
   shopTypeKey: ShopTypeEnum,
   materialOrder: IMaterialOrder,
@@ -51,13 +52,15 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 interface State {
   currentlyOpen: CurrentlyOpenStateEnum
   selectedFurnitureCategory: IFurnitureCategory | null
+  index: number
 }
 
 class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
 
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
-    selectedFurnitureCategory: null
+    selectedFurnitureCategory: null,
+    index: 0,
   }
 
 
@@ -80,6 +83,26 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 
   }
 
+  handleChangeIndex = (index: number) => {
+    this.setState({
+      index,
+    })
+  }
+
+  getBreakpointWith = () => {
+    const { width } = this.props
+    if(width) {
+      if (isWidthDown(width, 'md')) {
+        return 6
+      } else if (width == 'sm') {
+        return 4
+      } else if (isWidthUp(width, 'xs')) {
+        return 3
+      }
+    }
+    return 5
+  }
+
   public render() {
     const {
       values,
@@ -93,13 +116,16 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
       resource,
       selectedCompany,
       intl,
-      shopTypeKey
+      shopTypeKey,
+      width,
     } = this.props
 
+    // @ts-ignore
+    window.test = this.getBreakpointWith
 
     const selectedItemList = this.getSelectedList()
 
-    const { currentlyOpen, selectedFurnitureCategory } = this.state
+    const { currentlyOpen, selectedFurnitureCategory, index } = this.state
     const FurnitureCategories = resource.FurnitureCategories
 
     return (
@@ -121,19 +147,19 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{width: "calc(7vw - 5px)", maxWidth: 1050}}>
 
               {!selectedFurnitureCategory ?
                 FurnitureCategories.map((category, index) => (
                   <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
                 ))
                 :
-                <SwipeableViews>
-                {
-                  chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
-                  <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
-                )), 10)
-                  .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
+                <SwipeableViews enableMouseEvents index={index} onChangeIndex={this.handleChangeIndex}>
+                  {
+                    chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
+                      <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
+                    )), this.getBreakpointWith() * 3)
+                    .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
                   }
                 </SwipeableViews>
 
@@ -241,27 +267,29 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 }
 
 export default
-  injectIntl(
-    withStyles(styles, { name: "MoveShop" })(
-      withResource(
-        withFormik<Props, IMaterialOrder>({
-          validationSchema: Yup.object().shape({
-            // email: Yup.string()
-            //   .email()
-            //   .required(),
-          }),
+  withWidth()(
+    injectIntl(
+      withStyles(styles, { name: "MoveShop" })(
+        withResource(
+          withFormik<Props, IMaterialOrder>({
+            validationSchema: Yup.object().shape({
+              // email: Yup.string()
+              //   .email()
+              //   .required(),
+            }),
 
-          mapPropsToValues: props => props.materialOrder,
+            mapPropsToValues: props => props.materialOrder,
 
-          handleSubmit: async (values, actions) => {
-            console.log(values)
-            // actions.props.
-            await actions.props.onChangeAndSave(values)
+            handleSubmit: async (values, actions) => {
+              console.log(values)
+              // actions.props.
+              await actions.props.onChangeAndSave(values)
 
-            actions.setSubmitting(false)
-          }
+              actions.setSubmitting(false)
+            }
 
-        })(Inventory)
+          })(Inventory)
+        )
       )
     )
   )
