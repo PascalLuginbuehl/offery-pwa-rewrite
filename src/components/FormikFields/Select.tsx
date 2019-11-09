@@ -1,6 +1,5 @@
 import React from "react"
 import ReactSelect from "react-select"
-import { OptionsType, ValueType } from "react-select/lib/types"
 import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
 } from '@material-ui/core/TextField'
@@ -9,6 +8,7 @@ import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl'
 import Grid from '@material-ui/core/Grid'
 import { components, styles } from './../ReactSelectComponents'
 import { WithStyles, withStyles } from "@material-ui/styles"
+import { OptionsType, ValueType } from "react-select/src/types"
 
 interface Option {
   label: string;

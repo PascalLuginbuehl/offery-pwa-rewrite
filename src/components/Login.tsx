@@ -125,10 +125,10 @@ class Login extends React.Component<Props, State> {
               {/*
               //@ts-ignore */}
               <Submit
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
+                // fullWidth
+                // variant="contained"
+                // color="primary"
+                // className={classes.submit}
                 onSubmit={this.handleSubmit}
               />
 

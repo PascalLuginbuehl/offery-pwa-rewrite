@@ -3,7 +3,7 @@ import { IMessages, translations as baseTranslations, ITranslationAssortment } f
 import { IntlProvider } from 'react-intl'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import * as deLocale from 'date-fns/locale/de'
+import deLocale from 'date-fns/locale/de'
 import { IText } from '../interfaces/IText';
 
 export type ChangeLanguage = (language: string) => void

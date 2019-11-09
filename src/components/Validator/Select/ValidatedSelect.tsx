@@ -6,9 +6,9 @@ import { Grid, WithStyles, withStyles } from "@material-ui/core"
 import { WithFormContext, withValidator } from '..';
 import { Omit } from 'react-router';
 import Validations from "../Validations";
-import { components, styles } from '../../ReactSelectComponents';
-import Select from 'react-select';
-import { ActionMeta, ValueType, OptionsType } from 'react-select/lib/types';
+import { components, styles } from '../../ReactSelectComponents'
+import Select from 'react-select'
+import { ValueType } from "react-select/src/types"
 
 // Custom validation to export without ProviderProps
 export interface ValidatedSelectProps extends Omit<DatePickerProps, "onChange"> {
@@ -130,7 +130,7 @@ class ValidatedSelect extends React.Component<Props, State> {
 
           // kwikfix to stay int
           // @ts-ignore
-          options={options}
+          options={options.map(e => ({...e, value: e.value.toString()}))}
 
           // options={options.map(toOptions).map(e => ({ ...e, label: translatedLabel ? intl.formatMessage({ id: e.label }) : label, }))}
           getOptionLabel={({ label }) => notTranslatedLabel ? intl.formatMessage({ id: label }) : label}

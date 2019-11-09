@@ -10,7 +10,7 @@ import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBui
 import IntlTypography from '../../components/Intl/IntlTypography';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
-import { Formik, FormikActions, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import TextField from '../../components/FormikFields/TextField';
 import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
