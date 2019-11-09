@@ -39,6 +39,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import { IInventars, InventoryKeysEnum } from '../../interfaces/IInventars'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -48,9 +49,9 @@ const styles = (theme: Theme) =>
 
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
-  onChangeAndSave: (data: IMaterialOrder) => void,
-  shopTypeKey: ShopTypeEnum,
-  materialOrder: IMaterialOrder,
+  onChangeAndSave: (data: IInventars) => void,
+  inventoryTypeKey: InventoryKeysEnum,
+  inventory: IInventars,
 }
 
 interface State {
@@ -59,7 +60,7 @@ interface State {
   index: number
 }
 
-class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
+class Inventory extends React.Component<Props & FormikProps<IInventars>, State> {
 
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
@@ -73,11 +74,11 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
     this.setState({ currentlyOpen: value })
   }
 
-  getSelectedList = (): IOrderPosition[] => {
-    const { shopTypeKey, values } = this.props
+  // getSelectedList = (): IOrderPosition[] => {
+  //   const { shopTypeKey, values } = this.props
 
-    return values[shopTypeKey]
-  }
+  //   return values[shopTypeKey]
+  // }
 
   openCatergory = (category: IFurnitureCategory | null) => {
     this.setState({selectedFurnitureCategory: category})
@@ -120,11 +121,11 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
       resource,
       selectedCompany,
       intl,
-      shopTypeKey,
+      inventoryTypeKey,
       width,
     } = this.props
 
-    const selectedItemList = this.getSelectedList()
+    // const selectedItemList = this.getSelectedList()
 
     const { currentlyOpen, selectedFurnitureCategory, index } = this.state
     const FurnitureCategories = resource.FurnitureCategories
@@ -133,7 +134,7 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
       <Grid item xs={12}>
         <Form>
           <Grid item xs={12}>
-            <IntlTypography variant="h5">MATERIAL_SHOP</IntlTypography>
+            <IntlTypography variant="h5">INVENTORY</IntlTypography>
           </Grid>
 
           <Grid item xs={12}>
@@ -151,27 +152,29 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
           <Grid item xs={12} style={{width: "calc(7vw - 5px)", maxWidth: 1050}}>
 
               {!selectedFurnitureCategory ?
-                FurnitureCategories.map((category, index) => (
-                  <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
-                ))
+                <Grid container spacing={1} key={index}>
+                  {FurnitureCategories.map((category, index) => (
+                    <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
+                  ))}
+                </Grid>
                 :
                 <>
                   <IconButton onClick={() => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
-                    <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
-                      {
-                        chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
-                          <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
-                        )), this.getBreakpointWith() * 3)
-                        .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
-                      }
-                    </SwipeableViews>
+                  <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
+                    {
+                      chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
+                        <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
+                      )), this.getBreakpointWith() * 3)
+                      .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
+                    }
+                  </SwipeableViews>
                   <IconButton onClick={() => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
                   {
                     new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
                       if(index == i) {
-                        return <RadioButtonCheckedIcon />
+                        return <RadioButtonCheckedIcon key={i} />
                       } else {
-                        return <RadioButtonUncheckedIcon />
+                        return <RadioButtonUncheckedIcon key={i} />
                       }
                     }
                     )
@@ -182,9 +185,6 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 
               {}
           </Grid>
-
-
-          <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
 
           <Grid item xs={12}>
             <Tabs
@@ -203,7 +203,7 @@ class Inventory extends React.Component<Props & FormikProps<IMaterialOrder>, Sta
 
           <Grid item xs={12}>
             <FieldArray
-              name={shopTypeKey}
+              name={inventoryTypeKey}
               render={(arrayHelpers: ArrayHelpers) => (
                 <Table>
                   <TableHead>
@@ -286,14 +286,14 @@ export default
     injectIntl(
       withStyles(styles, { name: "MoveShop" })(
         withResource(
-          withFormik<Props, IMaterialOrder>({
+          withFormik<Props, IInventars>({
             validationSchema: Yup.object().shape({
               // email: Yup.string()
               //   .email()
               //   .required(),
             }),
 
-            mapPropsToValues: props => props.materialOrder,
+            mapPropsToValues: props => props.inventory,
 
             handleSubmit: async (values, actions) => {
               console.log(values)

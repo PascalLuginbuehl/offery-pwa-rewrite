@@ -20,13 +20,13 @@ export interface IInventar {
 }
 
 export interface IInventars {
-  MoveServiceInventars: IInventar
+  MoveServiceInventars: IInventar[]
   MoveServiceComment: string
 
-  DisposalServiceInventars: IInventar
+  DisposalServiceInventars: IInventar[]
   DisposalServiceComment: string
 
-  StorageServiceInventars: IInventar
+  StorageServiceInventars: IInventar[]
   StorageServiceComment: string
 }
 
@@ -36,4 +36,16 @@ export enum InventoryKeysEnum {
   Move = "MoveServiceInventars",
   Pack = "DisposalServiceInventars",
   Storage = "StorageServiceInventars",
+}
+
+
+export const emptyInventory: IInventars  = {
+  MoveServiceInventars: [],
+  MoveServiceComment: "",
+
+  DisposalServiceInventars: [],
+  DisposalServiceComment: "",
+
+  StorageServiceInventars: [],
+  StorageServiceComment: "",
 }

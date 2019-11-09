@@ -32,6 +32,7 @@ import { emptyMoveService } from '../interfaces/IService';
 import MaterialShop from './Services/MaterialShop';
 import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
 import Inventory from './Services/Inventory';
+import { InventoryKeysEnum, emptyInventory } from '../interfaces/IInventars';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -304,6 +305,7 @@ class Lead extends Component<Props, State> {
       services,
       moveService,
       materialOrder,
+      inventory,
 
       initialAwait,
       onlySavedOffline,
@@ -508,13 +510,13 @@ class Lead extends Component<Props, State> {
                   <Inventory
                     {...routeProps}
 
-                    materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
-                    onChangeAndSave={(materialOrder) => {
+                    inventory={inventory ? inventory : emptyInventory}
+                    onChangeAndSave={(inventory) => {
                       this.handleChange(materialOrder, "materialOrder")
 
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
-                    shopTypeKey={ShopTypeEnum.Move}
+                    inventoryTypeKey={InventoryKeysEnum.Move}
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}

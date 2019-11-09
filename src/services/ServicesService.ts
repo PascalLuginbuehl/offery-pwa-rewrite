@@ -3,6 +3,7 @@ import LoginService from "./LoginService"
 import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding";
 import { IServices, IPutServices, IMoveService, IPutMoveService } from "../interfaces/IService";
 import { IMaterialOrder } from "../interfaces/IShop";
+import { IInventars } from "../interfaces/IInventars";
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -98,8 +99,23 @@ class ServicesService {
   }
 
   public saveMaterialOrder = (leadId: number, materialOrder: IMaterialOrder) => {
-    return this.saveService<IPutMoveService>(
+    return this.saveService<IMaterialOrder>(
       API_URL + '/lead/' + leadId + '/materialorder',
+      materialOrder
+    )
+  }
+
+
+  // MaterialOrder
+  public fetchInventars = (leadId: number): Promise<IInventars | null> => {
+    return this.fetchService<IInventars | null>(
+      API_URL + '/lead/' + leadId + '/inventars',
+    )
+  }
+
+  public saveInventars = (leadId: number, materialOrder: IInventars) => {
+    return this.saveService<IInventars>(
+      API_URL + '/lead/' + leadId + '/inventars',
       materialOrder
     )
   }
