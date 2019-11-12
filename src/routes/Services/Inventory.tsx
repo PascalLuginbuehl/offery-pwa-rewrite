@@ -39,7 +39,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import { IInventars, InventoryKeysEnum } from '../../interfaces/IInventars'
+import { IInventars, InventoryKeysEnum, IInventar } from '../../interfaces/IInventars'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -84,8 +84,32 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     this.setState({selectedFurnitureCategory: category})
   }
 
-  addFurniture = (furniture: IFurniture) => {
+  addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers) => {
+    const { handleChange, values, inventoryTypeKey } = this.props
+    const { currentlyOpen } = this.state
 
+    let items = this.getSelectedList()
+
+    const item = items.find(item => item.FurnitureId == furniture.FurnitureId)
+
+    if (item) {
+
+    }
+
+    if (itemNotInList) {
+      const order: IOrderPosition = {
+        Amount: 1,
+        IsForFree: currentlyOpen == CurrentlyOpenStateEnum.Free,
+        IsRent: currentlyOpen == CurrentlyOpenStateEnum.Rent,
+        ProductId: product.ProductId,
+      }
+
+      items.push(order)
+    }
+
+    handleChange({ target: { value: items, name: shopTypeKey } })
+
+    arrayHelpers.push()
   }
 
   handleChangeIndex = (index: number) => {
@@ -106,6 +130,12 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
       }
     }
     return 5
+  }
+
+  getSelectedList = (): IInventar[] => {
+    const { inventoryTypeKey, values } = this.props
+
+    return values[inventoryTypeKey]
   }
 
   public render() {
@@ -158,29 +188,33 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                   ))}
                 </Grid>
                 :
-                <>
-                  <IconButton onClick={() => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
-                  <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
-                    {
-                      chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
-                        <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture)} key={index} />
-                      )), this.getBreakpointWith() * 3)
-                      .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
-                    }
-                  </SwipeableViews>
-                  <IconButton onClick={() => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
-                  {
-                    new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
-                      if(index == i) {
-                        return <RadioButtonCheckedIcon key={i} />
-                      } else {
-                        return <RadioButtonUncheckedIcon key={i} />
+                <FieldArray
+                  name={inventoryTypeKey}
+                  render={(arrayHelpers: ArrayHelpers) => (
+                  <>
+                    <IconButton onClick={() => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
+                    <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
+                      {
+                        chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
+                          <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture, arrayHelpers)} key={index} />
+                        )), this.getBreakpointWith() * 3)
+                        .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
                       }
+                    </SwipeableViews>
+                    <IconButton onClick={() => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
+                    {
+                      new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
+                        if(index == i) {
+                          return <RadioButtonCheckedIcon key={i} />
+                        } else {
+                          return <RadioButtonUncheckedIcon key={i} />
+                        }
+                      }
+                      )
                     }
-                    )
-                  }
-
-                </>
+                  </>
+                  )}
+                />
               }
 
               {}
