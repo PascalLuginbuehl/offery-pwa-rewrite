@@ -512,11 +512,11 @@ class Lead extends Component<Props, State> {
 
                     inventory={inventory ? inventory : emptyInventory}
                     onChangeAndSave={(inventory) => {
-                      this.handleChange(materialOrder, "materialOrder")
+                      this.handleChange(inventory, "inventory")
 
-                      return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
+                      return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
-                    inventoryTypeKey={InventoryKeysEnum.Move}
+                    initalInventoryTypeKey={InventoryKeysEnum.Move}
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}

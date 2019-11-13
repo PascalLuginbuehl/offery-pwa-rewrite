@@ -50,12 +50,12 @@ const styles = (theme: Theme) =>
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
   onChangeAndSave: (data: IInventars) => void,
-  inventoryTypeKey: InventoryKeysEnum,
+  initalInventoryTypeKey: InventoryKeysEnum,
   inventory: IInventars,
 }
 
 interface State {
-  currentlyOpen: CurrentlyOpenStateEnum
+  currentlyOpenInventory: InventoryKeysEnum
   selectedFurnitureCategory: IFurnitureCategory | null
   index: number
 }
@@ -63,15 +63,20 @@ interface State {
 class Inventory extends React.Component<Props & FormikProps<IInventars>, State> {
 
   state: State = {
-    currentlyOpen: CurrentlyOpenStateEnum.Buy,
+    currentlyOpenInventory: InventoryKeysEnum.Move,
     selectedFurnitureCategory: null,
     index: 0,
   }
 
+  constructor(props: Props & FormikProps<IInventars>) {
+    super(props)
+
+    this.state.currentlyOpenInventory = props.initalInventoryTypeKey
+  }
 
 
-  handleTabChange = (e: React.ChangeEvent<{}>, value: CurrentlyOpenStateEnum) => {
-    this.setState({ currentlyOpen: value })
+  handleTabChange = (e: React.ChangeEvent<{}>, value: InventoryKeysEnum) => {
+    this.setState({ currentlyOpenInventory: value })
   }
 
   // getSelectedList = (): IOrderPosition[] => {
@@ -85,8 +90,8 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
   }
 
   addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers) => {
-    const { handleChange, values, inventoryTypeKey } = this.props
-    const { currentlyOpen } = this.state
+    const { handleChange, values } = this.props
+    const { currentlyOpenInventory } = this.state
 
     let items = this.getSelectedList()
 
@@ -129,9 +134,10 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
   }
 
   getSelectedList = (): IInventar[] => {
-    const { inventoryTypeKey, values } = this.props
+    const { values } = this.props
+    const { currentlyOpenInventory } = this.state
 
-    return values[inventoryTypeKey]
+    return values[currentlyOpenInventory]
   }
 
   getCorrespondingFurnitureItem = (item: IInventar): IFurniture => {
@@ -173,13 +179,12 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
       resource,
       selectedCompany,
       intl,
-      inventoryTypeKey,
       width,
     } = this.props
 
     const selectedItemList = this.getSelectedList()
 
-    const { currentlyOpen, selectedFurnitureCategory, index } = this.state
+    const { currentlyOpenInventory, selectedFurnitureCategory, index } = this.state
     const FurnitureCategories = resource.FurnitureCategories
 
     return (
@@ -211,7 +216,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                 </Grid>
                 :
                 <FieldArray
-                  name={inventoryTypeKey}
+                  name={currentlyOpenInventory}
                   render={(arrayHelpers: ArrayHelpers) => (
                   <>
                     <IconButton onClick={() => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
@@ -244,22 +249,22 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
 
           <Grid item xs={12}>
             <Tabs
-              value={currentlyOpen}
+              value={currentlyOpenInventory}
               onChange={this.handleTabChange}
               indicatorColor="primary"
               textColor="primary"
               variant="fullWidth"
               centered
             >
-              <Tab label={intl.formatMessage({ id: "BUY" })} value={CurrentlyOpenStateEnum.Buy} />
-              <Tab label={intl.formatMessage({ id: "RENT" })} value={CurrentlyOpenStateEnum.Rent} />
-              <Tab label={intl.formatMessage({ id: "INCLUSIVE" })} value={CurrentlyOpenStateEnum.Free} />
+              <Tab label={intl.formatMessage({ id: "MOVE" })} value={InventoryKeysEnum.Move} />
+              <Tab label={intl.formatMessage({ id: "PACK" })} value={InventoryKeysEnum.Pack} />
+              <Tab label={intl.formatMessage({ id: "STORAGE" })} value={InventoryKeysEnum.Storage} />
             </Tabs>
           </Grid>
 
           <Grid item xs={12}>
             <FieldArray
-              name={inventoryTypeKey}
+              name={currentlyOpenInventory}
               render={(arrayHelpers: ArrayHelpers) => (
                 <Table>
                   <TableHead>

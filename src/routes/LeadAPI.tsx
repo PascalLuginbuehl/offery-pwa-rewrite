@@ -177,6 +177,10 @@ class LeadAPI {
     return materialOrder ? ServicesService.saveMaterialOrder(leadId, materialOrder) : Promise.resolve(null)
   }
 
+  SaveInventoryService = (leadId: number, inventars: IInventars | null) => {
+    return inventars ? ServicesService.saveInventars(leadId, inventars) : Promise.resolve(null)
+  }
+
 
   // Gets Called to Get Data From Offline
   FetchFromOffline = (leadId: number): Promise<ILeadContainer | undefined> => {
