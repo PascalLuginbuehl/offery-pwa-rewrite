@@ -90,26 +90,22 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
 
     let items = this.getSelectedList()
 
-    const item = items.find(item => item.FurnitureId == furniture.FurnitureId)
+    const itemIndex = items.findIndex(item => item.FurnitureId == furniture.FurnitureId)
 
-    if (item) {
-
-    }
-
-    if (itemNotInList) {
-      const order: IOrderPosition = {
+    // Item not found
+    if (itemIndex === -1) {
+      const order: IInventar = {
         Amount: 1,
-        IsForFree: currentlyOpen == CurrentlyOpenStateEnum.Free,
-        IsRent: currentlyOpen == CurrentlyOpenStateEnum.Rent,
-        ProductId: product.ProductId,
+        FMaterial: null,
+        FSize: null,
+        FurnitureId: furniture.FurnitureId
       }
 
-      items.push(order)
+      arrayHelpers.push(order)
+    } else {
+      const item = items[itemIndex]
+      arrayHelpers.replace(itemIndex, { ...item, Amount: item.Amount + 1})
     }
-
-    handleChange({ target: { value: items, name: shopTypeKey } })
-
-    arrayHelpers.push()
   }
 
   handleChangeIndex = (index: number) => {
@@ -138,6 +134,24 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     return values[inventoryTypeKey]
   }
 
+  getCorrespondingFurnitureItem = (item: IInventar): IFurniture => {
+    const { resource: { FurnitureCategories } } = this.props
+
+    for (let categoryIndex = 0; categoryIndex < FurnitureCategories.length; categoryIndex++) {
+      const category = FurnitureCategories[categoryIndex];
+
+      for (let furnitureIndex = 0; furnitureIndex < category.Furnitures.length; furnitureIndex++) {
+        const furniture = category.Furnitures[furnitureIndex];
+
+        if(furniture.FurnitureId == item.FurnitureId) {
+          return furniture
+        }
+      }
+    }
+
+    throw new Error("Furniture not found")
+  }
+
   public render() {
     const {
       values,
@@ -155,7 +169,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
       width,
     } = this.props
 
-    // const selectedItemList = this.getSelectedList()
+    const selectedItemList = this.getSelectedList()
 
     const { currentlyOpen, selectedFurnitureCategory, index } = this.state
     const FurnitureCategories = resource.FurnitureCategories
@@ -244,42 +258,26 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                     <TableRow>
                       <TableCell><FormattedMessage id="ITEM" /></TableCell>
                       <TableCell align="right"><FormattedMessage id="QUANTITY" /></TableCell>
-                      <TableCell align="right"><FormattedMessage id="PRICE" /></TableCell>
                       <TableCell align="center"><FormattedMessage id="ACTIONS" /></TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
-                    {/* {selectedItemList && selectedItemList.length > 0 ? (
+                    {selectedItemList && selectedItemList.length > 0 ? (
                       selectedItemList
                         .map((item, index) => ({ originalIndex: index, ...item }))
-                        .filter(this.filterShowList(currentlyOpen))
+                        // .filter(this.filterShowList(currentlyOpen))
                         .map((item) => {
-                          const product = this.getCorrespondingProduct(item)
+                          const furniture = this.getCorrespondingFurnitureItem(item)
                           return (
 
                             <TableRow key={item.originalIndex}>
-                              <TableCell><FormattedMessage id={product.NameTextKey} /></TableCell>
+                              <TableCell><FormattedMessage id={furniture.NameTextKey} /></TableCell>
                               <TableCell align="right">{item.Amount} Stk.</TableCell>
-                              <TableCell align="right">
-                                {
-                                  currentlyOpen != CurrentlyOpenStateEnum.Free ?
-                                    <FormattedNumber
-                                      value={
-                                        (currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice)
-                                        * item.Amount
-                                      }
-                                      style="currency"
-                                      currency="CHF"
-                                    />
-                                    :
-                                    "-"
-                                }
-                              </TableCell>
 
                               <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
                                 <IconButton
-                                  onClick={() => this.removeOneItem(item.originalIndex)}
+                                  // onClick={() => this.removeOneItem(item.originalIndex)}
                                 >
                                   <RemoveCircleOutlineIcon />
                                 </IconButton>
@@ -299,7 +297,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                             <IntlTypography>EMPTY</IntlTypography>
                           </TableCell>
                         </TableRow>
-                      )} */}
+                      )}
                   </TableBody>
                 </Table>
               )}

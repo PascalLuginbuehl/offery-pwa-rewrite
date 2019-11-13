@@ -15,8 +15,8 @@ export interface IInventar {
 
   Amount: number
   FurnitureId: number
-  FSize: IFSize
-  FMaterial: IFMaterial
+  FSize: IFSize | null
+  FMaterial: IFMaterial | null
 }
 
 export interface IInventars {
