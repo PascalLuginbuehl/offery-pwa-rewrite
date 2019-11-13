@@ -34,7 +34,7 @@ export interface IInventars {
 
 export enum InventoryKeysEnum {
   Move = "MoveServiceInventars",
-  Pack = "DisposalServiceInventars",
+  Disposal = "DisposalServiceInventars",
   Storage = "StorageServiceInventars",
 }
 

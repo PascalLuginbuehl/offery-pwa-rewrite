@@ -257,7 +257,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
               centered
             >
               <Tab label={intl.formatMessage({ id: "MOVE" })} value={InventoryKeysEnum.Move} />
-              <Tab label={intl.formatMessage({ id: "PACK" })} value={InventoryKeysEnum.Pack} />
+              <Tab label={intl.formatMessage({ id: "DISPOSAL" })} value={InventoryKeysEnum.Disposal} />
               <Tab label={intl.formatMessage({ id: "STORAGE" })} value={InventoryKeysEnum.Storage} />
             </Tabs>
           </Grid>
