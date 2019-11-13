@@ -152,6 +152,14 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     throw new Error("Furniture not found")
   }
 
+  removeOneitem = (item: IInventar, index: number, arrayHelpers: ArrayHelpers) => {
+    if(item.Amount > 1) {
+      arrayHelpers.replace(index, {...item, Amount: item.Amount - 1})
+    } else {
+      arrayHelpers.remove(index)
+    }
+  }
+
   public render() {
     const {
       values,
@@ -277,7 +285,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
 
                               <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
                                 <IconButton
-                                  // onClick={() => this.removeOneItem(item.originalIndex)}
+                                  onClick={() => this.removeOneitem(item, item.originalIndex, arrayHelpers)}
                                 >
                                   <RemoveCircleOutlineIcon />
                                 </IconButton>
