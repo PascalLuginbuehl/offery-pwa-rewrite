@@ -12,7 +12,7 @@ import IntlTypography from '../components/Intl/IntlTypography';
 import UserDisplay from '../components/Navigation/UserDisplay';
 import Lead from './Lead';
 import Dashboard from './Dashboard';
-
+import logo from './../logo_white.svg';
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
 // import UserDisplay from 'components/Navigation/UserDisplay';
@@ -56,6 +56,7 @@ const styles = (theme: Theme) =>
       },
 
       color: "white",
+      display: "flex",
       textDecoration: "none",
     },
 
@@ -129,6 +130,8 @@ class Index extends React.Component<Props, State> {
             </IconButton>
 
             <Link to="/" className={classes.toolbarTitle}>
+              <img src={logo} alt="Logo" height="32" />
+              &nbsp;
               <IntlTypography variant="h6" noWrap={true} color="inherit">
                 APP_NAME
               </IntlTypography>

@@ -11,6 +11,14 @@ import { ResourceProvider } from '../providers/withResource';
 // It's optional.
 
 const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: "#18ABE4",
+      main: "#1D6A98",
+      dark: "#1F4972",
+      contrastText: "#FFFFFF",
+    },
+  },
   overrides: {
     MuiFormControl: { // Name of the component ⚛️ / style sheet
       root: { // Name of the rule

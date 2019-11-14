@@ -77,7 +77,7 @@ class InventoryItems extends React.Component<Props, State> {
         <Grid item xs={4} sm={3} md={3} lg={2} className={classes.root}>
           <ButtonBase className={classes.fullButton}>
             <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
-              <IntlTypography variant="h6">{furniture.NameTextKey}</IntlTypography>
+              <IntlTypography >{furniture.NameTextKey}</IntlTypography>
             </Paper>
           </ButtonBase>
 
