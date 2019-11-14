@@ -113,7 +113,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     }
   }
 
-  handleChangeIndex = (index: number) => () => {
+  handleChangeIndex = (index: number) => {
     const { selectedFurnitureCategory} = this.state
 
     if (selectedFurnitureCategory) {
@@ -124,8 +124,9 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
         })
       }
     }
-
   }
+
+  handleChangeIndexPrepared = (index: number) => () => this.handleChangeIndex(index)
 
   getBreakpointWith = () => {
     const { width } = this.props
@@ -234,17 +235,17 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                             .map((chunkedItems, index) => <div><Grid style={{ margin: 0, width: "100%" }} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
-                    <IconButton onClick={this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
-                    <IconButton onClick={this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
+                    <IconButton onClick={this.handleChangeIndexPrepared(index - 1)}><ChevronLeftIcon /></IconButton>
                     {
                       new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
                         if(index == i) {
-                          return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndex(i)}/>
+                          return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)}/>
                         } else {
-                          return <RadioButtonUncheckedIcon key={i} onClick={this.handleChangeIndex(i)}/>
+                          return <RadioButtonUncheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)}/>
                         }
                       })
                     }
+                    <IconButton onClick={this.handleChangeIndexPrepared(index + 1)}><ChevronRightIcon /></IconButton>
                   </>
                   )}
                 />

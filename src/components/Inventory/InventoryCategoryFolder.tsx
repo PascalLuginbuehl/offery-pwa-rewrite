@@ -59,7 +59,7 @@ class InventoryCategoryFolder extends React.Component<Props, State> {
       <Grid item xs={4} sm={3} md={2} lg={2} >
         <ButtonBase className={classes.fullButton}>
           <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
-            <IntlTypography variant="h6">{category.NameTextKey}</IntlTypography>
+            <IntlTypography>{category.NameTextKey}</IntlTypography>
           </Paper>
         </ButtonBase>
       </Grid>
