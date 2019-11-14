@@ -206,7 +206,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
             <Divider />
           </Grid>
 
-          <Grid item xs={12} style={{width: "calc(7vw - 5px)", maxWidth: 1050}}>
+          <Grid item xs={12}>
 
               {!selectedFurnitureCategory ?
                 <Grid container spacing={1} key={index}>
@@ -225,7 +225,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                         chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
                           <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture, arrayHelpers)} key={index} />
                         )), this.getBreakpointWith() * 3)
-                        .map((chunkedItems, index) => <Grid container spacing={1} key={index}>{chunkedItems}</Grid>)
+                            .map((chunkedItems, index) => <div><Grid style={{margin: 0, width: "100%"}} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
                     <IconButton onClick={() => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
