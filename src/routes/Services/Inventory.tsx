@@ -226,7 +226,6 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                   name={currentlyOpenInventory}
                   render={(arrayHelpers: ArrayHelpers) => (
                   <>
-                    <IconButton onClick={this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
                     <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                       {
                         chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
@@ -235,6 +234,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                             .map((chunkedItems, index) => <div><Grid style={{ margin: 0, width: "100%" }} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
+                    <IconButton onClick={this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
                     <IconButton onClick={this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
                     {
                       new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
