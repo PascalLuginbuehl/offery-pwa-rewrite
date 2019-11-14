@@ -113,18 +113,26 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     }
   }
 
-  handleChangeIndex = (index: number) => {
-    this.setState({
-      index,
-    })
+  handleChangeIndex = (index: number) => () => {
+    const { selectedFurnitureCategory} = this.state
+
+    if (selectedFurnitureCategory) {
+      const pages = Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))
+      if (index >= 0 && index < pages) {
+        this.setState({
+          index,
+        })
+      }
+    }
+
   }
 
   getBreakpointWith = () => {
     const { width } = this.props
     if(width) {
-      if (isWidthDown(width, 'md')) {
+      if (isWidthDown(width, 'lg')) {
         return 6
-      } else if (width == 'sm') {
+      } else if (isWidthUp(width, 'sm')) {
         return 4
       } else if (isWidthUp(width, 'xs')) {
         return 3
@@ -206,8 +214,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
             <Divider />
           </Grid>
 
-          <Grid item xs={12}>
-
+          <Grid item xs={12} style={{width: "calc(7vw - 5px)"}}>
               {!selectedFurnitureCategory ?
                 <Grid container spacing={1} key={index}>
                   {FurnitureCategories.map((category, index) => (
@@ -219,25 +226,24 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                   name={currentlyOpenInventory}
                   render={(arrayHelpers: ArrayHelpers) => (
                   <>
-                    <IconButton onClick={() => this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
+                    <IconButton onClick={this.handleChangeIndex(index - 1)}><ChevronLeftIcon /></IconButton>
                     <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                       {
                         chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
                           <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture, arrayHelpers)} key={index} />
                         )), this.getBreakpointWith() * 3)
-                            .map((chunkedItems, index) => <div><Grid style={{margin: 0, width: "100%"}} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
+                            .map((chunkedItems, index) => <div><Grid style={{ margin: 0, width: "100%" }} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
-                    <IconButton onClick={() => this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
+                    <IconButton onClick={this.handleChangeIndex(index + 1)}><ChevronRightIcon /></IconButton>
                     {
                       new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
                         if(index == i) {
-                          return <RadioButtonCheckedIcon key={i} />
+                          return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndex(i)}/>
                         } else {
-                          return <RadioButtonUncheckedIcon key={i} />
+                          return <RadioButtonUncheckedIcon key={i} onClick={this.handleChangeIndex(i)}/>
                         }
-                      }
-                      )
+                      })
                     }
                   </>
                   )}

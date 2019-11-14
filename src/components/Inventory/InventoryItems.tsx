@@ -9,11 +9,12 @@ import { TextFieldProps } from '@material-ui/core/TextField';
 import { CurrentlyOpenStateEnum } from '../../interfaces/IShop';
 import { IFurnitureCategory, IFurniture } from '../../interfaces/IResource';
 import { IFSize, IFMaterial } from '../../interfaces/IInventars';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-
+      position: "relative",
     },
     fullButton: {
       width: "100%"
@@ -23,6 +24,11 @@ const styles = (theme: Theme) =>
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
     },
+    moreButton: {
+      position: "absolute",
+      right: 0,
+      top: 0,
+    }
   })
 
 interface State {
@@ -57,8 +63,9 @@ class InventoryItems extends React.Component<Props, State> {
   //   }
   // }
 
-  toggleMore = (event: React.ChangeEvent, open: boolean) => {
-    this.setState({ moreOpen: open})
+  toggleMore = (event: React.MouseEvent) => {
+    this.setState({ moreOpen: !this.state.moreOpen})
+    event.stopPropagation()
   }
 
   public render() {
@@ -67,18 +74,20 @@ class InventoryItems extends React.Component<Props, State> {
 
     return (
       <>
-        <Grid item xs={4} sm={3} md={2} lg={2} >
+        <Grid item xs={4} sm={3} md={3} lg={2} className={classes.root}>
           <ButtonBase className={classes.fullButton}>
             <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
               <IntlTypography variant="h6">{furniture.NameTextKey}</IntlTypography>
-
-              {furniture.FMaterials.length > 0 || furniture.FSizes.length > 0 ?
-              <Switch value={moreOpen} onChange={this.toggleMore}></Switch>
-              : null }
-
             </Paper>
           </ButtonBase>
+
+          {furniture.FMaterials.length > 0 || furniture.FSizes.length > 0 ?
+            <IconButton className={classes.moreButton} size="small" onClick={this.toggleMore}>
+              <MoreVertIcon />
+            </IconButton>
+            : null}
         </Grid>
+
         { moreOpen ? (
           <Grid item xs={12}>
             <Collapse in={moreOpen}>
