@@ -2,11 +2,12 @@
 [x] Tabs padding
 [x] Table Header Padding
 [x] Titel bei Mobile
+[x] Padding für submit button
+[x] Automatisch schliessen bei anklicken navigation
 
 
 Kaufen / Mieten in  MaterialShop entfernen
 
-Automatisch schliessen bei anklicken navigation
 
 E-Mail versand funktioniert nicht
 
@@ -16,4 +17,3 @@ Wenn Keyboard offen, kann nicht ausfüllen. Forms
 Enter auf nächstes Formularfeld
 
 
-Padding für submit button

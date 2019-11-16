@@ -112,6 +112,10 @@ class Index extends React.Component<Props, State> {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }))
   }
 
+  closeNavigation = () => {
+    this.setState(state => ({ mobileOpen: false }))
+  }
+
   public render() {
     const { classes } = this.props
     const { mobileOpen, navPortal } = this.state
@@ -175,7 +179,7 @@ class Index extends React.Component<Props, State> {
             {/* <Route path="/login" component={login} /> */}
             {/* <Route path="/shop" component={shop} /> */}
             {/* <Route path="/lead/move-out-building" component={moveOutBuilding} /> */}
-            <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} />
+            <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} closeNavigation={this.closeNavigation} />} />
             <Route path="/" component={Dashboard} />
 
             {/* <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} /> */}

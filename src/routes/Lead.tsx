@@ -47,6 +47,7 @@ interface State extends ILeadContainer {
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
   portal: HTMLDivElement | null
+  closeNavigation: () => void
 }
 
 class Lead extends Component<Props, State> {
@@ -60,6 +61,16 @@ class Lead extends Component<Props, State> {
     errorOccured: false,
 
     isOffline: false
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.location !== prevProps.location) {
+      this.props.closeNavigation();
+    }
+  }
+
+  onRouteChanged() {
+    console.log("ROUTE CHANGED");
   }
 
   handleClose = () => {
