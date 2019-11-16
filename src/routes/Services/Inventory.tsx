@@ -40,10 +40,24 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { IInventars, InventoryKeysEnum, IInventar } from '../../interfaces/IInventars'
+import clsx from 'clsx';
 
 const styles = (theme: Theme) =>
   createStyles({
-
+    next: {
+      position: "absolute"
+    },
+    nextLeft: {
+      left: 0
+    },
+    nextRight: {
+      right: 0
+    },
+    centeredNavigationContainer: {
+      position: "relative",
+      display: "flex",
+      justifyContent: "center",
+    }
   })
 
 
@@ -131,15 +145,14 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
   getBreakpointWith = () => {
     const { width } = this.props
     if(width) {
-      if (isWidthDown(width, 'lg')) {
+      if (width == 'lg') {
         return 6
-      } else if (isWidthUp(width, 'sm')) {
+      } else if (isWidthDown(width, 'sm')) {
         return 4
-      } else if (isWidthUp(width, 'xs')) {
-        return 3
       }
     }
-    return 5
+    // default 3 xs
+    return 3
   }
 
   getSelectedList = (): IInventar[] => {
@@ -189,6 +202,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
       selectedCompany,
       intl,
       width,
+      classes,
     } = this.props
 
     const selectedItemList = this.getSelectedList()
@@ -235,17 +249,20 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                             .map((chunkedItems, index) => <div><Grid style={{ margin: 0, width: "100%" }} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
-                    <IconButton onClick={this.handleChangeIndexPrepared(index - 1)}><ChevronLeftIcon /></IconButton>
-                    {
-                      new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
-                        if(index == i) {
-                          return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)}/>
-                        } else {
-                          return <RadioButtonUncheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)}/>
-                        }
-                      })
-                    }
-                    <IconButton onClick={this.handleChangeIndexPrepared(index + 1)}><ChevronRightIcon /></IconButton>
+
+                    <div className={classes.centeredNavigationContainer}>
+                        <IconButton onClick={this.handleChangeIndexPrepared(index - 1)} size="small" className={clsx(classes.next, classes.nextLeft)}><ChevronLeftIcon /></IconButton>
+                      {
+                        new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
+                          if(index == i) {
+                            return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)}/>
+                          } else {
+                            return <RadioButtonUncheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)}/>
+                          }
+                        })
+                      }
+                        <IconButton onClick={this.handleChangeIndexPrepared(index + 1)} size="small" className={clsx(classes.next, classes.nextRight)}><ChevronRightIcon /></IconButton>
+                    </div>
                   </>
                   )}
                 />
@@ -267,9 +284,8 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
               <Tab label={intl.formatMessage({ id: "DISPOSAL" })} value={InventoryKeysEnum.Disposal} />
               <Tab label={intl.formatMessage({ id: "STORAGE" })} value={InventoryKeysEnum.Storage} />
             </Tabs>
-          </Grid>
 
-          <Grid item xs={12}>
+
             <FieldArray
               name={currentlyOpenInventory}
               render={(arrayHelpers: ArrayHelpers) => (

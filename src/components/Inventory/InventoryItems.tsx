@@ -20,6 +20,7 @@ const styles = (theme: Theme) =>
       width: "100%"
     },
     fullPaper: {
+      maxHeight: 56,
       width: "100%",
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
@@ -77,7 +78,7 @@ class InventoryItems extends React.Component<Props, State> {
         <Grid item xs={4} sm={3} md={3} lg={2} className={classes.root}>
           <ButtonBase className={classes.fullButton}>
             <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
-              <IntlTypography >{furniture.NameTextKey}</IntlTypography>
+              <IntlTypography noWrap>{furniture.NameTextKey}</IntlTypography>
             </Paper>
           </ButtonBase>
 
