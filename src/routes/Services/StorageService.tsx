@@ -59,7 +59,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="MOVE_SERVICE" />
+          <PageHeader title="STORAGE_SERVICE" />
 
           <Field name="storageService.MontageService" label="MONTAGE" component={Switch} />
           <Field name="storageService.BoreService" label="BORE" component={Switch} />

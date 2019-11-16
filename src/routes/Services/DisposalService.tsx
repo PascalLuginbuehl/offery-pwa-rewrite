@@ -58,7 +58,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="MOVE_SERVICE" />
+          <PageHeader title="DISPOSAL_SERVICE" />
 
           <Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={Switch} />
           <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={Switch} />

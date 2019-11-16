@@ -118,7 +118,7 @@ VISIT_ADDRESS,Visit Address,Besichtigungsadresse
 MOVE,Move,Umzug
 PACK,Pack,Einpackservice
 STORAGE,Storage,Lagerung
-DISPOSAL,Disposal,Enstorgung
+DISPOSAL,Disposal,Entsorgung
 CLEANING,Cleaning,Reinigung
 BORE_SERVICE,Bore,Bohren
 DE_MONTAGE_SERVICE,Demontage,Demontage
@@ -148,3 +148,6 @@ FURNITURE_LIFT,Furniture Lift,Möbellift
 LAMP_DEMONTAGE,Lamp demontage,Lampen abmontieren
 DEMONTAGE,Demontage,Demontage
 DATE_STORAGE_UNSTORE,Date Storage/Unstorage,Termin Einlagerung/Auslagerung
+STORAGE_SERVICE,Storage Service,Lagerservice
+PACK_SERVICE,Pack Service,Einpackserivce
+DISPOSAL_SERVICE,Disposal Service,Entsorgungsservice

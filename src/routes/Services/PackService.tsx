@@ -59,7 +59,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="MOVE_SERVICE" />
+          <PageHeader title="PACK_SERVICE" />
 
           <Field name="packService.HasOutService" label="WITH_UNPACK" component={Switch} />
 
