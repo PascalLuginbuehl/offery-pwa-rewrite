@@ -109,11 +109,18 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
 
     let items = this.getSelectedList()
 
-    const itemIndex = items.findIndex(item =>
-      item.FurnitureId == furniture.FurnitureId
-      && item.FSize && item.FSize.FSizeId == selectedSizeId
-      && item.FMaterial && item.FMaterial.FMaterialId == selectedMaterialId
-    )
+    const itemIndex = items.findIndex(item => {
+      if (item.FurnitureId == furniture.FurnitureId) {
+        if (item.FSize ? item.FSize.FSizeId : null != selectedSizeId) {
+          return false
+        }
+        if (item.FMaterial ? item.FMaterial.FMaterialId : null != selectedMaterialId) {
+          return false
+        }
+
+        return true
+      }
+    })
 
 
     // Item not found

@@ -1,11 +1,7 @@
-padding: 2px grid containter
-
-
-Tabs padding
-
-Table Header Padding
-
-Titel bei Mobile
+[x] padding: 2px grid containter
+[x] Tabs padding
+[x] Table Header Padding
+[x] Titel bei Mobile
 
 
 Kaufen / Mieten in  MaterialShop entfernen

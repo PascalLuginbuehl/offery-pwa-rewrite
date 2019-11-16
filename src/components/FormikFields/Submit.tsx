@@ -16,6 +16,9 @@ const styles = (theme: Theme) =>
       margin: theme.spacing(2),
       width: "100%",
       textAlign: "right",
+    },
+    submitPadding: {
+      height: 56 + 16
     }
   })
 
@@ -38,9 +41,11 @@ class Submit extends React.Component<Props> {
       )
     } else {
       return (
-        <Fab className={classes.fab} color="primary" type="submit" disabled={isSubmitting}>
-          <ChevronRightIcon />
-        </Fab>
+        <Grid item xs={12} className={classes.submitPadding}>
+          <Fab className={classes.fab} color="primary" type="submit" disabled={isSubmitting}>
+            <ChevronRightIcon />
+          </Fab>
+        </Grid>
       )
     }
   }
