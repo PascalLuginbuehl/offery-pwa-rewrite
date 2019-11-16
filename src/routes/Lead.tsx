@@ -28,12 +28,13 @@ import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
-import { emptyMoveService, emptyPackService } from '../interfaces/IService';
+import { emptyMoveService, emptyPackService, emptyStorageService } from '../interfaces/IService';
 import MaterialShop from './Services/MaterialShop';
 import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
 import Inventory from './Services/Inventory';
 import { InventoryKeysEnum, emptyInventory } from '../interfaces/IInventars';
 import PackService from './Services/PackService';
+import StorageService from './Services/StorageService';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -235,6 +236,7 @@ class Lead extends Component<Props, State> {
         { name: '/services/pack/material-shop', active: HasPackServiceEnabled },
         { name: '/services/storage', active: HasStorageServiceEnabled },
         { name: '/services/storage/material-shop', active: HasStorageServiceEnabled },
+        { name: '/services/storage/inventory', active: HasStorageServiceEnabled },
         { name: '/services/disposal', active: HasDisposalServiceEnabled },
         { name: '/services/cleaning', active: HasCleaningServiceEnabled },
       ]
@@ -341,6 +343,7 @@ class Lead extends Component<Props, State> {
       materialOrder,
       inventory,
       packService,
+      storageService,
 
       initialAwait,
       onlySavedOffline,
@@ -614,6 +617,38 @@ class Lead extends Component<Props, State> {
                 }
               />
 
+              {/* StorageService */}
+              <Route
+                exact
+                path={`${match.url}/services/storage`}
+                render={(routeProps) =>
+                  <StorageService
+                    {...routeProps}
+
+                    moveOut={moveOut}
+                    moveIn={moveIn}
+                    storageService={storageService ? storageService : emptyStorageService}
+                    HasMoveService={services.HasMoveServiceEnabled}
+
+                    onChangeAndSave={(serviceData, moveOut, moveIn) => {
+                      this.handleChange(serviceData, "storageService");
+                      this.handleChange(moveOut, "moveOut");
+                      this.handleChange(moveIn, "moveIn");
+
+                      return Promise.all([
+                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
+                        LeadAPI.SaveMoveIn(moveIn, Lead.LeadId),
+                        LeadAPI.SaveStorageService(Lead.LeadId, serviceData),
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/storage')}
+                  />
+                }
+              />
+
 
               {/* StorageShop */}
               <Route
@@ -634,6 +669,29 @@ class Lead extends Component<Props, State> {
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                  />
+                }
+              />
+
+              {/* Pack Inventory */}
+              <Route
+                exact
+                path={`${match.url}/services/storage/inventory`}
+                render={(routeProps) =>
+                  <Inventory
+                    {...routeProps}
+
+                    inventory={inventory ? inventory : emptyInventory}
+                    onChangeAndSave={(inventory) => {
+                      this.handleChange(inventory, "inventory")
+
+                      return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
+                    }}
+                    initalInventoryTypeKey={InventoryKeysEnum.Storage}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/storage/inventory')}
                   />
                 }
               />
@@ -690,6 +748,7 @@ class Lead extends Component<Props, State> {
             <Collapse in={services.HasStorageServiceEnabled}>
               <NavFolder to={`${match.url}/services/storage`} title="STORAGE" nested>
                 <NavItem to={`${match.url}/services/storage/material-shop`} title="MATERIAL_SHOP" doubleNested />
+                <NavItem to={`${match.url}/services/storage/inventory`} title="INVENTORY" doubleNested />
               </NavFolder>
             </Collapse>
 

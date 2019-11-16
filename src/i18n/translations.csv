@@ -141,3 +141,10 @@ ADD,Add,Hinzufügen
 MOVE_SERVICE,Move Service,Umzugsservice
 WITH_UNPACK,With unpacking,Mit Auspacken
 PACK_DATE,Pack date,Termin Einpackservice
+MONTAGE,Montage,Montage
+BORE,Drill,Bohren
+KLAVIER,PIANO,Klavier
+FURNITURE_LIFT,Furniture Lift,Möbellift
+LAMP_DEMONTAGE,Lamp demontage,Lampen abmontieren
+DEMONTAGE,Demontage,Demontage
+DATE_STORAGE_UNSTORE,Date Storage/Unstorage,Termin Einlagerung/Auslagerung

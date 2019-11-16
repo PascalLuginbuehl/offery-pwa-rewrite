@@ -20,7 +20,7 @@ import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
 import ServicesService from '../services/ServicesService';
-import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService } from '../interfaces/IService';
+import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce } from '../interfaces/IService';
 import { IMaterialOrder } from '../interfaces/IShop';
 import { IInventars } from '../interfaces/IInventars';
 
@@ -42,6 +42,7 @@ export interface ILeadContainer {
   inventory: IInventars | null
 
   packService: IPutPackService | IPackSerivce | null
+  storageService: IPutStorageService | IStorageSerivce | null
   // unsavedChanges:
 }
 
@@ -64,6 +65,7 @@ export const emptyLeadContainer: ILeadContainer = {
   inventory: null,
 
   packService: null,
+  storageService: null
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -90,8 +92,9 @@ class LeadAPI {
       ServicesService.fetchMaterialOrder(leadId),
       ServicesService.fetchInventars(leadId),
       ServicesService.fetchPackService(leadId),
+      ServicesService.fetchStorageService(leadId),
       // @ts-ignore
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService]): ILeadContainer => ({
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService, storageService]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
@@ -115,7 +118,9 @@ class LeadAPI {
 
       inventory: inventory,
 
-      packService: packService
+      packService: packService,
+
+      storageService: storageService,
     }))
   }
 
@@ -191,6 +196,10 @@ class LeadAPI {
 
   SavePackService = (leadId: number, packService: IPutPackService | null) => {
     return packService ? ServicesService.savePackService(leadId, packService) : Promise.resolve(null)
+  }
+
+  SaveStorageService = (leadId: number, storageService: IPutStorageService | null) => {
+    return storageService ? ServicesService.saveStorageService(leadId, storageService) : Promise.resolve(null)
   }
 
   // Gets Called to Get Data From Offline

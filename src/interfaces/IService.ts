@@ -55,7 +55,7 @@ export interface IPackSerivce extends IPutPackService {
 }
 
 export interface IPutStorageService {
-  StorageDate: string
+  StorageDate: string | null
   FurnitureLiftService: boolean
   PianoService: boolean
   MontageService: boolean
@@ -102,4 +102,15 @@ export const emptyMoveService: IPutMoveService = {
 export const emptyPackService: IPutPackService = {
   HasOutService: false,
   PackServiceDate: null
+}
+
+
+export const emptyStorageService: IPutStorageService = {
+  BoreService: false,
+  DeMontageService: false,
+  FurnitureLiftService:false,
+  LampDemontageService: false,
+  MontageService: false,
+  PianoService: false,
+  StorageDate: null,
 }
