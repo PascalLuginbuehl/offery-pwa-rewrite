@@ -1,0 +1,23 @@
+padding: 2px grid containter
+
+
+Tabs padding
+
+Table Header Padding
+
+Titel bei Mobile
+
+
+Kaufen / Mieten in  MaterialShop entfernen
+
+Automatisch schliessen bei anklicken navigation
+
+E-Mail versand funktioniert nicht
+
+
+Wenn Keyboard offen, kann nicht ausfüllen. Forms
+
+Enter auf nächstes Formularfeld
+
+
+Padding für submit button

@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, ButtonBase, Paper, IconButton, TextField as MuiTextfield, Toolbar, Divider } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, ButtonBase, Paper, IconButton, TextField as MuiTextfield, Toolbar, Divider, Chip } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -41,6 +41,7 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { IInventars, InventoryKeysEnum, IInventar } from '../../interfaces/IInventars'
 import clsx from 'clsx';
+import PageHeader from '../../components/PageHeader';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -88,7 +89,6 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     this.state.currentlyOpenInventory = props.initalInventoryTypeKey
   }
 
-
   handleTabChange = (e: React.ChangeEvent<{}>, value: InventoryKeysEnum) => {
     this.setState({ currentlyOpenInventory: value })
   }
@@ -103,20 +103,29 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     this.setState({selectedFurnitureCategory: category})
   }
 
-  addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers) => {
+  addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers, selectedSizeId: number | null, selectedMaterialId: number | null) => {
     const { handleChange, values } = this.props
     const { currentlyOpenInventory } = this.state
 
     let items = this.getSelectedList()
 
-    const itemIndex = items.findIndex(item => item.FurnitureId == furniture.FurnitureId)
+    const itemIndex = items.findIndex(item =>
+      item.FurnitureId == furniture.FurnitureId
+      && item.FSize && item.FSize.FSizeId == selectedSizeId
+      && item.FMaterial && item.FMaterial.FMaterialId == selectedMaterialId
+    )
+
 
     // Item not found
     if (itemIndex === -1) {
+      const size = furniture.FSizes.find(size => size.FSizeId == selectedSizeId)
+      const material = furniture.FMaterials.find(material => material.FMaterialId == selectedMaterialId)
+
+
       const order: IInventar = {
         Amount: 1,
-        FMaterial: null,
-        FSize: null,
+        FSize: size ? size : null,
+        FMaterial: material ? material : null,
         FurnitureId: furniture.FurnitureId
       }
 
@@ -213,9 +222,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     return (
       <Grid item xs={12}>
         <Form>
-          <Grid item xs={12}>
-            <IntlTypography variant="h5">INVENTORY</IntlTypography>
-          </Grid>
+          <PageHeader title="INVENTORY"/>
 
           <Grid item xs={12}>
             <Toolbar disableGutters>
@@ -244,14 +251,14 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                     <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                       {
                         chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
-                          <InventoryItems furniture={furniture} onSelect={() => this.addFurniture(furniture, arrayHelpers)} key={index} />
+                          <InventoryItems furniture={furniture} onSelect={(selectedSizeId: number | null, selectedMaterialId: number | null) => this.addFurniture(furniture, arrayHelpers, selectedSizeId, selectedMaterialId)} key={index} />
                         )), this.getBreakpointWith() * 3)
                             .map((chunkedItems, index) => <div><Grid style={{ margin: 0, width: "100%" }} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
 
                     <div className={classes.centeredNavigationContainer}>
-                        <IconButton onClick={this.handleChangeIndexPrepared(index - 1)} size="small" className={clsx(classes.next, classes.nextLeft)}><ChevronLeftIcon /></IconButton>
+                      <IconButton onClick={this.handleChangeIndexPrepared(index - 1)} size="small" className={clsx(classes.next, classes.nextLeft)}><ChevronLeftIcon /></IconButton>
                       {
                         new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
                           if(index == i) {
@@ -261,14 +268,12 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                           }
                         })
                       }
-                        <IconButton onClick={this.handleChangeIndexPrepared(index + 1)} size="small" className={clsx(classes.next, classes.nextRight)}><ChevronRightIcon /></IconButton>
+                      <IconButton onClick={this.handleChangeIndexPrepared(index + 1)} size="small" className={clsx(classes.next, classes.nextRight)}><ChevronRightIcon /></IconButton>
                     </div>
                   </>
                   )}
                 />
               }
-
-              {}
           </Grid>
 
           <Grid item xs={12}>
@@ -308,7 +313,12 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                           return (
 
                             <TableRow key={item.originalIndex}>
-                              <TableCell><FormattedMessage id={furniture.NameTextKey} /></TableCell>
+                              <TableCell>
+                                <FormattedMessage id={furniture.NameTextKey} />
+
+                                {item.FSize ? <Chip size="small" label={intl.formatMessage({ id: item.FSize.NameTextKey })} /> : null}
+                                {item.FMaterial ? <Chip size="small" label={intl.formatMessage({ id: item.FMaterial.NameTextKey })} /> : null}
+                              </TableCell>
                               <TableCell align="right">{item.Amount} Stk.</TableCell>
 
                               <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>

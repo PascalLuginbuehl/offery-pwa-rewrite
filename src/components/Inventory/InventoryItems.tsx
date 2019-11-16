@@ -25,10 +25,21 @@ const styles = (theme: Theme) =>
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
     },
+    moreFurnitureOptions: {
+      width: "100%",
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+    },
     moreButton: {
       position: "absolute",
       right: 0,
       top: 0,
+    },
+    buttonGroupPadding: {
+      padding: 4,
     }
   })
 
@@ -39,7 +50,7 @@ interface State {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  onSelect: () => void
+  onSelect: (FSizeId: number | null, FMaterialId: number | null) => void
   furniture: IFurniture
 }
 
@@ -77,7 +88,7 @@ class InventoryItems extends React.Component<Props, State> {
       <>
         <Grid item xs={4} sm={3} md={3} lg={2} className={classes.root}>
           <ButtonBase className={classes.fullButton}>
-            <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
+            <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect(null, null)}>
               <IntlTypography noWrap>{furniture.NameTextKey}</IntlTypography>
             </Paper>
           </ButtonBase>
@@ -92,11 +103,11 @@ class InventoryItems extends React.Component<Props, State> {
         { moreOpen ? (
           <Grid item xs={12}>
             <Collapse in={moreOpen}>
-              <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect()}>
-                <ButtonGroup>
+              <Paper elevation={1} className={classes.moreFurnitureOptions}>
+                <ButtonGroup className={classes.buttonGroupPadding}>
                   {furniture.FMaterials.map((e, index) => {
                     if (e.FMaterialId == selectedMaterialId) {
-                      return <Button key={index} color="primary"><FormattedMessage id={e.NameTextKey} /></Button>
+                      return <Button key={index} color="primary" variant="contained"><FormattedMessage id={e.NameTextKey} /></Button>
                     } else {
                       return <Button key={index} onClick={() => this.setState({selectedMaterialId: e.FMaterialId})}><FormattedMessage id={e.NameTextKey} /></Button>
                     }
@@ -104,12 +115,10 @@ class InventoryItems extends React.Component<Props, State> {
                   )}
                 </ButtonGroup>
 
-                <br />
-
                 <ButtonGroup>
                   {furniture.FSizes.map((e, index) => {
                     if (e.FSizeId == selectedSizeId) {
-                      return <Button key={index} color="primary"><FormattedMessage id={e.NameTextKey} /></Button>
+                      return <Button key={index} color="primary" variant="contained"><FormattedMessage id={e.NameTextKey} /></Button>
                     } else {
                       return <Button key={index} onClick={() => this.setState({ selectedSizeId: e.FSizeId })}><FormattedMessage id={e.NameTextKey} /></Button>
                     }
@@ -117,8 +126,9 @@ class InventoryItems extends React.Component<Props, State> {
                   )}
                 </ButtonGroup>
 
-
-                <Button><FormattedMessage id="ADD" /></Button>
+                <Button variant="contained" color="primary" style={{ margin: "0 4px" }} onClick={() => onSelect(selectedSizeId, selectedMaterialId)}>
+                  <FormattedMessage id="ADD" />
+                </Button>
               </Paper>
             </Collapse>
           </Grid>
