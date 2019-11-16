@@ -25,6 +25,16 @@ const theme = createMuiTheme({
         width: "100%"
       },
     },
+    MuiTabs: {
+      root: {
+        minHeight: "auto"
+      }
+    },
+    MuiTab: {
+      root: {
+        minHeight: "auto"
+      }
+    }
   },
 })
 

@@ -18,6 +18,7 @@ import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
 import DatePicker from '../../components/FormikFields/DatePicker';
 import { IPutServices, emptyServices } from '../../interfaces/IService';
+import PageHeader from '../../components/PageHeader';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,9 +48,7 @@ class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <Grid item xs={12}>
-            <IntlTypography variant="h5">SERVICES</IntlTypography>
-          </Grid>
+          <PageHeader title="SERVICES"/>
 
           <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
 

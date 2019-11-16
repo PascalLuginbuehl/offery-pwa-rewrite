@@ -208,10 +208,10 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell><FormattedMessage id="ITEM" /></TableCell>
-                      <TableCell align="right"><FormattedMessage id="QUANTITY" /></TableCell>
-                      <TableCell align="right"><FormattedMessage id="PRICE" /></TableCell>
-                      <TableCell align="center"><FormattedMessage id="ACTIONS" /></TableCell>
+                      <TableCell padding="checkbox"><FormattedMessage id="ITEM" /></TableCell>
+                      <TableCell align="right" padding="checkbox"><FormattedMessage id="QUANTITY" /></TableCell>
+                      <TableCell align="right" padding="checkbox"><FormattedMessage id="PRICE" /></TableCell>
+                      <TableCell align="center" padding="checkbox"><FormattedMessage id="ACTIONS" /></TableCell>
                     </TableRow>
                   </TableHead>
 

@@ -275,7 +275,6 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                 />
               }
           </Grid>
-
           <Grid item xs={12}>
             <Tabs
               value={currentlyOpenInventory}
@@ -289,17 +288,18 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
               <Tab label={intl.formatMessage({ id: "DISPOSAL" })} value={InventoryKeysEnum.Disposal} />
               <Tab label={intl.formatMessage({ id: "STORAGE" })} value={InventoryKeysEnum.Storage} />
             </Tabs>
+          </Grid>
 
-
+          <Grid item xs={12}>
             <FieldArray
               name={currentlyOpenInventory}
               render={(arrayHelpers: ArrayHelpers) => (
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell><FormattedMessage id="ITEM" /></TableCell>
-                      <TableCell align="right"><FormattedMessage id="QUANTITY" /></TableCell>
-                      <TableCell align="center"><FormattedMessage id="ACTIONS" /></TableCell>
+                      <TableCell padding="checkbox"><FormattedMessage id="ITEM" /></TableCell>
+                      <TableCell align="right" padding="checkbox"><FormattedMessage id="QUANTITY" /></TableCell>
+                      <TableCell align="center" padding="checkbox"><FormattedMessage id="ACTIONS" /></TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -319,6 +319,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                                 {item.FSize ? <Chip size="small" label={intl.formatMessage({ id: item.FSize.NameTextKey })} /> : null}
                                 {item.FMaterial ? <Chip size="small" label={intl.formatMessage({ id: item.FMaterial.NameTextKey })} /> : null}
                               </TableCell>
+
                               <TableCell align="right">{item.Amount} Stk.</TableCell>
 
                               <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>

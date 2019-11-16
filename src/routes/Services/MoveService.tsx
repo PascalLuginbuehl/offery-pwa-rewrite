@@ -21,6 +21,7 @@ import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/I
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
+import PageHeader from '../../components/PageHeader';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -57,9 +58,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <Grid item xs={12}>
-            <IntlTypography variant="h5">SERVICES</IntlTypography>
-          </Grid>
+          <PageHeader title="MOVE_SERVICE"/>
 
           <Field name="moveService.BoreService" label="BORE_SERVICE" component={Switch} />
 
