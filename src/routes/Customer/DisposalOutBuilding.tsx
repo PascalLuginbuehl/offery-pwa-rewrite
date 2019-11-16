@@ -9,6 +9,7 @@ import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect'
 import ValidatedTextField from '../../components/Validator/ValidatedTextField'
 import FormTemplate from './FormTemplate'
 import { sortMasterThing } from '../../interfaces/IResource';
+import ValidatedForm from '../../components/Validator/ValidatedForm';
 
 interface State {
 
@@ -32,7 +33,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
 
 
     return (
-      <>
+      <ValidatedForm>
         <Grid item xs={12}>
           <IntlTypography variant="h5">DISPOSAL_BUILDING</IntlTypography>
         </Grid>
@@ -122,7 +123,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
         />
 
         <Submit onSubmit={this.saveFunction} />
-     </>
+      </ValidatedForm>
     )
   }
 }

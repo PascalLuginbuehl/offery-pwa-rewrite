@@ -253,7 +253,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                         chunk(selectedFurnitureCategory.Furnitures.map((furniture, index) => (
                           <InventoryItems furniture={furniture} onSelect={(selectedSizeId: number | null, selectedMaterialId: number | null) => this.addFurniture(furniture, arrayHelpers, selectedSizeId, selectedMaterialId)} key={index} />
                         )), this.getBreakpointWith() * 3)
-                            .map((chunkedItems, index) => <div><Grid style={{ margin: 0, width: "100%" }} container spacing={1} key={index}>{chunkedItems}</Grid></div>)
+                            .map((chunkedItems, index) => <div key={index}><Grid style={{ margin: 0, width: "100%" }} container spacing={1}>{chunkedItems}</Grid></div>)
                       }
                     </SwipeableViews>
 

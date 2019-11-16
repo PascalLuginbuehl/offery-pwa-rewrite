@@ -11,6 +11,7 @@ import Submit from '../../components/Validator/Submit';
 import CustomerField from '../../components/Form/Bundled/CustomerField';
 import BigCheckbox from '../../components/Validator/BigCheckbox';
 import FormTemplate from './FormTemplate';
+import ValidatedForm from '../../components/Validator/ValidatedForm';
 
 interface Props extends RouteComponentProps {
   data: IPostLead
@@ -28,7 +29,7 @@ class Customer extends FormTemplate<Props, {}> {
     const { Customer, VisitDate, MoveDate, PackServiceDate, DisposalDate, StorageDate, CleaningDate, HandOverDate, DeliveryDate, HasCleaningBuilding, HasDisposalOutBuilding, HasMoveInBuilding, HasMoveOutBuilding, HasStorageInBuilding } = this.props.data
 
     return (
-      <>
+      <ValidatedForm>
         <Grid item xs={12}>
           <IntlTypography variant="h5">CUSTOMER</IntlTypography>
         </Grid>
@@ -121,7 +122,7 @@ class Customer extends FormTemplate<Props, {}> {
 
         <Submit onSubmit={this.saveFunction} />
         {/* <NextDial awaitLoading={saveAwait} /> */}
-        </>
+      </ValidatedForm>
     )
   }
 }

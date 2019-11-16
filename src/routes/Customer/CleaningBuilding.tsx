@@ -10,6 +10,7 @@ import ValidatedTextField from '../../components/Validator/ValidatedTextField';
 import Switch from '../../components/Validator/Switch';
 import FormTemplate from './FormTemplate';
 import { sortMasterThing } from '../../interfaces/IResource';
+import ValidatedForm from '../../components/Validator/ValidatedForm';
 
 interface State {
 
@@ -31,7 +32,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
     const { Address, RoomAmount, TotalArea, BuildingTypeId, HasBasement, HasAttic, HasGarden, HasWinterGarden, BuildingTypeDetailId, RestroomAmount, BalconyId, FloorTypeId, RollerBlindTypeId, WindowNormalAmount, WindowHightVerticalAmount, GarageTypeId, BuiltinWardrobeRangeId, PollutionDegreeId, HadPets, HasHardenedDirt, HasMoldAtWall, HasMoldAtWindow, HasSmoked } = this.props.data
 
     return (
-      <>
+      <ValidatedForm>
         <Grid item xs={12}>
           <IntlTypography variant="h5">CLEANING_BUILDING</IntlTypography>
         </Grid>
@@ -238,7 +239,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
         />
 
         <Submit onSubmit={this.saveFunction} />
-     </>
+      </ValidatedForm>
     )
   }
 }

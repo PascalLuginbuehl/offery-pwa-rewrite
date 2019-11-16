@@ -11,6 +11,7 @@ import { IPostStorageBuilding, emptyStorageBuilding } from '../../interfaces/IBu
 import StorageCompanyField from '../../components/Form/Bundled/StorageCompanyField';
 import FormTemplate from './FormTemplate';
 import { sortMasterThing } from '../../interfaces/IResource';
+import ValidatedForm from '../../components/Validator/ValidatedForm';
 
 interface State {
 
@@ -35,7 +36,7 @@ class StorageBuilding extends FormTemplate<Props, State> {
 
 
     return (
-      <>
+      <ValidatedForm>
         <Grid item xs={12}>
           <IntlTypography variant="h5">STORAGE_BUILDING</IntlTypography>
         </Grid>
@@ -114,7 +115,7 @@ class StorageBuilding extends FormTemplate<Props, State> {
         />
 
         <Submit onSubmit={this.saveFunction} />
-     </>
+      </ValidatedForm>
     )
   }
 }

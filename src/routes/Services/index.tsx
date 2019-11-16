@@ -44,7 +44,6 @@ class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
 
     const { data } = this.props
 
-    console.log(this.props)
     return (
       <Grid item xs={12}>
         <Form>

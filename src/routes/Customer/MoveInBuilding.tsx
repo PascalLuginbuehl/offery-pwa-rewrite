@@ -10,6 +10,7 @@ import Switch from '../../components/Validator/Switch'
 import ValidatedSelect from '../../components/Validator/Select/ValidatedSelect';
 import FormTemplate from './FormTemplate';
 import { sortMasterThing } from '../../interfaces/IResource';
+import ValidatedForm from '../../components/Validator/ValidatedForm';
 
 interface State {
 
@@ -33,7 +34,7 @@ class MoveInBuilding extends FormTemplate<Props, State> {
     const { Address, RoomAmount, TotalArea, BuildingTypeId, EtageId, ElevatorId, BuildingAgeId, MetersToParking, StairsToEntryAmount, HasBasement, HasAttic, HasGarage, HasGarden, HasWinterGarden } = this.props.data
 
     return (
-      <>
+      <ValidatedForm>
         <Grid item xs={12}>
           <IntlTypography variant="h5">MOVE_IN_BUILDING</IntlTypography>
         </Grid>
@@ -161,7 +162,7 @@ class MoveInBuilding extends FormTemplate<Props, State> {
         />
 
         <Submit onSubmit={this.saveFunction} />
-     </>
+      </ValidatedForm>
     )
   }
 }

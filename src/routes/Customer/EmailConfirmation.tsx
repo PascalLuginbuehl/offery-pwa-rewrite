@@ -13,6 +13,7 @@ import LeadAPI, { ILeadContainer } from '../LeadAPI';
 import FormTemplate from './FormTemplate';
 import { IAddress } from '../../interfaces/ICompany';
 import LeadService from '../../services/LeadService';
+import ValidatedForm from '../../components/Validator/ValidatedForm';
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -59,7 +60,7 @@ class EmailConfirmation extends FormTemplate<Props, State> {
     const { cleaning: CleaningBuilding, moveOut: MoveOutBuilding, moveIn: MoveInBuilding, storage: StorageInBuilding, disposal: DisposalOutBuilding,  } = container
 
     return (
-      <>
+      <ValidatedForm>
         <Grid item xs={12}>
           <IntlTypography variant="h5">EMAIL_CONFIRMATION</IntlTypography>
         </Grid>
@@ -98,7 +99,7 @@ class EmailConfirmation extends FormTemplate<Props, State> {
 
         {/* Only available when online */}
         <Submit onSubmit={this.send}/>
-     </>
+      </ValidatedForm>
     )
   }
 }

@@ -1,3 +1,4 @@
+
 import { createStyles, Grid, Theme, WithStyles, withStyles } from '@material-ui/core'
 import Loading from '../Loading'
 import ResponsiveContainer from '../ResponsiveContainer'
@@ -7,25 +8,31 @@ import Validator from '../Validator';
 
 const styles = (theme: Theme) =>
   createStyles({
-
+    root: {
+      padding: 8,
+      [theme.breakpoints.down('xs')]: {
+        padding: 4,
+      }
+    }
   })
 
 interface Props extends WithStyles<typeof styles> {
-  initialLoading: Promise<any> | null
+
 }
 
-class Lead extends React.Component<Props> {
+class ValidatedForm extends React.Component<Props> {
   public render() {
-    const { classes, children, initialLoading } = this.props
+    const { classes, children } = this.props
 
     return (
-      <ResponsiveContainer>
-        <Loading await={initialLoading} size={50}>
+      <Validator>
+        {/* Was 16 */}
+        <Grid container spacing={2} className={classes.root}>
           {children}
-        </Loading>
-      </ResponsiveContainer>
+        </Grid>
+      </Validator>
     )
   }
 }
 
-export default withStyles(styles)(Lead)
+export default withStyles(styles)(ValidatedForm)

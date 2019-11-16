@@ -6,6 +6,7 @@ import { FieldProps } from 'formik';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
+import { file } from '@babel/types';
 
 export interface SwitchProps
   extends FieldProps,
@@ -27,6 +28,12 @@ export const fieldToSwitch = ({
     ...field,
     value: field.name,
     checked: field.value,
+    // Ugly fix for event checked
+    onChange: event => {
+      //@ts-ignore
+      event.target.value = event.target.checked
+      field.onChange(event)
+    },
   };
 };
 
