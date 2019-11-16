@@ -10,6 +10,7 @@ import ValidatedTextField from '../../components/Validator/ValidatedTextField'
 import FormTemplate from './FormTemplate'
 import { sortMasterThing } from '../../interfaces/IResource';
 import ValidatedForm from '../../components/Validator/ValidatedForm';
+import Switch from '../../components/Validator/Switch'
 
 interface State {
 
@@ -29,8 +30,7 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
   public render() {
     const { resource } = this.props
 
-    const { Address, RoomAmount, TotalArea, EtageId, ElevatorId, MetersToParking, StairsToEntryAmount, PeopleLivingAmount, BuildingTypeId } = this.props.data
-
+    const { Address, RoomAmount, TotalArea, EtageId, ElevatorId, MetersToParking, StairsToEntryAmount, PeopleLivingAmount, BuildingTypeId, HasBasement, HasAttic, HasGarage, HasGarden, HasWinterGarden } = this.props.data
 
     return (
       <ValidatedForm>
@@ -119,6 +119,42 @@ class DisposalOutBuilding extends FormTemplate<Props, State> {
           value={MetersToParking}
           name="MetersToParking"
           type="number"
+          onChange={this.handleChange}
+        />
+
+
+        <Switch
+          label="BASEMENT"
+          value={HasBasement}
+          name="HasBasement"
+          onChange={this.handleChange}
+        />
+
+        <Switch
+          label="ATTIC"
+          value={HasAttic}
+          name="HasAttic"
+          onChange={this.handleChange}
+        />
+
+        <Switch
+          label="GARAGE"
+          value={HasGarage}
+          name="HasGarage"
+          onChange={this.handleChange}
+        />
+
+        <Switch
+          label="GARDEN"
+          value={HasGarden}
+          name="HasGarden"
+          onChange={this.handleChange}
+        />
+
+        <Switch
+          label="WINTERGARDEN"
+          value={HasWinterGarden}
+          name="HasWinterGarden"
           onChange={this.handleChange}
         />
 

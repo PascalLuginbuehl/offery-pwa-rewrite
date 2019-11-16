@@ -116,6 +116,11 @@ export const emptyStorageBuilding: IPostStorageBuilding = {
 export interface IPostDisposalOutBuilding extends BaseBuilding {
   PeopleLivingAmount: number | null
   BuildingTypeId: number | null
+  HasBasement: boolean
+  HasAttic: boolean
+  HasGarage: boolean
+  HasGarden: boolean
+  HasWinterGarden: boolean
 }
 
 export interface IUpdateDisposalOutBuilding extends IPostDisposalOutBuilding {
@@ -132,18 +137,23 @@ export const emptyDisposalOutBuilding : IPostDisposalOutBuilding = {
   ...emptyBuilding,
   PeopleLivingAmount: null,
   BuildingTypeId: null,
+  HasBasement: false,
+  HasAttic: false,
+  HasGarage: false,
+  HasGarden: false,
+  HasWinterGarden: false,
 }
 
 //Cleaning
 export interface IPostCleaningBuilding {
   RestroomAmount: number | null
   WindowNormalAmount: number | null
-  WindowHightVerticalAmount: number | null
+  WindowHighVerticalAmount: number | null
   HasBasement: boolean
   HasAttic: boolean
   HasGarden: boolean
   HasWinterGarden: boolean
-  HasSmoked: boolean
+  HadSmoked: boolean
   HasMoldAtWindow: boolean
   HasMoldAtWall: boolean
   HasHardenedDirt: boolean
@@ -155,7 +165,7 @@ export interface IPostCleaningBuilding {
   RollerBlindTypeId: number | null
   GarageTypeId: number | null
   PollutionDegreeId: number | null
-  BuiltinWardrobeRangeId: number | null
+  BuiltInWardrobeRangeId: number | null
 
   Address: IPostAddress
   RoomAmount: number | null
@@ -174,7 +184,7 @@ export interface ICleaningBuilding extends IUpdateCleaningBuilding {
   Address: IAddress
 }
 
-export const emptyCleaningBuilding: IPostCleaningBuilding ={
+export const emptyCleaningBuilding: IPostCleaningBuilding = {
   TotalArea: null,
   RoomAmount: null,
 
@@ -183,13 +193,13 @@ export const emptyCleaningBuilding: IPostCleaningBuilding ={
 
   RestroomAmount: null,
   WindowNormalAmount: null,
-  WindowHightVerticalAmount: null,
+  WindowHighVerticalAmount: null,
 
   HasBasement: false,
   HasAttic: false,
   HasGarden: false,
   HasWinterGarden: false,
-  HasSmoked: false,
+  HadSmoked: false,
   HasMoldAtWindow: false,
   HasMoldAtWall: false,
   HasHardenedDirt: false,
@@ -202,5 +212,5 @@ export const emptyCleaningBuilding: IPostCleaningBuilding ={
   RollerBlindTypeId: null,
   GarageTypeId: null,
   PollutionDegreeId: null,
-  BuiltinWardrobeRangeId: null,
+  BuiltInWardrobeRangeId: null,
 }

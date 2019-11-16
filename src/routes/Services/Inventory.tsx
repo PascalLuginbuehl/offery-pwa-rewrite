@@ -233,9 +233,15 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
 
           <Grid item xs={12}>
             <Toolbar disableGutters>
-              <IconButton onClick={() => this.openCatergory(null)}>
-                <ArrowBackIcon />
-              </IconButton>
+              {
+                selectedFurnitureCategory ?
+                (
+                  <IconButton onClick={() => this.openCatergory(null)}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                )
+                : null
+              }
               &nbsp;
 
               <IntlTypography variant="h6">{selectedFurnitureCategory ? selectedFurnitureCategory.NameTextKey : "SELECT_CATEGORY" }</IntlTypography>

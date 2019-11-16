@@ -29,7 +29,7 @@ class CleaningBuilding extends FormTemplate<Props, State> {
 
   public render() {
     const { resource } = this.props
-    const { Address, RoomAmount, TotalArea, BuildingTypeId, HasBasement, HasAttic, HasGarden, HasWinterGarden, BuildingTypeDetailId, RestroomAmount, BalconyId, FloorTypeId, RollerBlindTypeId, WindowNormalAmount, WindowHightVerticalAmount, GarageTypeId, BuiltinWardrobeRangeId, PollutionDegreeId, HadPets, HasHardenedDirt, HasMoldAtWall, HasMoldAtWindow, HasSmoked } = this.props.data
+    const { Address, RoomAmount, TotalArea, BuildingTypeId, HasBasement, HasAttic, HasGarden, HasWinterGarden, BuildingTypeDetailId, RestroomAmount, BalconyId, FloorTypeId, RollerBlindTypeId, WindowNormalAmount, WindowHighVerticalAmount, GarageTypeId, BuiltInWardrobeRangeId, PollutionDegreeId, HadPets, HasHardenedDirt, HasMoldAtWall, HasMoldAtWindow, HadSmoked } = this.props.data
 
     return (
       <ValidatedForm>
@@ -138,8 +138,8 @@ class CleaningBuilding extends FormTemplate<Props, State> {
 
         <ValidatedTextField
           label="AMOUNT_HIGH_WINDOWS"
-          value={WindowHightVerticalAmount}
-          name="WindowHightVerticalAmount"
+          value={WindowHighVerticalAmount}
+          name="WindowHighVerticalAmount"
           type="number"
           onChange={this.handleChange}
         />
@@ -156,8 +156,8 @@ class CleaningBuilding extends FormTemplate<Props, State> {
 
         <ValidatedSelect
           label="BUILTIN_WARDROBE"
-          value={BuiltinWardrobeRangeId}
-          name="BuiltinWardrobeRangeId"
+          value={BuiltInWardrobeRangeId}
+          name="BuiltInWardrobeRangeId"
           onChange={this.handleChange}
           options={resource.BuiltInWardrobeRanges.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuiltInWardrobeRangeId }))}
 
@@ -233,8 +233,8 @@ class CleaningBuilding extends FormTemplate<Props, State> {
 
         <Switch
           label="SMOKED"
-          value={HasSmoked}
-          name="HasSmoked"
+          value={HadSmoked}
+          name="HadSmoked"
           onChange={this.handleChange}
         />
 
