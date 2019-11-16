@@ -28,6 +28,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import SelectGridItem from '../../components/ShopElements/SelectGridItem';
+import PageHeader from '../../components/PageHeader';
 
 
 const styles = (theme: Theme) =>
@@ -171,9 +172,7 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
     return (
       <Grid item xs={12}>
         <Form>
-          <Grid item xs={12}>
-            <IntlTypography variant="h5">MATERIAL_SHOP</IntlTypography>
-          </Grid>
+          <PageHeader title="MATERIAL_SHOP"/>
 
           <Grid item xs={12}>
             <Grid container spacing={1}>

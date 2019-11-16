@@ -126,7 +126,10 @@ class InventoryItems extends React.Component<Props, State> {
                   )}
                 </ButtonGroup>
 
-                <Button variant="contained" color="primary" style={{ margin: "0 4px" }} onClick={() => onSelect(selectedSizeId, selectedMaterialId)}>
+                <Button variant="contained" color="primary" style={{ margin: "0 4px" }} onClick={() => {
+                  onSelect(selectedSizeId, selectedMaterialId)
+                  this.setState({moreOpen: false})
+                }}>
                   <FormattedMessage id="ADD" />
                 </Button>
               </Paper>

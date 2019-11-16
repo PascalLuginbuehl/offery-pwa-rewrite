@@ -81,8 +81,8 @@ class GridSelect extends React.Component<Props, State> {
 
             {currentlyOpenState == CurrentlyOpenStateEnum.Rent ?
               <Typography variant="body2">
-                <FormattedMessage id={"RENT"} />
-                :&nbsp;
+                {/* <FormattedMessage id={"RENT"} />
+                :&nbsp; */}
                 <FormattedNumber
                   value={product.RentPrice}
                   style="currency"
@@ -96,8 +96,8 @@ class GridSelect extends React.Component<Props, State> {
 
             {currentlyOpenState == CurrentlyOpenStateEnum.Buy ?
               <Typography variant="body2">
-                <FormattedMessage id={"BUY"} />
-                :&nbsp;
+                {/* <FormattedMessage id={"BUY"} />
+                :&nbsp; */}
                 <FormattedNumber
                   value={product.SellPrice}
                   style="currency"
