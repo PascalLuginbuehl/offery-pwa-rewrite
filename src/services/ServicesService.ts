@@ -1,7 +1,7 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding";
-import { IServices, IPutServices, IMoveService, IPutMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce } from "../interfaces/IService";
+import { IServices, IPutServices, IMoveService, IPutMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalSerivce, IDisposalSerivce } from "../interfaces/IService";
 import { IMaterialOrder } from "../interfaces/IShop";
 import { IInventars } from "../interfaces/IInventars";
 
@@ -148,8 +148,19 @@ class ServicesService {
     )
   }
 
+  // Services
+  public fetchDisposalService = (leadId: number): Promise<IDisposalSerivce | null> => {
+    return this.fetchService<IDisposalSerivce | null>(
+      API_URL + '/lead/' + leadId + '/disposalservice',
+    )
+  }
 
-
+  public saveDisposalService = (leadId: number, services: IPutDisposalSerivce) => {
+    return this.saveService<IPutDisposalSerivce>(
+      API_URL + '/lead/' + leadId + '/disposalservice',
+      services
+    )
+  }
 }
 
 

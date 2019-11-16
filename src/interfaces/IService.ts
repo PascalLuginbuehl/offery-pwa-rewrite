@@ -36,7 +36,7 @@ export interface IMaterialOrder {
 }
 
 export interface IPutDisposalSerivce {
-  DisposalDate: string
+  DisposalDate: Date | null
   FurnitureLiftService: boolean
   DeMontage: boolean
   LampDemontageService: boolean
@@ -113,4 +113,12 @@ export const emptyStorageService: IPutStorageService = {
   MontageService: false,
   PianoService: false,
   StorageDate: null,
+}
+
+
+export const emptyDisposalSerivce: IPutDisposalSerivce = {
+  DeMontage: false,
+  FurnitureLiftService: false,
+  LampDemontageService: false,
+  DisposalDate: null,
 }
