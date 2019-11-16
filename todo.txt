@@ -4,16 +4,12 @@
 [x] Titel bei Mobile
 [x] Padding für submit button
 [x] Automatisch schliessen bei anklicken navigation
+[x] Kaufen / Mieten in  MaterialShop entfernen
 
 
-Kaufen / Mieten in  MaterialShop entfernen
 
 
-E-Mail versand funktioniert nicht
-
-
-Wenn Keyboard offen, kann nicht ausfüllen. Forms
-
-Enter auf nächstes Formularfeld
-
+[ ] E-Mail versand funktioniert nicht
+[ ] Wenn Keyboard offen, kann nicht ausfüllen. Forms
+[ ] Enter auf nächstes Formularfeld
 

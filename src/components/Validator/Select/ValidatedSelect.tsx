@@ -137,7 +137,7 @@ class ValidatedSelect extends React.Component<Props, State> {
           getOptionValue={({ value }) => value}
 
           //@ts-ignore
-          value={options.filter(({ value: valueId }) => valueId === value)}
+          value={options.filter(({ value: valueId }) => valueId == value)}
           // value={value ? isMulti ? value.map(toOptions) : toOptions(value) : null}
           isMulti={isMulti}
           placeholder={intl.formatMessage({id: "SELECT"})}

@@ -86,6 +86,7 @@ class EmailConfirmation extends FormTemplate<Props, State> {
           name="AddressId"
           onChange={this.handleChange}
           required
+          notTranslatedLabel={false}
           options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding].filter(notEmpty).map(e => e.Address).filter((e): e is IAddress => e.hasOwnProperty('AddressId')).map((e, index) => ({ value: e.AddressId, label: e.Street + ", " + e.PLZ + " " + e.City}))}
         />
 
