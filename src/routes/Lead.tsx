@@ -28,11 +28,12 @@ import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
-import { emptyMoveService } from '../interfaces/IService';
+import { emptyMoveService, emptyPackService } from '../interfaces/IService';
 import MaterialShop from './Services/MaterialShop';
 import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
 import Inventory from './Services/Inventory';
 import { InventoryKeysEnum, emptyInventory } from '../interfaces/IInventars';
+import PackService from './Services/PackService';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -339,6 +340,7 @@ class Lead extends Component<Props, State> {
       moveService,
       materialOrder,
       inventory,
+      packService,
 
       initialAwait,
       onlySavedOffline,
@@ -560,6 +562,34 @@ class Lead extends Component<Props, State> {
                 }
               />
 
+              {/* PackService */}
+              <Route
+                exact
+                path={`${match.url}/services/pack`}
+                render={(routeProps) =>
+                  <PackService
+                    {...routeProps}
+
+                    moveOut={moveOut}
+                    packService={packService ? packService : emptyPackService}
+                    HasMoveService={services.HasMoveServiceEnabled}
+
+                    onChangeAndSave={(serviceData, moveOut) => {
+                      this.handleChange(serviceData, "packService");
+                      this.handleChange(moveOut, "moveOut");
+
+                      return Promise.all([
+                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
+                        LeadAPI.SavePackService(Lead.LeadId, serviceData),
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/pack')}
+                  />
+                }
+              />
 
               {/* PackShop */}
               <Route

@@ -139,3 +139,5 @@ INVENTORY,Inventory,Inventur
 SELECT_CATEGORY,Select category,Kategorie auswählen
 ADD,Add,Hinzufügen
 MOVE_SERVICE,Move Service,Umzugsservice
+WITH_UNPACK,With unpacking,Mit Auspacken
+PACK_DATE,Pack date,Termin Einpackservice

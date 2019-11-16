@@ -17,7 +17,7 @@ import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
 import DatePicker from '../../components/FormikFields/DatePicker';
-import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/IService';
+import { IPutServices, emptyServices, IPutMoveService, IPutPackService } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
@@ -29,17 +29,17 @@ const styles = (theme: Theme) =>
   })
 
 interface Values {
-  moveService: IPutMoveService
-  moveIn: IPostMoveInBuilding | null
+  packService: IPutPackService
   moveOut: IPostMoveOutBuilding | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding | null, moveOut: IPostMoveOutBuilding | null) => void
+  onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding | null) => void
+  HasMoveService: boolean
 }
 
-class Index extends React.Component<Props & FormikProps<Values>, {}> {
+class PackService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
       values,
@@ -50,10 +50,10 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
       handleSubmit,
       isSubmitting,
       status,
-      resource
+      resource,
+      packService,
+      HasMoveService
     } = this.props
-
-    // const { data } = this.props
 
     console.log(this.props)
     return (
@@ -61,27 +61,14 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="MOVE_SERVICE" />
 
-          <Field name="moveService.BoreService" label="BORE_SERVICE" component={Switch} />
+          <Field name="packService.HasOutService" label="WITH_UNPACK" component={Switch} />
 
-          <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={Switch} />
+          <Field name="packService.PackServiceDate" label="PACK_DATE" component={DatePicker} />
 
-          <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={Switch} />
-
-          <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={Switch} />
-
-          <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={Switch} />
-
-          <Field name="moveService.PianoService" label="PIANO_SERVICE" component={Switch} />
-
-          <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
-
-          {/* MoveOut */}
-          {/* <AddressField
-            value={Address}
-            name="Address"
-            onChange={this.handleChange}
-          /> */}
-          <MoveOut prefix={'moveOut'} resource={resource} />
+          {/* Only show moveout when there is no MoveService */}
+          {
+            HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
+          }
 
           {status && status.msg && <div>{status.msg}</div>}
 
@@ -101,17 +88,17 @@ export default withStyles(styles)(
         //   .required(),
       }),
 
-      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService }),
+      mapPropsToValues: props => ({ packService: props.packService, moveOut: props.moveOut }),
 
       handleSubmit: async (values, actions) => {
         console.log(values)
         // actions.props.
-        await actions.props.onChangeAndSave(values.moveService, values.moveIn, values.moveOut)
+        await actions.props.onChangeAndSave(values.packService, values.moveOut)
 
         actions.setSubmitting(false)
         actions.props.nextPage()
       }
 
-    })(Index)
+    })(PackService)
   )
 )

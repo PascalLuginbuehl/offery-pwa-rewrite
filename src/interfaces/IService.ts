@@ -47,10 +47,10 @@ export interface IDisposalSerivce extends IPutDisposalSerivce {
 }
 
 export interface IPutPackService {
-  PackServiceDate: boolean,
+  PackServiceDate: Date | null,
   HasOutService: boolean
 }
-export interface IPackSerivce {
+export interface IPackSerivce extends IPutPackService {
   PackServiceId: number
 }
 
@@ -96,4 +96,10 @@ export const emptyMoveService: IPutMoveService = {
   MontageService: false,
   PianoService: false,
   MoveDate: null,
+}
+
+
+export const emptyPackService: IPutPackService = {
+  HasOutService: false,
+  PackServiceDate: null
 }
