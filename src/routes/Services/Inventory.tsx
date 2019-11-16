@@ -67,6 +67,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   onChangeAndSave: (data: IInventars) => void,
   initalInventoryTypeKey: InventoryKeysEnum,
   inventory: IInventars,
+  nextPage: () => void
 }
 
 interface State {
@@ -393,6 +394,7 @@ export default
               await actions.props.onChangeAndSave(values)
 
               actions.setSubmitting(false)
+              actions.props.nextPage()
             }
 
           })(Inventory)

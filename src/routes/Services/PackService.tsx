@@ -35,6 +35,7 @@ interface Values {
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
+  nextPage: () => void
   onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding | null, moveOut: IPostMoveOutBuilding | null) => void
 }
 
@@ -108,6 +109,7 @@ export default withStyles(styles)(
         await actions.props.onChangeAndSave(values.moveService, values.moveIn, values.moveOut)
 
         actions.setSubmitting(false)
+        actions.props.nextPage()
       }
 
     })(Index)

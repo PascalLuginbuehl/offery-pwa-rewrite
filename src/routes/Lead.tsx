@@ -198,10 +198,25 @@ class Lead extends Component<Props, State> {
     this.setState({errorOccured: false})
   }
 
-  nextPageFunction = (current: string) => {
+  redirectToNextPage = (currentPage: string) => () => {
+    const { Lead } = this.state
+
+    if (Lead && Lead.hasOwnProperty("LeadId")) {
+      const { history } = this.props
+
+      const nextPage = this.nextPageFunction(currentPage)
+
+      // Quickfix due to TS Lint error
+      history.push("/lead/" + (Lead as ILead).LeadId + nextPage)
+    }
+  }
+
+  nextPageFunction = (current: string): string => {
     // Check if lead is even defined
     if (this.state.Lead) {
       const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
+
+      const {HasCleaningServiceEnabled, HasDisposalServiceEnabled, HasPackServiceEnabled, HasStorageServiceEnabled, HasMoveServiceEnabled} = this.state.services
 
       const order = [
         { name: '/building', active: true },
@@ -212,8 +227,15 @@ class Lead extends Component<Props, State> {
         { name: '/building/cleaning', active: HasCleaningBuilding },
         { name: '/building/email-confirmation', active: true },
         { name: '/services', active: true },
-        { name: '/services/move', active: true },
-        { name: '/services/move/material-shop', active: true },
+        { name: '/services/move', active: HasMoveServiceEnabled },
+        { name: '/services/move/material-shop', active: HasMoveServiceEnabled },
+        { name: '/services/move/inventory', active: HasMoveServiceEnabled },
+        { name: '/services/pack', active: HasPackServiceEnabled },
+        { name: '/services/pack/material-shop', active: HasPackServiceEnabled },
+        { name: '/services/storage', active: HasStorageServiceEnabled },
+        { name: '/services/storage/material-shop', active: HasStorageServiceEnabled },
+        { name: '/services/disposal', active: HasDisposalServiceEnabled },
+        { name: '/services/cleaning', active: HasCleaningServiceEnabled },
       ]
 
       let lastPage = { name: '' }
@@ -456,7 +478,7 @@ class Lead extends Component<Props, State> {
                     {...routeProps}
                     data={services}
                     onChangeAndSave={(serviceData) => { this.handleChange(serviceData, "services"); return LeadAPI.SaveServices(Lead.LeadId, serviceData)}}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services')}
                   />
                 }
               />
@@ -474,7 +496,7 @@ class Lead extends Component<Props, State> {
                     moveService={moveService ? moveService : emptyMoveService}
 
                     onChangeAndSave={(serviceData, moveIn, moveOut) => {
-                      this.handleChange(serviceData, "services");
+                      this.handleChange(serviceData, "moveService");
                       this.handleChange(moveOut, "moveOut");
                       this.handleChange(moveIn, "moveIn");
 
@@ -487,6 +509,7 @@ class Lead extends Component<Props, State> {
                     // data={}
                     // container={this.state}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/move')}
                   />
                 }
               />
@@ -509,6 +532,7 @@ class Lead extends Component<Props, State> {
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/move/material-shop')}
                   />
                 }
               />
@@ -531,6 +555,7 @@ class Lead extends Component<Props, State> {
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/move/inventory')}
                   />
                 }
               />
@@ -551,6 +576,7 @@ class Lead extends Component<Props, State> {
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Pack}
+                    nextPage={this.redirectToNextPage('/services/pack/material-shop')}
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}
@@ -574,6 +600,7 @@ class Lead extends Component<Props, State> {
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Storage}
+                    nextPage={this.redirectToNextPage('/services/storage/material-shop')}
                   // data={}
                   // container={this.state}
                   // nextPage={match.url + this.nextPageFunction('/service/move-service')}

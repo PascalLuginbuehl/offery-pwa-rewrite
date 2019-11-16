@@ -28,6 +28,7 @@ const styles = (theme: Theme) =>
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
   data: IPutServices
   onChangeAndSave: (data: IPutServices) => void
+  nextPage: () => void
 }
 
 class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
@@ -84,8 +85,8 @@ export default withStyles(styles)(
         console.log(values)
         // actions.props.
         await actions.props.onChangeAndSave(values)
-
         actions.setSubmitting(false)
+        actions.props.nextPage()
       }
 
     })(Index)

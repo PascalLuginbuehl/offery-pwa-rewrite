@@ -15,7 +15,7 @@ class PageHeader extends React.Component<Props> {
     if(this.props.width !== 'xs') {
       return (
         <Grid item xs={12}>
-          <IntlTypography variant="h5">INVENTORY</IntlTypography>
+          <IntlTypography variant="h5">{this.props.title}</IntlTypography>
         </Grid>
       )
     }

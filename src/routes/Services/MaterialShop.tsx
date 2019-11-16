@@ -42,6 +42,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   onChangeAndSave: (data: IMaterialOrder) => void,
   shopTypeKey: ShopTypeEnum,
   materialOrder: IMaterialOrder,
+  nextPage: () => void
 }
 
 interface State {
@@ -298,6 +299,7 @@ injectIntl(
           await actions.props.onChangeAndSave(values)
 
           actions.setSubmitting(false)
+          actions.props.nextPage()
         }
 
       })(MaterialShop)
