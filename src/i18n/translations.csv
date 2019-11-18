@@ -163,3 +163,5 @@ HIGH_PRESSURE_GARAGE_CLEANING,Garage High Pressure cleaning,Hochdruckreinigung G
 HIGH_PRESSURE_TERRACE_CLEANING,Garage High Pressure Terrace,Hochdruckreinigung Balkon
 CLEANING_DATE,Cleaning date,Reinigungstermin
 HANDOVER_DATE,Handover Date,Abgabetermin
+CONDITIONS,Conditions,Konditionen,
+MOVE_CONDITIONS,Move conditions,Umzugs-Konditionen
