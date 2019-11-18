@@ -151,3 +151,15 @@ DATE_STORAGE_UNSTORE,Date Storage/Unstorage,Termin Einlagerung/Auslagerung
 STORAGE_SERVICE,Storage Service,Lagerservice
 PACK_SERVICE,Pack Service,Einpackserivce
 DISPOSAL_SERVICE,Disposal Service,Entsorgungsservice
+CLEANING_SERVICE,Cleaning Serivce,Reinigungsservice
+CLEANING_CARPET,Carpet shampoo,Teppich shampoonieren
+CLEANING_FIREPLACE,Cleaing Fireplace,Reinigung Cheminée
+CLEANING_SPECIAL,Special cleaning,Spezialreinigung
+CLEANING_WINDOWS,Window cleaning without Shutters,Fensterreinigung ohne Rolladen/Storen
+CLEAING_WINDOWS_WITH_SHUTTER,Window cleaning with Shutters,Fensterreinigung mit Rolladen/Storen
+DOVELHOLE,fill Dovelholes,Dübellöcher füllen
+HANDOUT_GARANTY,Handout garanty,Mit Abgabegarantie
+HIGH_PRESSURE_GARAGE_CLEANING,Garage High Pressure cleaning,Hochdruckreinigung Garage
+HIGH_PRESSURE_TERRACE_CLEANING,Garage High Pressure Terrace,Hochdruckreinigung Balkon
+CLEANING_DATE,Cleaning date,Reinigungstermin
+HANDOVER_DATE,Handover Date,Abgabetermin

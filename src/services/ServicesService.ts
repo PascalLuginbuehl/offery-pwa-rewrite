@@ -1,7 +1,7 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding";
-import { IServices, IPutServices, IMoveService, IPutMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalSerivce, IDisposalSerivce } from "../interfaces/IService";
+import { IServices, IPutServices, IMoveService, IPutMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalSerivce, IDisposalSerivce, ICleaningService, IPutCleaningService } from "../interfaces/IService";
 import { IMaterialOrder } from "../interfaces/IShop";
 import { IInventars } from "../interfaces/IInventars";
 
@@ -158,6 +158,20 @@ class ServicesService {
   public saveDisposalService = (leadId: number, services: IPutDisposalSerivce) => {
     return this.saveService<IPutDisposalSerivce>(
       API_URL + '/lead/' + leadId + '/disposalservice',
+      services
+    )
+  }
+
+  // Cleaning
+  public fetchCleaningService = (leadId: number): Promise<ICleaningService | null> => {
+    return this.fetchService<ICleaningService | null>(
+      API_URL + '/lead/' + leadId + '/cleaningservice',
+    )
+  }
+
+  public saveCleaningService = (leadId: number, services: IPutCleaningService) => {
+    return this.saveService<IPutCleaningService>(
+      API_URL + '/lead/' + leadId + '/cleaningservice',
       services
     )
   }

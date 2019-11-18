@@ -13,8 +13,8 @@ export interface IMoveService extends IPutMoveService {
 }
 
 export interface IPutCleaningService {
-  CleaningDate: Date,
-  HandOverDate: string
+  CleaningDate: Date | null
+  HandOverDate: Date | null
   Comment: string
   HighPressureTerraceCleaningService: boolean
   HighPressureGarageCleaningService: boolean
@@ -27,7 +27,7 @@ export interface IPutCleaningService {
   HandoutGaranty: boolean
 }
 
-export interface ICleaningSerivce extends IPutCleaningService {
+export interface ICleaningService extends IPutCleaningService {
   CleaningServiceId: number,
 }
 
@@ -121,4 +121,19 @@ export const emptyDisposalSerivce: IPutDisposalSerivce = {
   FurnitureLiftService: false,
   LampDemontageService: false,
   DisposalDate: null,
+}
+
+export const emptyCleaningService: IPutCleaningService = {
+  CleaningCarpetService: false,
+  CleaningFireplaceService: false,
+  CleaningSpecialService: false,
+  CleaningWindowsService: false,
+  CleaningWindowsWithShuttersService: false,
+  DovelholeService: false,
+  HandoutGaranty: false,
+  HighPressureGarageCleaningService: false,
+  HighPressureTerraceCleaningService: false,
+  CleaningDate: null,
+  HandOverDate: null,
+  Comment: "",
 }

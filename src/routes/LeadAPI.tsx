@@ -20,7 +20,7 @@ import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
 import BuildingService from '../services/BuildingService';
 import LeadService from '../services/LeadService';
 import ServicesService from '../services/ServicesService';
-import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalSerivce, IDisposalSerivce } from '../interfaces/IService';
+import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalSerivce, IDisposalSerivce, IPutCleaningService, ICleaningService } from '../interfaces/IService';
 import { IMaterialOrder } from '../interfaces/IShop';
 import { IInventars } from '../interfaces/IInventars';
 
@@ -44,6 +44,7 @@ export interface ILeadContainer {
   packService: IPutPackService | IPackSerivce | null
   storageService: IPutStorageService | IStorageSerivce | null
   disposalService: IPutDisposalSerivce | IDisposalSerivce | null
+  cleaningService: IPutCleaningService | ICleaningService | null
   // unsavedChanges:
 }
 
@@ -68,6 +69,7 @@ export const emptyLeadContainer: ILeadContainer = {
   packService: null,
   storageService: null,
   disposalService: null,
+  cleaningService: null,
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -96,8 +98,9 @@ class LeadAPI {
       ServicesService.fetchPackService(leadId),
       ServicesService.fetchStorageService(leadId),
       ServicesService.fetchDisposalService(leadId),
+      ServicesService.fetchCleaningService(leadId),
       // @ts-ignore
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService, storageService, disposalService]): ILeadContainer => ({
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
@@ -126,6 +129,8 @@ class LeadAPI {
       storageService: storageService,
 
       disposalService: disposalService,
+
+      cleaningService: cleaningService,
     }))
   }
 
@@ -209,6 +214,10 @@ class LeadAPI {
 
   SaveDisposalService = (leadId: number, disposalService: IPutDisposalSerivce | null) => {
     return disposalService ? ServicesService.saveDisposalService(leadId, disposalService) : Promise.resolve(null)
+  }
+
+  SaveCleaningService = (leadId: number, cleaningService: IPutCleaningService | null) => {
+    return cleaningService ? ServicesService.saveCleaningService(leadId, cleaningService) : Promise.resolve(null)
   }
 
   // Gets Called to Get Data From Offline

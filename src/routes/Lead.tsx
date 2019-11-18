@@ -28,7 +28,7 @@ import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
-import { emptyMoveService, emptyPackService, emptyStorageService, emptyDisposalSerivce } from '../interfaces/IService';
+import { emptyMoveService, emptyPackService, emptyStorageService, emptyDisposalSerivce, emptyCleaningService } from '../interfaces/IService';
 import MaterialShop from './Services/MaterialShop';
 import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
 import Inventory from './Services/Inventory';
@@ -36,6 +36,7 @@ import { InventoryKeysEnum, emptyInventory } from '../interfaces/IInventars';
 import PackService from './Services/PackService';
 import StorageService from './Services/StorageService';
 import DisposalService from './Services/DisposalService';
+import CleaningService from './Services/CleaningService';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -347,6 +348,7 @@ class Lead extends Component<Props, State> {
       packService,
       storageService,
       disposalService,
+      cleaningService,
 
       initialAwait,
       onlySavedOffline,
@@ -750,6 +752,35 @@ class Lead extends Component<Props, State> {
                   />
                 }
               />
+
+              {/* Disposal */}
+              <Route
+                exact
+                path={`${match.url}/services/cleaning`}
+                render={(routeProps) =>
+                  <CleaningService
+                    {...routeProps}
+
+                    moveOut={moveOut}
+                    cleaningService={cleaningService ? cleaningService : emptyCleaningService}
+                    HasMoveService={services.HasMoveServiceEnabled}
+
+                    onChangeAndSave={(serviceData, moveOut) => {
+                      this.handleChange(serviceData, "cleaningService");
+                      this.handleChange(moveOut, "moveOut");
+
+                      return Promise.all([
+                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
+                        LeadAPI.SaveCleaningService(Lead.LeadId, serviceData),
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/services/cleaning')}
+                  />
+                }
+              />
             </>
             :
               Lead ? (
@@ -814,8 +845,7 @@ class Lead extends Component<Props, State> {
             </Collapse>
 
             <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavFolder to={`${match.url}/services/cleaning`} title="CLEANING" nested>
-              </NavFolder>
+              <NavItem to={`${match.url}/services/cleaning`} title="CLEANING" nested />
             </Collapse>
 
           </NavFolder>
