@@ -1,23 +1,23 @@
 export interface IServiceConditions {
   IsHourlyRate: boolean
   HasCostCeiling: boolean
-  PricePerHour: number
-  MinHoursOfWork: number
-  MaxHoursOfWork: number
-  EstimatedHoursOfWorkWhenFixPrice: number
-  WorkersAmount: number
-  DriveHours: number
+  PricePerHour: number | null
+  MinHoursOfWork: number | null
+  MaxHoursOfWork: number | null
+  EstimatedHoursOfWorkWhenFixPrice: number | null
+  WorkersAmount: number | null
+  DriveHours: number | null
 
   Comment: string
 
-  CostCeiling: number
-  FixPrice: number
-  Expenses: number
-  DiscountInPercent: number
+  CostCeiling: number | null
+  FixPrice: number | null
+  Expenses: number | null
+  DiscountInPercent: number | null
 }
 
 export interface ICarType {
-  CarTypeId: number
+  CarTypeId: number | null
   NameTextKey: string
 }
 
@@ -29,14 +29,14 @@ export interface ICarAmount {
 export interface IMoveServiceConditions {
 
   ServiceConditions: IServiceConditions
-  FurnitureLiftPrice: number
-  PianoPrice: number
-  MontageServicePrice: number
-  DeMontageServicePrice: number
-  LampDemontageAmount: number
-  LampDemontagePrice: number
-  BoreAmount: number
-  BorePrice: number
+  FurnitureLiftPrice: number | null
+  PianoPrice: number | null
+  MontageServicePrice: number | null
+  DeMontageServicePrice: number | null
+  LampDemontageAmount: number | null
+  LampDemontagePrice: number | null
+  BoreAmount: number | null
+  BorePrice: number | null
   CarAmounts: ICarAmount[]
 }
 
@@ -48,28 +48,28 @@ export interface IPackServiceConditions {
 export interface IDisposalServiceConditions {
   ServiceConditions: IServiceConditions
 
-  FurnitureLiftPrice: number
-  CostPerCubicInMoney: number
-  CostEntry: number
-  Volume: number
-  LampDemontageAmount: number
-  LampDemontagePrice: number
+  FurnitureLiftPrice: number | null
+  CostPerCubicInMoney: number | null
+  CostEntry: number | null
+  Volume: number | null
+  LampDemontageAmount: number | null
+  LampDemontagePrice: number | null
   CarAmounts: ICarAmount[]
 }
 
 export interface IStorageServiceConditions {
   ServiceConditions: IServiceConditions
 
-  FurnitureLiftPrice: number
-  PianoPrice: number
-  CostPerCubicMonthInMoney: number
-  Volume: number
-  MontageServicePrice: number
-  DeMontageServicePrice: number
-  LampDemontageAmount: number
-  LampDemontagePrice: number
-  BoreAmount: number
-  BorePrice: number
+  FurnitureLiftPrice: number | null
+  PianoPrice: number | null
+  CostPerCubicMonthInMoney: number | null
+  Volume: number | null
+  MontageServicePrice: number | null
+  DeMontageServicePrice: number | null
+  LampDemontageAmount: number | null
+  LampDemontagePrice: number | null
+  BoreAmount: number | null
+  BorePrice: number | null
   CarAmounts: ICarAmount[]
 }
 
@@ -77,25 +77,118 @@ export interface IStorageServiceConditions {
 export interface ICleaningServiceConditions {
   ServiceConditions: IServiceConditions
 
-  FixPrice: number
-  EstimatedHoursOfWorkWhenFixPrice: number
-  FixPriceTotal: number
-  DiscountInPercent: number
+  FixPrice: number | null
+  EstimatedHoursOfWorkWhenFixPrice: number | null
+  FixPriceTotal: number | null
+  DiscountInPercent: number | null
 
   Comment: string
 
-  HighPressureTerraceCleaningFixPrice: number
-  HighPressureGarageCleaningFixPrice: number
-  DovelholeAmount: number
-  DovelholePrice: number
-  CleaningFireplacePrice: number
-  CleaningCarpetPrice: number
-  CleaningWindowsPrice: number
-  CleaningWindowsWithShuttersPrice: number
+  HighPressureTerraceCleaningFixPrice: number | null
+  HighPressureGarageCleaningFixPrice: number | null
+  DovelholeAmount: number | null
+  DovelholePrice: number | null
+  CleaningFireplacePrice: number | null
+  CleaningCarpetPrice: number | null
+  CleaningWindowsPrice: number | null
+  CleaningWindowsWithShuttersPrice: number | null
 
   CleaningSpecialComment: string
 
-  CleaningSpecialPrice: number
-  WorkersAmount: number
+  CleaningSpecialPrice: number | null
+  WorkersAmount: number | null
   HandoutGaranty: boolean
+}
+
+
+export const emptyServiceConditions: IServiceConditions = {
+  IsHourlyRate: false,
+  HasCostCeiling: false,
+  PricePerHour: null,
+  MinHoursOfWork: null,
+  MaxHoursOfWork: null,
+  EstimatedHoursOfWorkWhenFixPrice: null,
+  WorkersAmount: null,
+  DriveHours: null,
+
+  Comment: "",
+
+  CostCeiling: null,
+  FixPrice: null,
+  Expenses: null,
+  DiscountInPercent: null,
+}
+
+
+export const emptyMoveServiceConditions: IMoveServiceConditions = {
+  ServiceConditions: emptyServiceConditions,
+  FurnitureLiftPrice: null,
+  PianoPrice: null,
+  MontageServicePrice: null,
+  DeMontageServicePrice: null,
+  LampDemontageAmount: null,
+  LampDemontagePrice: null,
+  BoreAmount: null,
+  BorePrice: null,
+  CarAmounts: [],
+}
+
+
+export const emptyPackServiceConditions: IPackServiceConditions = {
+  ServiceConditions: emptyServiceConditions,
+}
+
+export const emptyDisposalServiceConditions: IDisposalServiceConditions = {
+  ServiceConditions: emptyServiceConditions,
+
+  FurnitureLiftPrice: null,
+  CostPerCubicInMoney: null,
+  CostEntry: null,
+  Volume: null,
+  LampDemontageAmount: null,
+  LampDemontagePrice: null,
+  CarAmounts: [],
+}
+
+export const emptyStorageServiceConditions: IStorageServiceConditions = {
+  ServiceConditions: emptyServiceConditions,
+
+  FurnitureLiftPrice: null,
+  PianoPrice: null,
+  CostPerCubicMonthInMoney: null,
+  Volume: null,
+  MontageServicePrice: null,
+  DeMontageServicePrice: null,
+  LampDemontageAmount: null,
+  LampDemontagePrice: null,
+  BoreAmount: null,
+  BorePrice: null,
+  CarAmounts: [],
+}
+
+
+export const emptyCleaningServiceConditions: ICleaningServiceConditions = {
+  ServiceConditions: emptyServiceConditions,
+
+  FixPrice: null,
+  EstimatedHoursOfWorkWhenFixPrice: null,
+  FixPriceTotal: null,
+  DiscountInPercent: null,
+
+  Comment: "",
+
+  HighPressureTerraceCleaningFixPrice: null,
+  HighPressureGarageCleaningFixPrice: null,
+  DovelholeAmount: null,
+  DovelholePrice: null,
+  CleaningFireplacePrice: null,
+  CleaningCarpetPrice: null,
+  CleaningWindowsPrice: null,
+  CleaningWindowsWithShuttersPrice: null,
+
+  CleaningSpecialComment: "",
+
+  CleaningSpecialPrice: null,
+  WorkersAmount: null,
+  HandoutGaranty: false,
 }
