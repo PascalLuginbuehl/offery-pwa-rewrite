@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -106,12 +106,12 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
           {
             /* default */
           }
-          <Field label="WORKERS_AMOUNT" name={`${prefix}.WorkersAmount`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+          <Field label="WORKERS_AMOUNT" name={`ServiceConditions.WorkersAmount`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
           {values.ServiceConditions.IsHourlyRate || values.ServiceConditions.HasCostCeiling ? (
             <>
-              <Field label="PRICE_PER_HOUR" name={`${prefix}.PricePerHour`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-              <Field label="EXPENSES" name={`${prefix}.Expenses`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="EXPENSES" name={`ServiceConditions.Expenses`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
               <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
@@ -123,41 +123,38 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
               <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="MIN_HOURS_OF_WORK" name={`${prefix}.MinHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-              <Field label="MAX_HOURS_OF_WORK" name={`${prefix}.MaxHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="MIN_HOURS_OF_WORK" name={`ServiceConditions.MinHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="DRIVE_HOURS" name={`${prefix}.DriveHours`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
               <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
               <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`${prefix}.EstimatedHoursOfWorkWhenFixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.DiscountInPercent`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
 
               {/* Calculations */}
+              <MuiTextField label="MIN_COSTS" value={this.getMinCosts()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
+              <MuiTextField label="MAX_COSTS" value={this.getMaxCosts()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
+
             </>
           ) : null}
 
           {
             values.ServiceConditions.HasCostCeiling ? (
-              <Field label="COST_CEILING" name={`${prefix}.CostCeiling`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
             ) : null
           }
 
           {
             !values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-            <Field label="FIX_PRICE" name={`${prefix}.FixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
           ) : null}
 
           <Field name={`${prefix}.Comment`} label="COMMENT" component={TextField} />
-
-
-
-
-
-
 
           <FieldArray
             name="CarAmounts"
@@ -172,6 +169,24 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
         </Form>
       </Grid>
     )
+  }
+
+  getMinCosts = (): number | null => {
+    const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MinHoursOfWork} } } = this.props
+    if(WorkersAmount && PricePerHour && MinHoursOfWork) {
+
+      return WorkersAmount * PricePerHour * MinHoursOfWork
+    }
+
+    return null
+  }
+  getMaxCosts = () => {
+    const { values: {ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork } } } = this.props
+    if (WorkersAmount && PricePerHour && MaxHoursOfWork) {
+      return WorkersAmount * PricePerHour * MaxHoursOfWork
+    }
+
+    return null
   }
 }
 
