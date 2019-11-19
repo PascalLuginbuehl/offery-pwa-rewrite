@@ -98,43 +98,66 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               variant="fullWidth"
               centered
             >
-              <Tab label={intl.formatMessage({ id: "DEFAULT" })} value={0} />
               <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
+              <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
               <Tab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
             </Tabs>
           </Grid>
-
-          <Field label="PRICE_PER_HOUR" name={`${prefix}.PricePerHour`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="MIN_HOURS_OF_WORK" name={`${prefix}.MinHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="MAX_HOURS_OF_WORK" name={`${prefix}.MaxHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="EstimatedHoursOfWorkWhenFixPrice" name={`${prefix}.EstimatedHoursOfWorkWhenFixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-
+          {
+            /* default */
+          }
           <Field label="WORKERS_AMOUNT" name={`${prefix}.WorkersAmount`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="DRIVE_HOURS" name={`${prefix}.DriveHours`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+          {values.ServiceConditions.IsHourlyRate || values.ServiceConditions.HasCostCeiling ? (
+            <>
+              <Field label="PRICE_PER_HOUR" name={`${prefix}.PricePerHour`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="EXPENSES" name={`${prefix}.Expenses`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="PIANO_PRICE" name="PianoPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="BORE_PRICE" name="BorePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="MIN_HOURS_OF_WORK" name={`${prefix}.MinHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="MAX_HOURS_OF_WORK" name={`${prefix}.MaxHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="DRIVE_HOURS" name={`${prefix}.DriveHours`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`${prefix}.EstimatedHoursOfWorkWhenFixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+              <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.DiscountInPercent`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+
+
+              {/* Calculations */}
+            </>
+          ) : null}
+
+          {
+            values.ServiceConditions.HasCostCeiling ? (
+              <Field label="COST_CEILING" name={`${prefix}.CostCeiling`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+            ) : null
+          }
+
+          {
+            !values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
+            <Field label="FIX_PRICE" name={`${prefix}.FixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+          ) : null}
 
           <Field name={`${prefix}.Comment`} label="COMMENT" component={TextField} />
 
-          <Field label="COST_CEILING" name={`${prefix}.CostCeiling`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="FIX_PRICE" name={`${prefix}.FixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="EXPENSES" name={`${prefix}.Expenses`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-          <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.DiscountInPercent`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
 
-          <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-          <Field label="PIANO_PRICE" name="PianoPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-          <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-          <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-
-          <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-
-          <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-
-          <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-
-          <Field label="BORE_PRICE" name="BorePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
           <FieldArray
             name="CarAmounts"
