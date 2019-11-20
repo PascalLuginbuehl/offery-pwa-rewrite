@@ -24,6 +24,7 @@ import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import { IMoveServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import FormikPrice from '../../components/FormikFields/FormikPrice';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -110,14 +111,20 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
           {values.ServiceConditions.IsHourlyRate || values.ServiceConditions.HasCostCeiling ? (
             <>
-              <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-              <Field label="EXPENSES" name={`ServiceConditions.Expenses`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} type="number" component={TextField} InputProps={{
+                step: 1, min: 0, startAdornment: (
+                  <InputAdornment position="start">
+                    C
+                  </InputAdornment>
+                ),}} />
 
-              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
 
-              <Field label="PIANO_PRICE" name="PianoPrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
 
-              <Field label="BORE_PRICE" name="BorePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
+
+              <Field label="BORE_PRICE" name="BorePrice" component={FormikPrice} />
               <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
               <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
@@ -128,8 +135,8 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
               <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice}  />
+              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
 
               <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
 
@@ -137,8 +144,8 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
 
               {/* Calculations */}
-              <MuiTextField label="MIN_COSTS" value={this.getMinCosts()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
-              <MuiTextField label="MAX_COSTS" value={this.getMaxCosts()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
+              <MuiTextField label="MIN_PRICE" value={this.getMinPrice()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
+              <MuiTextField label="MAX_PRICE" value={this.getMaxPrice()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
 
             </>
           ) : null}
@@ -171,7 +178,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
     )
   }
 
-  getMinCosts = (): number | null => {
+  getMinPrice = (): number | null => {
     const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MinHoursOfWork} } } = this.props
     if(WorkersAmount && PricePerHour && MinHoursOfWork) {
 
@@ -180,7 +187,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
     return null
   }
-  getMaxCosts = () => {
+  getMaxPrice = () => {
     const { values: {ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork } } } = this.props
     if (WorkersAmount && PricePerHour && MaxHoursOfWork) {
       return WorkersAmount * PricePerHour * MaxHoursOfWork

@@ -165,3 +165,25 @@ CLEANING_DATE,Cleaning date,Reinigungstermin
 HANDOVER_DATE,Handover Date,Abgabetermin
 CONDITIONS,Conditions,Konditionen,
 MOVE_CONDITIONS,Move conditions,Umzugs-Konditionen
+WORKERS_AMOUNT,Amount workers,Anzahl Zügelmänner
+IS_HOURLY_RATE,Hourly rate,Stundensatz
+FIX_PRICE,Fixed Price,Pauschalpreis
+HAS_COST_CEILING,Cost Ceiling,Kostendach
+PRICE_PER_HOUR,Price per hour,Stundensatz
+EXPENSES,Expenses,Spesen
+FURNITURE_LIFT_PRICE,Furniture Lift Price,Preis Möbellift
+PIANO_PRICE,Piano price,Preis Klavier
+BORE_PRICE,Bore price,Preis Bohrung
+BORE_AMOUNT,Bore amount,Anzahl bohrungen
+LAMP_DEMONTAGE_PRICE,Lamp demontage price,Preis Lampen abmontieren
+LAMP_DEMONTAGE_AMOUNT,Lamp amount,Anzahl Lampen
+MIN_HOURS_OF_WORK,Min. hours of work,Min Arbeitsstunden
+MAX_HOURS_OF_WORK,Max. hours of work,Max Arbeitsstunden
+DRIVE_HOURS,Hours for travel,Stunden für Anfahrt und Rückfahrt
+MONTAGE_SERVICE_PRICE,Montage Service price,Montage Serivce Price
+DE_MONTAGE_SERVICE_PRICE,Demontage Service price,Preis Demontage
+ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE,Cost ceiling hours,Stunden für Pauschalpreis
+DISCOUNT_IN_PERCENT,Discount,Rabatt
+MIN_PRICE,Min. price,Min Kosten
+MAX_PRICE,Max. price,Max Kosten
+COST_CEILING,Price Cost Ceiling,Preis Kostendach
