@@ -11,7 +11,7 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
-import TextField from '../../components/FormikFields/TextField';
+import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
@@ -24,7 +24,9 @@ import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import { IMoveServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import FormikPrice from '../../components/FormikFields/FormikPrice';
+import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
+import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
+import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -107,16 +109,11 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
           {
             /* default */
           }
-          <Field label="WORKERS_AMOUNT" name={`ServiceConditions.WorkersAmount`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+          <Field label="WORKERS_AMOUNT" name={`ServiceConditions.WorkersAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
 
           {values.ServiceConditions.IsHourlyRate || values.ServiceConditions.HasCostCeiling ? (
             <>
-              <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} type="number" component={TextField} InputProps={{
-                step: 1, min: 0, startAdornment: (
-                  <InputAdornment position="start">
-                    C
-                  </InputAdornment>
-                ),}} />
+              <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} component={FormikNumberEndAdornmentText} adornmentText="CHF/h" />
 
               <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
 
@@ -125,22 +122,22 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
 
               <Field label="BORE_PRICE" name="BorePrice" component={FormikPrice} />
-              <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-              <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" component={FormikPrice} />
+              <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="MIN_HOURS_OF_WORK" name={`ServiceConditions.MinHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
-              <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="MIN_HOURS_OF_WORK" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" />
+              <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" />
 
-              <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
 
               <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice}  />
               <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
 
-              <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
 
-              <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} />
 
 
               {/* Calculations */}
@@ -152,16 +149,16 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
           {
             values.ServiceConditions.HasCostCeiling ? (
-              <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} />
             ) : null
           }
 
           {
             !values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-              <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} />
           ) : null}
 
-          <Field name={`${prefix}.Comment`} label="COMMENT" component={TextField} />
+          <Field name={`${prefix}.Comment`} label="COMMENT" component={FormikTextField} />
 
           <FieldArray
             name="CarAmounts"

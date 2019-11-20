@@ -11,7 +11,7 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import TextField from '../../components/FormikFields/TextField';
+import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
@@ -74,7 +74,7 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={DatePicker} />
 
 
-          <Field name="cleaningService.Comment" label="COMMENT" component={TextField} />
+          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} />
 
           {/* Only show moveout when there is no MoveService */}
           {

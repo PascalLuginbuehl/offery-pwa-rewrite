@@ -3,7 +3,7 @@ import { Grid, InputAdornment } from "@material-ui/core"
 import IntlTypography from "../../Intl/IntlTypography"
 import { Field } from "formik"
 import Select from "../Select"
-import TextField from "../TextField"
+import FormikTextField from "../FormikTextField"
 import { IResource } from "../../../interfaces/IResource"
 import Switch from "../Switch"
 
@@ -16,9 +16,9 @@ export default ({ prefix, resource }: {prefix: string, resource: IResource}) => 
 
       <Field label="BUILDING_TYPE" name={`${prefix}.BuildingTypeId`} component={Select} options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))} />
 
-      <Field label="ROOMS" name={`${prefix}.RoomAmount`} type="number" component={TextField} inputProps={{ step: 0.5, min: 0.5 }} />
+      <Field label="ROOMS" name={`${prefix}.RoomAmount`} type="number" component={FormikTextField} inputProps={{ step: 0.5, min: 0.5 }} />
 
-      <Field label="TOTAL_AREA" name={`${prefix}.TotalArea`} type="number" component={TextField} InputProps={{
+      <Field label="TOTAL_AREA" name={`${prefix}.TotalArea`} type="number" component={FormikTextField} InputProps={{
         startAdornment: (
           <InputAdornment position="start">
             m&sup2;
@@ -30,9 +30,9 @@ export default ({ prefix, resource }: {prefix: string, resource: IResource}) => 
 
       <Field label="ELEVATOR" name={`${prefix}.ElevatorId`} component={Select} options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))} />
 
-      <Field label="AMOUNT_STAIRS_TO_ENTRY" name={`${prefix}.StairsToEntryAmount`} type="number" component={TextField} inputProps={{ step: 1, min: 0 }} />
+      <Field label="AMOUNT_STAIRS_TO_ENTRY" name={`${prefix}.StairsToEntryAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
 
-      <Field label="METER_TO_PARKING" name={`${prefix}.MetersToParking`} type="number" component={TextField} inputProps={{ step: 1, min: 1 }} />
+      <Field label="METER_TO_PARKING" name={`${prefix}.MetersToParking`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 1 }} />
 
       <Field label="BUILDING_AGE" name={`${prefix}.BuildingAgeId`} component={Select} options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))} />
 

@@ -11,7 +11,7 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
 // import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import TextField from '../../components/FormikFields/TextField';
+import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';

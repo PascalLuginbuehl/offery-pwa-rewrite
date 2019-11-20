@@ -5,50 +5,49 @@ import MuiTextField, {
 import { FieldProps, getIn } from 'formik';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
+import { InputAdornment } from '@material-ui/core';
 
-export type TextFieldProps = FieldProps &
-  Omit<MuiTextFieldProps, 'error' | 'name' | 'onChange' | 'value'>;
+export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omit<MuiTextFieldProps, 'error' | 'name' | 'onChange' | 'value'> {
+  label: string
+}
 
-export const fieldToTextField = ({
-  field,
-  form,
-  variant = 'standard',
-  disabled,
-  label,
-  ...props
-}: TextFieldProps, intl: InjectedIntl): MuiTextFieldProps => {
-  const { name } = field;
-  const { touched, errors, isSubmitting } = form;
 
-  const fieldError = getIn(errors, name);
-  const showError = getIn(touched, name) && !!fieldError;
+class FormikTextField extends React.Component<FormikTextFieldProps> {
+  render() {
+    const { children, intl, field,
+      form,
+      variant = 'standard',
+      disabled,
+      helperText,
 
-  return {
-    ...props,
-    ...field,
-    variant,
-    error: showError,
-    helperText: showError ? fieldError : props.helperText,
-    // helperText = intl.formatMessage({ id: errorMessage }, messageValues)
+      label,
+      ...props
+    } = this.props
 
-    disabled: disabled != undefined ? disabled : isSubmitting,
 
-    // translations
-    // @ts-ignore
-    label: intl.formatMessage({ id: label}),
-  };
-};
+    const { name } = field;
+    const { touched, errors, isSubmitting } = form;
 
-const TextField: React.ComponentType<TextFieldProps> = injectIntl(({
-  children,
-  intl,
-  ...props
-}: TextFieldProps & InjectedIntlProps) => (
-    <Grid item xs={12} md={6}>
-      <MuiTextField fullWidth {...fieldToTextField(props, intl)}>{children}</MuiTextField>
-    </Grid>
-))
+    const fieldError = getIn(errors, name);
+    const showError = getIn(touched, name) && !!fieldError;
 
-TextField.displayName = 'FormikMaterialUITextField';
+    return (
+      <Grid item xs={12} md={6}>
+        <MuiTextField
+          error={showError}
+          fullWidth {...props}
+          helperText={showError ? fieldError : helperText}
+          disabled={disabled != undefined ? disabled : isSubmitting}
+          label={intl.formatMessage({ id: label })}
+          {...props}
+          {...field}
+        >
+          {children}
+        </MuiTextField>
+      </Grid>
+    )
+  }
+}
 
-export default TextField
+
+export default injectIntl(FormikTextField)
