@@ -4,11 +4,14 @@ import MuiTextField, {
 } from '@material-ui/core/TextField';
 import { FieldProps, getIn } from 'formik';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import Grid from '@material-ui/core/Grid';
+import Grid, { GridSize } from '@material-ui/core/Grid';
 import { InputAdornment } from '@material-ui/core';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omit<MuiTextFieldProps, 'error' | 'name' | 'onChange' | 'value'> {
   label: string
+  disableGrid?: boolean
+  overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
 }
 
 
@@ -21,6 +24,8 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
       helperText,
 
       label,
+      disableGrid = false,
+      overrideGrid = {},
       ...props
     } = this.props
 
@@ -31,21 +36,34 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
     const fieldError = getIn(errors, name);
     const showError = getIn(touched, name) && !!fieldError;
 
-    return (
-      <Grid item xs={12} md={6}>
-        <MuiTextField
-          error={showError}
-          fullWidth {...props}
-          helperText={showError ? fieldError : helperText}
-          disabled={disabled != undefined ? disabled : isSubmitting}
-          label={intl.formatMessage({ id: label })}
-          {...props}
-          {...field}
-        >
-          {children}
-        </MuiTextField>
-      </Grid>
-    )
+    const TextFieldElement = <MuiTextField
+      error={showError}
+      fullWidth {...props}
+      helperText={showError ? fieldError : helperText}
+      disabled={disabled != undefined ? disabled : isSubmitting}
+      label={intl.formatMessage({ id: label })}
+
+      {...props}
+      {...field}
+    >
+      {children}
+    </MuiTextField>
+
+    if (disableGrid) {
+      return TextFieldElement
+    } else {
+      const defaultGrid: FormikTextFieldProps['overrideGrid'] = {xs: 12, md: 6}
+      // SetDefaultValues
+      const newGrid = {...defaultGrid, ...overrideGrid}
+      return (
+        <Grid item xs={newGrid.xs} md={newGrid.md}>
+          {TextFieldElement}
+        </Grid>
+      )
+
+    }
+
+
   }
 }
 

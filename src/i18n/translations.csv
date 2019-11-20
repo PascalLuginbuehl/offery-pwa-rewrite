@@ -174,15 +174,15 @@ EXPENSES,Expenses,Spesen
 FURNITURE_LIFT_PRICE,Furniture Lift Price,Preis Möbellift
 PIANO_PRICE,Piano price,Preis Klavier
 BORE_PRICE,Bore price,Preis Bohrung
-BORE_AMOUNT,Bore amount,Anzahl bohrungen
+BORE_AMOUNT,Bore amount,Anzahl Bohrungen
 LAMP_DEMONTAGE_PRICE,Lamp demontage price,Preis Lampen abmontieren
 LAMP_DEMONTAGE_AMOUNT,Lamp amount,Anzahl Lampen
 MIN_HOURS_OF_WORK,Min. hours of work,Min Arbeitsstunden
 MAX_HOURS_OF_WORK,Max. hours of work,Max Arbeitsstunden
 DRIVE_HOURS,Hours for travel,Stunden für Anfahrt und Rückfahrt
-MONTAGE_SERVICE_PRICE,Montage Service price,Montage Serivce Price
+MONTAGE_SERVICE_PRICE,Montage Service price,Preis Montage Service
 DE_MONTAGE_SERVICE_PRICE,Demontage Service price,Preis Demontage
-ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE,Cost ceiling hours,Stunden für Pauschalpreis
+ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE,Planed working hours,Geplante Arbeitsstunden
 DISCOUNT_IN_PERCENT,Discount,Rabatt
 MIN_PRICE,Min. price,Min Kosten
 MAX_PRICE,Max. price,Max Kosten

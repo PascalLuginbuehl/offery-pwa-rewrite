@@ -33,6 +33,14 @@ const styles = (theme: Theme) =>
 
   })
 
+// Transform Tabs to lowercase
+const SmallerTab = withStyles({
+  root: {
+    "textTransform": "none"
+  },
+})(Tab)
+
+
 interface Values extends IMoveServiceConditions {
 }
 
@@ -100,10 +108,11 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               textColor="primary"
               variant="fullWidth"
               centered
+
             >
-              <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
-              <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
-              <Tab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
+              <SmallerTab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
+              <SmallerTab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
+              <SmallerTab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
             </Tabs>
           </Grid>
           {
@@ -121,28 +130,42 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
               <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
 
+              <Grid item xs={12} />
+
+
+              <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
               <Field label="BORE_PRICE" name="BorePrice" component={FormikPrice} />
-              <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
 
-              <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" component={FormikPrice} />
+              <Grid item xs={12} />
+
+
               <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" component={FormikPrice} />
 
-              <Field label="MIN_HOURS_OF_WORK" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" />
-              <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" />
+              <Grid item xs={12} />
+
+              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice} />
+              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
+
+              <Field label="MIN_HOURS_OF_WORK" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 6 }} />
+              <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 6 }} />
+
 
               <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
 
-              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice}  />
-              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
-
               <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
 
-              <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} />
-
+              <Grid item xs={12} />
 
               {/* Calculations */}
-              <MuiTextField label="MIN_PRICE" value={this.getMinPrice()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
-              <MuiTextField label="MAX_PRICE" value={this.getMaxPrice()} disabled={true} type="number" inputProps={{ step: 1, min: 0 }} />
+              <Grid item xs={5} md={2}>
+                <MuiTextField label={intl.formatMessage({ id: "MIN_PRICE" })} value={this.getMinPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }} />
+              </Grid>
+              <Grid item xs={5} md={2}>
+                <MuiTextField label={intl.formatMessage({ id: "MAX_PRICE" })} value={this.getMaxPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>)}} />
+              </Grid>
+
+              <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
 
             </>
           ) : null}
@@ -158,7 +181,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} />
           ) : null}
 
-          <Field name={`${prefix}.Comment`} label="COMMENT" component={FormikTextField} />
+          <Field name={`${prefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
           <FieldArray
             name="CarAmounts"
@@ -175,19 +198,27 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
     )
   }
 
+  getRestCosts = (): number => {
+    const { values: { ServiceConditions: { Expenses }, PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice } } = this.props
+
+    return (Expenses ? Expenses : 0) + (PianoPrice ? PianoPrice : 0) + (LampDemontagePrice ? LampDemontagePrice : 0) + (FurnitureLiftPrice ? FurnitureLiftPrice : 0) + (BorePrice ? BorePrice : 0)
+  }
+
   getMinPrice = (): number | null => {
     const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MinHoursOfWork} } } = this.props
+
     if(WorkersAmount && PricePerHour && MinHoursOfWork) {
 
-      return WorkersAmount * PricePerHour * MinHoursOfWork
+      return WorkersAmount * PricePerHour * MinHoursOfWork + this.getRestCosts()
     }
 
     return null
   }
   getMaxPrice = () => {
-    const { values: {ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork } } } = this.props
+    const { values: {ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork} } } = this.props
+
     if (WorkersAmount && PricePerHour && MaxHoursOfWork) {
-      return WorkersAmount * PricePerHour * MaxHoursOfWork
+      return WorkersAmount * PricePerHour * MaxHoursOfWork + this.getRestCosts()
     }
 
     return null

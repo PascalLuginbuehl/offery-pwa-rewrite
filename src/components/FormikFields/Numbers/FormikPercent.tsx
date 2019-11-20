@@ -7,18 +7,22 @@ import FormikTextField, { FormikTextFieldProps } from '../FormikTextField';
 type newProps = Omit<FormikTextFieldProps, "type" | "InputProps">
 
 const FormikPercent: React.ComponentType<newProps> = (props) => (
+  //@ts-ignore
   <FormikTextField
     InputProps={{
-      //@ts-ignore
-      step: 1,
-      min: 0,
-      max: 100,
       endAdornment: (
         <InputAdornment position="end">
           %
         </InputAdornment>
       ),
     }}
+
+    inputProps={{
+      step: 1,
+      min: 0,
+      max: 100,
+    }}
+
     type="number"
 
     {...props}
