@@ -92,7 +92,10 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       intl,
       resource,
+      selectedCompany,
     } = this.props
+
+    console.log(selectedCompany.CarTypes)
 
     const prefix = "ServiceConditions"
     return (
@@ -153,7 +156,11 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
               <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
 
-              <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
+
+              {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
+                  <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
+                ) : null
+              }
 
               <Grid item xs={12} />
 
@@ -182,13 +189,6 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
           ) : null}
 
           <Field name={`${prefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-
-          <FieldArray
-            name="CarAmounts"
-            render={(arrayHelper) => (
-              <div></div>
-            )}
-          />
 
           {status && status.msg && <div>{status.msg}</div>}
 
