@@ -1,42 +1,17 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
-// import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
-import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
+
 import * as React from 'react'
-import BigCheckbox from '../../components/Validator/BigCheckbox';
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
-// import TestService from 'services/TestService'
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
+import { Tab, Tabs, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
 import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Switch from '../../components/FormikFields/Switch';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
-import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService, IPutDisposalSerivce, IPutCleaningService } from '../../interfaces/IService';
-import MoveInBuilding from '../Customer/MoveInBuilding';
-import Select from '../../components/FormikFields/Select';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import PageHeader from '../../components/PageHeader';
-import { IMoveServiceConditions, IServiceConditions } from '../../interfaces/IConditions';
+import { IServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikGroups from './Groups';
-
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+import { Field } from 'formik';
 
 
-interface Props<Values extends {ServiceConditions: IServiceConditions}> extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props<Values extends {ServiceConditions: IServiceConditions}> extends InjectedIntlProps {
   setFieldValue: (field: keyof Values | any, value: any) => void
   values: Values
   additionalCost: number
@@ -73,10 +48,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       children,
 
       intl,
-      selectedCompany,
     } = this.props
-
-    console.log(selectedCompany.CarTypes)
 
     return (
       <>
@@ -145,6 +117,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           !values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
             <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} />
           ) : null}
+
+
+        <Field name={`ServiceConditions.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
       </>
     )
   }
@@ -177,9 +152,5 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 }
 
 export default injectIntl(
-  withStyles(styles)(
-    withResource(
-      ServiceConditionsBundle
-    )
-  )
+  ServiceConditionsBundle
 )

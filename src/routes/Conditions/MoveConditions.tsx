@@ -1,33 +1,15 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
-// import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
-import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
 import * as React from 'react'
-import BigCheckbox from '../../components/Validator/BigCheckbox';
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
-// import TestService from 'services/TestService'
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
+import { withResource, WithResourceProps } from '../../providers/withResource';
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
+import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
-import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService, IPutDisposalSerivce, IPutCleaningService } from '../../interfaces/IService';
-import MoveInBuilding from '../Customer/MoveInBuilding';
-import Select from '../../components/FormikFields/Select';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import { IMoveServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
-import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikGroups from './Groups';
 import ServiceConditions from './ServiceConditions';
 
@@ -64,7 +46,6 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
     console.log(selectedCompany.CarTypes)
 
-    const prefix = "ServiceConditions"
     return (
       <Grid item xs={12}>
         <Form>
@@ -97,9 +78,6 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
             </FormikGroups>
 
           </ServiceConditions>
-
-
-          <Field name={`${prefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
           {status && status.msg && <div>{status.msg}</div>}
 
