@@ -72,8 +72,8 @@ export function withValidator<P>(Component: React.ComponentType<P & WithFormCont
     return (
       <FormContext.Consumer>
         {state => state ?
-        // @ts-ignore
-        <Component {...props} registerField={state.registerField} unregisterField={state.unregisterField} isValid={state.isValid} /> : <div>Error Parent not found</div>}
+          // @ts-ignore
+          <Component {...props} registerField={state.registerField} unregisterField={state.unregisterField} isValid={state.isValid} /> : <div>Error Parent not found</div>}
       </FormContext.Consumer>
     )
   }

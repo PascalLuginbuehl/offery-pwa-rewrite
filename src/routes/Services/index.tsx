@@ -19,6 +19,7 @@ import Submit from '../../components/FormikFields/Submit';
 import DatePicker from '../../components/FormikFields/DatePicker';
 import { IPutServices, emptyServices } from '../../interfaces/IService';
 import PageHeader from '../../components/PageHeader';
+import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -51,15 +52,15 @@ class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
         <Form>
           <PageHeader title="SERVICES"/>
 
-          <Field name="HasMoveServiceEnabled" label="MOVE" component={Switch} />
+          <Field name="HasMoveServiceEnabled" label="MOVE" component={FormikButtonCheckbox} />
 
-          <Field name="HasPackServiceEnabled" label="PACK" component={Switch} />
+          <Field name="HasPackServiceEnabled" label="PACK" component={FormikButtonCheckbox} />
 
-          <Field name="HasStorageServiceEnabled" label="STORAGE" component={Switch} />
+          <Field name="HasStorageServiceEnabled" label="STORAGE" component={FormikButtonCheckbox} />
 
-          <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={Switch} />
+          <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={FormikButtonCheckbox} />
 
-          <Field name="HasCleaningServiceEnabled" label="CLEANING" component={Switch} />
+          <Field name="HasCleaningServiceEnabled" label="CLEANING" component={FormikButtonCheckbox} />
 
           {status && status.msg && <div>{status.msg}</div>}
 
