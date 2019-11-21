@@ -38,7 +38,8 @@ import StorageService from './Services/StorageService';
 import DisposalService from './Services/DisposalService';
 import CleaningService from './Services/CleaningService';
 import MoveConditions from './Conditions/MoveConditions';
-import { emptyMoveServiceConditions } from '../interfaces/IConditions';
+import { emptyMoveServiceConditions, emptyPackServiceConditions } from '../interfaces/IConditions';
+import PackConditions from './Conditions/PackConditions';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -245,6 +246,7 @@ class Lead extends Component<Props, State> {
         { name: '/services/disposal/inventory', active: HasDisposalServiceEnabled },
         { name: '/services/cleaning', active: HasCleaningServiceEnabled },
         { name: '/conditions/move', active: HasMoveServiceEnabled },
+        { name: '/conditions/pack', active: HasPackServiceEnabled },
 
       ]
 
@@ -814,6 +816,32 @@ class Lead extends Component<Props, State> {
                 }
               />
 
+              {/* Conditions */}
+              <Route
+                exact
+                path={`${match.url}/conditions/pack`}
+                render={(routeProps) =>
+                  <PackConditions
+                    {...routeProps}
+
+                    moveConditions={Lead.PackServiceConditions ? Lead.PackServiceConditions : emptyPackServiceConditions}
+
+                    onChangeAndSave={(packConditions) => {
+                      const newLead = { ...Lead, PackServiceConditions: packConditions }
+                      this.handleChange(newLead, "Lead");
+
+                      return Promise.all([
+                        this.Save()
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/conditions/pack')}
+                  />
+                }
+              />
+
             </>
             :
               Lead ? (
@@ -888,6 +916,12 @@ class Lead extends Component<Props, State> {
             <Collapse in={services.HasCleaningServiceEnabled}>
               <NavItem to={`${match.url}/conditions/move`} title="MOVE_CONDITIONS" nested />
             </Collapse>
+
+            <Collapse in={services.HasPackServiceEnabled}>
+              <NavItem to={`${match.url}/conditions/pack`} title="PACK_CONDITIONS" nested />
+            </Collapse>
+
+
           </NavFolder>
         </>, portal) : null}
         <SuccessSnackbar message="Error Occured" open={errorOccured} onClose={this.closeError}   />
