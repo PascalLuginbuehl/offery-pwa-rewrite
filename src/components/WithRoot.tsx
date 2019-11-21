@@ -32,9 +32,10 @@ const theme = createMuiTheme({
     },
     MuiTab: {
       root: {
-        minHeight: "auto"
+        minHeight: "auto",
+        textTransform: "none",
       }
-    }
+    },
   },
 })
 

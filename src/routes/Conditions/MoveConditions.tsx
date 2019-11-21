@@ -34,13 +34,6 @@ const styles = (theme: Theme) =>
 
   })
 
-// Transform Tabs to lowercase
-const SmallerTab = withStyles({
-  root: {
-    "textTransform": "none"
-  },
-})(Tab)
-
 
 interface Values extends IMoveServiceConditions {
 }
@@ -114,9 +107,9 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               centered
 
             >
-              <SmallerTab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
-              <SmallerTab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
-              <SmallerTab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
+              <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
+              <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
+              <Tab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
             </Tabs>
           </Grid>
           {

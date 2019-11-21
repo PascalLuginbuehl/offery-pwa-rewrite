@@ -58,6 +58,9 @@ const styles = (theme: Theme) =>
       position: "relative",
       display: "flex",
       justifyContent: "center",
+    },
+    buttonSmallPadding: {
+      padding: 5
     }
   })
 
@@ -233,11 +236,14 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
           <PageHeader title="INVENTORY"/>
 
           <Grid item xs={12}>
-            <Toolbar disableGutters>
+            <Toolbar disableGutters variant="dense">
               {
                 selectedFurnitureCategory ?
                 (
-                  <IconButton onClick={() => this.openCatergory(null)}>
+                  <IconButton
+                    onClick={() => this.openCatergory(null)}
+                    classes={{ root: classes.buttonSmallPadding }}
+                  >
                     <ArrowBackIcon />
                   </IconButton>
                 )
@@ -313,7 +319,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                     <TableRow>
                       <TableCell padding="checkbox"><FormattedMessage id="ITEM" /></TableCell>
                       <TableCell align="right" padding="checkbox"><FormattedMessage id="QUANTITY" /></TableCell>
-                      <TableCell align="center" padding="checkbox"><FormattedMessage id="ACTIONS" /></TableCell>
+                      <TableCell align="right" padding="checkbox"><FormattedMessage id="ACTIONS" /></TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -327,24 +333,26 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                           return (
 
                             <TableRow key={item.originalIndex}>
-                              <TableCell>
+                              <TableCell padding="checkbox">
                                 <FormattedMessage id={furniture.NameTextKey} />
 
                                 {item.FSize ? <Chip size="small" label={intl.formatMessage({ id: item.FSize.NameTextKey })} /> : null}
                                 {item.FMaterial ? <Chip size="small" label={intl.formatMessage({ id: item.FMaterial.NameTextKey })} /> : null}
                               </TableCell>
 
-                              <TableCell align="right">{item.Amount} Stk.</TableCell>
+                              <TableCell align="right" padding="checkbox">{item.Amount} Stk.</TableCell>
 
-                              <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
+                              <TableCell padding="none" align="right" style={{ whiteSpace: "nowrap" }}>
                                 <IconButton
                                   onClick={() => this.removeOneitem(item, item.originalIndex, arrayHelpers)}
+                                  classes={{root: classes.buttonSmallPadding}}
                                 >
                                   <RemoveCircleOutlineIcon />
                                 </IconButton>
 
                                 <IconButton
                                   onClick={() => arrayHelpers.remove(item.originalIndex)}
+                                  classes={{ root: classes.buttonSmallPadding }}
                                 >
                                   <DeleteForeverIcon />
                                 </IconButton>
