@@ -22,6 +22,7 @@ import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
+import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -60,9 +61,9 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="DISPOSAL_SERVICE" />
 
-          <Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={Switch} />
-          <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={Switch} />
-          <Field name="disposalService.DeMontage" label="DEMONTAGE" component={Switch} />
+          <Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
+          <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
+          <Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />
 
           <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={DatePicker} />
 

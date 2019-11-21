@@ -22,6 +22,7 @@ import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
+import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -61,12 +62,12 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="STORAGE_SERVICE" />
 
-          <Field name="storageService.MontageService" label="MONTAGE" component={Switch} />
-          <Field name="storageService.BoreService" label="BORE" component={Switch} />
-          <Field name="storageService.PianoService" label="KLAVIER" component={Switch} />
-          <Field name="storageService.FurnitureLiftService" label="FURNITURE_LIFT" component={Switch} />
-          <Field name="storageService.LampDemontageService" label="LAMP_DEMONTAGE" component={Switch} />
-          <Field name="storageService.DeMontageService" label="DEMONTAGE" component={Switch} />
+          <Field name="storageService.MontageService" label="MONTAGE" component={FormikButtonCheckbox} />
+          <Field name="storageService.BoreService" label="BORE" component={FormikButtonCheckbox} />
+          <Field name="storageService.PianoService" label="KLAVIER" component={FormikButtonCheckbox} />
+          <Field name="storageService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
+          <Field name="storageService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
+          <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
 
           <Field name="storageService.StorageDate" label="DATE_STORAGE_UNSTORE" component={DatePicker} />
 

@@ -22,6 +22,7 @@ import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
+import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -60,15 +61,15 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="CLEANING_SERVICE" />
 
-          <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={Switch} />
-          <Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={Switch} />
-          <Field name="cleaningService.DovelholeService" label="DOVELHOLE" component={Switch} />
-          <Field name="cleaningService.CleaningFireplaceService" label="CLEANING_FIREPLACE" component={Switch} />
-          <Field name="cleaningService.CleaningCarpetService" label="CLEANING_CARPET" component={Switch} />
-          <Field name="cleaningService.CleaningWindowsService" label="CLEANING_WINDOWS" component={Switch} />
-          <Field name="cleaningService.CleaningWindowsWithShuttersService" label="CLEAING_WINDOWS_WITH_SHUTTER" component={Switch} />
-          <Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={Switch} />
-          <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={Switch} />
+          <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.DovelholeService" label="DOVELHOLE" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.CleaningFireplaceService" label="CLEANING_FIREPLACE" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.CleaningCarpetService" label="CLEANING_CARPET" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.CleaningWindowsService" label="CLEANING_WINDOWS" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.CleaningWindowsWithShuttersService" label="CLEAING_WINDOWS_WITH_SHUTTER" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
 
           <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={DatePicker} />
           <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={DatePicker} />

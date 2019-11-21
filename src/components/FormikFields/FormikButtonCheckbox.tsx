@@ -13,6 +13,8 @@ import IntlTypography from '../Intl/IntlTypography';
 import MuiSwitch, {
   SwitchProps as MuiSwitchProps,
 } from '@material-ui/core/Switch';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -73,6 +75,12 @@ class FormikButtonCheckbox extends React.Component<FormikButtonCheckboxProps> {
     const ButtonCheckbox = (
     <ButtonBase className={classes.fullButton} disabled={disabled != undefined ? disabled : isSubmitting} onClick={this.onChange}>
       <Paper elevation={1} className={classes.fullPaper + " " + classes.root + " " + (value ? classes.checked : "")}>
+        {
+            value ?
+            <DoneOutlineIcon />
+            :
+            <HighlightOffIcon />
+        }
         <IntlTypography noWrap>{label}</IntlTypography>
       </Paper>
     </ButtonBase>
@@ -81,7 +89,7 @@ class FormikButtonCheckbox extends React.Component<FormikButtonCheckboxProps> {
     if (disableGrid) {
       return ButtonCheckbox
     } else {
-      const defaultGrid: FormikButtonCheckboxProps['overrideGrid'] = { xs: 4, sm: 3, md: 3, lg: 2 }
+      const defaultGrid: FormikButtonCheckboxProps['overrideGrid'] = { xs: 6, sm: 4, md: 3, lg: 2 }
       // SetDefaultValues
       const newGrid = { ...defaultGrid, ...overrideGrid }
       return (

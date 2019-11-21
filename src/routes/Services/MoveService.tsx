@@ -22,6 +22,7 @@ import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
+import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -61,17 +62,17 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="MOVE_SERVICE"/>
 
-          <Field name="moveService.BoreService" label="BORE_SERVICE" component={Switch} />
+          <Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />
 
-          <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={Switch} />
+          <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />
 
-          <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={Switch} />
+          <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
-          <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={Switch} />
+          <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={FormikButtonCheckbox} />
 
-          <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={Switch} />
+          <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />
 
-          <Field name="moveService.PianoService" label="PIANO_SERVICE" component={Switch} />
+          <Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />
 
           <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
 
