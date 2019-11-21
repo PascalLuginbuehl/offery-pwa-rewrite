@@ -16,7 +16,7 @@ import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/DatePicker';
+import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService, IPutDisposalSerivce, IPutCleaningService } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
@@ -27,6 +27,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
+import FormikDivider from '../../components/FormikFields/Divider';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -162,9 +163,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                 ) : null
               }
 
-              <Grid item xs={12}>
-              <Divider />
-              </Grid>
+              <FormikDivider />
 
               {/* Calculations */}
               <Grid item xs={5} md={2}>

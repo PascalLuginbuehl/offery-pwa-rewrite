@@ -16,13 +16,14 @@ import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/DatePicker';
+import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
+import FormikDivider from '../../components/FormikFields/Divider';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -73,6 +74,8 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />
 
           <Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />
+
+          <FormikDivider />
 
           <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
 

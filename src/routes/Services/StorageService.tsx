@@ -16,13 +16,14 @@ import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/DatePicker';
+import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
+import FormikDivider from '../../components/FormikFields/Divider';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -68,6 +69,8 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="storageService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
           <Field name="storageService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
           <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
+
+          <FormikDivider />
 
           <Field name="storageService.StorageDate" label="DATE_STORAGE_UNSTORE" component={DatePicker} />
 

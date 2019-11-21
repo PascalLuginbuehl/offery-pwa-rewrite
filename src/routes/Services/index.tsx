@@ -16,7 +16,7 @@ import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/DatePicker';
+import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices } from '../../interfaces/IService';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';

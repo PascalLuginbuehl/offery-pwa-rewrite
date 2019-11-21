@@ -16,13 +16,14 @@ import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/DatePicker';
+import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService, IPutDisposalSerivce } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
+import FormikDivider from '../../components/FormikFields/Divider';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -64,6 +65,8 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
           <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
           <Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />
+
+          <FormikDivider />
 
           <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={DatePicker} />
 

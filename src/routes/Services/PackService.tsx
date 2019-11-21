@@ -16,13 +16,14 @@ import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/DatePicker';
+import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService, IPutPackService } from '../../interfaces/IService';
 import MoveInBuilding from '../Customer/MoveInBuilding';
 import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
+import FormikDivider from '../../components/FormikFields/Divider';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -63,6 +64,8 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="PACK_SERVICE" />
 
           <Field name="packService.HasOutService" label="WITH_UNPACK" component={FormikButtonCheckbox} />
+
+          <FormikDivider />
 
           <Field name="packService.PackServiceDate" label="PACK_DATE" component={DatePicker} />
 
