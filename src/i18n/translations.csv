@@ -177,13 +177,16 @@ BORE_PRICE,Bore price,Preis Bohrung
 BORE_AMOUNT,Bore amount,Anzahl Bohrungen
 LAMP_DEMONTAGE_PRICE,Lamp demontage price,Preis Lampen abmontieren
 LAMP_DEMONTAGE_AMOUNT,Lamp amount,Anzahl Lampen
-MIN_HOURS_OF_WORK,Min. hours of work,Min Arbeitsstunden
-MAX_HOURS_OF_WORK,Max. hours of work,Max Arbeitsstunden
+
 DRIVE_HOURS,Hours for travel,Stunden für Anfahrt und Rückfahrt
 MONTAGE_SERVICE_PRICE,Montage Service price,Preis Montage Service
 DE_MONTAGE_SERVICE_PRICE,Demontage Service price,Preis Demontage
 ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE,Planed working hours,Geplante Arbeitsstunden
 DISCOUNT_IN_PERCENT,Discount,Rabatt
-MIN_PRICE,Min. price,Min Kosten
-MAX_PRICE,Max. price,Max Kosten
+MIN,Min.,Min
+MAX,Max.,Max
+PRICE,Price,Kosten
+HOURS_OF_WORK,Hours of work,Arbeitsstunden
 COST_CEILING,Price Cost Ceiling,Preis Kostendach
+PRICES,Prices,Preise
+AMOUNT,Amount,Anzahl

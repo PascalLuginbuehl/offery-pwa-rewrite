@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -123,59 +123,105 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
               <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
 
-              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
+              <Grid item xs={12} md={6}>
+                <Grid container spacing={1}>
+                  <FormikDivider />
+                  <Grid item xs={12}>
+                    <IntlTypography variant="subtitle2">PRICES</IntlTypography>
+                  </Grid>
 
-              <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
+                  <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
 
-              <Grid item xs={12} />
+                  <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
 
+                  <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice} />
 
-              <Field label="BORE_AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
-              <Field label="BORE_PRICE" name="BorePrice" component={FormikPrice} />
+                  <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
 
-              <Grid item xs={12} />
-
-
-              <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
-              <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" component={FormikPrice} />
-
-              <Grid item xs={12} />
-
-              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice} />
-              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
-
-              <Field label="MIN_HOURS_OF_WORK" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 6 }} />
-              <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 6 }} />
-
-
-              <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h" />
-
-
-              {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-                  <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
-                ) : null
-              }
-
-              <FormikDivider />
-
-              {/* Calculations */}
-              <Grid item xs={5} md={2}>
-                <MuiTextField label={intl.formatMessage({ id: "MIN_PRICE" })} value={this.getMinPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }} />
-              </Grid>
-              <Grid item xs={5} md={2}>
-                <MuiTextField label={intl.formatMessage({ id: "MAX_PRICE" })} value={this.getMaxPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>)}} />
+                </Grid>
               </Grid>
 
-              <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
 
+              <Grid item xs={6} md={3}>
+                <Grid container spacing={1}>
+                  <FormikDivider />
+                  <Grid item xs={12}>
+                    <IntlTypography variant="subtitle2">BORE</IntlTypography>
+                  </Grid>
+
+                  <Field label="AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+                  <Field label="PRICE" name="BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                </Grid>
+              </Grid>
+
+
+              <Grid item xs={6} md={3}>
+                <Grid container spacing={1}>
+                  <FormikDivider />
+                  <Grid item xs={12}>
+                    <IntlTypography variant="subtitle2">LAMP_DEMONTAGE</IntlTypography>
+                  </Grid>
+
+                  <Field label="AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+                  <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                </Grid>
+              </Grid>
+
+
+
+
+              <Grid item xs={12} md={6}>
+                <Grid container spacing={1}>
+                  <FormikDivider />
+
+                  <Grid item xs={12}>
+                    <IntlTypography variant="subtitle2">HOURS_OF_WORK</IntlTypography>
+                  </Grid>
+
+                  <Field label="MIN" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
+
+                  <Grid item xs={1}><Typography>-</Typography></Grid>
+
+                  <Field label="MAX" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
+
+                  <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 7, md: undefined }} />
+                </Grid>
+              </Grid>
+
+
+
+
+
+              <Grid item xs={12} md={6}>
+                <Grid container spacing={1}>
+                  <FormikDivider />
+
+                  <Grid item xs={12}>
+                    <IntlTypography variant="subtitle2">PRICE</IntlTypography>
+                  </Grid>
+                  {/* Calculations */}
+                  <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
+                    <MuiTextField label={intl.formatMessage({ id: "MIN" })} value={this.getMinPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }} />
+                  </Grid>
+                  <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
+                    <MuiTextField label={intl.formatMessage({ id: "MAX" })} value={this.getMaxPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>)}} />
+                  </Grid>
+
+                  <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
+
+                  {
+                    values.ServiceConditions.HasCostCeiling ? (
+                      <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
+                    ) : null
+                  }
+                </Grid>
+              </Grid>
             </>
           ) : null}
 
-          {
-            values.ServiceConditions.HasCostCeiling ? (
-              <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} />
-            ) : null
-          }
+          {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
+            <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h" />
+          ) : null}
 
           {
             !values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
