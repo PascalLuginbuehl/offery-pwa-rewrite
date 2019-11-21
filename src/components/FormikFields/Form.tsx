@@ -9,9 +9,9 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       padding: 8,
-      [theme.breakpoints.down('xs')]: {
-        padding: 4,
-      }
+      // [theme.breakpoints.down('xs')]: {
+      //   padding: 4,
+      // }
     }
   })
 

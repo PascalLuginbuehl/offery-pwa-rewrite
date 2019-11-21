@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
@@ -121,7 +121,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
           {
             /* default */
           }
-          <Field label="WORKERS_AMOUNT" name={`ServiceConditions.WorkersAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
+          <Field label="WORKERS_AMOUNT" name={`ServiceConditions.WorkersAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
 
           {values.ServiceConditions.IsHourlyRate || values.ServiceConditions.HasCostCeiling ? (
             <>
@@ -142,7 +142,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               <Grid item xs={12} />
 
 
-              <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
+              <Field label="LAMP_DEMONTAGE_AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
               <Field label="LAMP_DEMONTAGE_PRICE" name="LampDemontagePrice" component={FormikPrice} />
 
               <Grid item xs={12} />
@@ -154,7 +154,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               <Field label="MAX_HOURS_OF_WORK" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 6 }} />
 
 
-              <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h"  />
+              <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h" />
 
 
               {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
@@ -162,7 +162,9 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                 ) : null
               }
 
-              <Grid item xs={12} />
+              <Grid item xs={12}>
+              <Divider />
+              </Grid>
 
               {/* Calculations */}
               <Grid item xs={5} md={2}>
