@@ -23,7 +23,7 @@ import Select from '../../components/FormikFields/Select';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikDivider from '../../components/FormikFields/Divider';
+import FormikDivider from '../../components/FormikFields/FormikDivider';
 
 const styles = (theme: Theme) =>
   createStyles({
