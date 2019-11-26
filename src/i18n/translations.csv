@@ -191,3 +191,5 @@ COST_CEILING,Price Cost Ceiling,Preis Kostendach
 PRICES,Prices,Preise
 AMOUNT,Amount,Anzahl
 PACK_CONDITIONS,Pack conditions,Einpack-Konditionen
+COST_PER_CUBIC_MONTH_IN_MONEY,Price per Cubicmeter per Month,Preis pro Kubikmeter pro Monat
+VOLUME,Estimated Volume,Geschätztes Volumen

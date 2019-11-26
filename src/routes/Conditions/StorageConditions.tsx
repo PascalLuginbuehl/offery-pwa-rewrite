@@ -1,0 +1,123 @@
+import * as React from 'react'
+import * as Yup from 'yup'
+import Form from '../../components/FormikFields/Form';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
+import { withResource, WithResourceProps } from '../../providers/withResource';
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
+import FormikTextField from '../../components/FormikFields/FormikTextField';
+import Submit from '../../components/FormikFields/Submit';
+import PageHeader from '../../components/PageHeader';
+import { IMoveServiceConditions, IPackServiceConditions, IStorageServiceConditions } from '../../interfaces/IConditions';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
+import FormikGroups from './Groups';
+import ServiceConditions from './ServiceConditions';
+import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
+
+const styles = (theme: Theme) =>
+  createStyles({
+
+  })
+
+interface Values extends IStorageServiceConditions {
+}
+
+interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+  nextPage: () => void
+  onChangeAndSave: (storageConditions: IStorageServiceConditions) => void
+  storageConditions: IStorageServiceConditions
+}
+
+class StorageConditions extends React.Component<Props & FormikProps<Values>, {}> {
+  public render() {
+    const {
+      values,
+      errors,
+      touched,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      isSubmitting,
+      status,
+      intl,
+      resource,
+      setFieldValue,
+      selectedCompany,
+    } = this.props
+
+    console.log(selectedCompany.CarTypes)
+
+    return (
+      <Grid item xs={12}>
+        <Form>
+          <PageHeader title="STORAGE_CONDITIONS" />
+
+          <ServiceConditions
+            additionalCost={0}
+            setFieldValue={setFieldValue}
+            values={values}
+          >
+
+            <FormikGroups label="PRICES" xs={12} md={6}>
+              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
+
+              <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
+
+              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice} />
+
+              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
+            </FormikGroups>
+
+
+            <FormikGroups label="BORE" xs={6} md={3}>
+              <Field label="AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+              <Field label="PRICE" name="BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+            </FormikGroups>
+
+            <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
+              <Field label="AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+              <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+            </FormikGroups>
+
+          </ServiceConditions>
+
+
+          <FormikGroups label="STORAGE_THIRD_PARTY" xs={6} md={6}>
+            <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 6, md: undefined }} />
+            <Field label="COST_PER_CUBIC_MONTH_IN_MONEY" name="CostPerCubicMonthInMoney" component={FormikNumberEndAdornmentText} adornmentText="CHF/m" overrideGrid={{ xs: 6, md: undefined }} />
+          </FormikGroups>
+
+          {status && status.msg && <div>{status.msg}</div>}
+
+          <Submit isSubmitting={isSubmitting}></Submit>
+        </Form>
+      </Grid>
+    )
+  }
+}
+
+export default injectIntl(
+  withStyles(styles)(
+    withResource(
+      withFormik<Props, Values>({
+        validationSchema: Yup.object().shape({
+          // email: Yup.string()
+          //   .email()
+          //   .required(),
+        }),
+
+        mapPropsToValues: props => ({ ...props.storageConditions }),
+
+        handleSubmit: async (values, actions) => {
+          console.log(values)
+          // actions.props.
+          await actions.props.onChangeAndSave(values)
+
+          actions.setSubmitting(false)
+          // actions.props.nextPage()
+        }
+
+      })(StorageConditions)
+    )
+  )
+)

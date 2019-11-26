@@ -7,7 +7,7 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
-import { IMoveServiceConditions, IPackServiceConditions } from '../../interfaces/IConditions';
+import { IMoveServiceConditions, IPackServiceConditions, ICleaningServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 import FormikGroups from './Groups';
@@ -18,16 +18,16 @@ const styles = (theme: Theme) =>
 
   })
 
-interface Values extends IPackServiceConditions {
+interface Values extends ICleaningServiceConditions {
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (packConditions: IPackServiceConditions) => void
-  packConditions: IPackServiceConditions
+  onChangeAndSave: (cleaningConditions: ICleaningServiceConditions) => void
+  cleaningConditions: ICleaningServiceConditions
 }
 
-class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
+class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
       values,
@@ -49,7 +49,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="PACK_CONDITIONS" />
+          <PageHeader title="CLEANING_CONDITIONS" />
 
           <ServiceConditions
             additionalCost={0}
@@ -78,7 +78,7 @@ export default injectIntl(
           //   .required(),
         }),
 
-        mapPropsToValues: props => ({...props.packConditions }),
+        mapPropsToValues: props => ({ ...props.cleaningConditions }),
 
         handleSubmit: async (values, actions) => {
           console.log(values)
@@ -89,7 +89,7 @@ export default injectIntl(
           // actions.props.nextPage()
         }
 
-      })(PackConditions)
+      })(CleaningConditions)
     )
   )
 )

@@ -38,8 +38,11 @@ import StorageService from './Services/StorageService';
 import DisposalService from './Services/DisposalService';
 import CleaningService from './Services/CleaningService';
 import MoveConditions from './Conditions/MoveConditions';
-import { emptyMoveServiceConditions, emptyPackServiceConditions } from '../interfaces/IConditions';
+import { emptyMoveServiceConditions, emptyPackServiceConditions, emptyCleaningServiceConditions, emptyStorageServiceConditions, emptyDisposalServiceConditions } from '../interfaces/IConditions';
 import PackConditions from './Conditions/PackConditions';
+import StorageConditions from './Conditions/StorageConditions';
+import DisposalConditions from './Conditions/DisposalConditions';
+import CleaningConditions from './Conditions/CleaningConditions';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -247,6 +250,9 @@ class Lead extends Component<Props, State> {
         { name: '/services/cleaning', active: HasCleaningServiceEnabled },
         { name: '/conditions/move', active: HasMoveServiceEnabled },
         { name: '/conditions/pack', active: HasPackServiceEnabled },
+        { name: '/conditions/storage', active: HasStorageServiceEnabled },
+        { name: '/conditions/disposal', active: HasDisposalServiceEnabled },
+        { name: '/conditions/cleaning', active: HasCleaningServiceEnabled },
 
       ]
 
@@ -824,7 +830,7 @@ class Lead extends Component<Props, State> {
                   <PackConditions
                     {...routeProps}
 
-                    moveConditions={Lead.PackServiceConditions ? Lead.PackServiceConditions : emptyPackServiceConditions}
+                    packConditions={Lead.PackServiceConditions ? Lead.PackServiceConditions : emptyPackServiceConditions}
 
                     onChangeAndSave={(packConditions) => {
                       const newLead = { ...Lead, PackServiceConditions: packConditions }
@@ -838,6 +844,84 @@ class Lead extends Component<Props, State> {
                     // container={this.state}
                     // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/conditions/pack')}
+                  />
+                }
+              />
+
+              {/* Conditions */}
+              <Route
+                exact
+                path={`${match.url}/conditions/storage`}
+                render={(routeProps) =>
+                  <StorageConditions
+                    {...routeProps}
+
+                    storageConditions={Lead.StorageServiceConditions ? Lead.StorageServiceConditions : emptyStorageServiceConditions}
+
+                    onChangeAndSave={(storageConditions) => {
+                      const newLead = { ...Lead, StorageServiceConditions: storageConditions }
+                      this.handleChange(newLead, "Lead");
+
+                      return Promise.all([
+                        this.Save()
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/conditions/storage')}
+                  />
+                }
+              />
+
+              {/* Conditions */}
+              <Route
+                exact
+                path={`${match.url}/conditions/disposal`}
+                render={(routeProps) =>
+                  <DisposalConditions
+                    {...routeProps}
+
+                    disposalConditions={Lead.DisposalServiceConditions ? Lead.DisposalServiceConditions : emptyDisposalServiceConditions}
+
+                    onChangeAndSave={(disposalConditions) => {
+                      const newLead = { ...Lead, DisposalServiceConditions: disposalConditions }
+                      this.handleChange(newLead, "Lead");
+
+                      return Promise.all([
+                        this.Save()
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/conditions/disposal')}
+                  />
+                }
+              />
+
+              {/* Conditions */}
+              <Route
+                exact
+                path={`${match.url}/conditions/cleaning`}
+                render={(routeProps) =>
+                  <CleaningConditions
+                    {...routeProps}
+
+                    cleaningConditions={Lead.CleaningServiceConditions ? Lead.CleaningServiceConditions : emptyCleaningServiceConditions}
+
+                    onChangeAndSave={(cleaningConditions) => {
+                      const newLead = { ...Lead, CleaningServiceConditions: cleaningConditions }
+                      this.handleChange(newLead, "Lead");
+
+                      return Promise.all([
+                        this.Save()
+                      ])
+                    }}
+                    // data={}
+                    // container={this.state}
+                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
+                    nextPage={this.redirectToNextPage('/conditions/cleaning')}
                   />
                 }
               />
@@ -919,6 +1003,18 @@ class Lead extends Component<Props, State> {
 
             <Collapse in={services.HasPackServiceEnabled}>
               <NavItem to={`${match.url}/conditions/pack`} title="PACK_CONDITIONS" nested />
+            </Collapse>
+
+            <Collapse in={services.HasStorageServiceEnabled}>
+              <NavItem to={`${match.url}/conditions/storage`} title="STORAGE_CONDITIONS" nested />
+            </Collapse>
+
+            <Collapse in={services.HasDisposalServiceEnabled}>
+              <NavItem to={`${match.url}/conditions/disposal`} title="DISPOSAL_CONDITIONS" nested />
+            </Collapse>
+
+            <Collapse in={services.HasCleaningServiceEnabled}>
+              <NavItem to={`${match.url}/conditions/cleaning`} title="CLEANING_CONDITIONS" nested />
             </Collapse>
 
 
