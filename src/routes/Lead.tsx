@@ -432,19 +432,6 @@ class Lead extends Component<Props, State> {
                 }
               />
 
-              <Route
-                path={`${match.url}/building/move-out2`}
-                render={(routeProps) =>
-                  <MoveOutBuilding
-                    {...routeProps}
-                    data={moveOut ? moveOut : emptyMoveOutBuilding}
-                    onChange={(data) => this.handleChange(data, "moveOut")}
-                    save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/building/move-out')}
-                  />
-                }
-              />
-
               {/* Move-In */}
               <Route
                 path={`${match.url}/building/move-in`}

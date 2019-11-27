@@ -6,25 +6,31 @@ import Select from "../Select"
 import FormikTextField from "../FormikTextField"
 import { IResource } from "../../../interfaces/IResource"
 import Switch from "../Switch"
+import Address from './Address';
 
 export default ({ prefix, resource }: {prefix: string, resource: IResource}) => {
   return (
     <>
-      {/* <Grid item xs={12}>
-        <IntlTypography variant="h5">MOVE_OUT_BUILDING</IntlTypography>
-      </Grid> */}
+      <Address prefix={prefix + ".Address"} />
 
-      <Field label="BUILDING_TYPE" name={`${prefix}.BuildingTypeId`} component={Select} options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))} />
+      <Field
+        label="BUILDING_TYPE"
+        name={`${prefix}.BuildingTypeId`}
+        component={Select}
+        options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
+      />
 
       <Field label="ROOMS" name={`${prefix}.RoomAmount`} type="number" component={FormikTextField} inputProps={{ step: 0.5, min: 0.5 }} />
 
-      <Field label="TOTAL_AREA" name={`${prefix}.TotalArea`} type="number" component={FormikTextField} InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            m&sup2;
-              </InputAdornment>
-        ),
-      }} />
+      <Field
+        label="TOTAL_AREA"
+        name={`${prefix}.TotalArea`}
+        type="number"
+        component={FormikTextField}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">m&sup2;</InputAdornment>,
+        }}
+      />
 
       <Field label="ETAGE" name={`${prefix}.EtageId`} component={Select} options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))} />
 
@@ -36,7 +42,12 @@ export default ({ prefix, resource }: {prefix: string, resource: IResource}) => 
 
       <Field label="METER_TO_PARKING" name={`${prefix}.MetersToParking`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 1 }} />
 
-      <Field label="BUILDING_AGE" name={`${prefix}.BuildingAgeId`} component={Select} options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))} />
+      <Field
+        label="BUILDING_AGE"
+        name={`${prefix}.BuildingAgeId`}
+        component={Select}
+        options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
+      />
 
       <Field label="BASEMENT" name={`${prefix}.HasBasement`} component={Switch} />
 
