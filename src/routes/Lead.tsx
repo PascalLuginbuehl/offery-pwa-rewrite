@@ -4,7 +4,7 @@ import { Grid, ListSubheader, Collapse, Icon } from '@material-ui/core'
 import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
 import BuildingService from '../services/BuildingService';
-import { RouteComponentProps, Route } from 'react-router';
+import { RouteComponentProps, Route, Redirect } from 'react-router';
 import LeadService from '../services/LeadService';
 import Customer from './Customer';
 import Loading from '../components/Loading';
@@ -43,6 +43,8 @@ import PackConditions from './Conditions/PackConditions';
 import StorageConditions from './Conditions/StorageConditions';
 import DisposalConditions from './Conditions/DisposalConditions';
 import CleaningConditions from './Conditions/CleaningConditions';
+import Generate from './Offer/GenerateOffer';
+import PreviewOffer from './Offer/PreviewOffer';
 
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
@@ -253,6 +255,8 @@ class Lead extends Component<Props, State> {
         { name: '/conditions/storage', active: HasStorageServiceEnabled },
         { name: '/conditions/disposal', active: HasDisposalServiceEnabled },
         { name: '/conditions/cleaning', active: HasCleaningServiceEnabled },
+        { name: '/offer/generate', active: true },
+        { name: '/offer/preview', active: true },
 
       ]
 
@@ -794,7 +798,10 @@ class Lead extends Component<Props, State> {
                 }
               />
 
-
+              <Route exact path={`${match.url}/conditions`}>
+                  {/* Previous page is one before so next gets calculated */}
+                  <Redirect to={match.url + this.nextPageFunction('/services/cleaning')} />
+              </Route>
 
               {/* Conditions */}
               <Route
@@ -926,6 +933,32 @@ class Lead extends Component<Props, State> {
                 }
               />
 
+              {/* Offer */}
+              <Route exact path={`${match.url}/offer`}>
+                  <Redirect to={`${match.url}/offer/generate`} />
+              </Route>
+
+              <Route
+                exact
+                path={`${match.url}/offer/generate`}
+                render={(routeProps) =>
+                  <Generate
+                    {...routeProps}
+                    nextPage={this.redirectToNextPage('/offer/generate')}
+                  />
+                }
+              />
+
+              <Route
+                exact
+                path={`${match.url}/offer/preview`}
+                render={(routeProps) =>
+                  <PreviewOffer
+                    {...routeProps}
+                    nextPage={this.redirectToNextPage('/offer/preview')}
+                  />
+                }
+              />
             </>
             :
               Lead ? (
@@ -1016,8 +1049,17 @@ class Lead extends Component<Props, State> {
             <Collapse in={services.HasCleaningServiceEnabled}>
               <NavItem to={`${match.url}/conditions/cleaning`} title="CLEANING_CONDITIONS" nested />
             </Collapse>
+          </NavFolder>
 
 
+          <NavFolder to={`${match.url}/offer`} title="OFFER">
+            <Collapse in={services.HasCleaningServiceEnabled}>
+              <NavItem to={`${match.url}/offer/generate`} title="GENERATE" nested />
+            </Collapse>
+
+            <Collapse in={services.HasPackServiceEnabled}>
+              <NavItem to={`${match.url}/offer/preview`} title="PREVIEW" nested />
+            </Collapse>
           </NavFolder>
         </>, portal) : null}
         <SuccessSnackbar message="Error Occured" open={errorOccured} onClose={this.closeError}   />
