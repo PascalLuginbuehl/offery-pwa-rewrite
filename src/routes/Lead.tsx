@@ -45,7 +45,7 @@ import DisposalConditions from './Conditions/DisposalConditions';
 import CleaningConditions from './Conditions/CleaningConditions';
 import Generate from './Offer/GenerateOffer';
 import PreviewOffer from './Offer/PreviewOffer';
-
+import NewMoveOutBuilding from './Customer/NewBuildings/MoveOutBuilding'
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
@@ -412,9 +412,28 @@ class Lead extends Component<Props, State> {
                 }
               />
 
-              {/* Move-Out */}
+              {/* Conditions */}
               <Route
+                exact
                 path={`${match.url}/building/move-out`}
+                render={(routeProps) =>
+                  <NewMoveOutBuilding
+                    {...routeProps}
+
+                    moveOutBuilding={moveOut ? moveOut : emptyMoveOutBuilding}
+                    onChangeAndSave={(moveOutBuilding) => {
+                      this.handleChange(moveOutBuilding, "moveOut")
+                      return Promise.all([
+                        this.Save()
+                      ])
+                    }}
+                    nextPage={this.redirectToNextPage('/building/move-out')}
+                  />
+                }
+              />
+
+              <Route
+                path={`${match.url}/building/move-out2`}
                 render={(routeProps) =>
                   <MoveOutBuilding
                     {...routeProps}
@@ -532,9 +551,6 @@ class Lead extends Component<Props, State> {
                         LeadAPI.SaveMoveService(Lead.LeadId, serviceData),
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/move')}
                   />
                 }
@@ -555,9 +571,6 @@ class Lead extends Component<Props, State> {
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Move}
-                  // data={}
-                  // container={this.state}
-                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/move/material-shop')}
                   />
                 }
@@ -578,9 +591,6 @@ class Lead extends Component<Props, State> {
                       return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
                     initalInventoryTypeKey={InventoryKeysEnum.Move}
-                  // data={}
-                  // container={this.state}
-                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/move/inventory')}
                   />
                 }
@@ -607,9 +617,6 @@ class Lead extends Component<Props, State> {
                         LeadAPI.SavePackService(Lead.LeadId, serviceData),
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/pack')}
                   />
                 }
@@ -631,9 +638,6 @@ class Lead extends Component<Props, State> {
                     }}
                     shopTypeKey={ShopTypeEnum.Pack}
                     nextPage={this.redirectToNextPage('/services/pack/material-shop')}
-                  // data={}
-                  // container={this.state}
-                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                   />
                 }
               />
@@ -662,9 +666,6 @@ class Lead extends Component<Props, State> {
                         LeadAPI.SaveStorageService(Lead.LeadId, serviceData),
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/storage')}
                   />
                 }
@@ -687,9 +688,6 @@ class Lead extends Component<Props, State> {
                     }}
                     shopTypeKey={ShopTypeEnum.Storage}
                     nextPage={this.redirectToNextPage('/services/storage/material-shop')}
-                  // data={}
-                  // container={this.state}
-                  // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                   />
                 }
               />
@@ -709,9 +707,6 @@ class Lead extends Component<Props, State> {
                       return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
                     initalInventoryTypeKey={InventoryKeysEnum.Storage}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/storage/inventory')}
                   />
                 }
@@ -738,9 +733,6 @@ class Lead extends Component<Props, State> {
                         LeadAPI.SaveDisposalService(Lead.LeadId, serviceData),
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/disposal')}
                   />
                 }
@@ -761,9 +753,6 @@ class Lead extends Component<Props, State> {
                       return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
                     initalInventoryTypeKey={InventoryKeysEnum.Disposal}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/disposal/inventory')}
                   />
                 }
@@ -790,9 +779,6 @@ class Lead extends Component<Props, State> {
                         LeadAPI.SaveCleaningService(Lead.LeadId, serviceData),
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/services/cleaning')}
                   />
                 }
@@ -821,9 +807,6 @@ class Lead extends Component<Props, State> {
                         this.Save()
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/conditions/move')}
                   />
                 }
@@ -847,9 +830,6 @@ class Lead extends Component<Props, State> {
                         this.Save()
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/conditions/pack')}
                   />
                 }
@@ -873,9 +853,6 @@ class Lead extends Component<Props, State> {
                         this.Save()
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/conditions/storage')}
                   />
                 }
@@ -899,9 +876,6 @@ class Lead extends Component<Props, State> {
                         this.Save()
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/conditions/disposal')}
                   />
                 }
@@ -925,9 +899,6 @@ class Lead extends Component<Props, State> {
                         this.Save()
                       ])
                     }}
-                    // data={}
-                    // container={this.state}
-                    // nextPage={match.url + this.nextPageFunction('/service/move-service')}
                     nextPage={this.redirectToNextPage('/conditions/cleaning')}
                   />
                 }

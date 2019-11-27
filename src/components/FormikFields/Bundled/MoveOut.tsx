@@ -10,9 +10,9 @@ import Switch from "../Switch"
 export default ({ prefix, resource }: {prefix: string, resource: IResource}) => {
   return (
     <>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <IntlTypography variant="h5">MOVE_OUT_BUILDING</IntlTypography>
-      </Grid>
+      </Grid> */}
 
       <Field label="BUILDING_TYPE" name={`${prefix}.BuildingTypeId`} component={Select} options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))} />
 
