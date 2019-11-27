@@ -75,27 +75,27 @@ export interface IStorageServiceConditions {
 
 
 export interface ICleaningServiceConditions {
-  ServiceConditions: IServiceConditions
 
   FixPrice: number | null
   EstimatedHoursOfWorkWhenFixPrice: number | null
-  FixPriceTotal: number | null
   DiscountInPercent: number | null
 
   Comment: string
 
   HighPressureTerraceCleaningFixPrice: number | null
   HighPressureGarageCleaningFixPrice: number | null
+
   DovelholeAmount: number | null
   DovelholePrice: number | null
   CleaningFireplacePrice: number | null
   CleaningCarpetPrice: number | null
+
   CleaningWindowsPrice: number | null
   CleaningWindowsWithShuttersPrice: number | null
 
   CleaningSpecialComment: string
-
   CleaningSpecialPrice: number | null
+
   WorkersAmount: number | null
   HandoutGaranty: boolean
 }
@@ -168,11 +168,8 @@ export const emptyStorageServiceConditions: IStorageServiceConditions = {
 
 
 export const emptyCleaningServiceConditions: ICleaningServiceConditions = {
-  ServiceConditions: emptyServiceConditions,
-
   FixPrice: null,
   EstimatedHoursOfWorkWhenFixPrice: null,
-  FixPriceTotal: null,
   DiscountInPercent: null,
 
   Comment: "",

@@ -3,8 +3,9 @@ import { injectIntl } from 'react-intl';
 import { InputAdornment, Theme } from '@material-ui/core';
 import FormikTextField, { FormikTextFieldProps } from '../FormikTextField';
 import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
+import { InputProps } from '@material-ui/core/Input';
 
-type newProps = Omit<FormikTextFieldProps, "type" | "InputProps"> & { adornmentText: string } &  WithStyles<typeof styles>
+type newProps = Omit<FormikTextFieldProps, "type" | "InputProps"> & { adornmentText: string, position?: "start" | "end" } &  WithStyles<typeof styles>
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -13,15 +14,33 @@ const styles = (theme: Theme) =>
     },
   })
 
-const FormikNumberEndAdornmentText: React.ComponentType<newProps> = ({ adornmentText, overrideGrid = { xs: 6, md: 3 }, classes, ...props}) => (
-  //@ts-ignore
-  <FormikTextField
-    InputProps={{
+function createAdornment(position: "start" | "end", adornmentText: string): Partial<InputProps> {
+  if (position === "start") {
+    return {
+      startAdornment: (
+          <InputAdornment position="start">
+            {adornmentText}
+          </InputAdornment>
+        )
+      }
+  } else {
+    // if (position === "end")
+    return {
       endAdornment: (
         <InputAdornment position="end">
           {adornmentText}
         </InputAdornment>
-      ),
+      )
+    }
+  }
+
+}
+
+const FormikNumberAdornmentText: React.ComponentType<newProps> = ({ adornmentText, overrideGrid = { xs: 6, md: 3 }, classes, position="end", ...props}) => (
+  //@ts-ignore
+  <FormikTextField
+    InputProps={{
+      ...createAdornment(position, adornmentText),
       classes: {
         input: classes.input
       }
@@ -39,4 +58,4 @@ const FormikNumberEndAdornmentText: React.ComponentType<newProps> = ({ adornment
 )
 
 
-export default withStyles(styles)(injectIntl(FormikNumberEndAdornmentText))
+export default withStyles(styles)(injectIntl(FormikNumberAdornmentText))

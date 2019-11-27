@@ -53,11 +53,10 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
           <PageHeader title="STORAGE_CONDITIONS" />
 
           <ServiceConditions
-            additionalCost={0}
+            additionalCost={this.getAdditionalCost()}
             setFieldValue={setFieldValue}
             values={values}
           >
-
             <FormikGroups label="PRICES" xs={12} md={6}>
               <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
 
@@ -82,9 +81,19 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
           </ServiceConditions>
 
 
-          <FormikGroups label="STORAGE_THIRD_PARTY" xs={6} md={6}>
-            <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 6, md: undefined }} />
-            <Field label="COST_PER_CUBIC_MONTH_IN_MONEY" name="CostPerCubicMonthInMoney" component={FormikNumberEndAdornmentText} adornmentText="CHF/m" overrideGrid={{ xs: 6, md: undefined }} />
+          <FormikGroups label="STORAGE_PRICE_PER_MONTH" xs={12}>
+            <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
+            <Field label="CHF_PER_M" name="CostPerCubicMonthInMoney" component={FormikNumberEndAdornmentText} position="start" adornmentText="CHF/m³" overrideGrid={{ xs: 3, md: 3 }} />
+
+            <Grid item xs={5} md={6}>
+              <MuiTextField
+                label={intl.formatMessage({ id: "STORAGE_PRICE_PER_MONTH" })}
+                value={(values.Volume ? values.Volume : 0) * (values.CostPerCubicMonthInMoney ? values.CostPerCubicMonthInMoney : 0)}
+                disabled={true}
+                type="number"
+                InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }}
+              />
+            </Grid>
           </FormikGroups>
 
           {status && status.msg && <div>{status.msg}</div>}
@@ -93,6 +102,17 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
         </Form>
       </Grid>
     )
+  }
+
+  getAdditionalCost = (): number => {
+    const { values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice } } = this.props
+
+    return (PianoPrice ? PianoPrice : 0)
+      + (LampDemontagePrice ? LampDemontagePrice : 0)
+      + (FurnitureLiftPrice ? FurnitureLiftPrice : 0)
+      + (BorePrice ? BorePrice : 0)
+      + (MontageServicePrice ? MontageServicePrice : 0)
+      + (DeMontageServicePrice ? DeMontageServicePrice : 0)
   }
 }
 

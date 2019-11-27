@@ -88,9 +88,14 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
   }
 
   getAdditionalCost = (): number => {
-    const { values: {PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice } } = this.props
+    const { values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice } } = this.props
 
-    return (PianoPrice ? PianoPrice : 0) + (LampDemontagePrice ? LampDemontagePrice : 0) + (FurnitureLiftPrice ? FurnitureLiftPrice : 0) + (BorePrice ? BorePrice : 0)
+    return (PianoPrice ? PianoPrice : 0)
+    + (LampDemontagePrice ? LampDemontagePrice : 0)
+    + (FurnitureLiftPrice ? FurnitureLiftPrice : 0)
+    + (BorePrice ? BorePrice : 0)
+    + (MontageServicePrice ? MontageServicePrice : 0)
+    + (DeMontageServicePrice ? DeMontageServicePrice : 0)
   }
 }
 

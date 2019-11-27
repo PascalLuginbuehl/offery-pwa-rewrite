@@ -191,5 +191,30 @@ COST_CEILING,Price Cost Ceiling,Preis Kostendach
 PRICES,Prices,Preise
 AMOUNT,Amount,Anzahl
 PACK_CONDITIONS,Pack conditions,Einpack-Konditionen
+STORAGE_CONDITIONS,Storage conditions,Lagerungs-Konditionen
+DISPOSAL_CONDITIONS,Disposal conditions,Entsorgung-Konditionen
+CLEANING_CONDITIONS,Cleaning conditions,Reinigungs-Konditionen
+
+
 COST_PER_CUBIC_MONTH_IN_MONEY,Price per Cubicmeter per Month,Preis pro Kubikmeter pro Monat
 VOLUME,Estimated Volume,Geschätztes Volumen
+STORAGE_PRICE,Storage price,Lagerkosten / Monat
+VOLUME,Estimated m³,Geschätzt m³
+CHF_PER_M,CHF per m³,CHF pro m³
+STORAGE_PRICE_PER_MONTH,Storageprice per month Monat,Lagerkosten pro Monat
+
+ENTRY_COST,Entry price,Grundpauschale
+DISPOSAL_FEES,Disposal Fees,Entsorgungsgebühren
+DISPOSAL_FEES_PER_CUBIC_METER,Disposal Fees per cubic meter,Entsorgungsgebühren pro Kubikmeter
+
+TERRACE,Terrace,Balkon
+FIREPLACE,Fireplace,Cheminée
+WINDOWS,Windows,Fenster
+WINDOWS_WITH_SHUTTERS,Windows with shutters,Fenster mit Storen
+CLEANING_PERSONAL_AMOUNT,Amount Cleaningpersonal,Anzahl Putzkräfte
+HIGH_PRESURE_CLEANING_FIX_PRICE,Highpressure cleaning fixed price,Hochdruckreinigung fixpreis
+DOVEL_HOLES,Dovelholes,Dübellöcher
+CLEANING_PRICES,Cleaning Prices,Preise Reinigung
+SPECIAL_CLEANING,Special cleaning,Spezialreinigung
+SPECIAL_COMMENT,Special cleaning comment,Spezialreinigung Kommentar
+HANDOUT_WARRANTY,Handout warranty,Übergabegarantie
