@@ -51,6 +51,7 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
 
       {...props}
       {...field}
+      value={field.value ? field.value : ""}
     >
       {children}
     </MuiTextField>
