@@ -58,6 +58,8 @@ export interface ICompressedLead extends IUpdateLead {
   Status: IStatus
 
   // VisitDate: Date
+  FromAddress: IAddress | null
+  ToAddress: IAddress | null
 }
 
 
@@ -71,9 +73,6 @@ export interface ILead extends ICompressedLead {
     Created: Date
     Status: IStatus
   }>
-
-  FromAddress: IAddress | null
-  ToAddress: IAddress | null
 
   MoveServiceConditions: IMoveServiceConditions | null
   PackServiceConditions: IPackServiceConditions | null

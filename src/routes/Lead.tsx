@@ -8,13 +8,8 @@ import { RouteComponentProps, Route, Redirect } from 'react-router';
 import LeadService from '../services/LeadService';
 import Customer from './Customer';
 import Loading from '../components/Loading';
-import MoveOutBuilding from './Customer/MoveOutBuilding';
 import { FormattedMessage } from 'react-intl';
 import NavItem from '../components/Navigation/NavItem';
-import MoveInBuilding from './Customer/MoveInBuilding';
-import CleaningBuilding from './Customer/CleaningBuilding';
-import DisposalOutBuilding from './Customer/DisposalOutBuilding';
-import StorageBuilding from './Customer/StorageBuilding';
 import EmailConfirmation from './Customer/EmailConfirmation';
 import OriginalSnackbar from '../components/SuccessSnackbar';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
@@ -47,6 +42,9 @@ import Generate from './Offer/GenerateOffer';
 import PreviewOffer from './Offer/PreviewOffer';
 import NewMoveOutBuilding from "./Customer/NewBuildings/MoveOutBuilding"
 import NewMoveInBuilding from "./Customer/NewBuildings/MoveInBuilding"
+import NewStorageBuilding from "./Customer/NewBuildings/StorageBuilding"
+import NewCleaningBuilding from "./Customer/NewBuildings/CleaningBuilding"
+import NewDisposalBuilding from "./Customer/NewBuildings/DisposalBuilding"
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
@@ -441,44 +439,53 @@ class Lead extends Component<Props, State> {
                 )}
               />
 
-              {/* Storage */}
+              {/* storage */}
               <Route
+                exact
                 path={`${match.url}/building/storage`}
                 render={routeProps => (
-                  <StorageBuilding
+                  <NewStorageBuilding
                     {...routeProps}
-                    data={storage ? storage : emptyStorageBuilding}
-                    onChange={data => this.handleChange(data, "storage")}
-                    save={this.Save}
-                    nextPage={match.url + this.nextPageFunction("/building/storage")}
+                    storageBuilding={storage ? storage : emptyStorageBuilding}
+                    onChangeAndSave={storageBuilding => {
+                      this.handleChange(storageBuilding, "storage")
+                      return Promise.all([this.Save()])
+                    }}
+                    nextPage={this.redirectToNextPage("/building/storage")}
                   />
                 )}
               />
 
-              {/* Disposal */}
+              {/* disposal */}
               <Route
+                exact
                 path={`${match.url}/building/disposal`}
                 render={routeProps => (
-                  <DisposalOutBuilding
+                  <NewDisposalBuilding
                     {...routeProps}
-                    data={disposal ? disposal : emptyDisposalOutBuilding}
-                    onChange={data => this.handleChange(data, "disposal")}
-                    save={this.Save}
-                    nextPage={match.url + this.nextPageFunction("/building/disposal")}
+                    disposalBuilding={disposal ? disposal : emptyDisposalOutBuilding}
+                    onChangeAndSave={disposalBuilding => {
+                      this.handleChange(disposalBuilding, "disposal")
+                      return Promise.all([this.Save()])
+                    }}
+                    nextPage={this.redirectToNextPage("/building/disposal")}
                   />
                 )}
               />
 
               {/* Cleaning */}
               <Route
+                exact
                 path={`${match.url}/building/cleaning`}
                 render={routeProps => (
-                  <CleaningBuilding
+                  <NewCleaningBuilding
                     {...routeProps}
-                    data={cleaning ? cleaning : emptyCleaningBuilding}
-                    onChange={data => this.handleChange(data, "cleaning")}
-                    save={this.Save}
-                    nextPage={match.url + this.nextPageFunction("/building/cleaning")}
+                    cleaningBuilding={cleaning ? cleaning : emptyCleaningBuilding}
+                    onChangeAndSave={cleaningBuilding => {
+                      this.handleChange(cleaningBuilding, "cleaning")
+                      return Promise.all([this.Save()])
+                    }}
+                    nextPage={this.redirectToNextPage("/building/cleaning")}
                   />
                 )}
               />
