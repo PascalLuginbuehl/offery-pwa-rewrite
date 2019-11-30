@@ -15,6 +15,15 @@ export interface IUpdateCustomer extends IPostCustomer {
 
 }
 
+export interface IStatus {
+  StatusId: number
+  NameTextKey: string
+}
+
+export interface ICustomer extends IUpdateCustomer {
+  CustomerId: number
+}
+
 export interface IPostLead {
   Customer: IPostCustomer
 
@@ -41,24 +50,25 @@ export interface IUpdateLead extends IPostLead {
   Customer: IUpdateCustomer
 }
 
-export interface IStatus {
-  StatusId: number
-  NameTextKey: string
-}
-
-export interface ICustomer extends IUpdateCustomer {
-  CustomerId: number
-}
-
-export interface ILead extends IUpdateLead {
+export interface ICompressedLead extends IUpdateLead {
+  Customer: ICustomer
   Created: Date
 
-  Customer: ICustomer
-
+  // LeadId: number
   Status: IStatus
+
+  // VisitDate: Date
+}
+
+
+export interface ILead extends ICompressedLead {
+  // Created: Date
+  // Customer: ICustomer
+
+  // Status: IStatus
   StatusHistories: Array<{
     StatusHistoryId: number
-    Created: Date,
+    Created: Date
     Status: IStatus
   }>
 

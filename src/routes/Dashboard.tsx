@@ -3,7 +3,7 @@ import * as React from 'react'
 import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl'
 import { withResource, WithResourceProps } from '../providers/withResource'
 import withWidth, { WithWidth, isWidthUp } from '@material-ui/core/withWidth'
-import { ILead } from '../interfaces/ILead';
+import { ILead, ICompressedLead } from '../interfaces/ILead';
 import DashboardService from '../services/LeadService'
 import IntlTypography from '../components/Intl/IntlTypography';
 import Wrapper from '../components/Form/Wrapper';
@@ -36,7 +36,7 @@ interface Props extends WithStyles<typeof styles>, WithResourceProps, InjectedIn
 
 }
 export interface IOfflineLead {
-  Lead: ILead,
+  Lead: ICompressedLead,
   isCached: boolean,
 }
 

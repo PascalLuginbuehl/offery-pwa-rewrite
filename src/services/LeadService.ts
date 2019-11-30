@@ -1,6 +1,6 @@
 import { IVisitConfirmation } from '../interfaces/IVisitConfirmation';
 import { errorFunction } from "./errorFunction"
-import { ILead, IPostLead, IUpdateLead } from "../interfaces/ILead"
+import { ILead, IPostLead, IUpdateLead, ICompressedLead } from "../interfaces/ILead"
 import LoginService from "./LoginService"
 import { format } from "date-fns/esm"
 
@@ -8,7 +8,6 @@ const API_URL = process.env.REACT_APP_API_URL
 
 
 class LeadService {
-
   private parseDate(date: string | null) {
     return date ? new Date(date) : null
   }
@@ -28,7 +27,18 @@ class LeadService {
     json.VisitDate = this.parseDate(json.VisitDate)
     json.Created = this.parseDate(json.Created)
 
-    json.StatusHistories.map((e: any) => ({...e, Created: new Date(e.Created)}))
+    json.StatusHistories.map((e: any) => ({ ...e, Created: new Date(e.Created) }))
+
+    return json
+  }
+
+  private toComporessedCustomer = (json: any): ILead => {
+    if (!json || typeof json !== "object") {
+      throw new Error()
+    }
+
+    json.VisitDate = this.parseDate(json.VisitDate)
+    json.Created = this.parseDate(json.Created)
 
     return json
   }
@@ -38,7 +48,7 @@ class LeadService {
   }
 
   private sendData(lead: IPostLead) {
-    let returnObject: any = {...lead}
+    let returnObject: any = { ...lead }
 
     returnObject.DeliveryDate = this.formatDate(lead.DeliveryDate)
     returnObject.CleaningDate = this.formatDate(lead.CleaningDate)
@@ -62,9 +72,9 @@ class LeadService {
   public fetchCustomer(id: number) {
     return new Promise<ILead>(async (resolve, reject) => {
       try {
-        const data = await fetch(API_URL + '/lead/' + id, await LoginService.authorizeRequest())
+        const data = await fetch(API_URL + "/lead/" + id, await LoginService.authorizeRequest())
           .then(errorFunction)
-          .then((response) => response.json())
+          .then(response => response.json())
           .then(json => this.toCustomer(json))
 
         resolve(data)
@@ -78,15 +88,18 @@ class LeadService {
   public saveCustomer(customer: IUpdateLead) {
     return new Promise<ILead>(async (resolve, reject) => {
       try {
-        const data = await fetch(API_URL + '/lead', await LoginService.authorizeRequest({
-          method: 'PUT',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.sendData(customer)),
-        }))
+        const data = await fetch(
+          API_URL + "/lead",
+          await LoginService.authorizeRequest({
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.sendData(customer)),
+          })
+        )
           .then(errorFunction)
-          .then((response) => response.json())
+          .then(response => response.json())
           .then(json => this.toCustomer(json))
 
         resolve(data)
@@ -100,15 +113,18 @@ class LeadService {
   public createCustomer(customer: IPostLead, companyId: number) {
     return new Promise<ILead>(async (resolve, reject) => {
       try {
-        const data = await fetch(API_URL + '/lead', await LoginService.authorizeRequest({
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({...this.sendData(customer), CompanyId: companyId}),
-        }))
+        const data = await fetch(
+          API_URL + "/lead",
+          await LoginService.authorizeRequest({
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...this.sendData(customer), CompanyId: companyId }),
+          })
+        )
           .then(errorFunction)
-          .then((response) => response.json())
+          .then(response => response.json())
           .then(json => this.toCustomer(json))
 
         resolve(data)
@@ -119,13 +135,13 @@ class LeadService {
     })
   }
 
-  public fetchCompanyLeads(companyId: number): Promise<ILead[]> {
-    return new Promise<ILead[]>(async (resolve, reject) => {
+  public fetchCompanyLeads(companyId: number): Promise<ICompressedLead[]> {
+    return new Promise<ICompressedLead[]>(async (resolve, reject) => {
       try {
-        const data = await fetch(API_URL + '/lead/company/' + companyId, await LoginService.authorizeRequest())
+        const data = await fetch(API_URL + "/lead/company/" + companyId, await LoginService.authorizeRequest())
           .then(errorFunction)
-          .then((response) => response.json())
-          .then(json => json.map(this.toCustomer))
+          .then(response => response.json())
+          .then(json => json.map(this.toComporessedCustomer))
 
         resolve(data)
       } catch (e) {
@@ -138,14 +154,16 @@ class LeadService {
   public sendVisitConfirmation(visit: IVisitConfirmation) {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await fetch(API_URL + '/lead/sendvisitconfirm', await LoginService.authorizeRequest({
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(visit),
-        }))
-          .then(errorFunction)
+        await fetch(
+          API_URL + "/lead/sendvisitconfirm",
+          await LoginService.authorizeRequest({
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(visit),
+          })
+        ).then(errorFunction)
 
         resolve()
       } catch (e) {
