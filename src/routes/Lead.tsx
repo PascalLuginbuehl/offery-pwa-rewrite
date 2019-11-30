@@ -45,7 +45,8 @@ import DisposalConditions from './Conditions/DisposalConditions';
 import CleaningConditions from './Conditions/CleaningConditions';
 import Generate from './Offer/GenerateOffer';
 import PreviewOffer from './Offer/PreviewOffer';
-import NewMoveOutBuilding from './Customer/NewBuildings/MoveOutBuilding'
+import NewMoveOutBuilding from "./Customer/NewBuildings/MoveOutBuilding"
+import NewMoveInBuilding from "./Customer/NewBuildings/MoveInBuilding"
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
@@ -377,650 +378,576 @@ class Lead extends Component<Props, State> {
     return (
       <>
         <Wrapper initialLoading={initialAwait}>
-          {onlySavedOffline ?
+          {onlySavedOffline ? (
             <IntlTooltip title="NOT_SAVED_ONLINE">
               <CloudUploadIcon color="error" />
             </IntlTooltip>
-          :
-            null
-          }
+          ) : null}
 
-          {loadedFromOffline ?
+          {loadedFromOffline ? (
             <IntlTooltip title="LOADED_FROM_CACHE">
               <OfflinePinIcon color="primary" />
             </IntlTooltip>
-          :
-            null
-          }
+          ) : null}
 
-          {
-            this.props.match.params.id !== "new" && Lead != null && checkIs<ILead>(Lead, "LeadId") ?
+          {this.props.match.params.id !== "new" && Lead != null && checkIs<ILead>(Lead, "LeadId") ? (
             <>
-
               {/* Customer */}
               <Route
                 exact
                 path={`${match.url}/building`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <Customer
                     {...routeProps}
                     data={Lead}
-                    onChange={(data) => this.handleChange(data, "Lead")}
+                    onChange={data => this.handleChange(data, "Lead")}
                     save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/building')}
+                    nextPage={match.url + this.nextPageFunction("/building")}
                   />
-                }
+                )}
               />
 
-              {/* Conditions */}
+              {/* Move-Out */}
               <Route
                 exact
                 path={`${match.url}/building/move-out`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <NewMoveOutBuilding
                     {...routeProps}
-
                     moveOutBuilding={moveOut ? moveOut : emptyMoveOutBuilding}
-                    onChangeAndSave={(moveOutBuilding) => {
+                    onChangeAndSave={moveOutBuilding => {
                       this.handleChange(moveOutBuilding, "moveOut")
-                      return Promise.all([
-                        this.Save()
-                      ])
+                      return Promise.all([this.Save()])
                     }}
-                    nextPage={this.redirectToNextPage('/building/move-out')}
+                    nextPage={this.redirectToNextPage("/building/move-out")}
                   />
-                }
+                )}
               />
 
               {/* Move-In */}
               <Route
+                exact
                 path={`${match.url}/building/move-in`}
-                render={(routeProps) =>
-                  <MoveInBuilding
+                render={routeProps => (
+                  <NewMoveInBuilding
                     {...routeProps}
-                    data={moveIn ? moveIn : emptyMoveInBuilding}
-                    onChange={(data) => this.handleChange(data, "moveIn")}
-                    save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/building/move-in')}
+                    moveInBuilding={moveIn ? moveIn : emptyMoveInBuilding}
+                    onChangeAndSave={moveInBuilding => {
+                      this.handleChange(moveInBuilding, "moveIn")
+                      return Promise.all([this.Save()])
+                    }}
+                    nextPage={this.redirectToNextPage("/building/move-in")}
                   />
-                }
+                )}
               />
 
               {/* Storage */}
               <Route
                 path={`${match.url}/building/storage`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <StorageBuilding
                     {...routeProps}
                     data={storage ? storage : emptyStorageBuilding}
-                    onChange={(data) => this.handleChange(data, "storage")}
+                    onChange={data => this.handleChange(data, "storage")}
                     save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/building/storage')}
+                    nextPage={match.url + this.nextPageFunction("/building/storage")}
                   />
-                }
+                )}
               />
 
               {/* Disposal */}
               <Route
                 path={`${match.url}/building/disposal`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <DisposalOutBuilding
                     {...routeProps}
                     data={disposal ? disposal : emptyDisposalOutBuilding}
-                    onChange={(data) => this.handleChange(data, "disposal")}
+                    onChange={data => this.handleChange(data, "disposal")}
                     save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/building/disposal')}
+                    nextPage={match.url + this.nextPageFunction("/building/disposal")}
                   />
-                }
+                )}
               />
 
               {/* Cleaning */}
               <Route
                 path={`${match.url}/building/cleaning`}
-                 render={(routeProps) =>
+                render={routeProps => (
                   <CleaningBuilding
                     {...routeProps}
                     data={cleaning ? cleaning : emptyCleaningBuilding}
-                    onChange={(data) => this.handleChange(data, "cleaning")}
+                    onChange={data => this.handleChange(data, "cleaning")}
                     save={this.Save}
-                    nextPage={match.url + this.nextPageFunction('/building/cleaning')}
+                    nextPage={match.url + this.nextPageFunction("/building/cleaning")}
                   />
-                }
+                )}
               />
 
               {/* E-Mail */}
               <Route
                 path={`${match.url}/building/email-confirmation`}
-                render={(routeProps) =>
-                  <EmailConfirmation
-                    {...routeProps}
-                    save={this.Save}
-                    container={this.state}
-                    nextPage={match.url + this.nextPageFunction('/building/email-confirmation')}
-                  />
-                }
+                render={routeProps => (
+                  <EmailConfirmation {...routeProps} save={this.Save} container={this.state} nextPage={match.url + this.nextPageFunction("/building/email-confirmation")} />
+                )}
               />
 
               {/* Services */}
               <Route
                 exact
                 path={`${match.url}/services`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <Services
                     {...routeProps}
                     data={services}
-                    onChangeAndSave={(serviceData) => { this.handleChange(serviceData, "services"); return LeadAPI.SaveServices(Lead.LeadId, serviceData)}}
-                    nextPage={this.redirectToNextPage('/services')}
+                    onChangeAndSave={serviceData => {
+                      this.handleChange(serviceData, "services")
+                      return LeadAPI.SaveServices(Lead.LeadId, serviceData)
+                    }}
+                    nextPage={this.redirectToNextPage("/services")}
                   />
-                }
+                )}
               />
 
               {/* MoveService */}
               <Route
                 exact
                 path={`${match.url}/services/move`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <MoveService
                     {...routeProps}
-
                     moveOut={moveOut}
                     moveIn={moveIn}
                     moveService={moveService ? moveService : emptyMoveService}
-
                     onChangeAndSave={(serviceData, moveIn, moveOut) => {
-                      this.handleChange(serviceData, "moveService");
-                      this.handleChange(moveOut, "moveOut");
-                      this.handleChange(moveIn, "moveIn");
+                      this.handleChange(serviceData, "moveService")
+                      this.handleChange(moveOut, "moveOut")
+                      this.handleChange(moveIn, "moveIn")
 
-                      return Promise.all([
-                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
-                        LeadAPI.SaveMoveIn(moveIn, Lead.LeadId),
-                        LeadAPI.SaveMoveService(Lead.LeadId, serviceData),
-                      ])
+                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveMoveIn(moveIn, Lead.LeadId), LeadAPI.SaveMoveService(Lead.LeadId, serviceData)])
                     }}
-                    nextPage={this.redirectToNextPage('/services/move')}
+                    nextPage={this.redirectToNextPage("/services/move")}
                   />
-                }
+                )}
               />
 
               {/* MoveShop */}
               <Route
                 exact
                 path={`${match.url}/services/move/material-shop`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <MaterialShop
                     {...routeProps}
-
                     materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
-                    onChangeAndSave={(materialOrder) => {
+                    onChangeAndSave={materialOrder => {
                       this.handleChange(materialOrder, "materialOrder")
 
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Move}
-                    nextPage={this.redirectToNextPage('/services/move/material-shop')}
+                    nextPage={this.redirectToNextPage("/services/move/material-shop")}
                   />
-                }
+                )}
               />
 
               {/* Move Inventory */}
               <Route
                 exact
                 path={`${match.url}/services/move/inventory`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <Inventory
                     {...routeProps}
-
                     inventory={inventory ? inventory : emptyInventory}
-                    onChangeAndSave={(inventory) => {
+                    onChangeAndSave={inventory => {
                       this.handleChange(inventory, "inventory")
 
                       return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
                     initalInventoryTypeKey={InventoryKeysEnum.Move}
-                    nextPage={this.redirectToNextPage('/services/move/inventory')}
+                    nextPage={this.redirectToNextPage("/services/move/inventory")}
                   />
-                }
+                )}
               />
 
               {/* PackService */}
               <Route
                 exact
                 path={`${match.url}/services/pack`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <PackService
                     {...routeProps}
-
                     moveOut={moveOut}
                     packService={packService ? packService : emptyPackService}
                     HasMoveService={services.HasMoveServiceEnabled}
-
                     onChangeAndSave={(serviceData, moveOut) => {
-                      this.handleChange(serviceData, "packService");
-                      this.handleChange(moveOut, "moveOut");
+                      this.handleChange(serviceData, "packService")
+                      this.handleChange(moveOut, "moveOut")
 
-                      return Promise.all([
-                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
-                        LeadAPI.SavePackService(Lead.LeadId, serviceData),
-                      ])
+                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SavePackService(Lead.LeadId, serviceData)])
                     }}
-                    nextPage={this.redirectToNextPage('/services/pack')}
+                    nextPage={this.redirectToNextPage("/services/pack")}
                   />
-                }
+                )}
               />
 
               {/* PackShop */}
               <Route
                 exact
                 path={`${match.url}/services/pack/material-shop`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <MaterialShop
                     {...routeProps}
-
                     materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
-                    onChangeAndSave={(materialOrder) => {
+                    onChangeAndSave={materialOrder => {
                       this.handleChange(materialOrder, "materialOrder")
 
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Pack}
-                    nextPage={this.redirectToNextPage('/services/pack/material-shop')}
+                    nextPage={this.redirectToNextPage("/services/pack/material-shop")}
                   />
-                }
+                )}
               />
 
               {/* StorageService */}
               <Route
                 exact
                 path={`${match.url}/services/storage`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <StorageService
                     {...routeProps}
-
                     moveOut={moveOut}
                     moveIn={moveIn}
                     storageService={storageService ? storageService : emptyStorageService}
                     HasMoveService={services.HasMoveServiceEnabled}
-
                     onChangeAndSave={(serviceData, moveOut, moveIn) => {
-                      this.handleChange(serviceData, "storageService");
-                      this.handleChange(moveOut, "moveOut");
-                      this.handleChange(moveIn, "moveIn");
+                      this.handleChange(serviceData, "storageService")
+                      this.handleChange(moveOut, "moveOut")
+                      this.handleChange(moveIn, "moveIn")
 
-                      return Promise.all([
-                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
-                        LeadAPI.SaveMoveIn(moveIn, Lead.LeadId),
-                        LeadAPI.SaveStorageService(Lead.LeadId, serviceData),
-                      ])
+                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveMoveIn(moveIn, Lead.LeadId), LeadAPI.SaveStorageService(Lead.LeadId, serviceData)])
                     }}
-                    nextPage={this.redirectToNextPage('/services/storage')}
+                    nextPage={this.redirectToNextPage("/services/storage")}
                   />
-                }
+                )}
               />
-
 
               {/* StorageShop */}
               <Route
                 exact
                 path={`${match.url}/services/storage/material-shop`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <MaterialShop
                     {...routeProps}
-
                     materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
-                    onChangeAndSave={(materialOrder) => {
+                    onChangeAndSave={materialOrder => {
                       this.handleChange(materialOrder, "materialOrder")
 
                       return LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrder)
                     }}
                     shopTypeKey={ShopTypeEnum.Storage}
-                    nextPage={this.redirectToNextPage('/services/storage/material-shop')}
+                    nextPage={this.redirectToNextPage("/services/storage/material-shop")}
                   />
-                }
+                )}
               />
 
               {/* Pack Inventory */}
               <Route
                 exact
                 path={`${match.url}/services/storage/inventory`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <Inventory
                     {...routeProps}
-
                     inventory={inventory ? inventory : emptyInventory}
-                    onChangeAndSave={(inventory) => {
+                    onChangeAndSave={inventory => {
                       this.handleChange(inventory, "inventory")
 
                       return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
                     initalInventoryTypeKey={InventoryKeysEnum.Storage}
-                    nextPage={this.redirectToNextPage('/services/storage/inventory')}
+                    nextPage={this.redirectToNextPage("/services/storage/inventory")}
                   />
-                }
+                )}
               />
 
               {/* Disposal */}
               <Route
                 exact
                 path={`${match.url}/services/disposal`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <DisposalService
                     {...routeProps}
-
                     moveOut={moveOut}
                     disposalService={disposalService ? disposalService : emptyDisposalSerivce}
                     HasMoveService={services.HasMoveServiceEnabled}
-
                     onChangeAndSave={(serviceData, moveOut) => {
-                      this.handleChange(serviceData, "disposalService");
-                      this.handleChange(moveOut, "moveOut");
+                      this.handleChange(serviceData, "disposalService")
+                      this.handleChange(moveOut, "moveOut")
 
-                      return Promise.all([
-                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
-                        LeadAPI.SaveDisposalService(Lead.LeadId, serviceData),
-                      ])
+                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveDisposalService(Lead.LeadId, serviceData)])
                     }}
-                    nextPage={this.redirectToNextPage('/services/disposal')}
+                    nextPage={this.redirectToNextPage("/services/disposal")}
                   />
-                }
+                )}
               />
 
               {/* Disposal Inventory */}
               <Route
                 exact
                 path={`${match.url}/services/disposal/inventory`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <Inventory
                     {...routeProps}
-
                     inventory={inventory ? inventory : emptyInventory}
-                    onChangeAndSave={(inventory) => {
+                    onChangeAndSave={inventory => {
                       this.handleChange(inventory, "inventory")
 
                       return LeadAPI.SaveInventoryService(Lead.LeadId, inventory)
                     }}
                     initalInventoryTypeKey={InventoryKeysEnum.Disposal}
-                    nextPage={this.redirectToNextPage('/services/disposal/inventory')}
+                    nextPage={this.redirectToNextPage("/services/disposal/inventory")}
                   />
-                }
+                )}
               />
 
               {/* Disposal */}
               <Route
                 exact
                 path={`${match.url}/services/cleaning`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <CleaningService
                     {...routeProps}
-
                     moveOut={moveOut}
                     cleaningService={cleaningService ? cleaningService : emptyCleaningService}
                     HasMoveService={services.HasMoveServiceEnabled}
-
                     onChangeAndSave={(serviceData, moveOut) => {
-                      this.handleChange(serviceData, "cleaningService");
-                      this.handleChange(moveOut, "moveOut");
+                      this.handleChange(serviceData, "cleaningService")
+                      this.handleChange(moveOut, "moveOut")
 
-                      return Promise.all([
-                        LeadAPI.SaveMoveOut(moveOut, Lead.LeadId),
-                        LeadAPI.SaveCleaningService(Lead.LeadId, serviceData),
-                      ])
+                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveCleaningService(Lead.LeadId, serviceData)])
                     }}
-                    nextPage={this.redirectToNextPage('/services/cleaning')}
+                    nextPage={this.redirectToNextPage("/services/cleaning")}
                   />
-                }
+                )}
               />
 
               <Route exact path={`${match.url}/conditions`}>
-                  {/* Previous page is one before so next gets calculated */}
-                  <Redirect to={match.url + this.nextPageFunction('/services/cleaning')} />
+                {/* Previous page is one before so next gets calculated */}
+                <Redirect to={match.url + this.nextPageFunction("/services/cleaning")} />
               </Route>
 
               {/* Conditions */}
               <Route
                 exact
                 path={`${match.url}/conditions/move`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <MoveConditions
                     {...routeProps}
-
                     moveConditions={Lead.MoveServiceConditions ? Lead.MoveServiceConditions : emptyMoveServiceConditions}
-
-                    onChangeAndSave={(moveConditions) => {
+                    onChangeAndSave={moveConditions => {
                       const newLead = { ...Lead, MoveServiceConditions: moveConditions }
-                      this.handleChange(newLead, "Lead");
+                      this.handleChange(newLead, "Lead")
 
-                      return Promise.all([
-                        this.Save()
-                      ])
+                      return Promise.all([this.Save()])
                     }}
-                    nextPage={this.redirectToNextPage('/conditions/move')}
+                    nextPage={this.redirectToNextPage("/conditions/move")}
                   />
-                }
+                )}
               />
 
               {/* Conditions */}
               <Route
                 exact
                 path={`${match.url}/conditions/pack`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <PackConditions
                     {...routeProps}
-
                     packConditions={Lead.PackServiceConditions ? Lead.PackServiceConditions : emptyPackServiceConditions}
-
-                    onChangeAndSave={(packConditions) => {
+                    onChangeAndSave={packConditions => {
                       const newLead = { ...Lead, PackServiceConditions: packConditions }
-                      this.handleChange(newLead, "Lead");
+                      this.handleChange(newLead, "Lead")
 
-                      return Promise.all([
-                        this.Save()
-                      ])
+                      return Promise.all([this.Save()])
                     }}
-                    nextPage={this.redirectToNextPage('/conditions/pack')}
+                    nextPage={this.redirectToNextPage("/conditions/pack")}
                   />
-                }
+                )}
               />
 
               {/* Conditions */}
               <Route
                 exact
                 path={`${match.url}/conditions/storage`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <StorageConditions
                     {...routeProps}
-
                     storageConditions={Lead.StorageServiceConditions ? Lead.StorageServiceConditions : emptyStorageServiceConditions}
-
-                    onChangeAndSave={(storageConditions) => {
+                    onChangeAndSave={storageConditions => {
                       const newLead = { ...Lead, StorageServiceConditions: storageConditions }
-                      this.handleChange(newLead, "Lead");
+                      this.handleChange(newLead, "Lead")
 
-                      return Promise.all([
-                        this.Save()
-                      ])
+                      return Promise.all([this.Save()])
                     }}
-                    nextPage={this.redirectToNextPage('/conditions/storage')}
+                    nextPage={this.redirectToNextPage("/conditions/storage")}
                   />
-                }
+                )}
               />
 
               {/* Conditions */}
               <Route
                 exact
                 path={`${match.url}/conditions/disposal`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <DisposalConditions
                     {...routeProps}
-
                     disposalConditions={Lead.DisposalServiceConditions ? Lead.DisposalServiceConditions : emptyDisposalServiceConditions}
-
-                    onChangeAndSave={(disposalConditions) => {
+                    onChangeAndSave={disposalConditions => {
                       const newLead = { ...Lead, DisposalServiceConditions: disposalConditions }
-                      this.handleChange(newLead, "Lead");
+                      this.handleChange(newLead, "Lead")
 
-                      return Promise.all([
-                        this.Save()
-                      ])
+                      return Promise.all([this.Save()])
                     }}
-                    nextPage={this.redirectToNextPage('/conditions/disposal')}
+                    nextPage={this.redirectToNextPage("/conditions/disposal")}
                   />
-                }
+                )}
               />
 
               {/* Conditions */}
               <Route
                 exact
                 path={`${match.url}/conditions/cleaning`}
-                render={(routeProps) =>
+                render={routeProps => (
                   <CleaningConditions
                     {...routeProps}
-
                     cleaningConditions={Lead.CleaningServiceConditions ? Lead.CleaningServiceConditions : emptyCleaningServiceConditions}
-
-                    onChangeAndSave={(cleaningConditions) => {
+                    onChangeAndSave={cleaningConditions => {
                       const newLead = { ...Lead, CleaningServiceConditions: cleaningConditions }
-                      this.handleChange(newLead, "Lead");
+                      this.handleChange(newLead, "Lead")
 
-                      return Promise.all([
-                        this.Save()
-                      ])
+                      return Promise.all([this.Save()])
                     }}
-                    nextPage={this.redirectToNextPage('/conditions/cleaning')}
+                    nextPage={this.redirectToNextPage("/conditions/cleaning")}
                   />
-                }
+                )}
               />
 
               {/* Offer */}
               <Route exact path={`${match.url}/offer`}>
-                  <Redirect to={`${match.url}/offer/generate`} />
+                <Redirect to={`${match.url}/offer/generate`} />
               </Route>
 
-              <Route
-                exact
-                path={`${match.url}/offer/generate`}
-                render={(routeProps) =>
-                  <Generate
-                    {...routeProps}
-                    nextPage={this.redirectToNextPage('/offer/generate')}
-                  />
-                }
-              />
+              <Route exact path={`${match.url}/offer/generate`} render={routeProps => <Generate {...routeProps} nextPage={this.redirectToNextPage("/offer/generate")} />} />
 
-              <Route
-                exact
-                path={`${match.url}/offer/preview`}
-                render={(routeProps) =>
-                  <PreviewOffer
-                    {...routeProps}
-                    nextPage={this.redirectToNextPage('/offer/preview')}
-                  />
-                }
-              />
+              <Route exact path={`${match.url}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} nextPage={this.redirectToNextPage("/offer/preview")} />} />
             </>
-            :
-              Lead ? (
-              <Route
-                exact
-                path={`${match.url}/building`}
-                render={(routeProps) =>
-                  <Customer
-                    {...routeProps}
-                    data={Lead}
-                    onChange={(data) => this.handleChange(data, "Lead")}
-                    save={this.Create}
-                  />
-                }
-              />)
-              :
-              "No Lead found"
-          }
+          ) : Lead ? (
+            <Route
+              exact
+              path={`${match.url}/building`}
+              render={routeProps => <Customer {...routeProps} data={Lead} onChange={data => this.handleChange(data, "Lead")} save={this.Create} />}
+            />
+          ) : (
+            "No Lead found"
+          )}
         </Wrapper>
 
         {/* Navigation */}
-        {portal ? ReactDOM.createPortal(<>
-          <ListSubheader><FormattedMessage id="EDIT_LEAD" /></ListSubheader>
-          <NavFolder to={`${match.url}/building`} title="CUSTOMER">
-            {Lead ? (
+        {portal
+          ? ReactDOM.createPortal(
               <>
-                <Collapse in={Lead.HasMoveOutBuilding}><NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested/></Collapse>
-                <Collapse in={Lead.HasMoveInBuilding}><NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested/></Collapse>
-                <Collapse in={Lead.HasStorageInBuilding}><NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested/></Collapse>
-                <Collapse in={Lead.HasDisposalOutBuilding}><NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested/></Collapse>
-                <Collapse in={Lead.HasCleaningBuilding}><NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested/></Collapse>
-                <NavItem to={`${match.url}/building/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
-              </>
-            ) : null}
-          </NavFolder>
+                <ListSubheader>
+                  <FormattedMessage id="EDIT_LEAD" />
+                </ListSubheader>
+                <NavFolder to={`${match.url}/building`} title="CUSTOMER">
+                  {Lead ? (
+                    <>
+                      <Collapse in={Lead.HasMoveOutBuilding}>
+                        <NavItem to={`${match.url}/building/move-out`} title="MOVE_OUT_BUILDING" nested />
+                      </Collapse>
+                      <Collapse in={Lead.HasMoveInBuilding}>
+                        <NavItem to={`${match.url}/building/move-in`} title="MOVE_IN_BUILDING" nested />
+                      </Collapse>
+                      <Collapse in={Lead.HasStorageInBuilding}>
+                        <NavItem to={`${match.url}/building/storage`} title="STORAGE_BUILDING" nested />
+                      </Collapse>
+                      <Collapse in={Lead.HasDisposalOutBuilding}>
+                        <NavItem to={`${match.url}/building/disposal`} title="DISPOSAL_BUILDING" nested />
+                      </Collapse>
+                      <Collapse in={Lead.HasCleaningBuilding}>
+                        <NavItem to={`${match.url}/building/cleaning`} title="CLEANING_BUILDING" nested />
+                      </Collapse>
+                      <NavItem to={`${match.url}/building/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
+                    </>
+                  ) : null}
+                </NavFolder>
 
-          <NavFolder to={`${match.url}/services`} title="SERVICES">
-            <Collapse in={services.HasMoveServiceEnabled}>
-              <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
-                <NavItem to={`${match.url}/services/move/material-shop`} title="MATERIAL_SHOP" doubleNested />
-                <NavItem to={`${match.url}/services/move/inventory`} title="INVENTORY" doubleNested />
-              </NavFolder>
-            </Collapse>
+                <NavFolder to={`${match.url}/services`} title="SERVICES">
+                  <Collapse in={services.HasMoveServiceEnabled}>
+                    <NavFolder to={`${match.url}/services/move`} title="MOVE" nested>
+                      <NavItem to={`${match.url}/services/move/material-shop`} title="MATERIAL_SHOP" doubleNested />
+                      <NavItem to={`${match.url}/services/move/inventory`} title="INVENTORY" doubleNested />
+                    </NavFolder>
+                  </Collapse>
 
-            <Collapse in={services.HasPackServiceEnabled}>
-              <NavFolder to={`${match.url}/services/pack`} title="PACK" nested>
-                <NavItem to={`${match.url}/services/pack/material-shop`} title="MATERIAL_SHOP" doubleNested />
-              </NavFolder>
-            </Collapse>
+                  <Collapse in={services.HasPackServiceEnabled}>
+                    <NavFolder to={`${match.url}/services/pack`} title="PACK" nested>
+                      <NavItem to={`${match.url}/services/pack/material-shop`} title="MATERIAL_SHOP" doubleNested />
+                    </NavFolder>
+                  </Collapse>
 
-            <Collapse in={services.HasStorageServiceEnabled}>
-              <NavFolder to={`${match.url}/services/storage`} title="STORAGE" nested>
-                <NavItem to={`${match.url}/services/storage/material-shop`} title="MATERIAL_SHOP" doubleNested />
-                <NavItem to={`${match.url}/services/storage/inventory`} title="INVENTORY" doubleNested />
-              </NavFolder>
-            </Collapse>
+                  <Collapse in={services.HasStorageServiceEnabled}>
+                    <NavFolder to={`${match.url}/services/storage`} title="STORAGE" nested>
+                      <NavItem to={`${match.url}/services/storage/material-shop`} title="MATERIAL_SHOP" doubleNested />
+                      <NavItem to={`${match.url}/services/storage/inventory`} title="INVENTORY" doubleNested />
+                    </NavFolder>
+                  </Collapse>
 
-            <Collapse in={services.HasDisposalServiceEnabled}>
-              <NavFolder to={`${match.url}/services/disposal`} title="DISPOSAL" nested>
-                <NavItem to={`${match.url}/services/disposal/inventory`} title="INVENTORY" doubleNested />
-              </NavFolder>
-            </Collapse>
+                  <Collapse in={services.HasDisposalServiceEnabled}>
+                    <NavFolder to={`${match.url}/services/disposal`} title="DISPOSAL" nested>
+                      <NavItem to={`${match.url}/services/disposal/inventory`} title="INVENTORY" doubleNested />
+                    </NavFolder>
+                  </Collapse>
 
-            <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavItem to={`${match.url}/services/cleaning`} title="CLEANING" nested />
-            </Collapse>
+                  <Collapse in={services.HasCleaningServiceEnabled}>
+                    <NavItem to={`${match.url}/services/cleaning`} title="CLEANING" nested />
+                  </Collapse>
+                </NavFolder>
 
+                <NavFolder to={`${match.url}/conditions`} title="CONDITIONS">
+                  <Collapse in={services.HasCleaningServiceEnabled}>
+                    <NavItem to={`${match.url}/conditions/move`} title="MOVE_CONDITIONS" nested />
+                  </Collapse>
 
-          </NavFolder>
+                  <Collapse in={services.HasPackServiceEnabled}>
+                    <NavItem to={`${match.url}/conditions/pack`} title="PACK_CONDITIONS" nested />
+                  </Collapse>
 
-          <NavFolder to={`${match.url}/conditions`} title="CONDITIONS">
-            <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavItem to={`${match.url}/conditions/move`} title="MOVE_CONDITIONS" nested />
-            </Collapse>
+                  <Collapse in={services.HasStorageServiceEnabled}>
+                    <NavItem to={`${match.url}/conditions/storage`} title="STORAGE_CONDITIONS" nested />
+                  </Collapse>
 
-            <Collapse in={services.HasPackServiceEnabled}>
-              <NavItem to={`${match.url}/conditions/pack`} title="PACK_CONDITIONS" nested />
-            </Collapse>
+                  <Collapse in={services.HasDisposalServiceEnabled}>
+                    <NavItem to={`${match.url}/conditions/disposal`} title="DISPOSAL_CONDITIONS" nested />
+                  </Collapse>
 
-            <Collapse in={services.HasStorageServiceEnabled}>
-              <NavItem to={`${match.url}/conditions/storage`} title="STORAGE_CONDITIONS" nested />
-            </Collapse>
+                  <Collapse in={services.HasCleaningServiceEnabled}>
+                    <NavItem to={`${match.url}/conditions/cleaning`} title="CLEANING_CONDITIONS" nested />
+                  </Collapse>
+                </NavFolder>
 
-            <Collapse in={services.HasDisposalServiceEnabled}>
-              <NavItem to={`${match.url}/conditions/disposal`} title="DISPOSAL_CONDITIONS" nested />
-            </Collapse>
+                <NavFolder to={`${match.url}/offer`} title="OFFER">
+                  <Collapse in={services.HasCleaningServiceEnabled}>
+                    <NavItem to={`${match.url}/offer/generate`} title="GENERATE" nested />
+                  </Collapse>
 
-            <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavItem to={`${match.url}/conditions/cleaning`} title="CLEANING_CONDITIONS" nested />
-            </Collapse>
-          </NavFolder>
-
-
-          <NavFolder to={`${match.url}/offer`} title="OFFER">
-            <Collapse in={services.HasCleaningServiceEnabled}>
-              <NavItem to={`${match.url}/offer/generate`} title="GENERATE" nested />
-            </Collapse>
-
-            <Collapse in={services.HasPackServiceEnabled}>
-              <NavItem to={`${match.url}/offer/preview`} title="PREVIEW" nested />
-            </Collapse>
-          </NavFolder>
-        </>, portal) : null}
-        <SuccessSnackbar message="Error Occured" open={errorOccured} onClose={this.closeError}   />
+                  <Collapse in={services.HasPackServiceEnabled}>
+                    <NavItem to={`${match.url}/offer/preview`} title="PREVIEW" nested />
+                  </Collapse>
+                </NavFolder>
+              </>,
+              portal
+            )
+          : null}
+        <SuccessSnackbar message="Error Occured" open={errorOccured} onClose={this.closeError} />
       </>
     )
   }
