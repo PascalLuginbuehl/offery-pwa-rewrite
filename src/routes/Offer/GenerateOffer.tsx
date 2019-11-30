@@ -1,30 +1,12 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
-// import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
-import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
 import * as React from 'react'
-import BigCheckbox from '../../components/Validator/BigCheckbox';
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
-// import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
-import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService, IPutDisposalSerivce, IPutCleaningService } from '../../interfaces/IService';
-import MoveInBuilding from '../Customer/MoveInBuilding';
-import Select from '../../components/FormikFields/Select';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import PageHeader from '../../components/PageHeader';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
 
+import PageHeader from '../../components/PageHeader';
 const styles = (theme: Theme) =>
   createStyles({
 

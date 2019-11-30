@@ -1,29 +1,14 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, ButtonBase, Paper, IconButton, TextField as MuiTextfield  } from '@material-ui/core'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
-// import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
-import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
 import * as React from 'react'
-import BigCheckbox from '../../components/Validator/BigCheckbox';
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
 import IntlTypography from '../../components/Intl/IntlTypography';
-import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
-// import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, ArrayHelpers, FieldArray } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
 import DatePicker from '../../components/FormikFields/FormikDatePicker';
-import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/IService';
-import MoveInBuilding from '../Customer/MoveInBuilding';
-import Select from '../../components/FormikFields/Select';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder, ShopTypeEnum } from '../../interfaces/IShop';
 import { IProduct } from '../../interfaces/IProduct';
-import Filter9PlusIcon from '@material-ui/icons/Filter9Plus'
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
