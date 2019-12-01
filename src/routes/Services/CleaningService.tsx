@@ -1,7 +1,7 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
+import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostCleaningBuilding } from '../../interfaces/IBuilding';
 // import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import FormikTextField from '../../components/FormikFields/FormikTextField';
@@ -15,6 +15,7 @@ import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
 import BuildingCopy, { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import Cleaning from '../../components/FormikFields/Bundled/Cleaning';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -23,20 +24,19 @@ const styles = (theme: Theme) =>
 
 interface Values {
   cleaningService: IPutCleaningService
-  moveOut: IPostMoveOutBuilding | null
+  cleaning: IPostCleaningBuilding | null
 }
 
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (cleaningSerivce: IPutCleaningService, moveOut: IPostMoveOutBuilding | null) => void
-  HasMoveService: boolean,
+  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding | null) => void
   buildingOptions: IBuildingCopy
 }
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, buildingOptions } = this.props
+    const { isSubmitting, status, buildingOptions, resource } = this.props
 
     return (
       <Grid item xs={12}>
@@ -58,10 +58,8 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <BuildingCopy buildings={buildingOptions} />
 
-          {/* Only show moveout when there is no MoveService */}
-          {/* {
-            HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
-          } */}
+          <Cleaning prefix={'cleaning'} resource={resource} />
+
           {status && status.msg && <div>{status.msg}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -79,17 +77,16 @@ export default withStyles(styles)(
         //   .required(),
       }),
 
-      mapPropsToValues: props => ({ cleaningService: props.cleaningService, moveOut: props.moveOut }),
+      mapPropsToValues: props => ({ cleaningService: props.cleaningService, cleaning: props.cleaning }),
 
       handleSubmit: async (values, actions) => {
         console.log(values)
         // actions.props.
-        await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
+        await actions.props.onChangeAndSave(values.cleaningService, values.cleaning)
 
         actions.setSubmitting(false)
         actions.props.nextPage()
-      }
-
+      },
     })(CleaningService)
   )
 )

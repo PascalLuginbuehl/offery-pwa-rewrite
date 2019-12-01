@@ -4,6 +4,8 @@ import { Field } from "formik";
 import FormikSimpleSelect from "../FormikSimpleSelect";
 import { injectIntl, InjectedIntlProps } from "react-intl";
 import { IAddress, IPostAddress } from "../../../interfaces/IAddress";
+import { InputAdornment, IconButton, Grid } from "@material-ui/core";
+import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 export interface IBuildingCopy {
   moveOutBuilding: IPostMoveOutBuilding | IMoveOutBuilding | null
@@ -24,7 +26,7 @@ const BuildingCopy: React.ComponentType<Props> = ({buildings, intl}) => {
     const createString = (buildingTypeName: string, base: {Address: IPostAddress} | null) => {
       if(base) {
         const translatedBuildingTypeName = intl.formatMessage({id: buildingTypeName})
-        return `${translatedBuildingTypeName}: ${base.Address.Street} ${base.Address.City}`
+        return `${translatedBuildingTypeName}: ${base.Address.Street}, ${base.Address.City}`
       }
       return null
     }
@@ -44,14 +46,20 @@ const BuildingCopy: React.ComponentType<Props> = ({buildings, intl}) => {
   // buidlings.type.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))
 
   return (
-    <Field
-      label="COPY_FROM"
-      name="copyFromSelect"
-      component={FormikSimpleSelect}
-      // options={[{label}]}
-      notTranslated
-      options={createLabelString(buildings)}
-    />
+    <Grid item xs={12} md={6} style={{display: "flex"}}>
+      <Field
+        disableGrid
+        label="COPY_FROM"
+        name="copyFromSelect"
+        component={FormikSimpleSelect}
+        // options={[{label}]}
+        notTranslated
+        options={createLabelString(buildings)}
+      />
+      <IconButton>
+        <FileCopyIcon />
+      </IconButton>
+    </Grid>
   )
 }
 

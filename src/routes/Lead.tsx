@@ -732,13 +732,12 @@ class Lead extends Component<Props, State> {
                 render={routeProps => (
                   <CleaningService
                     {...routeProps}
-                    moveOut={moveOut}
+                    cleaning={cleaning ? cleaning : emptyCleaningBuilding}
                     buildingOptions={buildingOptions}
                     cleaningService={cleaningService ? cleaningService : emptyCleaningService}
-                    HasMoveService={services.HasMoveServiceEnabled}
-                    onChangeAndSave={(serviceData, moveOut) => {
+                    onChangeAndSave={(serviceData, cleaning) => {
                       this.handleChange(serviceData, "cleaningService")
-                      this.handleChange(moveOut, "moveOut")
+                      this.handleChange(cleaning, "cleaning")
 
                       return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveCleaningService(Lead.LeadId, serviceData)])
                     }}
