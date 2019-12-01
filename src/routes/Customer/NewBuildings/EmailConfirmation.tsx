@@ -21,6 +21,7 @@ import { IBuildingCopy } from "../../../components/FormikFields/Bundled/Building
 import { IAddress } from "../../../interfaces/IAddress";
 import LeadAPI from "../../LeadAPI";
 import LeadService from "../../../services/LeadService";
+import SelectAddress from "../../../components/FormikFields/Bundled/SelectAddress";
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -49,7 +50,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
       selectedCompany,
       values,
       lead,
-      buildingOptions: { moveOutBuilding, moveInBuilding, storageBuilding, disposalBuilding, cleaningBuilding },
+      buildingOptions,
     } = this.props
     const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
 
@@ -57,7 +58,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
       <Grid item xs={12}>
         <Form>
           <PageHeader title="EMAIL_CONFIRMATION" />
-
           <Grid item xs={12}>
             <IntlTypography>{EmailBodyContentIntroductionTextKey}</IntlTypography>
             <IntlTypography>{EmailSubjectTextKey}</IntlTypography>
@@ -70,9 +70,9 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography>{EmailBodyContentOutroductionTextKey}</IntlTypography>
           </Grid>
 
-          <Field
-            label="VISIT_ADDRESS"
-            name="AddressId"
+          <SelectAddress label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />
+
+          {/* <Field
             component={FormikSimpleSelect}
             notTranslated
             required
@@ -81,12 +81,10 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
               .map(e => e.Address)
               .filter((e): e is IAddress => e.hasOwnProperty("AddressId"))
               .map((e, index) => ({ value: e.AddressId, label: e.Street + ", " + e.PLZ + " " + e.City }))}
-          />
+          /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-
           {status && status.msg && <div>{status.msg}</div>}
-
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
