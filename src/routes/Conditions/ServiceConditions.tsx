@@ -7,7 +7,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import FormikGroups from './Groups';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import { Field } from 'formik';
 
 

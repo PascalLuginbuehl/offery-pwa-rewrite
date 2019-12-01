@@ -10,7 +10,7 @@ import PageHeader from '../../components/PageHeader';
 import { IMoveServiceConditions, IPackServiceConditions, IDisposalServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikGroups from './Groups';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import ServiceConditions from './ServiceConditions';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
