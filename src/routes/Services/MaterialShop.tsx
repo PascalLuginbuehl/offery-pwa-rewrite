@@ -14,6 +14,8 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import SelectGridItem from '../../components/ShopElements/SelectGridItem';
 import PageHeader from '../../components/PageHeader';
+import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
+import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 
 
 const styles = (theme: Theme) =>
@@ -158,34 +160,25 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="MATERIAL_SHOP"/>
-
+          <PageHeader title="MATERIAL_SHOP" />
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {ShopProducts.map((product, index) => (
-                <SelectGridItem product={product} onSelectProduct={(amount) => this.addItemToList(product)} key={index} currentlyOpenState={currentlyOpen} />
+                <SelectGridItem product={product} onSelectProduct={amount => this.addItemToList(product)} key={index} currentlyOpenState={currentlyOpen} />
               ))}
             </Grid>
           </Grid>
 
-
-          <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
+          <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST"  component={FormikPrice} />
+          <Field name="DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} />
 
           <Grid item xs={12}>
-            <Tabs
-              value={currentlyOpen}
-              onChange={this.handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="fullWidth"
-              centered
-            >
+            <Tabs value={currentlyOpen} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
               <Tab label={intl.formatMessage({ id: "BUY" })} value={CurrentlyOpenStateEnum.Buy} />
               <Tab label={intl.formatMessage({ id: "RENT" })} value={CurrentlyOpenStateEnum.Rent} />
               <Tab label={intl.formatMessage({ id: "INCLUSIVE" })} value={CurrentlyOpenStateEnum.Free} />
             </Tabs>
           </Grid>
-
           <Grid item xs={12}>
             <FieldArray
               name={shopTypeKey}
@@ -193,56 +186,58 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox"><FormattedMessage id="ITEM" /></TableCell>
-                      <TableCell align="right" padding="checkbox"><FormattedMessage id="QUANTITY" /></TableCell>
-                      <TableCell align="right" padding="checkbox"><FormattedMessage id="PRICE" /></TableCell>
-                      <TableCell align="center" padding="checkbox"><FormattedMessage id="ACTIONS" /></TableCell>
+                      <TableCell padding="checkbox">
+                        <FormattedMessage id="ITEM" />
+                      </TableCell>
+                      <TableCell align="right" padding="checkbox">
+                        <FormattedMessage id="QUANTITY" />
+                      </TableCell>
+                      <TableCell align="right" padding="checkbox">
+                        <FormattedMessage id="PRICE" />
+                      </TableCell>
+                      <TableCell align="center" padding="checkbox">
+                        <FormattedMessage id="ACTIONS" />
+                      </TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     {selectedItemList && selectedItemList.length > 0 ? (
                       selectedItemList
-                      .map((item, index) => ({originalIndex: index, ...item}))
-                      .filter(this.filterShowList(currentlyOpen))
-                      .map((item) => {
-                        const product = this.getCorrespondingProduct(item)
-                        return (
+                        .map((item, index) => ({ originalIndex: index, ...item }))
+                        .filter(this.filterShowList(currentlyOpen))
+                        .map(item => {
+                          const product = this.getCorrespondingProduct(item)
+                          return (
+                            <TableRow key={item.originalIndex}>
+                              <TableCell>
+                                <FormattedMessage id={product.NameTextKey} />
+                              </TableCell>
+                              <TableCell align="right">{item.Amount} Stk.</TableCell>
+                              <TableCell align="right">
+                                {currentlyOpen != CurrentlyOpenStateEnum.Free ? (
+                                  <FormattedNumber
+                                    value={(currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice) * item.Amount}
+                                    style="currency"
+                                    currency="CHF"
+                                  />
+                                ) : (
+                                  "-"
+                                )}
+                              </TableCell>
 
-                        <TableRow key={item.originalIndex}>
-                          <TableCell><FormattedMessage id={product.NameTextKey}/></TableCell>
-                          <TableCell align="right">{item.Amount} Stk.</TableCell>
-                            <TableCell align="right">
-                              {
-                                currentlyOpen != CurrentlyOpenStateEnum.Free ?
-                                <FormattedNumber
-                                  value={
-                                    (currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice)
-                                    * item.Amount
-                                  }
-                                  style="currency"
-                                  currency="CHF"
-                                />
-                                :
-                                "-"
-                              }
-                            </TableCell>
+                              <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
+                                <IconButton onClick={() => this.removeOneItem(item.originalIndex)}>
+                                  <RemoveCircleOutlineIcon />
+                                </IconButton>
 
-                            <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
-                              <IconButton
-                                onClick={() => this.removeOneItem(item.originalIndex)}
-                              >
-                                <RemoveCircleOutlineIcon />
-                              </IconButton>
-
-                              <IconButton
-                                onClick={() => arrayHelpers.remove(item.originalIndex)}
-                              >
-                                <DeleteForeverIcon />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
-                      )})
+                                <IconButton onClick={() => arrayHelpers.remove(item.originalIndex)}>
+                                  <DeleteForeverIcon />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          )
+                        })
                     ) : (
                       <TableRow>
                         <TableCell rowSpan={10} colSpan={5} align="center">
@@ -255,9 +250,7 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
               )}
             />
           </Grid>
-
           {status && status.msg && <div>{status.msg}</div>}
-
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
@@ -279,8 +272,6 @@ injectIntl(
         mapPropsToValues: props => props.materialOrder,
 
         handleSubmit: async (values, actions) => {
-          console.log(values)
-          // actions.props.
           await actions.props.onChangeAndSave(values)
 
           actions.setSubmitting(false)
