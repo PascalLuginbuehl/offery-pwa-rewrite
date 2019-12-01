@@ -169,7 +169,7 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
             </Grid>
           </Grid>
 
-          <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST"  component={FormikPrice} />
+          <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST" component={FormikPrice} />
           <Field name="DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} />
 
           <Grid item xs={12}>

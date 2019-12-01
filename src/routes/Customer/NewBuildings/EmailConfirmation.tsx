@@ -17,20 +17,40 @@ import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonC
 import { IPostLead, ILead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import IntlTypography from "../../../components/Intl/IntlTypography";
+import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy";
+import { IAddress } from "../../../interfaces/IAddress";
+import LeadAPI from "../../LeadAPI";
+import LeadService from "../../../services/LeadService";
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}
 
 const styles = (theme: Theme) => createStyles({})
 
-interface Values extends ILead {}
+interface Values {
+  AddressId: number | null
+  Comment: string
+}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (lead: ILead) => void
   lead: ILead
+  // onChangeAndSave: (lead: ILead) => void
+  buildingOptions: IBuildingCopy
 }
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany, values } = this.props
+    const {
+      isSubmitting,
+      status,
+      resource,
+      selectedCompany,
+      values,
+      lead,
+      buildingOptions: { moveOutBuilding, moveInBuilding, storageBuilding, disposalBuilding, cleaningBuilding },
+    } = this.props
     const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
 
     return (
@@ -42,30 +62,28 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography>{EmailBodyContentIntroductionTextKey}</IntlTypography>
             <IntlTypography>{EmailSubjectTextKey}</IntlTypography>
 
-
             <IntlTypography>VISITING_DATE</IntlTypography>
             <Typography>
-              <FormattedDate value={values.VisitDate} />
+              <FormattedDate value={lead.VisitDate} />
             </Typography>
 
             <IntlTypography>{EmailBodyContentOutroductionTextKey}</IntlTypography>
           </Grid>
 
-          {/* <ValidatedSelect
+          <Field
             label="VISIT_ADDRESS"
-            value={AddressId}
             name="AddressId"
-            onChange={this.handleChange}
+            component={FormikSimpleSelect}
+            notTranslated
             required
-            notTranslatedLabel={false}
-            options={[CleaningBuilding, MoveOutBuilding, MoveInBuilding, StorageInBuilding, DisposalOutBuilding]
+            options={[moveOutBuilding, moveInBuilding, storageBuilding, disposalBuilding, cleaningBuilding]
               .filter(notEmpty)
               .map(e => e.Address)
               .filter((e): e is IAddress => e.hasOwnProperty("AddressId"))
               .map((e, index) => ({ value: e.AddressId, label: e.Street + ", " + e.PLZ + " " + e.City }))}
           />
 
-          <ValidatedTextField label="COMMENT" value={Comment} name="Comment" onChange={this.handleChange} multiline /> */}
+          <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
           {status && status.msg && <div>{status.msg}</div>}
 
@@ -80,10 +98,17 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => props.lead,
+        mapPropsToValues: props => ({AddressId: null, Comment: ""}),
 
         handleSubmit: async (values, actions) => {
-          await actions.props.onChangeAndSave(values)
+          // await actions.props.onChangeAndSave(values)
+
+          const { AddressId, Comment } = values
+          const { lead } = actions.props
+
+          if (LeadAPI.isCompleteLead(lead) && AddressId) {
+            await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, AddressId: AddressId })
+          }
 
           actions.setSubmitting(false)
           actions.props.nextPage()

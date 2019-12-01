@@ -46,7 +46,8 @@ import NewStorageBuilding from "./Customer/NewBuildings/StorageBuilding"
 import NewCleaningBuilding from "./Customer/NewBuildings/CleaningBuilding"
 import NewDisposalBuilding from "./Customer/NewBuildings/DisposalBuilding"
 import { IBuildingCopy } from '../components/FormikFields/Bundled/BuildingCopy';
-import NewCustomer from './Customer/NewBuildings/NewCustomer';
+import NewCustomer from "./Customer/NewBuildings/NewCustomer"
+import NewEmailConfirmation from "./Customer/NewBuildings/EmailConfirmation"
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
@@ -485,11 +486,12 @@ class Lead extends Component<Props, State> {
                 )}
               />
 
-              {/* E-Mail */}
+              {/* E-Mail confirmation */}
               <Route
+                exact
                 path={`${match.url}/building/email-confirmation`}
                 render={routeProps => (
-                  <EmailConfirmation {...routeProps} save={this.Save} container={this.state} nextPage={match.url + this.nextPageFunction("/building/email-confirmation")} />
+                  <NewEmailConfirmation {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={this.redirectToNextPage("/building/email-confirmation")} />
                 )}
               />
 
