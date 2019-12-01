@@ -17,6 +17,7 @@ import LeadAPI, { ILeadContainer } from './LeadAPI';
 const styles = (theme: Theme) =>
   createStyles({
     root: {
+      padding: theme.spacing(1),
       [theme.breakpoints.up('sm')]: {
         padding: theme.spacing(2)
       },
