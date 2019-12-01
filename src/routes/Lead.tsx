@@ -617,16 +617,13 @@ class Lead extends Component<Props, State> {
                 render={routeProps => (
                   <StorageService
                     {...routeProps}
-                    moveOut={moveOut}
-                    moveIn={moveIn}
+                    storage={storage}
                     storageService={storageService ? storageService : emptyStorageService}
-                    HasMoveService={services.HasMoveServiceEnabled}
-                    onChangeAndSave={(serviceData, moveOut, moveIn) => {
+                    onChangeAndSave={(serviceData, storage) => {
                       this.handleChange(serviceData, "storageService")
-                      this.handleChange(moveOut, "moveOut")
-                      this.handleChange(moveIn, "moveIn")
+                      this.handleChange(storage, "storage")
 
-                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveMoveIn(moveIn, Lead.LeadId), LeadAPI.SaveStorageService(Lead.LeadId, serviceData)])
+                      return Promise.all([LeadAPI.SaveStorage(storage, Lead.LeadId), LeadAPI.SaveStorageService(Lead.LeadId, serviceData)])
                     }}
                     nextPage={this.redirectToNextPage("/services/storage")}
                   />

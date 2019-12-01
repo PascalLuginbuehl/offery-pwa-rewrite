@@ -240,3 +240,6 @@ STORAGE,Storage,Einlagerung/Auslagerung
 DISPOSAL,Disposal,Entsorgung
 CLEANING,Cleaning,Reinigung
 HANDIN,Handin,Abgabetermin
+APPOINTMENTS,Appointments,Termine
+
+STORAGE_UNSTORE,Storage/Unstorage,Einlagerung/Auslagerung

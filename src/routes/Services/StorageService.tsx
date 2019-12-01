@@ -1,7 +1,7 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
+import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostStorageBuilding } from '../../interfaces/IBuilding';
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
@@ -12,6 +12,10 @@ import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
+import Storage from '../../components/FormikFields/Bundled/Storage';
+import IntlTypography from '../../components/Intl/IntlTypography';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
+import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -20,14 +24,12 @@ const styles = (theme: Theme) =>
 
 interface Values {
   storageService: IPutStorageService
-  moveOut: IPostMoveOutBuilding | null
-  moveIn: IPostMoveInBuilding | null
+  storage: IPostStorageBuilding | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (storageService: IPutStorageService, moveOut: IPostMoveOutBuilding | null, moveIn: IPostMoveInBuilding | null) => void
-  HasMoveService: boolean
+  onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding | null) => void
 }
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
@@ -43,7 +45,6 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       resource,
       storageService,
-      HasMoveService
     } = this.props
 
     return (
@@ -58,14 +59,13 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="storageService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
           <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
 
-          <FormikDivider />
+          <FormikGroups label="APPOINTMENTS" xs={12}>
+            <Field name="storageService.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
+          </FormikGroups>
 
-          <Field name="storageService.StorageDate" label="DATE_STORAGE_UNSTORE" component={DatePicker} />
-
-          {/* Only show moveout when there is no MoveService
-          {
-            HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
-          } */}
+          <FormikGroups label="STORAGE_BUILDING" xs={12}>
+            <Storage prefix={"storage"} resource={resource} />
+          </FormikGroups>
 
           {status && status.msg && <div>{status.msg}</div>}
 
@@ -85,17 +85,16 @@ export default withStyles(styles)(
         //   .required(),
       }),
 
-      mapPropsToValues: props => ({ storageService: props.storageService, moveOut: props.moveOut, moveIn: props.moveIn }),
+      mapPropsToValues: props => ({ storageService: props.storageService, storage: props.storage }),
 
       handleSubmit: async (values, actions) => {
         console.log(values)
         // actions.props.
-        await actions.props.onChangeAndSave(values.storageService, values.moveOut, values.moveIn)
+        await actions.props.onChangeAndSave(values.storageService, values.storage)
 
         actions.setSubmitting(false)
         actions.props.nextPage()
-      }
-
+      },
     })(StorageService)
   )
 )

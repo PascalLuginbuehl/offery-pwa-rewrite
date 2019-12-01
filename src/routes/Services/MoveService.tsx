@@ -12,6 +12,8 @@ import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
+import IntlTypography from '../../components/Intl/IntlTypography';
+import MoveIn from '../../components/FormikFields/Bundled/MoveIn';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -49,7 +51,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="MOVE_SERVICE"/>
+          <PageHeader title="MOVE_SERVICE" />
 
           <Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />
 
@@ -67,13 +69,16 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
 
-          {/* MoveOut */}
-          {/* <AddressField
-            value={Address}
-            name="Address"
-            onChange={this.handleChange}
-          /> */}
-          <MoveOut prefix={'moveOut'} resource={resource} />
+          <Grid item xs={12}>
+            <IntlTypography variant="body1">MOVE_OUT_BUILDING</IntlTypography>
+          </Grid>
+
+          <MoveOut prefix={"moveOut"} resource={resource} />
+
+          <Grid item xs={12}>
+            <IntlTypography variant="body1">MOVE_IN_BUILDING</IntlTypography>
+          </Grid>
+          <MoveIn prefix={"moveIn"} resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
 
