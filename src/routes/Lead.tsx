@@ -104,24 +104,6 @@ class Lead extends Component<Props, State> {
       console.log("Is not a leadId", potentialLeadId)
       throw Error("Did not find a lead")
     }
-
-
-    // adding before unload functionality
-    window.addEventListener('beforeunload', this.handleUnload)
-  }
-
-  handleUnload = (e: BeforeUnloadEvent) => {
-    console.log('beforeunload called');
-
-    // Cancel the event
-    e.preventDefault();
-
-    // Chrome requires returnValue to be set
-    e.returnValue = 'sure?';
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.handleUnload)
   }
 
   loadFromOnline(potentialLeadId: number) {

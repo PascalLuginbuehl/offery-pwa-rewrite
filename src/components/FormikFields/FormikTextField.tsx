@@ -16,11 +16,11 @@ export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omi
 
 
 class FormikTextField extends React.Component<FormikTextFieldProps> {
-  componentWillMount() {
-    if(this.props.field.value === null) {
-      this.props.form.setFieldValue(this.props.field.name, "")
-    }
-  }
+  // componentWillMount() {
+  //   if(this.props.field.value === null) {
+  //     this.props.form.setFieldValue(this.props.field.name, "")
+  //   }
+  // }
 
   render() {
     const { children, intl, field,

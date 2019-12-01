@@ -11,6 +11,7 @@ import PageHeader from "../../../components/PageHeader"
 import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
 import Storage from "../../../components/FormikFields/Bundled/Storage"
 import Cleaning from "../../../components/FormikFields/Bundled/Cleaning";
+import { RouteComponentProps, Prompt } from "react-router";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -18,7 +19,7 @@ interface Values {
   cleaningBuilding: IPostCleaningBuilding
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
   nextPage: () => void
   onChangeAndSave: (cleaningBuilding: IPostCleaningBuilding) => void
   cleaningBuilding: IPostCleaningBuilding
