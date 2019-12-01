@@ -68,6 +68,8 @@ export interface ILead extends ICompressedLead {
   // Customer: ICustomer
 
   // Status: IStatus
+  VisitDate: Date
+
   StatusHistories: Array<{
     StatusHistoryId: number
     Created: Date

@@ -74,7 +74,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <FormikGroups label="DATES">
-            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} />
+            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
             <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} />
             <Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} />
             <Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} />
