@@ -80,7 +80,7 @@ export default injectIntl(
           await actions.props.onChangeAndSave(values.moveOutBuilding)
 
           actions.setSubmitting(false)
-          // actions.props.nextPage()
+          actions.props.nextPage()
         }
 
       })(CleaningConditions)

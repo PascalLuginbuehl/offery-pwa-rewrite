@@ -52,6 +52,7 @@ export default injectIntl(
           await actions.props.onChangeAndSave(values.storageBuilding)
 
           actions.setSubmitting(false)
+          actions.props.nextPage()
         },
       })(StorageBuilding)
     )

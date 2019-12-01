@@ -22,8 +22,8 @@ class PageHeader extends React.Component<Props> {
     } else {
       return (
         <Breadcrumbs aria-label="breadcrumb">
-          <IntlTypography color="inherit">Lead</IntlTypography>
-          <Typography color="inherit">LEADID</Typography>
+          {/* <IntlTypography color="inherit">Lead</IntlTypography>
+          <Typography color="inherit">LEADID</Typography> */}
           <IntlTypography color="textPrimary">{this.props.title}</IntlTypography>
         </Breadcrumbs>
       )

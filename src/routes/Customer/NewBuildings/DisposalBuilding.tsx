@@ -53,6 +53,7 @@ export default injectIntl(
           await actions.props.onChangeAndSave(values.disposalBuilding)
 
           actions.setSubmitting(false)
+          actions.props.nextPage()
         },
       })(DisposalBuilding)
     )
