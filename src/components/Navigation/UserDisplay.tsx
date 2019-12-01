@@ -1,12 +1,14 @@
-import { IconButton, Theme, Tooltip, WithStyles } from '@material-ui/core'
+import { IconButton, Theme, Tooltip, WithStyles, Typography } from '@material-ui/core'
 import { createStyles, withStyles } from '@material-ui/core'
 import Collapse from '@material-ui/core/Collapse'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import ListItemText from "@material-ui/core/ListItemText"
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import AccountCircleIcon from "@material-ui/icons/AccountCircle"
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
 import ChatIcon from '@material-ui/icons/Chat'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
@@ -51,7 +53,6 @@ interface State {
 }
 
 class UserDisplay extends React.Component<Props, State> {
-
   public state: State = {
     anchorEl: null,
     openNestedLanguages: false,
@@ -81,8 +82,14 @@ class UserDisplay extends React.Component<Props, State> {
     this.setState({ openNestedLanguages: !this.state.openNestedLanguages })
   }
 
+  // TODO, add function to change company
+  switchCompany = () => {
+    localStorage.removeItem("selectedCompany")
+    window.location.reload()
+  }
+
   public render() {
-    const { classes, intl } = this.props
+    const { classes, intl, resource, selectedCompany } = this.props
     const { openNestedLanguages } = this.state
 
     const { anchorEl } = this.state
@@ -90,20 +97,26 @@ class UserDisplay extends React.Component<Props, State> {
 
     return (
       <div className={classes.user}>
+        <Typography variant="subtitle1" color="inherit">
+          <span style={{ marginLeft: 10 }}>{selectedCompany.Name}</span>
+        </Typography>
+
         <Tooltip title={intl.formatMessage({ id: "SETTINGS" })} placement="bottom">
-          <IconButton color="inherit" onClick={this.handleMenu}><SettingsIcon /></IconButton>
+          <IconButton color="inherit" onClick={this.handleMenu}>
+            <AccountCircleIcon />
+          </IconButton>
         </Tooltip>
 
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
           open={open}
           onClose={this.handleClose}
@@ -112,8 +125,8 @@ class UserDisplay extends React.Component<Props, State> {
             <ListItemIcon>
               <ChatIcon />
             </ListItemIcon>
-            <ListItemText inset>
-              <FormattedMessage id='LANGUAGE' />
+            <ListItemText>
+              <FormattedMessage id="LANGUAGE" />
             </ListItemText>
             {openNestedLanguages ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </MenuItem>
@@ -124,9 +137,7 @@ class UserDisplay extends React.Component<Props, State> {
                   <FlagIcon />
                 </ListItemIcon>
                 <ListItemText inset>
-                  <FormattedMessage
-                    id='GERMAN'
-                  />
+                  <FormattedMessage id="GERMAN" />
                 </ListItemText>
               </ListItem>
               <ListItem button onClick={this.changeLanguage("en")}>
@@ -134,42 +145,34 @@ class UserDisplay extends React.Component<Props, State> {
                   <FlagIcon />
                 </ListItemIcon>
                 <ListItemText inset>
-                  <FormattedMessage
-                    id='ENGLISH'
-                  />
-                </ListItemText>
-              </ListItem>
-              <ListItem button onClick={this.changeLanguage("fr")}>
-                <ListItemIcon>
-                  <FlagIcon />
-                </ListItemIcon>
-                <ListItemText inset>
-                  <FormattedMessage
-                    id='FRENCH'
-                  />
-                </ListItemText>
-              </ListItem>
-              <ListItem button onClick={this.changeLanguage("it")}>
-                <ListItemIcon>
-                  <FlagIcon />
-                </ListItemIcon>
-                <ListItemText inset>
-                  <FormattedMessage
-                    id='ITALIAN'
-                  />
+                  <FormattedMessage id="ENGLISH" />
                 </ListItemText>
               </ListItem>
             </List>
           </Collapse>
+
+
+          {/* If multiple comanys */}
+          {resource.CurrentCompanies.length > 1 ? (
+            <MenuItem onClick={this.switchCompany}>
+              <ListItemIcon>
+                <SwapHorizIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <FormattedMessage id="SWITCH_COMPANY" />
+              </ListItemText>
+            </MenuItem>
+          ) : null}
+
+          <MenuItem onClick={this.logout}>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <FormattedMessage id="LOGOUT" />
+            </ListItemText>
+          </MenuItem>
         </Menu>
-
-        {/* <Typography variant="subtitle1" color="inherit">
-          <span style={{ marginLeft: 10 }}>{resource.CurrentUser.Email}</span>
-        </Typography> */}
-
-        <Tooltip title={intl.formatMessage({ id: "LOGOUT" })} placement="bottom">
-          <IconButton color="inherit" onClick={this.logout}><ExitToAppIcon /></IconButton>
-        </Tooltip>
       </div>
     )
   }
