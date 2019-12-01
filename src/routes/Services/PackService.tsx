@@ -57,10 +57,10 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="packService.PackServiceDate" label="PACK_DATE" component={DatePicker} />
 
-          {/* Only show moveout when there is no MoveService */}
+          {/* Only show moveout when there is no MoveService
           {
             HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
-          }
+          } */}
 
           {status && status.msg && <div>{status.msg}</div>}
 

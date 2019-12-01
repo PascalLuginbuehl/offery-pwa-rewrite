@@ -14,6 +14,7 @@ import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
+import BuildingCopy, { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -25,33 +26,22 @@ interface Values {
   moveOut: IPostMoveOutBuilding | null
 }
 
+
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (cleaningSerivce: IPutCleaningService, moveOut: IPostMoveOutBuilding | null) => void
-  HasMoveService: boolean
+  HasMoveService: boolean,
+  buildingOptions: IBuildingCopy
 }
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-      resource,
-      cleaningService,
-      HasMoveService
-    } = this.props
+    const { isSubmitting, status, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="CLEANING_SERVICE" />
-
           <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />
           <Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={FormikButtonCheckbox} />
           <Field name="cleaningService.DovelholeService" label="DOVELHOLE" component={FormikButtonCheckbox} />
@@ -61,22 +51,18 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="cleaningService.CleaningWindowsWithShuttersService" label="CLEAING_WINDOWS_WITH_SHUTTER" component={FormikButtonCheckbox} />
           <Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={FormikButtonCheckbox} />
           <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
-
           <FormikDivider />
-
           <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={DatePicker} />
           <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={DatePicker} />
-
-
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} />
 
+          <BuildingCopy buildings={buildingOptions} />
+
           {/* Only show moveout when there is no MoveService */}
-          {
+          {/* {
             HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
-          }
-
+          } */}
           {status && status.msg && <div>{status.msg}</div>}
-
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>

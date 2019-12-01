@@ -13,11 +13,12 @@ export interface FormikSelectProps extends FormikTextFieldProps {
     value: string
     label: string
   }>
+  notTranslated?: boolean
 }
 
 class FormikSimpleSelect extends React.Component<FormikSelectProps> {
   render() {
-    const { intl, options, ...props } = this.props
+    const { intl, options, notTranslated = false, ...props } = this.props
 
     return (
       <FormikTextField
@@ -28,7 +29,7 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps> {
       >
         {options.map(option => (
           <MenuItem key={option.value} value={option.value}>
-            <FormattedMessage id={option.label} />
+            {notTranslated ? option.label : <FormattedMessage id={option.label} />}
           </MenuItem>
         ))}
       </FormikTextField>

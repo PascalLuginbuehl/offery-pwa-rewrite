@@ -45,6 +45,7 @@ import NewMoveInBuilding from "./Customer/NewBuildings/MoveInBuilding"
 import NewStorageBuilding from "./Customer/NewBuildings/StorageBuilding"
 import NewCleaningBuilding from "./Customer/NewBuildings/CleaningBuilding"
 import NewDisposalBuilding from "./Customer/NewBuildings/DisposalBuilding"
+import { IBuildingCopy } from '../components/FormikFields/Bundled/BuildingCopy';
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
@@ -372,6 +373,14 @@ class Lead extends Component<Props, State> {
       errorOccured,
     } = this.state
     const { match, portal } = this.props
+
+    const buildingOptions: IBuildingCopy = {
+      moveOutBuilding: moveOut,
+      moveInBuilding: moveIn,
+      cleaningBuilding: cleaning,
+      storageBuilding: storage,
+      disposalBuilding: disposal,
+    }
 
     return (
       <>
@@ -724,6 +733,7 @@ class Lead extends Component<Props, State> {
                   <CleaningService
                     {...routeProps}
                     moveOut={moveOut}
+                    buildingOptions={buildingOptions}
                     cleaningService={cleaningService ? cleaningService : emptyCleaningService}
                     HasMoveService={services.HasMoveServiceEnabled}
                     onChangeAndSave={(serviceData, moveOut) => {
