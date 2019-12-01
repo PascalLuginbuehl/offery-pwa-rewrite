@@ -21,11 +21,13 @@ class PageHeader extends React.Component<Props> {
       )
     } else {
       return (
-        <Breadcrumbs aria-label="breadcrumb">
-          {/* <IntlTypography color="inherit">Lead</IntlTypography>
+        <Grid item xs={12} style={{padding: "0 4px"}}>
+          <Breadcrumbs aria-label="breadcrumb">
+            {/* <IntlTypography color="inherit">Lead</IntlTypography>
           <Typography color="inherit">LEADID</Typography> */}
-          <IntlTypography color="textPrimary">{this.props.title}</IntlTypography>
-        </Breadcrumbs>
+            <IntlTypography color="textPrimary">{this.props.title}</IntlTypography>
+          </Breadcrumbs>
+        </Grid>
       )
     }
   }

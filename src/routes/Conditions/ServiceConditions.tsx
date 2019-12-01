@@ -41,7 +41,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     }
   }
 
-
   public render() {
     const {
       values,
@@ -60,7 +59,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             textColor="primary"
             variant="fullWidth"
             centered
-
           >
             <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
             <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
@@ -68,7 +66,14 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           </Tabs>
         </Grid>
 
-        <Field label="WORKERS_AMOUNT" name={`ServiceConditions.WorkersAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
+        <Field
+          label="WORKERS_AMOUNT"
+          name={`ServiceConditions.WorkersAmount`}
+          type="number"
+          component={FormikTextField}
+          inputProps={{ step: 1, min: 0 }}
+          overrideGrid={{ xs: 6, md: 3 }}
+        />
 
         {values.ServiceConditions.IsHourlyRate || values.ServiceConditions.HasCostCeiling ? (
           <>
@@ -81,43 +86,57 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             <FormikGroups label="HOURS_OF_WORK" xs={12} md={6}>
               <Field label="MIN" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
-              <Grid item xs={1}><Typography>-</Typography></Grid>
+              <Grid item xs={1}>
+                <Typography>-</Typography>
+              </Grid>
 
               <Field label="MAX" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
               <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 7, md: undefined }} />
             </FormikGroups>
 
-
             <FormikGroups label="PRICE" xs={12} md={6}>
               {/* Calculations */}
               <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
-                <MuiTextField label={intl.formatMessage({ id: "MIN" })} value={this.getMinPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }} />
+                <MuiTextField
+                  label={intl.formatMessage({ id: "MIN" })}
+                  value={this.getMinPrice()}
+                  disabled={true}
+                  type="number"
+                  InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
+                />
               </Grid>
               <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
-                <MuiTextField label={intl.formatMessage({ id: "MAX" })} value={this.getMaxPrice()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }} />
+                <MuiTextField
+                  label={intl.formatMessage({ id: "MAX" })}
+                  value={this.getMaxPrice()}
+                  disabled={true}
+                  type="number"
+                  InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
+                />
               </Grid>
 
               <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
 
-              {
-                values.ServiceConditions.HasCostCeiling ? (
-                  <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
-                ) : null
-              }
+              {values.ServiceConditions.HasCostCeiling ? (
+                <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
+              ) : null}
             </FormikGroups>
           </>
         ) : null}
 
         {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-          <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`} component={FormikNumberEndAdornmentText} adornmentText="h" />
+          <Field
+            label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
+            name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`}
+            component={FormikNumberEndAdornmentText}
+            adornmentText="h"
+          />
         ) : null}
 
-        {
-          !values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-            <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} />
-          ) : null}
-
+        {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
+          <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} />
+        ) : null}
 
         <Field name={`ServiceConditions.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
       </>
@@ -125,23 +144,35 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   }
 
   getAdditionalCost = (): number => {
-    const { values: { ServiceConditions: { Expenses } }, additionalCost } = this.props
+    const {
+      values: {
+        ServiceConditions: { Expenses },
+      },
+      additionalCost,
+    } = this.props
 
     return (Expenses ? Expenses : 0) + additionalCost
   }
 
   getMinPrice = (): number | undefined => {
-    const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MinHoursOfWork } } } = this.props
+    const {
+      values: {
+        ServiceConditions: { WorkersAmount, PricePerHour, MinHoursOfWork },
+      },
+    } = this.props
 
     if (WorkersAmount && PricePerHour && MinHoursOfWork) {
-
       return WorkersAmount * PricePerHour * MinHoursOfWork + this.getAdditionalCost()
     }
 
     return undefined
   }
   getMaxPrice = (): number | undefined => {
-    const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork } } } = this.props
+    const {
+      values: {
+        ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork },
+      },
+    } = this.props
 
     if (WorkersAmount && PricePerHour && MaxHoursOfWork) {
       return WorkersAmount * PricePerHour * MaxHoursOfWork + this.getAdditionalCost()
