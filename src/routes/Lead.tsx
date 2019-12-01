@@ -46,6 +46,7 @@ import NewStorageBuilding from "./Customer/NewBuildings/StorageBuilding"
 import NewCleaningBuilding from "./Customer/NewBuildings/CleaningBuilding"
 import NewDisposalBuilding from "./Customer/NewBuildings/DisposalBuilding"
 import { IBuildingCopy } from '../components/FormikFields/Bundled/BuildingCopy';
+import NewCustomer from './Customer/NewBuildings/NewCustomer';
 interface State extends ILeadContainer {
   initialAwait: Promise<any> | null
 
@@ -386,12 +387,15 @@ class Lead extends Component<Props, State> {
                 exact
                 path={`${match.url}/building`}
                 render={routeProps => (
-                  <Customer
+                  <NewCustomer
                     {...routeProps}
-                    data={Lead}
-                    onChange={data => this.handleChange(data, "Lead")}
-                    save={this.Save}
-                    nextPage={match.url + this.nextPageFunction("/building")}
+                    lead={Lead}
+                    onChangeAndSave={lead => {
+                      this.handleChange(lead, "Lead")
+
+                      return Promise.all([this.Save()])
+                    }}
+                    nextPage={this.redirectToNextPage("/building")}
                   />
                 )}
               />

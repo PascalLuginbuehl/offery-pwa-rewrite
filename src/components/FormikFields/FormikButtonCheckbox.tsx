@@ -89,7 +89,7 @@ class FormikButtonCheckbox extends React.Component<FormikButtonCheckboxProps> {
     if (disableGrid) {
       return ButtonCheckbox
     } else {
-      const defaultGrid: FormikButtonCheckboxProps['overrideGrid'] = { xs: 6, sm: 4, md: 3, lg: 2 }
+      const defaultGrid: FormikButtonCheckboxProps['overrideGrid'] = { xs: 6, sm: 4, md: 3, lg: 3 }
       // SetDefaultValues
       const newGrid = { ...defaultGrid, ...overrideGrid }
       return (

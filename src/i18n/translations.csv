@@ -229,3 +229,14 @@ COPY_FROM,Copy from:,Kopieren von:
 SWITCH_COMPANY,Switch Company,Firma wechslen
 ADDRESS,Address,Adresse
 UNSAVED_CHANGES_CONTINUE,There are still unsaved changes. Do you want to continue,Ungespeicherte Felder. Fortfahren?
+BUILDINGS,Buildings,Gebäude
+DATES,Dates,Termine
+
+VISITING,Visiting,Besichtigung
+MOVING,Moving,Umzug
+PACKINGSERVICE,Packing Service,Einpackservice
+CARDBOARDBOX_DELIVERY,Cardboardbox Delivery,Kartonlieferung
+STORAGE,Storage,Einlagerung/Auslagerung
+DISPOSAL,Disposal,Entsorgung
+CLEANING,Cleaning,Reinigung
+HANDIN,Handin,Abgabetermin
