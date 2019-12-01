@@ -59,15 +59,18 @@ class MobileDashboard extends React.Component<Props, State> {
 
     return (
       <>
-        <List className={classes.root} >
-          {leads.map(({isCached, Lead: lead}) => (
-            <div key={ lead.LeadId }>
+        <List className={classes.root}>
+          {leads.map(({ isCached, Lead: lead }) => (
+            <div key={lead.LeadId}>
               <ListItem disableGutters>
                 <ListItemAvatar>
                   <StatusButton lead={{ isCached, Lead: lead }} />
                 </ListItemAvatar>
 
-                <ListItemText primary={lead.Customer.Firstname + " " + lead.Customer.Lastname} secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate, { year: "numeric", month:"long", day: "2-digit" }) : null} />
+                <ListItemText
+                  primary={lead.Customer.Firstname + " " + lead.Customer.Lastname}
+                  secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate, { year: "numeric", month: "long", day: "2-digit" }) : null}
+                />
 
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => this.setState({ openListActions: openListActions === lead.LeadId ? null : lead.LeadId })}>
@@ -78,30 +81,30 @@ class MobileDashboard extends React.Component<Props, State> {
               <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
                 <List disablePadding>
                   <ListItem className={classes.nested} selected>
-                    <PlainLink to={`/lead/${lead.LeadId}/customer`}><IconButton><RemoveRedEyeIcon fontSize="small" /></IconButton></PlainLink>
-
+                    <PlainLink to={`/lead/${lead.LeadId}/building`}>
+                      <IconButton>
+                        <RemoveRedEyeIcon fontSize="small" />
+                      </IconButton>
+                    </PlainLink>
                     <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
-
                       {/* <IconButton><RecordVoiceOverIcon fontSize="small" /></IconButton>
                       <IconButton><HomeIcon fontSize="small" /></IconButton>
                       <IconButton><MonetizationOnIcon fontSize="small" /></IconButton>
                       <IconButton><CheckCircleIcon fontSize="small" /></IconButton>
                       <IconButton><ArchiveIcon fontSize="small" /></IconButton> */}
-                      <IntlTooltip title="DUPLICATE">
+                      {/* <IntlTooltip title="DUPLICATE">
                         <IconButton><ControlPointDuplicateIcon fontSize="small" /></IconButton>
-                      </IntlTooltip>
-
+                      </IntlTooltip> */}
                     </Collapse>
                   </ListItem>
                 </List>
               </Collapse>
             </div>
-            ))
-          }
+          ))}
         </List>
 
         <PlainLink to="/lead/new/building" className={classes.fab}>
-          <Fab color="primary" >
+          <Fab color="primary">
             <AddIcon />
           </Fab>
         </PlainLink>
