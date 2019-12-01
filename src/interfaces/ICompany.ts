@@ -7,11 +7,16 @@ export interface IAddress {
   PLZ: string,
   City: string
 }
-
 export interface IOfferTemplate {
   OfferTemplateId: number
   Name: string
   DocName: string
+  LanguageCode: string
+}
+export interface IOfferTemplateCategory {
+  NameTextKey: string
+  OfferTemplateCategoryId: number
+  OfferTemplates: IOfferTemplate[]
 }
 
 export interface IVisitConfirmation {
@@ -32,15 +37,15 @@ export interface ICarType {
 }
 
 export interface ICompany {
-  CompanyId: number,
-  Name: string,
-  Email: string,
-  Telephone: string,
-  VatUID: string,
-  HeadQuarter: IAddress,
-  EmployeeUsers:  IUser[]
+  CompanyId: number
+  Name: string
+  Email: string
+  Telephone: string
+  VatUID: string
+  HeadQuarter: IAddress
+  EmployeeUsers: IUser[]
   ShopProducts: IProduct[]
-  OfferTemplates: IOfferTemplate[]
+  OfferTemplateCategories: IOfferTemplateCategory[]
   ContactPerson: IUser
   Addresses: IAddress[]
   Settings: ICompanySetting
