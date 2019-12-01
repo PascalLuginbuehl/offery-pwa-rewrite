@@ -178,7 +178,7 @@ BORE_AMOUNT,Bore amount,Anzahl Bohrungen
 LAMP_DEMONTAGE_PRICE,Lamp demontage price,Preis Lampen abmontieren
 LAMP_DEMONTAGE_AMOUNT,Lamp amount,Anzahl Lampen
 
-DRIVE_HOURS,Hours for travel,Stunden für Anfahrt und Rückfahrt
+DRIVE_HOURS,Hours for travel,Anfahrt und Rückfahrt
 MONTAGE_SERVICE_PRICE,Montage Service price,Preis Montage Service
 DE_MONTAGE_SERVICE_PRICE,Demontage Service price,Preis Demontage
 ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE,Planed working hours,Geplante Arbeitsstunden

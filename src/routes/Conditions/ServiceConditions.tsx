@@ -130,7 +130,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     return (Expenses ? Expenses : 0) + additionalCost
   }
 
-  getMinPrice = (): number | null => {
+  getMinPrice = (): number | undefined => {
     const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MinHoursOfWork } } } = this.props
 
     if (WorkersAmount && PricePerHour && MinHoursOfWork) {
@@ -138,16 +138,16 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       return WorkersAmount * PricePerHour * MinHoursOfWork + this.getAdditionalCost()
     }
 
-    return null
+    return undefined
   }
-  getMaxPrice = () => {
+  getMaxPrice = (): number | undefined => {
     const { values: { ServiceConditions: { WorkersAmount, PricePerHour, MaxHoursOfWork } } } = this.props
 
     if (WorkersAmount && PricePerHour && MaxHoursOfWork) {
       return WorkersAmount * PricePerHour * MaxHoursOfWork + this.getAdditionalCost()
     }
 
-    return null
+    return undefined
   }
 }
 
