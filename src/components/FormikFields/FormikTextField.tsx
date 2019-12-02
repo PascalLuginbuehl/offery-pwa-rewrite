@@ -1,19 +1,16 @@
-import * as React from 'react';
-import MuiTextField, {
-  TextFieldProps as MuiTextFieldProps,
-} from '@material-ui/core/TextField';
-import { FieldProps, getIn } from 'formik';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import Grid, { GridSize } from '@material-ui/core/Grid';
-import { InputAdornment } from '@material-ui/core';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import * as React from "react"
+import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/core/TextField"
+import { FieldProps, getIn } from "formik"
+import { injectIntl, InjectedIntlProps, InjectedIntl } from "react-intl"
+import Grid, { GridSize } from "@material-ui/core/Grid"
+import { InputAdornment } from "@material-ui/core"
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 
-export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omit<MuiTextFieldProps, 'error' | 'name' | 'onChange' | 'value'> {
+export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
 }
-
 
 class FormikTextField extends React.Component<FormikTextFieldProps> {
   // componentWillMount() {
@@ -23,9 +20,12 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
   // }
 
   render() {
-    const { children, intl, field,
+    const {
+      children,
+      intl,
+      field,
       form,
-      variant = 'standard',
+      variant = "standard",
       disabled,
       helperText,
 
@@ -35,45 +35,41 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
       ...props
     } = this.props
 
+    const { name } = field
+    const { touched, errors, isSubmitting } = form
 
-    const { name } = field;
-    const { touched, errors, isSubmitting } = form;
+    const fieldError = getIn(errors, name)
+    const showError = getIn(touched, name) && !!fieldError
 
-    const fieldError = getIn(errors, name);
-    const showError = getIn(touched, name) && !!fieldError;
-
-    const TextFieldElement = <MuiTextField
-      error={showError}
-      fullWidth {...props}
-      helperText={showError ? fieldError : helperText}
-      disabled={disabled != undefined ? disabled : isSubmitting}
-      label={intl.formatMessage({ id: label })}
-
-      {...props}
-      {...field}
-      value={field.value !== undefined ? field.value : ""}
-    >
-      {children}
-    </MuiTextField>
-
+    const TextFieldElement = (
+      <MuiTextField
+        error={showError}
+        fullWidth
+        {...props}
+        helperText={showError ? fieldError : helperText}
+        disabled={disabled != undefined ? disabled : isSubmitting}
+        label={intl.formatMessage({ id: label })}
+        {...props}
+        {...field}
+        value={field.value !== undefined || field.value !== null ? field.value : ""}
+      >
+        {children}
+      </MuiTextField>
+    )
 
     if (disableGrid) {
       return TextFieldElement
     } else {
-      const defaultGrid: FormikTextFieldProps['overrideGrid'] = {xs: 12, md: 6}
+      const defaultGrid: FormikTextFieldProps["overrideGrid"] = { xs: 12, md: 6 }
       // SetDefaultValues
-      const newGrid = {...defaultGrid, ...overrideGrid}
+      const newGrid = { ...defaultGrid, ...overrideGrid }
       return (
         <Grid item xs={newGrid.xs} md={newGrid.md}>
           {TextFieldElement}
         </Grid>
       )
-
     }
-
-
   }
 }
-
 
 export default injectIntl(FormikTextField)

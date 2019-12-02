@@ -245,3 +245,4 @@ APPOINTMENTS,Appointments,Termine
 STORAGE_UNSTORE,Storage/Unstorage,Einlagerung/Auslagerung
 FIX_DELIVERY_COST,Fixed Delivery cost,Lieferpauschale
 PACKING_DELIVERY_DATE,Packing delivery date,Termin Kartonlieferung
+SEND_EMAIL,Send Email,E-Mail versenden

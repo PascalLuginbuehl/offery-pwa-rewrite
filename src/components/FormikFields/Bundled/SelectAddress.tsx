@@ -5,9 +5,8 @@ import { injectIntl, InjectedIntlProps } from "react-intl"
 import { IAddress, IPostAddress } from "../../../interfaces/IAddress"
 import { InputAdornment, IconButton, Grid } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
-import { IBuildingCopy } from "./BuildingCopy";
-import { FormikTextFieldProps } from "../FormikTextField";
-
+import { IBuildingCopy } from "./BuildingCopy"
+import { FormikTextFieldProps } from "../FormikTextField"
 
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
@@ -17,15 +16,13 @@ interface Props extends InjectedIntlProps {
 
 const SelectAddress: React.ComponentType<Props> = ({ buildings, intl, ...props }) => {
   const createLabelString = ({ moveOutBuilding, moveInBuilding, cleaningBuilding, disposalBuilding, storageBuilding }: IBuildingCopy) => {
-
-
     const createString = (address: AdressObj) => {
       const translatedBuildingTypeName = intl.formatMessage({ id: address.label })
       return `${translatedBuildingTypeName}: ${address.container.Street}, ${address.container.PLZ} ${address.container.City}`
     }
 
     interface AdressObj {
-      label: string,
+      label: string
       container: IAddress
     }
 
@@ -40,19 +37,14 @@ const SelectAddress: React.ComponentType<Props> = ({ buildings, intl, ...props }
         return value.container !== null && value.container !== undefined
       })
       .filter(value => {
-        console.log(value)
-        //@ts-ignore
+        // @ts-ignore
         return value.container.Address.hasOwnProperty("AddressId")
       })
-      //@ts-ignore
-      .map(e => e.container.Address)
+      // @ts-ignore
+      .map((e): IAddressObj => ({ label: e.label, container: e.container.Address }))
 
-
-
-    return options.map(e => ({label: createString(e), value: e.container.AddressId}))
+    return options.map(e => ({ label: createString(e), value: e.container.AddressId }))
   }
-
-
 
   return <Field {...props} component={FormikSimpleSelect} notTranslated options={createLabelString(buildings)} />
 }
