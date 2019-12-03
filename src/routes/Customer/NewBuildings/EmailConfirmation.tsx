@@ -72,17 +72,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <SelectAddress label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />
 
-          {/* <Field
-            component={FormikSimpleSelect}
-            notTranslated
-            required
-            options={[moveOutBuilding, moveInBuilding, storageBuilding, disposalBuilding, cleaningBuilding]
-              .filter(notEmpty)
-              .map(e => e.Address)
-              .filter((e): e is IAddress => e.hasOwnProperty("AddressId"))
-              .map((e, index) => ({ value: e.AddressId, label: e.Street + ", " + e.PLZ + " " + e.City }))}
-          /> */}
-
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
           {status && status.msg && <div>{status.msg}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>

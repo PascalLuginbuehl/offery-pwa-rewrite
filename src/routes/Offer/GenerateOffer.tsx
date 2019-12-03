@@ -9,6 +9,11 @@ import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
 import FormikSimpleSelect from '../../components/FormikFields/FormikSimpleSelect';
 import { nullLiteral } from '@babel/types';
+import SelectAddress from '../../components/FormikFields/Bundled/SelectAddress';
+import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import OfferService from '../../services/OfferService';
+import { ILead } from '../../interfaces/ILead';
+
 const styles = (theme: Theme) =>
   createStyles({
 
@@ -17,18 +22,21 @@ const styles = (theme: Theme) =>
 
 interface Values {
   templateCategoryId: number | null
-  templateId: number | null
+  outAddressId: number | null
+  inAddressId: number | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
   nextPage: () => void
   // onSaveAndNextPage: (templateCategoryId: number, type: number, outAddressId: number, inAddressId: number) => Promise<any>
+  buildingOptions: IBuildingCopy
+  lead: ILead
 }
 
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values, isSubmitting, status, resource, selectedCompany } = this.props
-    console.log(values)
+    const { values: {templateCategoryId, inAddressId, outAddressId}, isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -38,24 +46,17 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
             label="TEMPLATE_CATEGORY"
             name="templateCategoryId"
             component={FormikSimpleSelect}
-            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
+            // Fixme, there is no 2 possible
+            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: 2 }))}
           />
 
-          {
-            values.templateCategoryId !== null ?
-            <Field
-              label="TEMPLATE"
-              name="templateId"
-              component={FormikSimpleSelect}
-              notTranslated
-              options={selectedCompany.OfferTemplateCategories[0].OfferTemplates.map(e => ({ label: e.DocName, value: e.OfferTemplateId }))}
-            />
-            : null
-          }
+          <SelectAddress label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
+
+          <SelectAddress label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
 
           {status && status.msg && <div>{status.msg}</div>}
 
-          <Submit isSubmitting={isSubmitting}></Submit>
+          <Submit isSubmitting={isSubmitting || !outAddressId || !inAddressId || !templateCategoryId}></Submit>
         </Form>
       </Grid>
     )
@@ -71,9 +72,13 @@ export default withStyles(styles)(
         //   .required(),
       }),
 
-      mapPropsToValues: props => ({ templateCategoryId: null, templateId: null }),
+      mapPropsToValues: props => ({ templateCategoryId: null, outAddressId: null, inAddressId: null }),
 
       handleSubmit: async (values, actions) => {
+        const {templateCategoryId, inAddressId, outAddressId} = values
+        if ((templateCategoryId && inAddressId && outAddressId)) {
+          const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, "pdf", outAddressId, inAddressId)
+        }
         // console.log(values)
         // // actions.props.
         // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
