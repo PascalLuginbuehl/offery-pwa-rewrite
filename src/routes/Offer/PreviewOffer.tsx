@@ -8,6 +8,8 @@ import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
 import { ILead } from '../../interfaces/ILead';
 import OfferService from '../../services/OfferService';
+import FormikSimpleSelect from '../../components/FormikFields/FormikSimpleSelect';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -16,55 +18,63 @@ const styles = (theme: Theme) =>
 
 
 interface Values {
-
+  selectedOfferId: number | null
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void,
   lead: ILead,
 }
 
 interface State {
-  pdfBlobBase64: string | null
+  pdfBlobBase64: string
 }
 
 class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
-    pdfBlobBase64: null
+    pdfBlobBase64: "about:blank",
   }
 
-  async componentDidMount() {
-    const blob = await OfferService.downloadPdf(18)
-    const string = window.URL.createObjectURL(blob)
-    console.log(string)
-    this.setState({ pdfBlobBase64: string })
-  }
+  previewPDF = async () => {
+    const {values: {selectedOfferId}} = this.props
 
+    if (selectedOfferId) {
+      const blob = await OfferService.downloadPdf(selectedOfferId)
+
+      const string = window.URL.createObjectURL(blob)
+      this.setState({ pdfBlobBase64: string })
+    }
+  }
 
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-      resource,
-      lead
-    } = this.props
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, lead, intl } = this.props
 
     const { pdfBlobBase64 } = this.state
-
+    console.log(lead.Offers)
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="PREVIEW" />
 
-          {lead.Offers.map(offer => offer.OfferId)}
+          <Field
+            label="BUILDING_TYPE"
+            name="selectedOfferId"
+            component={FormikSimpleSelect}
+            notTranslated
+            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime())
+              .filter(offer => offer.DocName !== "TEMPNAME-FILE-NOT-CREATED-YET" && offer.FileExtension === "pdf")
+              .map(offer => ({
+                label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+                value: offer.OfferId,
+              }))}
+          />
+          <Grid item xs={6}>
+            <Button onClick={this.previewPDF} disabled={!values.selectedOfferId} variant="contained" color="primary">
+              <FormattedMessage id="DISPLAY_PDF" />
+            </Button>
+          </Grid>
 
-          {pdfBlobBase64 ? <iframe src={pdfBlobBase64} />: null}
+          {pdfBlobBase64 ? <iframe src={pdfBlobBase64} style={{ width: "100%", height: "calc(100vh - 275px)" }} /> : null}
 
           {status && status.msg && <div>{status.msg}</div>}
 
@@ -75,26 +85,26 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
   }
 }
 
-export default withStyles(styles)(
-  withResource(
-    withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
+export default injectIntl(
+  withStyles(styles)(
+    withResource(
+      withFormik<Props, Values>({
+        validationSchema: Yup.object().shape({
+          // email: Yup.string()
+          //   .email()
+          //   .required(),
+        }),
 
-      mapPropsToValues: props => ({}),
+        mapPropsToValues: props => ({ selectedOfferId : null}),
 
-      handleSubmit: async (values, actions) => {
-        // console.log(values)
-        // // actions.props.
-        // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
-
-        // actions.setSubmitting(false)
-        // actions.props.nextPage()
-      }
-
-    })(PreviewOffer)
+        handleSubmit: async (values, actions) => {
+          // console.log(values)
+          // // actions.props.
+          // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
+          // actions.setSubmitting(false)
+          // actions.props.nextPage()
+        },
+      })(PreviewOffer)
+    )
   )
 )
