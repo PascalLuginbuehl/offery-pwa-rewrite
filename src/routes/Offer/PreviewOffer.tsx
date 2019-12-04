@@ -50,7 +50,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, lead, intl } = this.props
 
     const { pdfBlobBase64 } = this.state
-    console.log(lead.Offers)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -74,7 +74,9 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
             </Button>
           </Grid>
 
-          {pdfBlobBase64 ? <iframe src={pdfBlobBase64} style={{ width: "100%", height: "calc(100vh - 275px)" }} /> : null}
+          {pdfBlobBase64 ? (
+            <iframe src={"https://docs.google.com/viewerng/viewer?url=" + pdfBlobBase64} style={{ width: "100%", height: "calc(100vh - 275px)" }} />
+          ) : null}
 
           {status && status.msg && <div>{status.msg}</div>}
 

@@ -31,7 +31,9 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany } = this.props
+    const { values, isSubmitting, status, resource, selectedCompany } = this.props
+    const { VisitDate, MoveDate } = values
+
 
     return (
       <Grid item xs={12}>
@@ -75,7 +77,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <FormikGroups label="DATES">
             <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
-            <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} />
+            <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null} />
             <Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} />
             <Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} />
             <Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} />
