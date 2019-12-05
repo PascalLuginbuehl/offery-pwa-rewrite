@@ -24,3 +24,10 @@ Automatisch nach einfügen nichts mehr auswählen.
 Kein Capslock für optionen
 
 Invantar open indikator
+EinpackService:
+
+Einpackservice rechtschreibfehler in Header
+Gebäude - Auszugsgebäude hinzufügen
+
+Entsorgungsgebäude fehlt in Entsorgungservice
+

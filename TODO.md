@@ -6,23 +6,9 @@ MoveService kaputt
 
 Enstsorugngsgebäude kopieren von Auszugsgebäude
 
-
 Anzahl ändern mit doppelklick oder so
 
-
-
-EinpackService:
-
-Gebäude - Auszugsgebäude hinzufügen
-
-Einpackservice rechtschreibfehler in Header
-
-
-
 Mehrer materialshops von anderen Shops anzeigen
-
-Entsorgungsgebäude fehlt in Entsorgungservice
-
 
 
 Anhand von auswählten ServiceProps Konditionen/Preise anzeigen

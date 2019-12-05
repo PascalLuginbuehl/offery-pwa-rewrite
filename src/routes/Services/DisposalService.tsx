@@ -1,7 +1,7 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
+import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostDisposalOutBuilding } from '../../interfaces/IBuilding';
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
@@ -12,6 +12,7 @@ import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
+import Disposal from '../../components/FormikFields/Bundled/Disposal';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -20,30 +21,18 @@ const styles = (theme: Theme) =>
 
 interface Values {
   disposalService: IPutDisposalSerivce
-  moveOut: IPostMoveOutBuilding | null
+  disposal: IPostDisposalOutBuilding | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (disposalService: IPutDisposalSerivce, moveOut: IPostMoveOutBuilding | null) => void
+  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding | null) => void
   HasMoveService: boolean
 }
 
 class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-      resource,
-      disposalService,
-      HasMoveService
-    } = this.props
+    const { isSubmitting, status, resource } = this.props
 
     return (
       <Grid item xs={12}>
@@ -58,10 +47,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
 
-          {/* Only show moveout when there is no MoveService
-          {
-            HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
-          } */}
+          <Disposal prefix="disposal" resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
 
@@ -75,23 +61,14 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
-
-      mapPropsToValues: props => ({ disposalService: props.disposalService, moveOut: props.moveOut }),
+      mapPropsToValues: props => ({ disposalService: props.disposalService, disposal: props.disposal }),
 
       handleSubmit: async (values, actions) => {
-        console.log(values)
-        // actions.props.
-        await actions.props.onChangeAndSave(values.disposalService, values.moveOut)
+        await actions.props.onChangeAndSave(values.disposalService, values.disposal)
 
         actions.setSubmitting(false)
         actions.props.nextPage()
-      }
-
+      },
     })(DisposalService)
   )
 )

@@ -676,14 +676,14 @@ class Lead extends Component<Props, State> {
                 render={routeProps => (
                   <DisposalService
                     {...routeProps}
-                    moveOut={moveOut}
+                    disposal={disposal}
                     disposalService={disposalService ? disposalService : emptyDisposalSerivce}
                     HasMoveService={services.HasMoveServiceEnabled}
-                    onChangeAndSave={(serviceData, moveOut) => {
+                    onChangeAndSave={(serviceData, disposal) => {
                       this.handleChange(serviceData, "disposalService")
-                      this.handleChange(moveOut, "moveOut")
+                      this.handleChange(disposal, "disposal")
 
-                      return Promise.all([LeadAPI.SaveMoveOut(moveOut, Lead.LeadId), LeadAPI.SaveDisposalService(Lead.LeadId, serviceData)])
+                      return Promise.all([LeadAPI.SaveDisposal(disposal, Lead.LeadId), LeadAPI.SaveDisposalService(Lead.LeadId, serviceData)])
                     }}
                     nextPage={this.redirectToNextPage("/services/disposal")}
                   />

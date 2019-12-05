@@ -66,10 +66,10 @@ export default ({ prefix, resource }: {prefix: string, resource: IResource}) => 
       <Field
         label="AMOUNT_STAIRS_TO_ENTRY"
         component={FormikNumberEndAdornmentText}
-        adornmentText="m"
+        adornmentText=""
         name={`${prefix}.StairsToEntryAmount`}
         inputProps={{ step: 1, min: 0 }}
-        overrideGrid={{ xs: 12 }}
+        overrideGrid={{ xs: 12, md: 6 }}
       />
 
       <Field
@@ -78,7 +78,7 @@ export default ({ prefix, resource }: {prefix: string, resource: IResource}) => 
         adornmentText="m"
         name={`${prefix}.MetersToParking`}
         inputProps={{ step: 1, min: 1 }}
-        overrideGrid={{ xs: 12 }}
+        overrideGrid={{ xs: 12, md: 6 }}
       />
 
       <FormikGroups label="AREAS" xs={12}>
