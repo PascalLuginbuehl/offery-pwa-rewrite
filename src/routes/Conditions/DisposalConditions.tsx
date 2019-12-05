@@ -33,15 +33,9 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
   public render() {
     const {
       values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
       isSubmitting,
       status,
       intl,
-      resource,
       setFieldValue,
       selectedCompany,
     } = this.props

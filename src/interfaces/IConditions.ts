@@ -102,7 +102,7 @@ export interface ICleaningServiceConditions {
 
 
 export const emptyServiceConditions: IServiceConditions = {
-  IsHourlyRate: false,
+  IsHourlyRate: true,
   HasCostCeiling: false,
   PricePerHour: null,
   MinHoursOfWork: null,

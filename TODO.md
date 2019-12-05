@@ -11,6 +11,7 @@ Anzahl ändern mit doppelklick oder so
 Mehrer materialshops von anderen Shops anzeigen
 
 
+
 Anhand von auswählten ServiceProps Konditionen/Preise anzeigen
 
 rEINIGUNGSKONDITIONEN FULLSCRENN BUGGY
@@ -64,20 +65,3 @@ Anzahl Bearbeiten immer anzeigen
 FreeSolo number automcomplete
 
 Arbeitsstunden nicht min nicht grösser als max
-
-
-
-Backend:
-
-!BUG!: {{url}}api/offer/generate/11/2/docx/134/144
-
-TERRACE10TO20M not translated
-
-Kostendach entfernen bzw.
-
-
-
-
-
-
-
