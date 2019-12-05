@@ -12,6 +12,7 @@ import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
+import IntlTypography from '../../components/Intl/IntlTypography';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,23 +27,14 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding | null) => void
-  HasMoveService: boolean
 }
 
 class PackService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
       isSubmitting,
       status,
       resource,
-      packService,
-      HasMoveService
     } = this.props
 
     console.log(this.props)
@@ -57,10 +49,13 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="packService.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
 
-          {/* Only show moveout when there is no MoveService
-          {
-            HasMoveService ? null : <MoveOut prefix={'moveOut'} resource={resource} />
-          } */}
+          <FormikDivider />
+          <Grid item xs={12}>
+            <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
+          </Grid>
+
+          <MoveOut prefix={"moveOut"} resource={resource} />
+
 
           {status && status.msg && <div>{status.msg}</div>}
 

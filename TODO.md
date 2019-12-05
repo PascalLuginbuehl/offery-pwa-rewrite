@@ -6,17 +6,8 @@ MoveService kaputt
 
 Enstsorugngsgebäude kopieren von Auszugsgebäude
 
-Inventar: None option einfügen
 
-Automatisch nach einfügen nichts mehr auswählen.
-
-Kein Capslock für optionen
-
-
-
-Invantar open indikator
-
-Anzahl ändern
+Anzahl ändern mit doppelklick oder so
 
 
 
@@ -29,14 +20,6 @@ Einpackservice rechtschreibfehler in Header
 
 
 Mehrer materialshops von anderen Shops anzeigen
-
-
-
-
-
-
-
-
 
 Entsorgungsgebäude fehlt in Entsorgungservice
 

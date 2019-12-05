@@ -20,6 +20,7 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
   // }
 
   render() {
+    const defaultGrid: FormikTextFieldProps['overrideGrid'] = { xs: 12, md: 6 }
     const {
       children,
       intl,
@@ -31,7 +32,7 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
 
       label,
       disableGrid = false,
-      overrideGrid = {},
+      overrideGrid = defaultGrid,
       ...props
     } = this.props
 
@@ -60,11 +61,9 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
     if (disableGrid) {
       return TextFieldElement
     } else {
-      const defaultGrid: FormikTextFieldProps["overrideGrid"] = { xs: 12, md: 6 }
       // SetDefaultValues
-      const newGrid = { ...defaultGrid, ...overrideGrid }
       return (
-        <Grid item xs={newGrid.xs} md={newGrid.md}>
+        <Grid item {...overrideGrid}>
           {TextFieldElement}
         </Grid>
       )

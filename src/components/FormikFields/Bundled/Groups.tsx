@@ -11,7 +11,7 @@ const FormikGroups: React.ComponentType<{ label: string, children: React.ReactNo
       <FormikDivider />
 
       <Grid item xs={12}>
-        <IntlTypography variant="subtitle2">{label}</IntlTypography>
+        <IntlTypography variant="subtitle1" style={{fontWeight: "bold"}}>{label}</IntlTypography>
       </Grid>
 
       {children}

@@ -40,7 +40,10 @@ const styles = (theme: Theme) =>
     },
     buttonGroupPadding: {
       padding: 4,
-    }
+    },
+    buttonRootText: {
+      textTransform: "none"
+    },
   })
 
 interface State {
@@ -95,7 +98,7 @@ class InventoryItems extends React.Component<Props, State> {
 
           {furniture.FMaterials.length > 0 || furniture.FSizes.length > 0 ? (
             <IconButton className={classes.moreButton} size="small" onClick={this.toggleMore}>
-              <MoreVertIcon />
+              <MoreVertIcon style={{ transition: "0.3s ease-in-out", transform: moreOpen ? "rotate(90deg)" : "rotate(0deg)" }} />
             </IconButton>
           ) : null}
         </Grid>
@@ -107,25 +110,25 @@ class InventoryItems extends React.Component<Props, State> {
                 {furniture.FMaterials.length > 0 ? (
                   <ButtonGroup className={classes.buttonGroupPadding}>
                     {selectedMaterialId === null ? (
-                      <Button color="primary" variant="contained">
-                        <FormattedMessage id="NONE" />
+                      <Button color="primary" variant="contained" classes={{ root: classes.buttonRootText }}>
+                        <FormattedMessage id="NOT_SET" />
                       </Button>
                     ) : (
-                      <Button onClick={() => this.setState({ selectedMaterialId: null })}>
-                        <FormattedMessage id="NONE" />
+                      <Button onClick={() => this.setState({ selectedMaterialId: null })} classes={{ root: classes.buttonRootText }}>
+                        <FormattedMessage id="NOT_SET" />
                       </Button>
                     )}
 
                     {furniture.FMaterials.map((e, index) => {
                       if (e.FMaterialId == selectedMaterialId) {
                         return (
-                          <Button key={index} color="primary" variant="contained">
+                          <Button key={index} color="primary" variant="contained" classes={{ root: classes.buttonRootText }}>
                             <FormattedMessage id={e.NameTextKey} />
                           </Button>
                         )
                       } else {
                         return (
-                          <Button key={index} onClick={() => this.setState({ selectedMaterialId: e.FMaterialId })}>
+                          <Button key={index} onClick={() => this.setState({ selectedMaterialId: e.FMaterialId })} classes={{ root: classes.buttonRootText }}>
                             <FormattedMessage id={e.NameTextKey} />
                           </Button>
                         )
@@ -137,24 +140,24 @@ class InventoryItems extends React.Component<Props, State> {
                 {furniture.FSizes.length > 0 ? (
                   <ButtonGroup>
                     {selectedSizeId === null ? (
-                      <Button color="primary" variant="contained">
-                        <FormattedMessage id="NONE" />
+                      <Button color="primary" variant="contained" classes={{ root: classes.buttonRootText }}>
+                        <FormattedMessage id="NOT_SET" />
                       </Button>
                     ) : (
-                      <Button onClick={() => this.setState({ selectedSizeId: null })}>
-                        <FormattedMessage id="NONE" />
+                      <Button onClick={() => this.setState({ selectedSizeId: null })} classes={{ root: classes.buttonRootText }}>
+                        <FormattedMessage id="NOT_SET" />
                       </Button>
                     )}
                     {furniture.FSizes.map((e, index) => {
                       if (e.FSizeId == selectedSizeId) {
                         return (
-                          <Button key={index} color="primary" variant="contained">
+                          <Button key={index} color="primary" variant="contained" classes={{ root: classes.buttonRootText }}>
                             <FormattedMessage id={e.NameTextKey} />
                           </Button>
                         )
                       } else {
                         return (
-                          <Button key={index} onClick={() => this.setState({ selectedSizeId: e.FSizeId })}>
+                          <Button key={index} onClick={() => this.setState({ selectedSizeId: e.FSizeId })} classes={{ root: classes.buttonRootText }}>
                             <FormattedMessage id={e.NameTextKey} />
                           </Button>
                         )

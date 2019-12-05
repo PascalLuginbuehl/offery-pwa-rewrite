@@ -247,3 +247,6 @@ FIX_DELIVERY_COST,Fixed Delivery cost,Lieferpauschale
 PACKING_DELIVERY_DATE,Packing delivery date,Termin Kartonlieferung
 DISPLAY_PDF,Display PDF,PDF anzeigen
 SEND_EMAIL,Send Email,E-Mail versenden
+NOT_SET,Not set,Nicht angegeben
+AREAS,Areas,Bereiche
+BUILDING,Building,Gebäude

@@ -15,3 +15,12 @@ FormikDateTimePicker böggy
 Alle DatePicker mit DateTime picker augetauscht
 Umzugsservice, Umzugstermin: DateTime
 
+
+
+Inventar: None option einfügen
+
+Automatisch nach einfügen nichts mehr auswählen.
+
+Kein Capslock für optionen
+
+Invantar open indikator

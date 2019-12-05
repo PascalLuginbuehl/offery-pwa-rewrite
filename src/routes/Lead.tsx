@@ -581,7 +581,6 @@ class Lead extends Component<Props, State> {
                     {...routeProps}
                     moveOut={moveOut}
                     packService={packService ? packService : emptyPackService}
-                    HasMoveService={services.HasMoveServiceEnabled}
                     onChangeAndSave={(serviceData, moveOut) => {
                       this.handleChange(serviceData, "packService")
                       this.handleChange(moveOut, "moveOut")
