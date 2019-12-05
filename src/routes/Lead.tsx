@@ -836,9 +836,13 @@ class Lead extends Component<Props, State> {
                 <Redirect to={`${match.url}/offer/generate`} />
               </Route>
 
-              <Route exact path={`${match.url}/offer/generate`} render={routeProps => <Generate {...routeProps} nextPage={this.redirectToNextPage("/offer/generate")} />} />
+              <Route
+                exact
+                path={`${match.url}/offer/generate`}
+                render={routeProps => <Generate {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={this.redirectToNextPage("/offer/generate")} />}
+              />
 
-              <Route exact path={`${match.url}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} nextPage={this.redirectToNextPage("/offer/preview")} />} />
+              <Route exact path={`${match.url}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={this.redirectToNextPage("/offer/preview")} />} />
             </>
           ) : Lead ? (
             <Route

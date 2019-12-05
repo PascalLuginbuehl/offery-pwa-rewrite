@@ -1,5 +1,6 @@
 import { IPostAddress, IAddress } from "./IAddress";
 import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions } from "./IConditions";
+import { IOffer } from "./IOffer";
 
 export interface IPostCustomer {
   Firstname: string
@@ -81,6 +82,8 @@ export interface ILead extends ICompressedLead {
   DisposalServiceConditions: IDisposalServiceConditions | null
   StorageServiceConditions: IStorageServiceConditions | null
   CleaningServiceConditions: ICleaningServiceConditions | null
+
+  Offers: IOffer[]
 }
 
 

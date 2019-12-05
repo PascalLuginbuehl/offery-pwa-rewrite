@@ -5,8 +5,9 @@ import { injectIntl, InjectedIntlProps } from "react-intl"
 import { IAddress, IPostAddress } from "../../../interfaces/IAddress"
 import { InputAdornment, IconButton, Grid } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
-import { IBuildingCopy } from "./BuildingCopy"
-import { FormikTextFieldProps } from "../FormikTextField"
+import { IBuildingCopy } from "./BuildingCopy";
+import { FormikTextFieldProps } from "../FormikTextField";
+import { BaseBuilding } from "../../../interfaces/IBuilding";
 
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
@@ -27,21 +28,20 @@ const SelectAddress: React.ComponentType<Props> = ({ buildings, intl, ...props }
     }
 
     const options: AdressObj[] = [
-      { label: "MOVE_OUT_BUILDING", container: moveOutBuilding },
-      { label: "MOVE_IN_BUILDING", container: moveInBuilding },
-      { label: "STORAGE_BUILDING", container: disposalBuilding },
-      { label: "CLEANING_BUILDING", container: storageBuilding },
-      { label: "DISPOSAL_BUILDING", container: cleaningBuilding },
+      { label: "MOVE_OUT_BUILDING", container: moveOutBuilding as BaseBuilding },
+      { label: "MOVE_IN_BUILDING", container: moveInBuilding as BaseBuilding },
+      { label: "STORAGE_BUILDING", container: disposalBuilding as BaseBuilding },
+      { label: "CLEANING_BUILDING", container: storageBuilding as BaseBuilding },
+      { label: "DISPOSAL_BUILDING", container: cleaningBuilding as {Address: IAddress} },
     ]
-      .filter(value => {
+      .filter((value) => {
         return value.container !== null && value.container !== undefined
       })
-      .filter(value => {
-        // @ts-ignore
-        return value.container.Address.hasOwnProperty("AddressId")
-      })
+      .map(value => ({ label: value.label, container: value.container.Address }))
       // @ts-ignore
-      .map((e): IAddressObj => ({ label: e.label, container: e.container.Address }))
+      .filter((value: {label: string, container: IAddress}) => {
+        return value.container.hasOwnProperty("AddressId")
+      })
 
     return options.map(e => ({ label: createString(e), value: e.container.AddressId }))
   }

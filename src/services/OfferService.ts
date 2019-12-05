@@ -13,15 +13,21 @@ class ServicesService {
     return json
   }
 
-  async getOffer(leadId: number, templateCategoryId: number, type: number, outAddressId: number, inAddressId: number) {
+  async getOffer(leadId: number, templateCategoryId: number, type: "pdf" | "docx", outAddressId: number, inAddressId: number): Promise<IOffer> {
     return (
       fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId + "/" + type + "/" + outAddressId + "/" + inAddressId, await LoginService.authorizeRequest())
         .then(errorFunction)
         .then(response => response.json())
         // .then(middleWare)
         .then(json => this.toSpecificType<IOffer>(json))
-        .catch(e => null)
+      // .catch(e => console.log(e))
     )
+  }
+
+  async downloadPdf(offerId: number): Promise<any> {
+    return fetch(API_URL + "/offer/" + offerId + "/file", await LoginService.authorizeRequest())
+      .then(errorFunction)
+      .then(response => response.blob())
   }
 }
 
