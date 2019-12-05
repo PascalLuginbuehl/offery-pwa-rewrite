@@ -6,7 +6,6 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService, IPutPackService } from '../../interfaces/IService';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
@@ -55,7 +54,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <FormikDivider />
 
-          <Field name="packService.PackServiceDate" label="PACK_DATE" component={DatePicker} />
+          <Field name="packService.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
 
           {/* Only show moveout when there is no MoveService
           {

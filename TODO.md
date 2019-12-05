@@ -1,32 +1,10 @@
-Umzugstermin auf 15min schritte
-PLZ und Ort wechseln
-FormikDateTimePicker böggy
-
-
-
-
-FormikDateTimepicker Defaultanzeige auf umzugstermin
-
-* Einpackservice Umzug -1
-* Kartonlierferung: Besichtigung +1
-* Einlagerung/Auslagerung: Umzug
-* Entsorgung: Umzug
-* Reinigung: Umzug + 1
-* Abgebetermin: Reinigung / Umzug + 1
-
-
+Service worker disablen
 
 Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
 
-
-
 MoveService kaputt
 
-
-
 Enstsorugngsgebäude kopieren von Auszugsgebäude
-
-
 
 Umzugsservice, Umzugstermin: DateTime
 

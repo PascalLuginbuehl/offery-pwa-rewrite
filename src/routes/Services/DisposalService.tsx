@@ -6,7 +6,6 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutDisposalSerivce } from '../../interfaces/IService';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
@@ -56,7 +55,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <FormikDivider />
 
-          <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={DatePicker} />
+          <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
 
           {/* Only show moveout when there is no MoveService
           {

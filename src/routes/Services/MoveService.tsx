@@ -6,7 +6,6 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService } from '../../interfaces/IService';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
@@ -67,7 +66,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 
           <FormikDivider />
 
-          <Field name="moveService.MoveDate" label="MOVE_DATE" component={DatePicker} />
+          <Field name="moveService.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
 
           <Grid item xs={12}>
             <IntlTypography variant="body1">MOVE_OUT_BUILDING</IntlTypography>

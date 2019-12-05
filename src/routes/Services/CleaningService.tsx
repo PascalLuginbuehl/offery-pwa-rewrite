@@ -8,7 +8,6 @@ import FormikTextField from '../../components/FormikFields/FormikTextField';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutCleaningService } from '../../interfaces/IService';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
@@ -52,13 +51,13 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={FormikButtonCheckbox} />
           <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
           <FormikDivider />
-          <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={DatePicker} />
-          <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={DatePicker} />
+          <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
+          <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} />
 
           <BuildingCopy buildings={buildingOptions} />
 
-          <Cleaning prefix={'cleaning'} resource={resource} />
+          <Cleaning prefix={"cleaning"} resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>

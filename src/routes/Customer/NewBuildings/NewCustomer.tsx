@@ -12,7 +12,6 @@ import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups";
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect";
 import FormikTextField from "../../../components/FormikFields/FormikTextField";
-import DatePicker from "../../../components/FormikFields/FormikDatePicker"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox";
 import { IPostLead } from "../../../interfaces/ILead";
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker";
@@ -40,7 +39,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="CUSTOMER" />
 
-          <FormikGroups label="CUSTOMER">
+          <FormikGroups label="CUSTOMER" xs={12}>
             <Field label="LASTNAME" name="Customer.Lastname" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
             <Field label="FIRSTNAME" name="Customer.Firstname" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
@@ -75,18 +74,48 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
           </FormikGroups>
 
-          <FormikGroups label="DATES">
+          <FormikGroups label="DATES" xs={12}>
             <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
             <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null} />
-            <Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} />
-            <Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} />
-            <Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} />
-            <Field name="DisposalDate" label="DISPOSAL" component={FormikDateTimePicker} />
-            <Field name="CleaningDate" label="CLEANING" component={FormikDateTimePicker} />
-            <Field name="HandOverDate" label="HANDIN" component={FormikDateTimePicker} />
+            <Field
+              name="PackServiceDate"
+              label="PACKINGSERVICE"
+              component={FormikDateTimePicker}
+              initialFocusedDate={MoveDate ? MoveDate : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null}
+            />
+            <Field
+              name="DeliveryDate"
+              label="CARDBOARDBOX_DELIVERY"
+              component={FormikDateTimePicker}
+              initialFocusedDate={VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 1) : null}
+            />
+            <Field
+              name="StorageDate"
+              label="STORAGE"
+              component={FormikDateTimePicker}
+              initialFocusedDate={MoveDate ? MoveDate : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null}
+            />
+            <Field
+              name="DisposalDate"
+              label="DISPOSAL"
+              component={FormikDateTimePicker}
+              initialFocusedDate={MoveDate ? MoveDate : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null}
+            />
+            <Field
+              name="CleaningDate"
+              label="CLEANING"
+              component={FormikDateTimePicker}
+              initialFocusedDate={MoveDate ? new Date(MoveDate).setDate(MoveDate.getDate() + 1) : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 8) : null}
+            />
+            <Field
+              name="HandOverDate"
+              label="HANDIN"
+              component={FormikDateTimePicker}
+              initialFocusedDate={MoveDate ? new Date(MoveDate).setDate(MoveDate.getDate() + 1) : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 8) : null}
+            />
           </FormikGroups>
 
-          <FormikGroups label="BUILDINGS">
+          <FormikGroups label="BUILDINGS" xs={12}>
             <Field name="HasMoveOutBuilding" label="MOVE_OUT_BUILDING" component={FormikButtonCheckbox} />
             <Field name="HasMoveInBuilding" label="MOVE_IN_BUILDING" component={FormikButtonCheckbox} />
             <Field name="HasStorageInBuilding" label="STORAGE_BUILDING" component={FormikButtonCheckbox} />

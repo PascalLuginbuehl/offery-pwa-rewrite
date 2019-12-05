@@ -6,7 +6,6 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder, ShopTypeEnum } from '../../interfaces/IShop';
 import { IProduct } from '../../interfaces/IProduct';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'

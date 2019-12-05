@@ -1,6 +1,5 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from '@material-ui/core'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
-// import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
 import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
 import * as React from 'react'
@@ -8,15 +7,12 @@ import BigCheckbox from '../../components/Validator/BigCheckbox';
 import { withResource, WithResourceProps } from '../../providers/withResource';
 import { IPostMoveInBuilding } from '../../interfaces/IBuilding';
 import IntlTypography from '../../components/Intl/IntlTypography';
-import ValidatedDatePicker from '../../components/Validator/ValidatedDatePicker';
-// import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Switch from '../../components/FormikFields/Switch';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices } from '../../interfaces/IService';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';

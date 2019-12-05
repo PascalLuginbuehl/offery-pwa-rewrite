@@ -6,7 +6,6 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import DatePicker from '../../components/FormikFields/FormikDatePicker';
 import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService } from '../../interfaces/IService';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
