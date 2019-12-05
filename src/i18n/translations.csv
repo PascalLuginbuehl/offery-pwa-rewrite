@@ -84,7 +84,8 @@ ATTIC,Attic,Dachboden
 GARAGE,Garage,Garage
 GARDEN,Garden,Garten
 WINTERGARDEN,Wintergarden,Wintergarten
-FULL_NAME,Contactperson,Kontaktperson
+FULL_NAME,Full name,Kompletter name
+CONTACT_PERSON,Contactperson,Kontaktperson
 CONTACTPERSON_EMAIL,Contactperson E-Mail,Kontaktperson E-Mail
 CONTACT_PERSON_TEL,Contactperson Phone,Kontaktperson Telefon
 BUILDING_TYPE_DETAIL,Building Type,Wohnungsart detail
@@ -95,6 +96,7 @@ AMOUNT_NORMAL_WINDOWS,Amount normal Windows,Anzahl Normale Fenster
 AMOUNT_HIGH_WINDOWS,Amount high Windows,Anzahl Hochfenster
 BUILTIN_WARDROBE,Builtin Wardrobe,Einbauschränke
 POLLUTION_DEGREE_GENERAL,Polutiondegree General,Verschmutzungsgrad Allgemein
+POLLUTION,Polution,Verschmutzung
 PETS,Pets,Haustierhaltung
 HARDENED_DIRT,Hardened Dirt Kitchen/Bath,verhärteter Dreck Küche/Bad
 MOLD_AT_WALL,Mold Wall,Schimmel Wand

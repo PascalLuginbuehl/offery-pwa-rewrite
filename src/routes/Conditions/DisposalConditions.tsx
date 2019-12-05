@@ -47,18 +47,13 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
         <Form>
           <PageHeader title="DISPOSAL_CONDITIONS" />
 
-          <ServiceConditions
-            additionalCost={this.getAdditionalCost()}
-            setFieldValue={setFieldValue}
-            values={values}
-          >
+          <ServiceConditions additionalCost={this.getAdditionalCost()} setFieldValue={setFieldValue} values={values}>
             <FormikDivider />
 
             <FormikGroups label="PRICES" xs={6} md={3}>
-              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
-              <Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} />
+              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              <Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
             </FormikGroups>
-
 
             <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
               <Field label="AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
@@ -67,7 +62,14 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
 
             <FormikGroups label="DISPOSAL_FEES_PER_CUBIC_METER" xs={12}>
               <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
-              <Field label="CHF_PER_M" name="CostPerCubicInMoney" component={FormikNumberEndAdornmentText} position="start" adornmentText="CHF/m³" overrideGrid={{ xs: 3, md: 3 }} />
+              <Field
+                label="CHF_PER_M"
+                name="CostPerCubicInMoney"
+                component={FormikNumberEndAdornmentText}
+                position="start"
+                adornmentText="CHF/m³"
+                overrideGrid={{ xs: 3, md: 3 }}
+              />
 
               <Grid item xs={5} md={6}>
                 <MuiTextField
@@ -75,11 +77,10 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
                   value={(values.Volume ? values.Volume : 0) * (values.CostPerCubicInMoney ? values.CostPerCubicInMoney : 0)}
                   disabled={true}
                   type="number"
-                  InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }}
+                  InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
                 />
               </Grid>
             </FormikGroups>
-
           </ServiceConditions>
 
           {status && status.msg && <div>{status.msg}</div>}
