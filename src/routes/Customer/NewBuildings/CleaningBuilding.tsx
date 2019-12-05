@@ -54,6 +54,8 @@ export default injectIntl(
           await actions.props.onChangeAndSave(values.cleaningBuilding)
 
           actions.setSubmitting(false)
+
+          actions.resetForm()
           actions.props.nextPage()
         },
       })(CleaningBuilding)

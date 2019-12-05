@@ -1,11 +1,7 @@
 import * as React from 'react'
-import * as Yup from 'yup'
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
-
+import { createStyles, Tabs, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
+import { FormikProps, withFormik } from 'formik';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-
-
 import MoveOut from '../../../components/FormikFields/Bundled/MoveOut';
 import { IMoveOutBuilding, IPostMoveOutBuilding } from '../../../interfaces/IBuilding';
 import Form from '../../../components/FormikFields/Form';
@@ -31,17 +27,9 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
       isSubmitting,
       status,
-      intl,
       resource,
-      setFieldValue,
       selectedCompany,
     } = this.props
 
@@ -66,20 +54,14 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        validationSchema: Yup.object().shape({
-          // email: Yup.string()
-          //   .email()
-          //   .required(),
-        }),
-
         mapPropsToValues: props => ({ moveOutBuilding: props.moveOutBuilding }),
 
         handleSubmit: async (values, actions) => {
-          console.log(values)
-          // actions.props.
           await actions.props.onChangeAndSave(values.moveOutBuilding)
 
           actions.setSubmitting(false)
+
+          actions.resetForm()
           actions.props.nextPage()
         }
 

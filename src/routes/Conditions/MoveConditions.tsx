@@ -1,9 +1,8 @@
 import * as React from 'react'
-import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
+import { createStyles, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
+import { Formik, FormikProps, Field, withFormik } from 'formik';
 import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
@@ -31,15 +30,8 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
       values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
       isSubmitting,
       status,
-      intl,
-      resource,
       setFieldValue,
       selectedCompany,
     } = this.props
@@ -103,21 +95,14 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        validationSchema: Yup.object().shape({
-          // email: Yup.string()
-          //   .email()
-          //   .required(),
-        }),
-
         mapPropsToValues: props => ({...props.moveConditions }),
 
         handleSubmit: async (values, actions) => {
-          console.log(values)
-          // actions.props.
           await actions.props.onChangeAndSave(values)
 
           actions.setSubmitting(false)
-          // actions.props.nextPage()
+          actions.resetForm()
+          actions.props.nextPage()
         }
 
       })(MoveConditions)

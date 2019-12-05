@@ -10,7 +10,6 @@ import Customer from './Customer';
 import Loading from '../components/Loading';
 import { FormattedMessage } from 'react-intl';
 import NavItem from '../components/Navigation/NavItem';
-import EmailConfirmation from './Customer/EmailConfirmation';
 import OriginalSnackbar from '../components/SuccessSnackbar';
 import OfflinePinIcon from '@material-ui/icons/OfflinePin'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'

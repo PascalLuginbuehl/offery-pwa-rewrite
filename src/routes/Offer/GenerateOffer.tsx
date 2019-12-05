@@ -5,7 +5,6 @@ import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, Injec
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-
 import PageHeader from '../../components/PageHeader';
 import FormikSimpleSelect from '../../components/FormikFields/FormikSimpleSelect';
 import { nullLiteral } from '@babel/types';
@@ -66,12 +65,6 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
-
       mapPropsToValues: props => ({ templateCategoryId: null, outAddressId: null, inAddressId: null }),
 
       handleSubmit: async (values, actions) => {
@@ -82,8 +75,10 @@ export default withStyles(styles)(
         // console.log(values)
         // // actions.props.
         // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
-        // actions.setSubmitting(false)
-        // actions.props.nextPage()
+
+        actions.setSubmitting(false)
+        actions.resetForm()
+        actions.props.nextPage()
       },
     })(GenerateOffer)
   )

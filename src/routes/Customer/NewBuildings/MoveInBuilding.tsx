@@ -51,6 +51,8 @@ export default injectIntl(
           await actions.props.onChangeAndSave(values.moveInBuilding)
 
           actions.setSubmitting(false)
+
+          actions.resetForm()
           actions.props.nextPage()
         },
       })(MoveInBuilding)

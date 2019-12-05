@@ -1,19 +1,11 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from '@material-ui/core'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
-import CounterTable, { Cart } from '../../components/ShopElements/CounterTable'
-import GridSelect, { GridSelectItem } from '../../components/ShopElements/GridSelect'
 import * as React from 'react'
-import BigCheckbox from '../../components/Validator/BigCheckbox';
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding } from '../../interfaces/IBuilding';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Switch from '../../components/FormikFields/Switch';
+import { FormikProps, Field, withFormik } from 'formik';
 import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import { IPutServices, emptyServices } from '../../interfaces/IService';
+import { IPutServices } from '../../interfaces/IService';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 
@@ -70,19 +62,14 @@ class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, IPutServices>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
-
       mapPropsToValues: props => props.data,
 
       handleSubmit: async (values, actions) => {
-        console.log(values)
-        // actions.props.
         await actions.props.onChangeAndSave(values)
         actions.setSubmitting(false)
+
+
+        actions.resetForm()
         actions.props.nextPage()
       }
 

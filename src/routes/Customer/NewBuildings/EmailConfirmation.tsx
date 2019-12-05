@@ -101,6 +101,8 @@ export default injectIntl(
 
         handleSubmit: async (values, actions) => {
           actions.setSubmitting(false)
+
+          actions.resetForm()
           actions.props.nextPage()
         },
       })(Customer)

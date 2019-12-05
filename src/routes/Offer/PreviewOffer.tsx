@@ -91,12 +91,6 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        validationSchema: Yup.object().shape({
-          // email: Yup.string()
-          //   .email()
-          //   .required(),
-        }),
-
         mapPropsToValues: props => ({ selectedOfferId : null}),
 
         handleSubmit: async (values, actions) => {
@@ -105,6 +99,10 @@ export default injectIntl(
           // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
           // actions.setSubmitting(false)
           // actions.props.nextPage()
+
+          actions.setSubmitting(false)
+          actions.resetForm()
+          actions.props.nextPage()
         },
       })(PreviewOffer)
     )

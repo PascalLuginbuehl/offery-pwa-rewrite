@@ -262,18 +262,14 @@ injectIntl(
   withStyles(styles, {name: "MoveShop"})(
     withResource(
       withFormik<Props, IMaterialOrder>({
-        validationSchema: Yup.object().shape({
-          // email: Yup.string()
-          //   .email()
-          //   .required(),
-        }),
-
         mapPropsToValues: props => props.materialOrder,
 
         handleSubmit: async (values, actions) => {
           await actions.props.onChangeAndSave(values)
 
           actions.setSubmitting(false)
+
+          actions.resetForm()
           actions.props.nextPage()
         }
 

@@ -1,14 +1,12 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
-import { Formik, FormikProps, withFormik } from "formik"
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+import { FormikProps, withFormik } from "formik"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
-import { IPostMoveInBuilding, IPostStorageBuilding } from "../../../interfaces/IBuilding"
+import { IPostStorageBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
-import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
 import Storage from "../../../components/FormikFields/Bundled/Storage";
 
 const styles = (theme: Theme) => createStyles({})
@@ -52,6 +50,8 @@ export default injectIntl(
           await actions.props.onChangeAndSave(values.storageBuilding)
 
           actions.setSubmitting(false)
+
+          actions.resetForm()
           actions.props.nextPage()
         },
       })(StorageBuilding)

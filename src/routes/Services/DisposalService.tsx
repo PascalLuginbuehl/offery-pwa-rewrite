@@ -1,13 +1,11 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
+import { createStyles, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostDisposalOutBuilding } from '../../interfaces/IBuilding';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import * as Yup from 'yup'
+import { IPostDisposalOutBuilding } from '../../interfaces/IBuilding';
+import { FormikProps, Field, withFormik } from 'formik';
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
 import { IPutDisposalSerivce } from '../../interfaces/IService';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
@@ -67,6 +65,8 @@ export default withStyles(styles)(
         await actions.props.onChangeAndSave(values.disposalService, values.disposal)
 
         actions.setSubmitting(false)
+
+        actions.resetForm()
         actions.props.nextPage()
       },
     })(DisposalService)

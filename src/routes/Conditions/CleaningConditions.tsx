@@ -1,19 +1,15 @@
 import * as React from 'react'
-import * as Yup from 'yup'
 import Form from '../../components/FormikFields/Form';
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
+import { createStyles, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
+import { FormikProps, Field, withFormik } from 'formik';
 import FormikTextField from '../../components/FormikFields/FormikTextField';
 import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
-import { IMoveServiceConditions, IPackServiceConditions, ICleaningServiceConditions } from '../../interfaces/IConditions';
+import { ICleaningServiceConditions } from '../../interfaces/IConditions';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import ServiceConditions from './ServiceConditions';
-import Switch from '../../components/Validator/Switch';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
 import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
@@ -35,17 +31,9 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
       isSubmitting,
       status,
       intl,
-      resource,
-      setFieldValue,
       selectedCompany,
     } = this.props
 
@@ -122,21 +110,14 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        validationSchema: Yup.object().shape({
-          // email: Yup.string()
-          //   .email()
-          //   .required(),
-        }),
-
         mapPropsToValues: props => ({ ...props.cleaningConditions }),
 
         handleSubmit: async (values, actions) => {
-          console.log(values)
-          // actions.props.
           await actions.props.onChangeAndSave(values)
 
           actions.setSubmitting(false)
-          // actions.props.nextPage()
+          actions.resetForm()
+          actions.props.nextPage()
         }
 
       })(CleaningConditions)

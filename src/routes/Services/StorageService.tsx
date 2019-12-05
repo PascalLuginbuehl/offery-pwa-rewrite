@@ -87,11 +87,11 @@ export default withStyles(styles)(
       mapPropsToValues: props => ({ storageService: props.storageService, storage: props.storage }),
 
       handleSubmit: async (values, actions) => {
-        console.log(values)
-        // actions.props.
         await actions.props.onChangeAndSave(values.storageService, values.storage)
 
         actions.setSubmitting(false)
+
+        actions.resetForm()
         actions.props.nextPage()
       },
     })(StorageService)

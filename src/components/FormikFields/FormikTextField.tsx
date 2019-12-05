@@ -52,7 +52,7 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
         label={intl.formatMessage({ id: label })}
         {...props}
         {...field}
-        value={field.value !== undefined || field.value !== null ? field.value : ""}
+        value={field.value === undefined || field.value === null ? "" : field.value }
       >
         {children}
       </MuiTextField>

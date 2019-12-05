@@ -1,12 +1,11 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import * as Yup from 'yup'
+import { IPostMoveOutBuilding } from '../../interfaces/IBuilding';
+import { FormikProps, Field, withFormik } from 'formik';
 import Form from '../../components/FormikFields/Form';
 import Submit from '../../components/FormikFields/Submit';
-import { IPutServices, emptyServices, IPutMoveService, IPutPackService } from '../../interfaces/IService';
+import { IPutPackService } from '../../interfaces/IService';
 import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
@@ -69,21 +68,16 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
-
       mapPropsToValues: props => ({ packService: props.packService, moveOut: props.moveOut }),
 
       handleSubmit: async (values, actions) => {
-        console.log(values)
-        // actions.props.
         await actions.props.onChangeAndSave(values.packService, values.moveOut)
 
         actions.setSubmitting(false)
+
+        actions.resetForm()
         actions.props.nextPage()
+
       }
 
     })(PackService)

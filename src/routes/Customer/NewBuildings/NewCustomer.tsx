@@ -40,9 +40,9 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="CUSTOMER" />
 
           <FormikGroups label="CUSTOMER" xs={12}>
-            <Field label="LASTNAME" name="Customer.Lastname" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
+            <Field label="LASTNAME" name="Customer.Lastname" required component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
-            <Field label="FIRSTNAME" name="Customer.Firstname" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
+            <Field label="FIRSTNAME" name="Customer.Firstname" required component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
             <Field
               label="GENDER"
@@ -70,8 +70,8 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
             <Field label="COMPANY" name="Customer.CompanyName" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
-            <Field label="EMAIL" name="Customer.Email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
-            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
+            <Field label="EMAIL" name="Customer.Email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
+            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
           </FormikGroups>
 
           <FormikGroups label="DATES" xs={12}>

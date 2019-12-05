@@ -363,20 +363,14 @@ export default
       withStyles(styles, { name: "MoveShop" })(
         withResource(
           withFormik<Props, IInventars>({
-            validationSchema: Yup.object().shape({
-              // email: Yup.string()
-              //   .email()
-              //   .required(),
-            }),
-
             mapPropsToValues: props => props.inventory,
-
             handleSubmit: async (values, actions) => {
-              console.log(values)
-              // actions.props.
+
               await actions.props.onChangeAndSave(values)
 
               actions.setSubmitting(false)
+
+              actions.resetForm()
               actions.props.nextPage()
             }
 
