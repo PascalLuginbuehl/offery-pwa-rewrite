@@ -11,6 +11,8 @@ import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonChec
 import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import Disposal from '../../components/FormikFields/Bundled/Disposal';
+import IntlTypography from '../../components/Intl/IntlTypography';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -41,10 +43,14 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
           <Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />
 
+          <FormikGroups label="APPOINTMENTS" xs={12}>
+            <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
+          </FormikGroups>
+
           <FormikDivider />
-
-          <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
-
+          <Grid item xs={12}>
+            <IntlTypography variant="h6">DISPOSAL_BUILDING</IntlTypography>
+          </Grid>
           <Disposal prefix="disposal" resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}

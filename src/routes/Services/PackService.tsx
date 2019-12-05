@@ -12,6 +12,7 @@ import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonChec
 import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import IntlTypography from '../../components/Intl/IntlTypography';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,11 +45,12 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="packService.HasOutService" label="WITH_UNPACK" component={FormikButtonCheckbox} />
 
+          <FormikGroups label="APPOINTMENTS" xs={12}>
+            <Field name="packService.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
+          </FormikGroups>
+
           <FormikDivider />
 
-          <Field name="packService.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
-
-          <FormikDivider />
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>

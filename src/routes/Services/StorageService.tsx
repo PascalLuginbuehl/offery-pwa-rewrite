@@ -62,9 +62,13 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="storageService.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
           </FormikGroups>
 
-          <FormikGroups label="STORAGE_BUILDING" xs={12}>
-            <Storage prefix={"storage"} resource={resource} />
-          </FormikGroups>
+          <FormikDivider />
+          <Grid item xs={12}>
+            <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
+          </Grid>
+
+          <Storage prefix={"storage"} resource={resource} />
+
 
           {status && status.msg && <div>{status.msg}</div>}
 

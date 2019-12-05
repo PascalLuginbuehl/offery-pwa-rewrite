@@ -16,6 +16,8 @@ import FormikDivider from '../../components/FormikFields/FormikDivider';
 import BuildingCopy, { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 import Cleaning from '../../components/FormikFields/Bundled/Cleaning';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
+import IntlTypography from '../../components/Intl/IntlTypography';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -51,12 +53,19 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="cleaningService.CleaningWindowsWithShuttersService" label="CLEAING_WINDOWS_WITH_SHUTTER" component={FormikButtonCheckbox} />
           <Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={FormikButtonCheckbox} />
           <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
-          <FormikDivider />
-          <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
-          <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
-          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} />
 
-          <BuildingCopy buildings={buildingOptions} />
+          <FormikGroups label="APPOINTMENTS" xs={12}>
+            <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
+            <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
+          </FormikGroups>
+
+          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{xs: 12}}/>
+
+          <FormikDivider />
+          <Grid item xs={12}>
+            <IntlTypography variant="h6">CLEANING_BUILDING</IntlTypography>
+          </Grid>
+          {/* <BuildingCopy buildings={buildingOptions} /> */}
 
           <Cleaning prefix={"cleaning"} resource={resource} />
 

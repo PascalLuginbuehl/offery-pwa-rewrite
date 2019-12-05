@@ -13,6 +13,7 @@ import IntlTypography from '../../components/Intl/IntlTypography';
 import MoveIn from '../../components/FormikFields/Bundled/MoveIn';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import { IPutMoveService } from '../../interfaces/IService';
+import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,18 +59,19 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />
 
+          <FormikGroups label="APPOINTMENTS" xs={12}>
+            <Field name="moveService.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
+          </FormikGroups>
+
           <FormikDivider />
-
-          <Field name="moveService.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
-
           <Grid item xs={12}>
-            <IntlTypography variant="body1">MOVE_OUT_BUILDING</IntlTypography>
+            <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
 
           <MoveOut prefix={"moveOut"} resource={resource} />
 
           <Grid item xs={12}>
-            <IntlTypography variant="body1">MOVE_IN_BUILDING</IntlTypography>
+            <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
           <MoveIn prefix={"moveIn"} resource={resource} />
 
