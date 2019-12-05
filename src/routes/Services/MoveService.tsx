@@ -13,6 +13,7 @@ import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonChec
 import FormikDivider from '../../components/FormikFields/FormikDivider';
 import IntlTypography from '../../components/Intl/IntlTypography';
 import MoveIn from '../../components/FormikFields/Bundled/MoveIn';
+import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 
 const styles = (theme: Theme) =>
   createStyles({

@@ -6,10 +6,6 @@ MoveService kaputt
 
 Enstsorugngsgebäude kopieren von Auszugsgebäude
 
-Umzugsservice, Umzugstermin: DateTime
-
-
-
 Inventar: None option einfügen
 
 Automatisch nach einfügen nichts mehr auswählen.

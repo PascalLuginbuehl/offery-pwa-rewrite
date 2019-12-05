@@ -78,12 +78,6 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
     this.setState({ currentlyOpenInventory: value })
   }
 
-  // getSelectedList = (): IOrderPosition[] => {
-  //   const { shopTypeKey, values } = this.props
-
-  //   return values[shopTypeKey]
-  // }
-
   openCatergory = (category: IFurnitureCategory | null) => {
     this.setState({selectedFurnitureCategory: category})
   }

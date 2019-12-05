@@ -93,43 +93,85 @@ class InventoryItems extends React.Component<Props, State> {
             </Paper>
           </ButtonBase>
 
-          {furniture.FMaterials.length > 0 || furniture.FSizes.length > 0 ?
+          {furniture.FMaterials.length > 0 || furniture.FSizes.length > 0 ? (
             <IconButton className={classes.moreButton} size="small" onClick={this.toggleMore}>
               <MoreVertIcon />
             </IconButton>
-            : null}
+          ) : null}
         </Grid>
 
-        { moreOpen ? (
+        {moreOpen ? (
           <Grid item xs={12}>
             <Collapse in={moreOpen}>
               <Paper elevation={1} className={classes.moreFurnitureOptions}>
-                <ButtonGroup className={classes.buttonGroupPadding}>
-                  {furniture.FMaterials.map((e, index) => {
-                    if (e.FMaterialId == selectedMaterialId) {
-                      return <Button key={index} color="primary" variant="contained"><FormattedMessage id={e.NameTextKey} /></Button>
-                    } else {
-                      return <Button key={index} onClick={() => this.setState({selectedMaterialId: e.FMaterialId})}><FormattedMessage id={e.NameTextKey} /></Button>
-                    }
-                  }
-                  )}
-                </ButtonGroup>
+                {furniture.FMaterials.length > 0 ? (
+                  <ButtonGroup className={classes.buttonGroupPadding}>
+                    {selectedMaterialId === null ? (
+                      <Button color="primary" variant="contained">
+                        <FormattedMessage id="NONE" />
+                      </Button>
+                    ) : (
+                      <Button onClick={() => this.setState({ selectedMaterialId: null })}>
+                        <FormattedMessage id="NONE" />
+                      </Button>
+                    )}
 
-                <ButtonGroup>
-                  {furniture.FSizes.map((e, index) => {
-                    if (e.FSizeId == selectedSizeId) {
-                      return <Button key={index} color="primary" variant="contained"><FormattedMessage id={e.NameTextKey} /></Button>
-                    } else {
-                      return <Button key={index} onClick={() => this.setState({ selectedSizeId: e.FSizeId })}><FormattedMessage id={e.NameTextKey} /></Button>
-                    }
-                  }
-                  )}
-                </ButtonGroup>
+                    {furniture.FMaterials.map((e, index) => {
+                      if (e.FMaterialId == selectedMaterialId) {
+                        return (
+                          <Button key={index} color="primary" variant="contained">
+                            <FormattedMessage id={e.NameTextKey} />
+                          </Button>
+                        )
+                      } else {
+                        return (
+                          <Button key={index} onClick={() => this.setState({ selectedMaterialId: e.FMaterialId })}>
+                            <FormattedMessage id={e.NameTextKey} />
+                          </Button>
+                        )
+                      }
+                    })}
+                  </ButtonGroup>
+                ) : null}
 
-                <Button variant="contained" color="primary" style={{ margin: "0 4px" }} onClick={() => {
-                  onSelect(selectedSizeId, selectedMaterialId)
-                  this.setState({moreOpen: false})
-                }}>
+                {furniture.FSizes.length > 0 ? (
+                  <ButtonGroup>
+                    {selectedSizeId === null ? (
+                      <Button color="primary" variant="contained">
+                        <FormattedMessage id="NONE" />
+                      </Button>
+                    ) : (
+                      <Button onClick={() => this.setState({ selectedSizeId: null })}>
+                        <FormattedMessage id="NONE" />
+                      </Button>
+                    )}
+                    {furniture.FSizes.map((e, index) => {
+                      if (e.FSizeId == selectedSizeId) {
+                        return (
+                          <Button key={index} color="primary" variant="contained">
+                            <FormattedMessage id={e.NameTextKey} />
+                          </Button>
+                        )
+                      } else {
+                        return (
+                          <Button key={index} onClick={() => this.setState({ selectedSizeId: e.FSizeId })}>
+                            <FormattedMessage id={e.NameTextKey} />
+                          </Button>
+                        )
+                      }
+                    })}
+                  </ButtonGroup>
+                ) : null}
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ margin: "0 4px" }}
+                  onClick={() => {
+                    onSelect(selectedSizeId, selectedMaterialId)
+                    this.setState({ moreOpen: false, selectedMaterialId: null, selectedSizeId: null })
+                  }}
+                >
                   <FormattedMessage id="ADD" />
                 </Button>
               </Paper>
