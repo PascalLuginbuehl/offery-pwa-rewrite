@@ -65,7 +65,7 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <IntlTypography variant="h6">CLEANING_BUILDING</IntlTypography>
           </Grid>
-          {/* <BuildingCopy buildings={buildingOptions} /> */}
+          <BuildingCopy buildings={buildingOptions} />
 
           <Cleaning prefix={"cleaning"} resource={resource} />
 

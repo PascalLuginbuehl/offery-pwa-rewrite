@@ -42,6 +42,16 @@ const BuildingCopy: React.ComponentType<Props> = ({buildings, intl}) => {
     return options.filter(string => !!string.label)
   }
 
+  handleCopy = () => {
+    IPostMoveOutBuilding
+    IPostMoveInBuilding
+    IPostCleaningBuilding
+    IPostDisposalOutBuilding
+    IPostStorageBuilding
+
+
+  }
+
 
   // buidlings.type.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))
 
@@ -56,7 +66,7 @@ const BuildingCopy: React.ComponentType<Props> = ({buildings, intl}) => {
         notTranslated
         options={createLabelString(buildings)}
       />
-      <IconButton>
+      <IconButton onClick={handleCopy}>
         <FileCopyIcon />
       </IconButton>
     </Grid>
