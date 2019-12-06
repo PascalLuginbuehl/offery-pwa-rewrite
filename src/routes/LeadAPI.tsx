@@ -30,7 +30,7 @@ export interface ILeadContainer {
   onlySavedOffline: boolean
   cachedInVersion: string
 
-  Lead: ILead | null
+  Lead: ILead
   moveOut: IMoveOutBuilding | null
   moveIn: IMoveInBuilding | null
   cleaning: ICleaningBuilding | null

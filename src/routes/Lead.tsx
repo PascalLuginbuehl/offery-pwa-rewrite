@@ -47,13 +47,11 @@ import NewDisposalBuilding from "./Customer/NewBuildings/DisposalBuilding"
 import { IBuildingCopy } from '../components/FormikFields/Bundled/BuildingCopy';
 import NewCustomer from "./Customer/NewBuildings/NewCustomer"
 import NewEmailConfirmation from "./Customer/NewBuildings/EmailConfirmation"
+import LeadPageOrder from './CombinedRoutes/LeadPageOrder';
 interface State {
   container: ILeadContainer | null
+
   initialAwait: Promise<any> | null
-
-  loadedFromOffline: boolean
-
-  isOffline: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
@@ -67,9 +65,6 @@ class Lead extends Component<Props, State> {
     container: null,
 
     initialAwait: null,
-    loadedFromOffline: false,
-
-    isOffline: false
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -86,11 +81,10 @@ class Lead extends Component<Props, State> {
     const potentialLeadId = parseInt(idString ? idString : "")
 
     if (idString === "new") {
-      this.setState({Lead: emptyLead})
+      // Do nothing if sting new
 
     } else if (!isNaN(potentialLeadId)) {
       // Load normal Lead
-
       this.setState({initialAwait: this.loadFromOfflineOrOnline(potentialLeadId)})
     } else {
       console.log("Is not a leadId", potentialLeadId)
@@ -105,7 +99,7 @@ class Lead extends Component<Props, State> {
 
         const lead = await promiseOnline
 
-        this.setState({ ...lead, loadedFromOffline: false, onlySavedOffline: false })
+        this.setState({ container: lead })
 
         await LeadAPI.SaveToOffline(potentialLeadId, lead)
 
@@ -116,78 +110,11 @@ class Lead extends Component<Props, State> {
     })
   }
 
-  throwGoOffline() {
-    if(this.state.isOffline) {
-      throw new Error("Should be offline")
-    }
-  }
-
-  loadFromOfflineOrOnline = (potentialLeadId: number): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-
-      const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
-
-      if (offline && offline.onlySavedOffline) {
-        // Upload
-        try {
-          await LeadAPI.SaveToApi(potentialLeadId, offline)
-
-          try {
-            await this.loadFromOnline(potentialLeadId)
-          } catch (e) {
-
-            console.log("Saving success but loading failed")
-            console.dir(e)
-
-            this.setState({ ...offline, onlySavedOffline: true, loadedFromOffline: true })
-          }
-
-        } catch(e) {
-          if (e.message == "Failed to fetch") {
-            console.log("Still not online to reupload")
-
-            this.setState({ ...offline, onlySavedOffline: true, loadedFromOffline: true })
-          }
-        }
-
-        resolve()
-      } else {
-        // Loading Data directly from online
-        try {
-          await this.loadFromOnline(potentialLeadId)
-          resolve()
-        } catch(e) {
-          if (e.message == "Failed to fetch") {
-            if (offline) {
-              console.log("Client offline, loading from offlinestorage")
-              this.setState({ ...offline, loadedFromOffline: true })
-
-              resolve()
-            } else {
-              console.log("Client offline, nothing saved")
-              console.log("Failed loading due to not cached and offline")
-
-              reject()
-            }
-
-
-          } else {
-            console.log("Lead does not exist")
-            reject()
-          }
-        }
-      }
-    })
-  }
-
-  closeError = () => {
-    this.setState({errorOccured: false})
-  }
-
   redirectToNextPage = (currentPage: string) => () => {
-    const { Lead } = this.state
+    const { container } = this.state
+    if(container) {
+      const { Lead } = container
 
-    if (Lead && Lead.hasOwnProperty("LeadId")) {
       const { history } = this.props
 
       const nextPage = this.nextPageFunction(currentPage)
@@ -198,49 +125,19 @@ class Lead extends Component<Props, State> {
   }
 
   nextPageFunction = (current: string): string => {
+    const { container } = this.state
+
     // Check if lead is even defined
-    if (this.state.Lead) {
-      const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = this.state.Lead
+    if (container) {
 
-      const {HasCleaningServiceEnabled, HasDisposalServiceEnabled, HasPackServiceEnabled, HasStorageServiceEnabled, HasMoveServiceEnabled} = this.state.services
+      const order = LeadPageOrder(container.Lead, container.services)
 
-      const order = [
-        { name: '/building', active: true },
-        { name: '/building/move-out', active: HasMoveInBuilding },
-        { name: '/building/move-in', active: HasMoveOutBuilding },
-        { name: '/building/storage', active: HasDisposalOutBuilding },
-        { name: '/building/disposal', active: HasStorageInBuilding },
-        { name: '/building/cleaning', active: HasCleaningBuilding },
-        { name: '/building/email-confirmation', active: true },
-        { name: '/services', active: true },
-        { name: '/services/move', active: HasMoveServiceEnabled },
-        { name: '/services/move/material-shop', active: HasMoveServiceEnabled },
-        { name: '/services/move/inventory', active: HasMoveServiceEnabled },
-        { name: '/services/pack', active: HasPackServiceEnabled },
-        { name: '/services/pack/material-shop', active: HasPackServiceEnabled },
-        { name: '/services/storage', active: HasStorageServiceEnabled },
-        { name: '/services/storage/material-shop', active: HasStorageServiceEnabled },
-        { name: '/services/storage/inventory', active: HasStorageServiceEnabled },
-        { name: '/services/disposal', active: HasDisposalServiceEnabled },
-        { name: '/services/disposal/inventory', active: HasDisposalServiceEnabled },
-        { name: '/services/cleaning', active: HasCleaningServiceEnabled },
-        { name: '/conditions/move', active: HasMoveServiceEnabled },
-        { name: '/conditions/pack', active: HasPackServiceEnabled },
-        { name: '/conditions/storage', active: HasStorageServiceEnabled },
-        { name: '/conditions/disposal', active: HasDisposalServiceEnabled },
-        { name: '/conditions/cleaning', active: HasCleaningServiceEnabled },
-        { name: '/offer/generate', active: true },
-        { name: '/offer/preview', active: true },
-
-      ]
-
-      let lastPage = { name: '' }
+      let lastPage = { name: "" }
       for (let index = 0; index < order.length; index++) {
-        const potentialNextPage = order[index];
+        const potentialNextPage = order[index]
 
         if (lastPage.name == current) {
           if (potentialNextPage.active) {
-
             return potentialNextPage.name
           }
         } else {

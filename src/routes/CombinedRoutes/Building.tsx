@@ -471,10 +471,10 @@
 export const test = 1
 
 
-const buildingOptions: IBuildingCopy = {
-  moveOutBuilding: moveOut,
-  moveInBuilding: moveIn,
-  cleaningBuilding: cleaning,
-  storageBuilding: storage,
-  disposalBuilding: disposal,
-}
+// const buildingOptions: IBuildingCopy = {
+//   moveOutBuilding: moveOut,
+//   moveInBuilding: moveIn,
+//   cleaningBuilding: cleaning,
+//   storageBuilding: storage,
+//   disposalBuilding: disposal,
+// }
