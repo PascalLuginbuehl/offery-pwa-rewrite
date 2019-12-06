@@ -32,8 +32,6 @@ Kostendach automatisch berechnen und disabled lassen
 
 
 
-
-
 Nice to have features:
 
 Reinigungsgebäude bei Service auswahl Rot markieren
