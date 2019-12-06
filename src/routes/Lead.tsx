@@ -77,13 +77,10 @@ class Lead extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    // Close Navigation on Navigate
     if (this.props.location !== prevProps.location) {
       this.props.closeNavigation();
     }
-  }
-
-  onRouteChanged() {
-    console.log("ROUTE CHANGED");
   }
 
   handleClose = () => {
@@ -99,6 +96,7 @@ class Lead extends Component<Props, State> {
     if (idString === "new") {
       this.setState({Lead: emptyLead})
     } else if (!isNaN(potentialLeadId)) {
+      // Load normal Lead
 
       this.setState({initialAwait: this.loadFromOfflineOrOnline(potentialLeadId)})
     } else {
