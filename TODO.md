@@ -2,8 +2,6 @@ Service worker disablen
 
 Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
 
-MoveService kaputt
-
 Enstsorugngsgebäude kopieren von Auszugsgebäude
 
 Anzahl ändern mit doppelklick oder so
@@ -12,30 +10,14 @@ Mehrer materialshops von anderen Shops anzeigen
 
 
 
-Anhand von auswählten ServiceProps Konditionen/Preise anzeigen
-
-rEINIGUNGSKONDITIONEN FULLSCRENN BUGGY
-
-Entsorgungskonditionen
-
-Mehr anzeigen
-
-Preise immer anzeigen bei Pauschalpreis
-
 Min max CHF nicht anzeigen
 
 Konditionfelder immer required wenn enabled/shown
-
-Customer name Required
-
-Conditions automatisch stundensatz öffnen
+-> Macht das sinn?
 
 Conditions anfahrt und rückfahr * stundensatz
 
-
-
 https://dev.azure.com/burimcakolli0689/Offery/_git/Offery-API?path=%2FOffery-API%2FOffery-API%2FControllers%2FOfferController.cs&version=GBmaster&line=1495&lineEnd=1496&lineStartColumn=1&lineEndColumn=1&lineStyle=plain
-
 
 
 Aus <https://dev.azure.com/burimcakolli0689/Offery/_git/Offery-API?path=%2FOffery-API%2FOffery-API%2FControllers%2FOfferController.cs&_a=content>

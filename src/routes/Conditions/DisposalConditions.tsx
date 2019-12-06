@@ -42,9 +42,12 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
         <Form>
           <PageHeader title="DISPOSAL_CONDITIONS" />
 
-          <ServiceConditions additionalCost={this.getAdditionalCost()} setFieldValue={setFieldValue} values={values}>
-            <Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-
+          <ServiceConditions
+            additionalCost={this.getAdditionalCost()}
+            setFieldValue={setFieldValue}
+            values={values}
+            personalCostAddon={<Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} overrideGrid={{ xs: 3 }} />}
+          >
             {disposalService.LampDemontageService ? (
               <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
                 <Field

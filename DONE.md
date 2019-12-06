@@ -31,3 +31,19 @@ Gebäude - Auszugsgebäude hinzufügen
 
 Entsorgungsgebäude fehlt in Entsorgungservice
 
+
+Anhand von auswählten ServiceProps Konditionen/Preise anzeigen
+rEINIGUNGSKONDITIONEN FULLSCRENN BUGGY
+
+Entsorgungskonditionen
+
+Mehr anzeigen
+
+Preise immer anzeigen bei Pauschalpreis
+
+
+Customer name Required
+
+Conditions automatisch stundensatz öffnen
+
+MoveService kaputt

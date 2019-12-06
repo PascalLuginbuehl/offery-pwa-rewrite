@@ -15,6 +15,7 @@ interface Props<Values extends {ServiceConditions: IServiceConditions}> extends 
   setFieldValue: (field: keyof Values | any, value: any) => void
   values: Values
   additionalCost: number
+  personalCostAddon?: React.ReactNode
 }
 
 class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceConditions }> extends React.Component<Props<Values>, {}> {
@@ -47,6 +48,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       children,
 
       intl,
+      personalCostAddon,
     } = this.props
 
     return (
@@ -79,6 +81,8 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} component={FormikNumberEndAdornmentText} adornmentText="CHF/h" />
 
           <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
+
+          {personalCostAddon}
         </FormikGroups>
 
         {children}
