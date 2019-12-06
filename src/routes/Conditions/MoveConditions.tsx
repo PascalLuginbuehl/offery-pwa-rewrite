@@ -11,6 +11,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import ServiceConditions from './ServiceConditions';
+import { IPutMoveService } from '../../interfaces/IService';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -24,6 +25,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   nextPage: () => void
   onChangeAndSave: (moveConditions: IMoveServiceConditions) => void
   moveConditions: IMoveServiceConditions
+  moveService: IPutMoveService
 }
 
 class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
@@ -34,6 +36,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       setFieldValue,
       selectedCompany,
+      moveService
     } = this.props
 
     console.log(selectedCompany.CarTypes)
@@ -42,33 +45,39 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
       <Grid item xs={12}>
         <Form>
           <PageHeader title="MOVE_CONDITIONS" />
+          <ServiceConditions additionalCost={this.getAdditionalCost()} setFieldValue={setFieldValue} values={values}>
+            {moveService.BoreService ? (
+              <FormikGroups label="BORE" xs={6} md={3}>
+                <Field label="AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+                <Field label="PRICE" name="BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              </FormikGroups>
+            ) : null}
 
-          <ServiceConditions
-            additionalCost={this.getAdditionalCost()}
-            setFieldValue={setFieldValue}
-            values={values}
-          >
-            <FormikGroups label="PRICES" xs={12} md={6}>
-              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} />
+            {moveService.LampDemontageService ? (
+              <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
+                <Field
+                  label="AMOUNT"
+                  name="LampDemontageAmount"
+                  type="number"
+                  component={FormikTextField}
+                  inputProps={{ step: 1, min: 0 }}
+                  overrideGrid={{ xs: 6, md: undefined }}
+                />
+                <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              </FormikGroups>
+            ) : null}
 
-              <Field label="PIANO_PRICE" name="PianoPrice" component={FormikPrice} />
+            {moveService.FurnitureLiftService || moveService.PianoService || moveService.MontageService || moveService.DeMontageService ? (
+              <FormikGroups label="PRICES" xs={12} md={6}>
+                {moveService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="FurnitureLiftPrice" component={FormikPrice} /> : null}
 
-              <Field label="MONTAGE_SERVICE_PRICE" name="MontageServicePrice" component={FormikPrice} />
+                {moveService.PianoService ? <Field label="PIANO" name="PianoPrice" component={FormikPrice} /> : null}
 
-              <Field label="DE_MONTAGE_SERVICE_PRICE" name="DeMontageServicePrice" component={FormikPrice} />
-            </FormikGroups>
+                {moveService.MontageService ? <Field label="MONTAGE_SERVICE" name="MontageServicePrice" component={FormikPrice} /> : null}
 
-
-            <FormikGroups label="BORE" xs={6} md={3}>
-              <Field label="AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
-              <Field label="PRICE" name="BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            </FormikGroups>
-
-            <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
-              <Field label="AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
-              <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            </FormikGroups>
-
+                {moveService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="DeMontageServicePrice" component={FormikPrice} /> : null}
+              </FormikGroups>
+            ) : null}
           </ServiceConditions>
 
           {status && status.msg && <div>{status.msg}</div>}

@@ -13,6 +13,7 @@ import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
 import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
+import { IPutCleaningService } from '../../interfaces/IService';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,16 +27,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   nextPage: () => void
   onChangeAndSave: (cleaningConditions: ICleaningServiceConditions) => void
   cleaningConditions: ICleaningServiceConditions
+  cleaningService: IPutCleaningService
 }
 
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      isSubmitting,
-      status,
-      intl,
-      selectedCompany,
-    } = this.props
+    const { isSubmitting, status, intl, selectedCompany, cleaningService } = this.props
 
     console.log(selectedCompany.CarTypes)
 
@@ -44,43 +41,76 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
         <Form>
           <PageHeader title="CLEANING_CONDITIONS" />
 
-          <Field label="CLEANING_PERSONAL_AMOUNT" name="WorkersAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
-          <Field label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE" name="EstimatedHoursOfWorkWhenFixPrice" component={FormikNumberEndAdornmentText} adornmentText="h" />
-
-          <FormikGroups label="HIGH_PRESURE_CLEANING_FIX_PRICE" xs={6} md={3}>
-            <Field label="TERRACE" name="HighPressureTerraceCleaningFixPrice" component={FormikPrice} />
-            <Field label="GARAGE" name="HighPressureGarageCleaningFixPrice" component={FormikPrice} />
+          <FormikGroups label="PERSONAL_COST" xs={12} md={6}>
+            <Field label="CLEANING_PERSONAL_AMOUNT" name="WorkersAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6 }} />
+            <Field
+              label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
+              name="EstimatedHoursOfWorkWhenFixPrice"
+              component={FormikNumberEndAdornmentText}
+              adornmentText="h"
+              overrideGrid={{ xs: 6 }}
+            />
           </FormikGroups>
 
-          <FormikGroups label="DOVEL_HOLES" xs={6} md={3}>
-            <Field label="AMOUNT" name="DovelholeAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
-            <Field label="PRICE" name="DovelholePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-          </FormikGroups>
+          {cleaningService.HighPressureGarageCleaningService || cleaningService.HighPressureTerraceCleaningService ? (
+            <FormikGroups label="HIGH_PRESURE_CLEANING_FIX_PRICE" xs={6} md={3}>
+              {cleaningService.HighPressureTerraceCleaningService ? (
+                <Field label="TERRACE" name="HighPressureTerraceCleaningFixPrice" component={FormikPrice} overrideGrid={{ xs: 6 }} />
+              ) : null}
+              {cleaningService.HighPressureGarageCleaningService ? (
+                <Field label="GARAGE" name="HighPressureGarageCleaningFixPrice" component={FormikPrice} overrideGrid={{ xs: 6 }} />
+              ) : null}
+            </FormikGroups>
+          ) : null}
 
+          {cleaningService.DovelholeService ? (
+            <FormikGroups label="DOVEL_HOLES" xs={6} md={3}>
+              <Field label="AMOUNT" name="DovelholeAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+              <Field label="PRICE" name="DovelholePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+            </FormikGroups>
+          ) : null}
 
-          <FormikGroups label="CLEANING_PRICES" xs={12} md={6}>
-            <Field label="FIREPLACE" name="CleaningFireplacePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            <Field label="CLEANING_CARPET" name="CleaningCarpetPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            <Field label="WINDOWS" name="CleaningWindowsPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            <Field label="WINDOWS_WITH_SHUTTERS" name="CleaningWindowsWithShuttersPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-          </FormikGroups>
+          {cleaningService.CleaningFireplaceService ||
+          cleaningService.CleaningCarpetService ||
+          cleaningService.CleaningWindowsService ||
+          cleaningService.CleaningWindowsWithShuttersService ? (
+            <FormikGroups label="CLEANING_PRICES" xs={12} md={6}>
+              {cleaningService.CleaningFireplaceService ? (
+                <Field label="FIREPLACE" name="CleaningFireplacePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              ) : null}
+              {cleaningService.CleaningCarpetService ? (
+                <Field label="CLEANING_CARPET" name="CleaningCarpetPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              ) : null}
+              {cleaningService.CleaningWindowsService ? (
+                <Field label="WINDOWS" name="CleaningWindowsPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              ) : null}
+              {cleaningService.CleaningWindowsWithShuttersService ? (
+                <Field label="WINDOWS_WITH_SHUTTERS" name="CleaningWindowsWithShuttersPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              ) : null}
+            </FormikGroups>
+          ) : null}
 
-          <FormikGroups label="SPECIAL_CLEANING" xs={6} md={3}>
-            <Field label="WINDOWS" name="CleaningSpecialPrice" component={FormikPrice} overrideGrid={{ xs: 12, md: undefined }} />
-            <Field name="CleaningSpecialComment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-          </FormikGroups>
-
+          {cleaningService.CleaningSpecialService ? (
+            <FormikGroups label="SPECIAL_CLEANING" xs={6} md={3}>
+              <Field label="PRICE" name="CleaningSpecialPrice" component={FormikPrice} overrideGrid={{ xs: 12, md: undefined }} />
+              <Field name="CleaningSpecialComment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
+            </FormikGroups>
+          ) : null}
 
           <Field label="HANDOUT_WARRANTY" name="HandoutGaranty" component={FormikButtonCheckbox} />
 
-
           <FormikGroups label="PRICE" xs={12} md={6}>
             <Grid item xs={5}>
-              <MuiTextField label={intl.formatMessage({ id: "PRICE" })} value={this.getCost()} disabled={true} type="number" InputProps={{ startAdornment: (<InputAdornment position="start">CHF</InputAdornment>) }} />
+              <MuiTextField
+                label={intl.formatMessage({ id: "PRICE" })}
+                value={this.getCost()}
+                disabled={true}
+                type="number"
+                InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
+              />
             </Grid>
 
             <Field label="DISCOUNT_IN_PERCENT" name="DiscountInPercent" component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
-
           </FormikGroups>
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />

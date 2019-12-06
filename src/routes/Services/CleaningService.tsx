@@ -44,8 +44,8 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
       <Grid item xs={12}>
         <Form>
           <PageHeader title="CLEANING_SERVICE" />
-          <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />
           <Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={FormikButtonCheckbox} />
+          <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />
           <Field name="cleaningService.DovelholeService" label="DOVELHOLE" component={FormikButtonCheckbox} />
           <Field name="cleaningService.CleaningFireplaceService" label="CLEANING_FIREPLACE" component={FormikButtonCheckbox} />
           <Field name="cleaningService.CleaningCarpetService" label="CLEANING_CARPET" component={FormikButtonCheckbox} />
@@ -59,13 +59,13 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
-          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{xs: 12}}/>
+          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
 
           <FormikDivider />
           <Grid item xs={12}>
             <IntlTypography variant="h6">CLEANING_BUILDING</IntlTypography>
           </Grid>
-          <BuildingCopy buildings={buildingOptions} />
+          <BuildingCopy buildings={buildingOptions} onCopy={this.handleCopy} />
 
           <Cleaning prefix={"cleaning"} resource={resource} />
 
@@ -74,6 +74,10 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
         </Form>
       </Grid>
     )
+  }
+
+  handleCopy = () => {
+
   }
 }
 

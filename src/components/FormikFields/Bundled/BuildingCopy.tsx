@@ -29,6 +29,7 @@ export interface IBuildingCopy {
 
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
+  onCopy: () => void
 }
 
 const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
@@ -52,13 +53,13 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
     return options.filter(string => !!string.label)
   }
 
-  // handleCopy = () => {
+  const handleCopy = () => {
   //   IPostMoveOutBuilding
   //   IPostMoveInBuilding
   //   IPostCleaningBuilding
   //   IPostDisposalOutBuilding
   //   IPostStorageBuilding
-  // }
+  }
 
   // buidlings.type.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))
 

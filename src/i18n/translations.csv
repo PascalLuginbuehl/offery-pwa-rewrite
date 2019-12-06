@@ -34,7 +34,7 @@ VISITING_DATE,Visiting Appointment,Besichtigungstermin
 MOVING_DATE,Moving Date,Umzugstermin
 PACKINGSERVICE_DATE,Packing Service Appointment,Termin Einpackservice
 CARDBOARDBOX_DELIVERY_DATE,Cardboardbox Delivery Appointment,Termin Kartonlieferung
-STORAGE_DATE,Storage Appointment,Termin Einlagerung/Auslagerung
+STORAGE_DATE,Storage Appointment,Termin Ein-/Auslagerung
 DISPOSAL_DATE,Disposal Appointment,Entsorgungstermin
 CLEANING_DATE,Cleaning Appointment Date,Reinigungstermin
 HANDIN_DATE,Handin Appointment,Abgabetermin
@@ -145,11 +145,11 @@ WITH_UNPACK,With unpacking,Mit Auspacken
 PACK_DATE,Pack date,Termin Einpackservice
 MONTAGE,Montage,Montage
 BORE,Drill,Bohren
-KLAVIER,PIANO,Klavier
+PIANO,PIANO,Klavier
 FURNITURE_LIFT,Furniture Lift,Möbellift
 LAMP_DEMONTAGE,Lamp demontage,Lampen abmontieren
 DEMONTAGE,Demontage,Demontage
-DATE_STORAGE_UNSTORE,Date Storage/Unstorage,Termin Einlagerung/Auslagerung
+DATE_STORAGE_UNSTORE,Date Storage/Unstorage,Termin Lagerung
 STORAGE_SERVICE,Storage Service,Lagerservice
 PACK_SERVICE,Pack Service,Einpackservice
 DISPOSAL_SERVICE,Disposal Service,Entsorgungsservice
@@ -173,16 +173,12 @@ FIX_PRICE,Fixed Price,Pauschalpreis
 HAS_COST_CEILING,Cost Ceiling,Kostendach
 PRICE_PER_HOUR,Price per hour,Stundensatz
 EXPENSES,Expenses,Spesen
-FURNITURE_LIFT_PRICE,Furniture Lift Price,Preis Möbellift
-PIANO_PRICE,Piano price,Preis Klavier
 BORE_PRICE,Bore price,Preis Bohrung
 BORE_AMOUNT,Bore amount,Anzahl Bohrungen
 LAMP_DEMONTAGE_PRICE,Lamp demontage price,Preis Lampen abmontieren
 LAMP_DEMONTAGE_AMOUNT,Lamp amount,Anzahl Lampen
 
 DRIVE_HOURS,Hours for travel,Anfahrt und Rückfahrt
-MONTAGE_SERVICE_PRICE,Montage Service price,Preis Montage Service
-DE_MONTAGE_SERVICE_PRICE,Demontage Service price,Preis Demontage
 ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE,Planed working hours,Geplante Arbeitsstunden
 DISCOUNT_IN_PERCENT,Discount,Rabatt
 MIN,Min.,Min
@@ -238,13 +234,12 @@ VISITING,Visiting,Besichtigung
 MOVING,Moving,Umzug
 PACKINGSERVICE,Packing Service,Einpackservice
 CARDBOARDBOX_DELIVERY,Cardboardbox Delivery,Kartonlieferung
-STORAGE,Storage,Einlagerung/Auslagerung
 DISPOSAL,Disposal,Entsorgung
 CLEANING,Cleaning,Reinigung
 HANDIN,Handin,Abgabetermin
 APPOINTMENTS,Appointments,Termine
 
-STORAGE_UNSTORE,Storage/Unstorage,Einlagerung/Auslagerung
+STORAGE_UNSTORE,Storage/Unstorage,Ein-/Auslagerung
 FIX_DELIVERY_COST,Fixed Delivery cost,Lieferpauschale
 PACKING_DELIVERY_DATE,Packing delivery date,Termin Kartonlieferung
 DISPLAY_PDF,Display PDF,PDF anzeigen
@@ -252,3 +247,4 @@ SEND_EMAIL,Send Email,E-Mail versenden
 NOT_SET,Not set,Nicht angegeben
 AREAS,Areas,Bereiche
 BUILDING,Building,Gebäude
+PERSONAL_COST,Personal cost,Personalkosten

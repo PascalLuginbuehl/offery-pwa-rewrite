@@ -22,7 +22,7 @@ import NavFolder from '../components/Navigation/NavFolder';
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
 import SuccessSnackbar from '../components/SuccessSnackbar';
 import MoveService from './Services/MoveService';
-import { emptyMoveService, emptyPackService, emptyStorageService, emptyDisposalSerivce, emptyCleaningService } from '../interfaces/IService';
+import { emptyMoveService, emptyPackService, emptyStorageService, emptyDisposalService, emptyCleaningService } from '../interfaces/IService';
 import MaterialShop from './Services/MaterialShop';
 import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
 import Inventory from './Services/Inventory';
@@ -676,7 +676,7 @@ class Lead extends Component<Props, State> {
                   <DisposalService
                     {...routeProps}
                     disposal={disposal}
-                    disposalService={disposalService ? disposalService : emptyDisposalSerivce}
+                    disposalService={disposalService ? disposalService : emptyDisposalService}
                     HasMoveService={services.HasMoveServiceEnabled}
                     onChangeAndSave={(serviceData, disposal) => {
                       this.handleChange(serviceData, "disposalService")
@@ -742,6 +742,7 @@ class Lead extends Component<Props, State> {
                   <MoveConditions
                     {...routeProps}
                     moveConditions={Lead.MoveServiceConditions ? Lead.MoveServiceConditions : emptyMoveServiceConditions}
+                    moveService={moveService ? moveService : emptyMoveService}
                     onChangeAndSave={moveConditions => {
                       const newLead = { ...Lead, MoveServiceConditions: moveConditions }
                       this.handleChange(newLead, "Lead")
@@ -780,6 +781,7 @@ class Lead extends Component<Props, State> {
                   <StorageConditions
                     {...routeProps}
                     storageConditions={Lead.StorageServiceConditions ? Lead.StorageServiceConditions : emptyStorageServiceConditions}
+                    storageService={storageService ? storageService : emptyStorageService}
                     onChangeAndSave={storageConditions => {
                       const newLead = { ...Lead, StorageServiceConditions: storageConditions }
                       this.handleChange(newLead, "Lead")
@@ -799,6 +801,7 @@ class Lead extends Component<Props, State> {
                   <DisposalConditions
                     {...routeProps}
                     disposalConditions={Lead.DisposalServiceConditions ? Lead.DisposalServiceConditions : emptyDisposalServiceConditions}
+                    disposalService={disposalService ? disposalService : emptyDisposalService}
                     onChangeAndSave={disposalConditions => {
                       const newLead = { ...Lead, DisposalServiceConditions: disposalConditions }
                       this.handleChange(newLead, "Lead")
@@ -818,6 +821,7 @@ class Lead extends Component<Props, State> {
                   <CleaningConditions
                     {...routeProps}
                     cleaningConditions={Lead.CleaningServiceConditions ? Lead.CleaningServiceConditions : emptyCleaningServiceConditions}
+                    cleaningService={cleaningService ? cleaningService : emptyCleaningService}
                     onChangeAndSave={cleaningConditions => {
                       const newLead = { ...Lead, CleaningServiceConditions: cleaningConditions }
                       this.handleChange(newLead, "Lead")
@@ -840,7 +844,11 @@ class Lead extends Component<Props, State> {
                 render={routeProps => <Generate {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={this.redirectToNextPage("/offer/generate")} />}
               />
 
-              <Route exact path={`${match.url}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={this.redirectToNextPage("/offer/preview")} />} />
+              <Route
+                exact
+                path={`${match.url}/offer/preview`}
+                render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={this.redirectToNextPage("/offer/preview")} />}
+              />
             </>
           ) : Lead ? (
             <Route

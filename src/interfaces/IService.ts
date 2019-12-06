@@ -116,7 +116,7 @@ export const emptyStorageService: IPutStorageService = {
 }
 
 
-export const emptyDisposalSerivce: IPutDisposalSerivce = {
+export const emptyDisposalService: IPutDisposalSerivce = {
   DeMontage: false,
   FurnitureLiftService: false,
   LampDemontageService: false,

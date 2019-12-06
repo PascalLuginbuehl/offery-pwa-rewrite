@@ -66,18 +66,20 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           </Tabs>
         </Grid>
 
-        <Field
-          label="WORKERS_AMOUNT"
-          name={`ServiceConditions.WorkersAmount`}
-          type="number"
-          component={FormikTextField}
-          inputProps={{ step: 1, min: 0 }}
-          overrideGrid={{ xs: 6, md: 3 }}
-        />
+        <FormikGroups label="PERSONAL_COST" xs={12}>
+          <Field
+            label="WORKERS_AMOUNT"
+            name={`ServiceConditions.WorkersAmount`}
+            type="number"
+            component={FormikTextField}
+            inputProps={{ step: 1, min: 0 }}
+            overrideGrid={{ xs: 6, md: 3 }}
+          />
 
-        <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} component={FormikNumberEndAdornmentText} adornmentText="CHF/h" />
+          <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} component={FormikNumberEndAdornmentText} adornmentText="CHF/h" />
 
-        <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
+          <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
+        </FormikGroups>
 
         {children}
 

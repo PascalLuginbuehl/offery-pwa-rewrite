@@ -14,6 +14,7 @@ import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import ServiceConditions from './ServiceConditions';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
+import { IPutDisposalSerivce } from '../../interfaces/IService';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,18 +28,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   nextPage: () => void
   onChangeAndSave: (disposalConditions: IDisposalServiceConditions) => void
   disposalConditions: IDisposalServiceConditions
+  disposalService: IPutDisposalSerivce
 }
 
 class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      isSubmitting,
-      status,
-      intl,
-      setFieldValue,
-      selectedCompany,
-    } = this.props
+    const { values, isSubmitting, status, intl, setFieldValue, selectedCompany, disposalService } = this.props
 
     console.log(selectedCompany.CarTypes)
 
@@ -48,17 +43,27 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
           <PageHeader title="DISPOSAL_CONDITIONS" />
 
           <ServiceConditions additionalCost={this.getAdditionalCost()} setFieldValue={setFieldValue} values={values}>
-            <FormikDivider />
+            <Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
 
-            <FormikGroups label="PRICES" xs={6} md={3}>
-              <Field label="FURNITURE_LIFT_PRICE" name="FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-              <Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            </FormikGroups>
+            {disposalService.LampDemontageService ? (
+              <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
+                <Field
+                  label="AMOUNT"
+                  name="LampDemontageAmount"
+                  type="number"
+                  component={FormikTextField}
+                  inputProps={{ step: 1, min: 0 }}
+                  overrideGrid={{ xs: 6, md: undefined }}
+                />
+                <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              </FormikGroups>
+            ) : null}
 
-            <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
-              <Field label="AMOUNT" name="LampDemontageAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
-              <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-            </FormikGroups>
+            {disposalService.FurnitureLiftService ? (
+              <FormikGroups label="PRICES" xs={6} md={3}>
+                <Field label="FURNITURE_LIFT" name="FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 12 }} />
+              </FormikGroups>
+            ) : null}
 
             <FormikGroups label="DISPOSAL_FEES_PER_CUBIC_METER" xs={12}>
               <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
