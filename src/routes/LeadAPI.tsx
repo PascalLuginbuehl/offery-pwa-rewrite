@@ -28,48 +28,25 @@ import { IInventars } from '../interfaces/IInventars';
 export interface ILeadContainer {
   lastUpdated: Date
   onlySavedOffline: boolean
+  cachedInVersion: string
 
-  Lead: IPostLead | ILead | null
-  moveOut: IPostMoveOutBuilding | IMoveOutBuilding | null
-  moveIn: IPostMoveInBuilding | IMoveInBuilding | null
-  cleaning: IPostCleaningBuilding | ICleaningBuilding | null
-  disposal: IPostDisposalOutBuilding | IDisposalOutBuilding | null
-  storage: IPostStorageBuilding | IStorageBuilding | null
+  Lead: ILead | null
+  moveOut: IMoveOutBuilding | null
+  moveIn: IMoveInBuilding | null
+  cleaning: ICleaningBuilding | null
+  disposal: IDisposalOutBuilding | null
+  storage: IStorageBuilding | null
 
-  services: IPutServices | IServices
-  moveService: IPutMoveService | IMoveService | null
+  services: IServices
+  moveService: IMoveService | null
   materialOrder: IMaterialOrder | null
   inventory: IInventars | null
 
-  packService: IPutPackService | IPackSerivce | null
-  storageService: IPutStorageService | IStorageSerivce | null
-  disposalService: IPutDisposalSerivce | IDisposalSerivce | null
-  cleaningService: IPutCleaningService | ICleaningService | null
+  packService: IPackSerivce | null
+  storageService: IStorageSerivce | null
+  disposalService: IDisposalSerivce | null
+  cleaningService: ICleaningService | null
   // unsavedChanges:
-}
-
-export const emptyLeadContainer: ILeadContainer = {
-  lastUpdated: new Date(),
-  onlySavedOffline: false,
-
-  Lead: emptyLead,
-
-  moveOut: null,
-  moveIn: null,
-  cleaning: null,
-  disposal: null,
-  storage: null,
-
-  services: emptyServices,
-  moveService: emptyMoveService,
-
-  materialOrder: null,
-  inventory: null,
-
-  packService: null,
-  storageService: null,
-  disposalService: null,
-  cleaningService: null,
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -79,8 +56,8 @@ export function checkIs<Type>(object: any | null, key: keyof Type): object is Ty
   return false
 }
 
-class LeadAPI {
 
+class LeadAPI {
   // Only gets called to save into Offline Storage
   FetchFromOnline(leadId: number): Promise<ILeadContainer> {
     //@ts-ignore
@@ -104,7 +81,7 @@ class LeadAPI {
       lastUpdated: new Date(),
       onlySavedOffline: false,
 
-      Lead: Lead ? Lead : emptyLeadContainer.Lead,
+      Lead: Lead,
 
       moveOut: moveOut,
 
