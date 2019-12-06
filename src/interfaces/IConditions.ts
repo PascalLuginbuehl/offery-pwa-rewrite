@@ -17,7 +17,7 @@ export interface IServiceConditions {
 }
 
 export interface ICarType {
-  CarTypeId: number | null
+  CarTypeId: number
   NameTextKey: string
 }
 

@@ -1,13 +1,12 @@
 import * as React from "react"
 
 import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText, TextField, MenuItem } from "@material-ui/core"
-import DeleteIcon from "@material-ui/icons/Delete"
 import AddIcon from "@material-ui/icons/Add"
 import { ArrayHelpers, FieldProps, FieldArray } from "formik"
 import { ICarType } from "../../interfaces/ICompany";
 import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl";
 import { ICarAmount } from "../../interfaces/IConditions";
-
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 
 export interface FormikGroupListProps {
   carTypes: ICarType[]
@@ -26,7 +25,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const parsedString = parseInt(event.target.value)
-    if(!Number.isNaN(parsedString)) {
+    if (!Number.isNaN(parsedString)) {
       this.setState({ selectedCarType: parsedString })
     }
   }
@@ -36,7 +35,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
       carTypes,
       form: { isSubmitting, values },
       field: { name, value },
-      intl
+      intl,
     } = this.props
 
     const { selectedCarType } = this.state
@@ -48,13 +47,13 @@ class FormikGroupList extends React.PureComponent<Props, State> {
         <FieldArray
           name={name}
           render={arrayHelpers => (
-            <List>
+            <List dense>
               {parsedCarAmounts.map(car => (
-                <ListItem>
+                <ListItem key={car.CarType.CarTypeId}>
                   <ListItemText primary={intl.formatMessage({ id: car.CarType.NameTextKey })} secondary={car.Amount} />
                   <ListItemSecondaryAction>
-                    <IconButton>
-                      <DeleteIcon />
+                    <IconButton edge="end" onClick={() => this.removeCar(arrayHelpers, car.CarType.CarTypeId)}>
+                      <RemoveCircleOutlineIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -63,12 +62,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
               <ListItem>
                 <ListItemText
                   primary={
-                    <TextField
-                      select
-                      label="Select"
-                      value={selectedCarType === null ? "" : selectedCarType}
-                      onChange={this.handleChange}
-                    >
+                    <TextField select label="Select" value={selectedCarType === null ? "" : selectedCarType} onChange={this.handleChange}>
                       {carTypes.map(carType => (
                         <MenuItem key={carType.CarTypeId} value={carType.CarTypeId}>
                           <FormattedMessage id={carType.NameTextKey} />
@@ -79,7 +73,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
                 />
 
                 <ListItemSecondaryAction>
-                  <IconButton disabled={isSubmitting} onClick={() => this.addCar(arrayHelpers)}>
+                  <IconButton disabled={isSubmitting || !selectedCarType} onClick={() => this.addCar(arrayHelpers)} edge="end">
                     <AddIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -91,11 +85,48 @@ class FormikGroupList extends React.PureComponent<Props, State> {
     )
   }
 
-  removeCar = () => {}
+  removeCar = (arrayHelpers: ArrayHelpers, removeId: number) => {
+    const {
+      carTypes,
+      field: { value },
+    } = this.props
+
+    const parsedCarAmounts = value as ICarAmount[]
+
+    const index = parsedCarAmounts.findIndex(car => car.CarType.CarTypeId === removeId)
+    const car = parsedCarAmounts[index]
+
+    if(car.Amount > 1) {
+      arrayHelpers.replace(index, { ...car, Amount: car.Amount - 1 })
+    } else {
+      arrayHelpers.remove(index)
+    }
+  }
 
   addCar = (arrayHelpers: ArrayHelpers) => {
-    this.props.carTypes.find(() => this.state.selectedCarType)
-    arrayHelpers.push({ CarType: "" })
+    const {
+      carTypes,
+      field: { value },
+    } = this.props
+    const { selectedCarType } = this.state
+    const parsedCarAmounts = value as ICarAmount[]
+
+    const index = parsedCarAmounts.findIndex(car => car.CarType.CarTypeId === selectedCarType)
+
+    if (index !== -1) {
+      const car = parsedCarAmounts[index]
+
+      arrayHelpers.replace(index, { ...car, Amount: car.Amount + 1 })
+    } else {
+      const carType = carTypes.find(car => car.CarTypeId === selectedCarType)
+
+      if (carType) {
+        const newCar: ICarAmount = { Amount: 1, CarType: carType }
+        arrayHelpers.push(newCar)
+      }
+    }
+
+    this.setState({ selectedCarType: null })
   }
 }
 
