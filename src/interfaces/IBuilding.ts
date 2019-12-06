@@ -1,12 +1,12 @@
-import { IPostAddress, emtpyAddress, IAddress } from './IAddress';
-import { IStorageCompany, emptyStorageCompany, IPostStorageCompany } from './IStorageCompany';
-import { Omit } from 'react-router';
+import { IPostAddress, emtpyAddress, IAddress } from "./IAddress"
+import { IStorageCompany, emptyStorageCompany, IPostStorageCompany } from "./IStorageCompany"
+import { Omit } from "react-router"
 
 export interface BaseBuilding {
   Address: IPostAddress
   ElevatorId: number | null
   RoomAmount: number | null
-  TotalArea: number  | null
+  TotalArea: number | null
   EtageId: number | null
   StairsToEntryAmount: number | null
   MetersToParking: number | null
@@ -17,7 +17,6 @@ export interface BaseBuilding {
 interface MoveBuildingBase extends BaseBuilding {
   BuildingTypeId: number | null
   BuildingAgeId: number | null
-
 
   HasBasement: boolean
   HasAttic: boolean
@@ -74,9 +73,7 @@ export const emptyMoveOutBuilding: IPostMoveOutBuilding = {
 }
 
 // Move In building
-export interface IPostMoveInBuilding extends MoveBuildingBase {
-
-}
+export interface IPostMoveInBuilding extends MoveBuildingBase {}
 
 export interface IUpdateMoveInBuilding extends IPostMoveInBuilding {
   MoveInBuildingId: number
@@ -111,7 +108,6 @@ export const emptyStorageBuilding: IPostStorageBuilding = {
   StorageCompany: emptyStorageCompany,
 }
 
-
 // Disposal
 export interface IPostDisposalOutBuilding extends BaseBuilding {
   PeopleLivingAmount: number | null
@@ -133,7 +129,7 @@ export interface IDisposalOutBuilding extends IUpdateDisposalOutBuilding {
   Address: IAddress
 }
 
-export const emptyDisposalOutBuilding : IPostDisposalOutBuilding = {
+export const emptyDisposalOutBuilding: IPostDisposalOutBuilding = {
   ...emptyBuilding,
   PeopleLivingAmount: null,
   BuildingTypeId: null,
