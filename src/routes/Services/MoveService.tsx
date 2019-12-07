@@ -22,8 +22,8 @@ const styles = (theme: Theme) =>
 
 interface Values {
   moveService: IPutMoveService
-  moveIn: IPostMoveInBuilding | null
-  moveOut: IPostMoveOutBuilding | null
+  moveIn: IPostMoveInBuilding
+  moveOut: IPostMoveOutBuilding
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {

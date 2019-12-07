@@ -21,7 +21,7 @@ const styles = (theme: Theme) =>
 
 interface Values {
   disposalService: IPutDisposalSerivce
-  disposal: IPostDisposalOutBuilding | null
+  disposal: IPostDisposalOutBuilding
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {

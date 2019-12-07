@@ -25,51 +25,32 @@ import { IMaterialOrder } from '../interfaces/IShop';
 import { IInventars } from '../interfaces/IInventars';
 
 
-export interface ILeadContainer {
-  lastUpdated: Date
-  onlySavedOffline: boolean
+interface LeadEditableValues {
+  Lead: ILead
+  moveOut: IMoveOutBuilding | null
+  moveIn: IMoveInBuilding | null
+  cleaning: ICleaningBuilding | null
+  disposal: IDisposalOutBuilding | null
+  storage: IStorageBuilding | null
 
-  Lead: IPostLead | ILead | null
-  moveOut: IPostMoveOutBuilding | IMoveOutBuilding | null
-  moveIn: IPostMoveInBuilding | IMoveInBuilding | null
-  cleaning: IPostCleaningBuilding | ICleaningBuilding | null
-  disposal: IPostDisposalOutBuilding | IDisposalOutBuilding | null
-  storage: IPostStorageBuilding | IStorageBuilding | null
-
-  services: IPutServices | IServices
-  moveService: IPutMoveService | IMoveService | null
+  services: IServices
+  moveService: IMoveService | null
   materialOrder: IMaterialOrder | null
   inventory: IInventars | null
 
-  packService: IPutPackService | IPackSerivce | null
-  storageService: IPutStorageService | IStorageSerivce | null
-  disposalService: IPutDisposalSerivce | IDisposalSerivce | null
-  cleaningService: IPutCleaningService | ICleaningService | null
-  // unsavedChanges:
+  packService: IPackSerivce | null
+  storageService: IStorageSerivce | null
+  disposalService: IDisposalSerivce | null
+  cleaningService: ICleaningService | null
 }
 
-export const emptyLeadContainer: ILeadContainer = {
-  lastUpdated: new Date(),
-  onlySavedOffline: false,
+export interface ILeadContainer extends LeadEditableValues {
+  lastUpdated: Date
+  onlySavedOffline: boolean
+  cachedInVersion: string
 
-  Lead: emptyLead,
-
-  moveOut: null,
-  moveIn: null,
-  cleaning: null,
-  disposal: null,
-  storage: null,
-
-  services: emptyServices,
-  moveService: emptyMoveService,
-
-  materialOrder: null,
-  inventory: null,
-
-  packService: null,
-  storageService: null,
-  disposalService: null,
-  cleaningService: null,
+  // unsavedChanges:
+  offlineOrigin?: LeadEditableValues
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -79,8 +60,8 @@ export function checkIs<Type>(object: any | null, key: keyof Type): object is Ty
   return false
 }
 
-class LeadAPI {
 
+class LeadAPI {
   // Only gets called to save into Offline Storage
   FetchFromOnline(leadId: number): Promise<ILeadContainer> {
     //@ts-ignore
@@ -103,8 +84,9 @@ class LeadAPI {
     ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
+      cachedInVersion: "",
 
-      Lead: Lead ? Lead : emptyLeadContainer.Lead,
+      Lead: Lead,
 
       moveOut: moveOut,
 
@@ -166,7 +148,9 @@ class LeadAPI {
     return Promise.reject()
   }
 
-
+  SaveLead = (lead: ILead): Promise<unknown> => {
+    return LeadService.saveCustomer(lead)
+  }
 
   SaveMoveOut = (moveOut: IMoveOutBuilding | IPostMoveOutBuilding | null, leadId: number): Promise<unknown> => {
     return moveOut ? checkIs<IMoveOutBuilding>(moveOut, 'MoveOutBuildingId') ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId).catch(this.Catch400Errors) : Promise.resolve(null)

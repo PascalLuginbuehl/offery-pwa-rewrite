@@ -23,7 +23,7 @@ const styles = (theme: Theme) =>
 
 interface Values {
   storageService: IPutStorageService
-  storage: IPostStorageBuilding | null
+  storage: IPostStorageBuilding
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
