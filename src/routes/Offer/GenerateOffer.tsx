@@ -49,9 +49,9 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
             options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: 2 }))}
           />
 
-          <SelectAddress label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
+          <Field component={SelectAddress} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
 
-          <SelectAddress label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
+          <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
 
           {status && status.msg && <div>{status.msg}</div>}
 

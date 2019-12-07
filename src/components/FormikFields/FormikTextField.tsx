@@ -13,12 +13,6 @@ export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omi
 }
 
 class FormikTextField extends React.Component<FormikTextFieldProps> {
-  // componentWillMount() {
-  //   if(this.props.field.value === null) {
-  //     this.props.form.setFieldValue(this.props.field.name, "")
-  //   }
-  // }
-
   render() {
     const defaultGrid: FormikTextFieldProps['overrideGrid'] = { xs: 12, md: 6 }
     const {

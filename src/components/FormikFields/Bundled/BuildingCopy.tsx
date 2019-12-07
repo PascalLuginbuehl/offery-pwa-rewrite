@@ -20,11 +20,11 @@ import { InputAdornment, IconButton, Grid } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 export interface IBuildingCopy {
-  moveOutBuilding: IPostMoveOutBuilding | IMoveOutBuilding | null
-  moveInBuilding: IPostMoveInBuilding | IMoveInBuilding | null
-  cleaningBuilding: IPostCleaningBuilding | ICleaningBuilding | null
-  disposalBuilding: IPostDisposalOutBuilding | IDisposalOutBuilding | null
-  storageBuilding: IPostStorageBuilding | IStorageBuilding | null
+  moveOutBuilding: IMoveOutBuilding | null
+  moveInBuilding: IMoveInBuilding | null
+  cleaningBuilding: ICleaningBuilding | null
+  disposalBuilding: IDisposalOutBuilding | null
+  storageBuilding: IStorageBuilding | null
 }
 
 interface Props extends InjectedIntlProps {

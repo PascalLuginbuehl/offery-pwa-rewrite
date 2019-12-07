@@ -66,7 +66,8 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography>{VisitConfirmEmailBodyContentOutroTextKey}</IntlTypography>
           </Grid>
 
-          <SelectAddress label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />
+          <Field component={SelectAddress} label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />
+          {/* <SelectAddress label="" name="AddressId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
           {status && status.msg && <div>{status.msg}</div>}
