@@ -1,115 +1,167 @@
+import React, { Component } from 'react';
+import { Route } from "react-router";
+import NewCustomer from "../Customer/NewBuildings/NewCustomer";
+import { ILeadContainer } from "../LeadAPI";
+import MoveOutBuilding from "../Customer/NewBuildings/MoveOutBuilding";
+import EmailConfirmation from "../Customer/NewBuildings/EmailConfirmation";
+import CleaningBuilding from "../Customer/NewBuildings/CleaningBuilding";
+import DisposalBuilding from "../Customer/NewBuildings/DisposalBuilding";
+import StorageBuilding from "../Customer/NewBuildings/StorageBuilding";
+import MoveInBuilding from "../Customer/NewBuildings/MoveInBuilding";
+import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../interfaces/IBuilding";
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
+
+interface Props {
+  leadContainer: ILeadContainer
+  handleChange: (value: any, name: keyof ILeadContainer) => void
+  redirectToNextPage: (currentUrl: string) => () => void
+  matchUrl: string
+}
+
+export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: Props) => {
+  const {
+    Lead,
+    moveOut,
+    moveIn,
+    storage,
+    disposal,
+    cleaning,
+  } = leadContainer
+
+  const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
+  const moveInBuilding = moveIn !== null ? moveIn : emptyMoveInBuilding
+  const storageBuilding = storage !== null ? storage : emptyStorageBuilding
+  const disposalBuilding = disposal !== null ? disposal : emptyDisposalOutBuilding
+  const cleaningBuilding = cleaning !== null ? cleaning : emptyCleaningBuilding
+
+  const buildingOptions: IBuildingCopy = {
+  moveOutBuilding: moveOut,
+  moveInBuilding: moveIn,
+  cleaningBuilding: cleaning,
+  storageBuilding: storage,
+  disposalBuilding: disposal,
+}
+
+  return (
+    <>
+      <Route
+        exact
+        path={`${matchUrl}/building`}
+        render={routeProps => (
+          <NewCustomer
+            {...routeProps}
+            lead={Lead}
+            onChangeAndSave={lead => {
+              handleChange(lead, "Lead")
+
+              // return Promise.all([this.Save()])
+            }}
+            nextPage={redirectToNextPage("/building")}
+          />
+        )}
+      />
+
+      {/* Move-Out */}
+      <Route
+        exact
+        path={`${matchUrl}/building/move-out`}
+        render={routeProps => (
+          <MoveOutBuilding
+            {...routeProps}
+            moveOutBuilding={moveOutBuilding}
+            onChangeAndSave={newMoveOutBuilding => {
+              handleChange(newMoveOutBuilding, "moveOut")
+              // return Promise.all([this.Save()])
+            }}
+            nextPage={redirectToNextPage("/building/move-out")}
+          />
+        )}
+      />
+
+      {/* Move-In */}
+      <Route
+        exact
+        path={`${matchUrl}/building/move-in`}
+        render={routeProps => (
+          <MoveInBuilding
+            {...routeProps}
+            moveInBuilding={moveInBuilding}
+            onChangeAndSave={newMoveInBuilding => {
+              handleChange(newMoveInBuilding, "moveIn")
+              // return Promise.all([this.Save()])
+            }}
+            nextPage={redirectToNextPage("/building/move-in")}
+          />
+        )}
+      />
+
+      {/* storage */}
+      <Route
+        exact
+        path={`${matchUrl}/building/storage`}
+        render={routeProps => (
+          <StorageBuilding
+            {...routeProps}
+            storageBuilding={storageBuilding}
+            onChangeAndSave={newStorageBuilding => {
+              handleChange(newStorageBuilding, "storage")
+              // return Promise.all([this.Save()])
+            }}
+            nextPage={redirectToNextPage("/building/storage")}
+          />
+        )}
+      />
+
+      {/* disposal */}
+      <Route
+        exact
+        path={`${matchUrl}/building/disposal`}
+        render={routeProps => (
+          <DisposalBuilding
+            {...routeProps}
+            disposalBuilding={disposalBuilding}
+            onChangeAndSave={newDisposalBuilding => {
+              handleChange(newDisposalBuilding, "disposal")
+              // return Promise.all([this.Save()])
+            }}
+            nextPage={redirectToNextPage("/building/disposal")}
+          />
+        )}
+      />
+
+      {/* Cleaning */}
+      <Route
+        exact
+        path={`${matchUrl}/building/cleaning`}
+        render={routeProps => (
+          <CleaningBuilding
+            {...routeProps}
+            cleaningBuilding={cleaningBuilding}
+            onChangeAndSave={newCleaningBuilding => {
+              handleChange(newCleaningBuilding, "cleaning")
+              // return Promise.all([this.Save()])
+            }}
+            nextPage={redirectToNextPage("/building/cleaning")}
+          />
+        )}
+      />
+
+      {/* E-Mail confirmation */}
+      <Route
+        exact
+        path={`${matchUrl}/building/email-confirmation`}
+        render={routeProps => (
+          <EmailConfirmation {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />
+        )}
+      />
+    </>
+  )
+}
+
+
 // const () => {
 //   {/* Customer */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building`}
-//                 render={routeProps => (
-//                   <NewCustomer
-//                     {...routeProps}
-//                     lead={Lead}
-//                     onChangeAndSave={lead => {
-//                       this.handleChange(lead, "Lead")
-
-//                       return Promise.all([this.Save()])
-//                     }}
-//                     nextPage={this.redirectToNextPage("/building")}
-//                   />
-//                 )}
-//               />
-
-//               {/* Move-Out */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building/move-out`}
-//                 render={routeProps => (
-//                   <NewMoveOutBuilding
-//                     {...routeProps}
-//                     moveOutBuilding={moveOut ? moveOut : emptyMoveOutBuilding}
-//                     onChangeAndSave={moveOutBuilding => {
-//                       this.handleChange(moveOutBuilding, "moveOut")
-//                       return Promise.all([this.Save()])
-//                     }}
-//                     nextPage={this.redirectToNextPage("/building/move-out")}
-//                   />
-//                 )}
-//               />
-
-//               {/* Move-In */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building/move-in`}
-//                 render={routeProps => (
-//                   <NewMoveInBuilding
-//                     {...routeProps}
-//                     moveInBuilding={moveIn ? moveIn : emptyMoveInBuilding}
-//                     onChangeAndSave={moveInBuilding => {
-//                       this.handleChange(moveInBuilding, "moveIn")
-//                       return Promise.all([this.Save()])
-//                     }}
-//                     nextPage={this.redirectToNextPage("/building/move-in")}
-//                   />
-//                 )}
-//               />
-
-//               {/* storage */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building/storage`}
-//                 render={routeProps => (
-//                   <NewStorageBuilding
-//                     {...routeProps}
-//                     storageBuilding={storage ? storage : emptyStorageBuilding}
-//                     onChangeAndSave={storageBuilding => {
-//                       this.handleChange(storageBuilding, "storage")
-//                       return Promise.all([this.Save()])
-//                     }}
-//                     nextPage={this.redirectToNextPage("/building/storage")}
-//                   />
-//                 )}
-//               />
-
-//               {/* disposal */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building/disposal`}
-//                 render={routeProps => (
-//                   <NewDisposalBuilding
-//                     {...routeProps}
-//                     disposalBuilding={disposal ? disposal : emptyDisposalOutBuilding}
-//                     onChangeAndSave={disposalBuilding => {
-//                       this.handleChange(disposalBuilding, "disposal")
-//                       return Promise.all([this.Save()])
-//                     }}
-//                     nextPage={this.redirectToNextPage("/building/disposal")}
-//                   />
-//                 )}
-//               />
-
-//               {/* Cleaning */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building/cleaning`}
-//                 render={routeProps => (
-//                   <NewCleaningBuilding
-//                     {...routeProps}
-//                     cleaningBuilding={cleaning ? cleaning : emptyCleaningBuilding}
-//                     onChangeAndSave={cleaningBuilding => {
-//                       this.handleChange(cleaningBuilding, "cleaning")
-//                       return Promise.all([this.Save()])
-//                     }}
-//                     nextPage={this.redirectToNextPage("/building/cleaning")}
-//                   />
-//                 )}
-//               />
-
-//               {/* E-Mail confirmation */}
-//               <Route
-//                 exact
-//                 path={`${match.url}/building/email-confirmation`}
-//                 render={routeProps => (
-//                   <NewEmailConfirmation {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={this.redirectToNextPage("/building/email-confirmation")} />
-//                 )}
-//               />
+//
 
 //               {/* Services */}
 //               <Route
