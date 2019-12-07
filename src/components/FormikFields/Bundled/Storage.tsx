@@ -13,7 +13,7 @@ export default ({ prefix, resource }: { prefix: string; resource: IResource }) =
   return (
     <>
       <FormikGroups label="CONTACT_PERSON" xs={12}>
-        <Field label="FULL_NAME" name={`${prefix}.StorageCompany.ContactPersonFullName`} component={FormikTextField} />
+        <Field label="FULL_NAME" name={`${prefix}.StorageCompany.ContactPersonFullName`} component={FormikTextField} required />
         <Field label="COMPANY" name={`${prefix}.StorageCompany.CompanyName`} component={FormikTextField} />
         <Field label="CONTACTPERSON_EMAIL" name={`${prefix}.StorageCompany.ContactPersonEMail`} component={FormikTextField} />
         <Field label="CONTACT_PERSON_TEL" name={`${prefix}.StorageCompany.ContactPersonTel`} component={FormikTextField} />

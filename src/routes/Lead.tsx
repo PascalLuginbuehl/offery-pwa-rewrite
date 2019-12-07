@@ -51,20 +51,34 @@ class Lead extends Component<Props, State> {
   }
 
   public handleChangeAndSave = async (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => {
+    const { container } = this.state
     this.handleChange(value, name);
 
-    try {
-      await savePromise
-      // saveWasSuccessFull, update offlineOrigin and offline
+    if(container) {
+      const { Lead } = container
+      try {
+        await savePromise
+        // saveWasSuccessFull, update offlineOrigin and offline
+      } catch (e) {
+        // Check if it is an offline error
+        if (e.message === "Failed to fetch") {
+          // Save to offline, not to origin
+          try {
+            console.log("Saved to offline storage")
 
-    } catch(e) {
-      // Check if it is an offline error
-      if (e.message === "Failed to fetch") {
-        // Save to offline, not to origin
+            LeadAPI.SaveToOffline(Lead.LeadId, { ...container, onlySavedOffline: true })
 
+            // this.setState({ onlySavedOffline: true })
 
-      } else {
-        throw {message: "Error while saving:", error: e}
+            return
+          } catch (e) {
+            console.log("Couldn't save offline", e)
+            throw { message: "Couldn't save offline", error: e }
+          }
+        } else {
+          console.log("Unknown error:", e)
+          throw { message: "Error while saving:", error: e }
+        }
       }
     }
   }
@@ -176,51 +190,6 @@ class Lead extends Component<Props, State> {
     return ""
   }
 
-  // Save = (): Promise<any> => {
-  //   return (new Promise(async (resolve, reject) => {
-  //     const { initialAwait, loadedFromOffline, ...lead} = this.state
-
-  //     const { Lead } = lead
-  //     if(LeadAPI.isCompleteLead(Lead)) {
-  //       try {
-  //         await LeadAPI.SaveToApi(Lead.LeadId, lead)
-  //         resolve()
-
-  //       } catch (e) {
-  //         if (e.message == "Failed to fetch") {
-  //           try {
-  //             LeadAPI.SaveToOffline(Lead.LeadId, { ...lead, onlySavedOffline: true })
-  //             this.setState({ onlySavedOffline: true })
-
-  //             console.log("Saved to offline storage")
-  //             resolve()
-
-  //           } catch (e) {
-  //             // Major upsie // TODO: Handle this
-  //             console.log("Couldn't save offline", e)
-  //             reject("Couldn't save offline")
-  //           }
-  //         } else if (e.message == "Could not save lead properly") {
-  //           // Other type of error message
-  //           console.log("I need ma own error popup m8")
-  //           reject("Error while saving")
-  //         } else {
-  //           console.log("Unknown error:", e)
-  //           reject(e)
-  //         }
-  //       }
-  //     } else {
-  //       console.log("Lead not yet created")
-  //     }
-  //   })
-  //   .catch(e => {
-
-  //     console.log("Well, there was a litte error happening while savin m8")
-
-  //     throw Error("Not saved")
-  //   }))
-  // }
-
   createLead = async (createLead: IPostLead) => {
     const promise = LeadService.createCustomer(createLead, this.props.selectedCompany.CompanyId)
 
@@ -266,6 +235,7 @@ class Lead extends Component<Props, State> {
       }
     }
   }
+
 
   public render() {
     const { initialAwait } = this.state
