@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Grid, ListSubheader, Collapse, Icon } from '@material-ui/core'
-import { handleChangeFunction } from '../components/Validator/HandleChangeFunction';
 import Wrapper from '../components/Form/Wrapper';
-import BuildingService from '../services/BuildingService';
 import { RouteComponentProps, Route, Redirect } from 'react-router';
 import LeadService from '../services/LeadService';
 import LeadAPI, { ILeadContainer } from './LeadAPI';
 import { emptyLead, ILead, IPostLead } from '../interfaces/ILead';
-import Services from './Services';
 import { withResource, WithResourceProps } from '../providers/withResource';
 import { emptyServices } from '../interfaces/IService';
 import NewCustomer from "./Customer/NewBuildings/NewCustomer"
-import NewEmailConfirmation from "./Customer/NewBuildings/EmailConfirmation"
 import LeadPageOrder from './CombinedRoutes/LeadPageOrder';
-import { thisExpression } from '@babel/types';
 import BuildingRoutes from './CombinedRoutes/BuildingRoutes';
 import ServiceRoutes from './CombinedRoutes/ServiceRoutes';
+import ConditionRoutes from './CombinedRoutes/ConditionRoutes';
+import Navigation from './CombinedRoutes/Navigation';
+import ReactDOM from 'react-dom';
 
 interface State {
   container: ILeadContainer | null
@@ -160,14 +156,14 @@ class Lead extends Component<Props, State> {
 
       const { history } = this.props
 
-      const nextPage = this.nextPageFunction(currentPage)
+      const nextPage = this.getNextPage(currentPage)
 
       // Quickfix due to TS Lint error
       history.push("/lead/" + (Lead as ILead).LeadId + nextPage)
     }
   }
 
-  nextPageFunction = (current: string): string => {
+  getNextPage = (current: string): string => {
     const { container } = this.state
 
     // Check if lead is even defined
@@ -224,7 +220,7 @@ class Lead extends Component<Props, State> {
 
       this.setState({ container: container })
 
-      this.props.history.replace("/lead/" + lead.LeadId + this.nextPageFunction("/building"))
+      this.props.history.replace("/lead/" + lead.LeadId + this.getNextPage("/building"))
 
       return
     } catch (e) {
@@ -239,7 +235,7 @@ class Lead extends Component<Props, State> {
 
 
   public render() {
-    const { initialAwait } = this.state
+    const { initialAwait, container } = this.state
     const { match, portal } = this.props
 
     return (
@@ -259,13 +255,16 @@ class Lead extends Component<Props, State> {
 
           {this.renderLead()}
         </Wrapper>
+        { portal && container? ReactDOM.createPortal(<Navigation leadContainer={container} matchUrl={match.url} portal={portal} />, portal) : null }
       </>
     )
   }
 
   renderLead = () => {
-    const { match } = this.props
+    const { match, portal } = this.props
     const { container } = this.state
+
+    console.log(portal)
 
     // Create New Lead
     if (match.params.id === "new" && container === null) {
@@ -279,21 +278,17 @@ class Lead extends Component<Props, State> {
         />
       )
     } else if (container) {
+
+
       return (
         <>
-          <BuildingRoutes
-            leadContainer={container}
-            matchUrl={match.url}
-            handleChangeAndSave={this.handleChangeAndSave}
-            redirectToNextPage={this.redirectToNextPage}
-          />
+          <BuildingRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 
-          <ServiceRoutes
-            leadContainer={container}
-            matchUrl={match.url}
-            handleChangeAndSave={this.handleChangeAndSave}
-            redirectToNextPage={this.redirectToNextPage}
-          />
+          <ServiceRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+
+          <ConditionRoutes getNextPage={this.getNextPage} leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+
+
         </>
       )
     } else {
