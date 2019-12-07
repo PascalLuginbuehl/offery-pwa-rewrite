@@ -16,6 +16,7 @@ import NewEmailConfirmation from "./Customer/NewBuildings/EmailConfirmation"
 import LeadPageOrder from './CombinedRoutes/LeadPageOrder';
 import { thisExpression } from '@babel/types';
 import BuildingRoutes from './CombinedRoutes/BuildingRoutes';
+import ServiceRoutes from './CombinedRoutes/ServiceRoutes';
 
 interface State {
   container: ILeadContainer | null
@@ -280,7 +281,19 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
-          <BuildingRoutes leadContainer={container} handleChange={this.handleChange} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+          <BuildingRoutes
+            leadContainer={container}
+            matchUrl={match.url}
+            handleChangeAndSave={this.handleChangeAndSave}
+            redirectToNextPage={this.redirectToNextPage}
+          />
+
+          <ServiceRoutes
+            leadContainer={container}
+            matchUrl={match.url}
+            handleChangeAndSave={this.handleChangeAndSave}
+            redirectToNextPage={this.redirectToNextPage}
+          />
         </>
       )
     } else {

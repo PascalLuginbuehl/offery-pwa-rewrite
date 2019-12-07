@@ -14,13 +14,12 @@ import { ICustomer } from '../../interfaces/ILead';
 
 interface Props {
   leadContainer: ILeadContainer
-  handleChange: (value: any, name: keyof ILeadContainer) => void
   handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => void
   redirectToNextPage: (currentUrl: string) => () => void
   matchUrl: string
 }
 
-export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) => {
+export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) => {
   const { Lead, moveOut, moveIn, storage, disposal, cleaning } = leadContainer
 
   const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
@@ -111,7 +110,6 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl, han
             {...routeProps}
             storageBuilding={storageBuilding}
             onChangeAndSave={newStorageBuilding => {
-              handleChange(newStorageBuilding, "storage")
               return handleChangeAndSave(newStorageBuilding, "storage", LeadAPI.SaveStorage(newStorageBuilding, Lead.LeadId))
             }}
             nextPage={redirectToNextPage("/building/storage")}

@@ -21,7 +21,7 @@ const styles = (theme: Theme) =>
 
 interface Values {
   packService: IPutPackService
-  moveOut: IPostMoveOutBuilding | null
+  moveOut: IPostMoveOutBuilding
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {

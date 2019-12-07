@@ -26,7 +26,7 @@ const styles = (theme: Theme) =>
 
 interface Values {
   cleaningService: IPutCleaningService
-  cleaning: IPostCleaningBuilding | null
+  cleaning: IPostCleaningBuilding
 }
 
 
