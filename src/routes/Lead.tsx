@@ -287,8 +287,6 @@ class Lead extends Component<Props, State> {
           <ServiceRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 
           <ConditionRoutes getNextPage={this.getNextPage} leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
-
-
         </>
       )
     } else {
