@@ -25,11 +25,7 @@ import { IMaterialOrder } from '../interfaces/IShop';
 import { IInventars } from '../interfaces/IInventars';
 
 
-export interface ILeadContainer {
-  lastUpdated: Date
-  onlySavedOffline: boolean
-  cachedInVersion: string
-
+interface LeadEditableValues {
   Lead: ILead
   moveOut: IMoveOutBuilding | null
   moveIn: IMoveInBuilding | null
@@ -46,7 +42,15 @@ export interface ILeadContainer {
   storageService: IStorageSerivce | null
   disposalService: IDisposalSerivce | null
   cleaningService: ICleaningService | null
+}
+
+export interface ILeadContainer extends LeadEditableValues {
+  lastUpdated: Date
+  onlySavedOffline: boolean
+  cachedInVersion: string
+
   // unsavedChanges:
+  offlineOrigin?: LeadEditableValues
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -80,6 +84,7 @@ class LeadAPI {
     ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
+      cachedInVersion: "",
 
       Lead: Lead,
 
@@ -143,7 +148,9 @@ class LeadAPI {
     return Promise.reject()
   }
 
-
+  SaveLead = (lead: ILead): Promise<unknown> => {
+    return LeadService.saveCustomer(lead)
+  }
 
   SaveMoveOut = (moveOut: IMoveOutBuilding | IPostMoveOutBuilding | null, leadId: number): Promise<unknown> => {
     return moveOut ? checkIs<IMoveOutBuilding>(moveOut, 'MoveOutBuildingId') ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId).catch(this.Catch400Errors) : Promise.resolve(null)

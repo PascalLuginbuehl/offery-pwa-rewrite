@@ -6,50 +6,17 @@ import Wrapper from '../components/Form/Wrapper';
 import BuildingService from '../services/BuildingService';
 import { RouteComponentProps, Route, Redirect } from 'react-router';
 import LeadService from '../services/LeadService';
-import Customer from './Customer';
-import Loading from '../components/Loading';
-import { FormattedMessage } from 'react-intl';
-import NavItem from '../components/Navigation/NavItem';
-import OriginalSnackbar from '../components/SuccessSnackbar';
-import OfflinePinIcon from '@material-ui/icons/OfflinePin'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import IntlTooltip from '../components/Intl/IntlTooltip';
 import LeadAPI, { ILeadContainer } from './LeadAPI';
 import { emptyLead, ILead, IPostLead } from '../interfaces/ILead';
 import Services from './Services';
 import { withResource, WithResourceProps } from '../providers/withResource';
-import NavFolder from '../components/Navigation/NavFolder';
-import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from '../interfaces/IBuilding';
-import SuccessSnackbar from '../components/SuccessSnackbar';
-import MoveService from './Services/MoveService';
-import { emptyMoveService, emptyPackService, emptyStorageService, emptyDisposalService, emptyCleaningService, emptyServices } from '../interfaces/IService';
-import MaterialShop from './Services/MaterialShop';
-import { ShopTypeEnum, emptyMaterialOrder } from '../interfaces/IShop';
-import Inventory from './Services/Inventory';
-import { InventoryKeysEnum, emptyInventory } from '../interfaces/IInventars';
-import PackService from './Services/PackService';
-import StorageService from './Services/StorageService';
-import DisposalService from './Services/DisposalService';
-import CleaningService from './Services/CleaningService';
-import MoveConditions from './Conditions/MoveConditions';
-import { emptyMoveServiceConditions, emptyPackServiceConditions, emptyCleaningServiceConditions, emptyStorageServiceConditions, emptyDisposalServiceConditions } from '../interfaces/IConditions';
-import PackConditions from './Conditions/PackConditions';
-import StorageConditions from './Conditions/StorageConditions';
-import DisposalConditions from './Conditions/DisposalConditions';
-import CleaningConditions from './Conditions/CleaningConditions';
-import Generate from './Offer/GenerateOffer';
-import PreviewOffer from './Offer/PreviewOffer';
-import NewMoveOutBuilding from "./Customer/NewBuildings/MoveOutBuilding"
-import NewMoveInBuilding from "./Customer/NewBuildings/MoveInBuilding"
-import NewStorageBuilding from "./Customer/NewBuildings/StorageBuilding"
-import NewCleaningBuilding from "./Customer/NewBuildings/CleaningBuilding"
-import NewDisposalBuilding from "./Customer/NewBuildings/DisposalBuilding"
-import { IBuildingCopy } from '../components/FormikFields/Bundled/BuildingCopy';
+import { emptyServices } from '../interfaces/IService';
 import NewCustomer from "./Customer/NewBuildings/NewCustomer"
 import NewEmailConfirmation from "./Customer/NewBuildings/EmailConfirmation"
 import LeadPageOrder from './CombinedRoutes/LeadPageOrder';
 import { thisExpression } from '@babel/types';
 import BuildingRoutes from './CombinedRoutes/BuildingRoutes';
+
 interface State {
   container: ILeadContainer | null
 
@@ -77,14 +44,33 @@ class Lead extends Component<Props, State> {
   }
 
   public handleChange = (value: any, target: keyof ILeadContainer) => {
-    const {container} = this.state
-    if(container) {
-      this.setState({ container: {...container, [target]: value} })
+    const { container } = this.state
+    if (container) {
+      this.setState({ container: { ...container, [target]: value } })
+    }
+  }
+
+  public handleChangeAndSave = async (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => {
+    this.handleChange(value, name);
+
+    try {
+      await savePromise
+      // saveWasSuccessFull, update offlineOrigin and offline
+
+    } catch(e) {
+      // Check if it is an offline error
+      if (e.message === "Failed to fetch") {
+        // Save to offline, not to origin
+
+
+      } else {
+        throw {message: "Error while saving:", error: e}
+      }
     }
   }
 
   async componentDidMount() {
-    const fetch =  async () => {
+    const fetch = async () => {
       const idString = this.props.match.params.id
       const potentialLeadId = parseInt(idString ? idString : "")
 
@@ -98,7 +84,9 @@ class Lead extends Component<Props, State> {
           // Save to online and then fetch
 
           await this.saveOfflineToOnline(potentialLeadId, offline)
+
         } else {
+
           await this.loadFromOnline(potentialLeadId)
 
           this.setState({})
@@ -320,10 +308,11 @@ class Lead extends Component<Props, State> {
         />
       )
     } else if (container) {
-      return <>
-        <BuildingRoutes leadContainer={container} handleChange={this.handleChange} matchUrl={match.url} redirectToNextPage={this.redirectToNextPage} />
-
-      </>
+      return (
+        <>
+          <BuildingRoutes leadContainer={container} handleChange={this.handleChange} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+        </>
+      )
     } else {
       return "No Lead found"
     }

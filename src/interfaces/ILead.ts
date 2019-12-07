@@ -43,6 +43,12 @@ export interface IPostLead {
   HasCleaningBuilding: boolean
   HasDisposalOutBuilding: boolean
 
+  MoveServiceConditions: IMoveServiceConditions | null
+  PackServiceConditions: IPackServiceConditions | null
+  DisposalServiceConditions: IDisposalServiceConditions | null
+  StorageServiceConditions: IStorageServiceConditions | null
+  CleaningServiceConditions: ICleaningServiceConditions | null
+
   Comment: string
 }
 
@@ -77,12 +83,6 @@ export interface ILead extends ICompressedLead {
     Status: IStatus
   }>
 
-  MoveServiceConditions: IMoveServiceConditions | null
-  PackServiceConditions: IPackServiceConditions | null
-  DisposalServiceConditions: IDisposalServiceConditions | null
-  StorageServiceConditions: IStorageServiceConditions | null
-  CleaningServiceConditions: ICleaningServiceConditions | null
-
   Offers: IOffer[]
 }
 
@@ -113,4 +113,10 @@ export const emptyLead: IPostLead = {
   HasMoveInBuilding: true,
   HasMoveOutBuilding: true,
   HasStorageInBuilding: false,
+
+  MoveServiceConditions: null,
+  PackServiceConditions: null,
+  DisposalServiceConditions: null,
+  StorageServiceConditions: null,
+  CleaningServiceConditions: null,
 }

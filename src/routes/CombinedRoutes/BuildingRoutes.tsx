@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from "react-router";
 import NewCustomer from "../Customer/NewBuildings/NewCustomer";
-import { ILeadContainer } from "../LeadAPI";
+import LeadAPI, { ILeadContainer } from "../LeadAPI";
 import MoveOutBuilding from "../Customer/NewBuildings/MoveOutBuilding";
 import EmailConfirmation from "../Customer/NewBuildings/EmailConfirmation";
 import CleaningBuilding from "../Customer/NewBuildings/CleaningBuilding";
@@ -10,23 +10,18 @@ import StorageBuilding from "../Customer/NewBuildings/StorageBuilding";
 import MoveInBuilding from "../Customer/NewBuildings/MoveInBuilding";
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../interfaces/IBuilding";
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
+import { ICustomer } from '../../interfaces/ILead';
 
 interface Props {
   leadContainer: ILeadContainer
   handleChange: (value: any, name: keyof ILeadContainer) => void
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => void
   redirectToNextPage: (currentUrl: string) => () => void
   matchUrl: string
 }
 
-export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: Props) => {
-  const {
-    Lead,
-    moveOut,
-    moveIn,
-    storage,
-    disposal,
-    cleaning,
-  } = leadContainer
+export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) => {
+  const { Lead, moveOut, moveIn, storage, disposal, cleaning } = leadContainer
 
   const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
   const moveInBuilding = moveIn !== null ? moveIn : emptyMoveInBuilding
@@ -35,12 +30,12 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
   const cleaningBuilding = cleaning !== null ? cleaning : emptyCleaningBuilding
 
   const buildingOptions: IBuildingCopy = {
-  moveOutBuilding: moveOut,
-  moveInBuilding: moveIn,
-  cleaningBuilding: cleaning,
-  storageBuilding: storage,
-  disposalBuilding: disposal,
-}
+    moveOutBuilding: moveOut,
+    moveInBuilding: moveIn,
+    cleaningBuilding: cleaning,
+    storageBuilding: storage,
+    disposalBuilding: disposal,
+  }
 
   return (
     <>
@@ -52,9 +47,23 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
             {...routeProps}
             lead={Lead}
             onChangeAndSave={lead => {
-              handleChange(lead, "Lead")
-
-              // return Promise.all([this.Save()])
+              // Fixing PostLead to Lead back together
+              handleChangeAndSave(
+                lead,
+                "Lead",
+                LeadAPI.SaveLead({
+                  ...lead,
+                  Customer: lead.Customer as ICustomer,
+                  VisitDate: lead.VisitDate ? lead.VisitDate : Lead.VisitDate,
+                  LeadId: Lead.LeadId,
+                  StatusHistories: Lead.StatusHistories,
+                  Created: Lead.Created,
+                  Offers: Lead.Offers,
+                  Status: Lead.Status,
+                  FromAddress: Lead.FromAddress,
+                  ToAddress: Lead.ToAddress,
+                })
+              )
             }}
             nextPage={redirectToNextPage("/building")}
           />
@@ -70,8 +79,7 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
             {...routeProps}
             moveOutBuilding={moveOutBuilding}
             onChangeAndSave={newMoveOutBuilding => {
-              handleChange(newMoveOutBuilding, "moveOut")
-              // return Promise.all([this.Save()])
+              return handleChangeAndSave(newMoveOutBuilding, "moveOut", LeadAPI.SaveMoveOut(newMoveOutBuilding, Lead.LeadId))
             }}
             nextPage={redirectToNextPage("/building/move-out")}
           />
@@ -87,8 +95,7 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
             {...routeProps}
             moveInBuilding={moveInBuilding}
             onChangeAndSave={newMoveInBuilding => {
-              handleChange(newMoveInBuilding, "moveIn")
-              // return Promise.all([this.Save()])
+              return handleChangeAndSave(newMoveInBuilding, "moveIn", LeadAPI.SaveMoveIn(newMoveInBuilding, Lead.LeadId))
             }}
             nextPage={redirectToNextPage("/building/move-in")}
           />
@@ -105,7 +112,7 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
             storageBuilding={storageBuilding}
             onChangeAndSave={newStorageBuilding => {
               handleChange(newStorageBuilding, "storage")
-              // return Promise.all([this.Save()])
+              return handleChangeAndSave(newStorageBuilding, "storage", LeadAPI.SaveStorage(newStorageBuilding, Lead.LeadId))
             }}
             nextPage={redirectToNextPage("/building/storage")}
           />
@@ -121,8 +128,7 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
             {...routeProps}
             disposalBuilding={disposalBuilding}
             onChangeAndSave={newDisposalBuilding => {
-              handleChange(newDisposalBuilding, "disposal")
-              // return Promise.all([this.Save()])
+              return handleChangeAndSave(newDisposalBuilding, "disposal", LeadAPI.SaveDisposal(newDisposalBuilding, Lead.LeadId))
             }}
             nextPage={redirectToNextPage("/building/disposal")}
           />
@@ -138,8 +144,7 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
             {...routeProps}
             cleaningBuilding={cleaningBuilding}
             onChangeAndSave={newCleaningBuilding => {
-              handleChange(newCleaningBuilding, "cleaning")
-              // return Promise.all([this.Save()])
+              return handleChangeAndSave(newCleaningBuilding, "cleaning", LeadAPI.SaveCleaning(newCleaningBuilding, Lead.LeadId))
             }}
             nextPage={redirectToNextPage("/building/cleaning")}
           />
@@ -150,9 +155,7 @@ export default ({ leadContainer, handleChange, redirectToNextPage, matchUrl }: P
       <Route
         exact
         path={`${matchUrl}/building/email-confirmation`}
-        render={routeProps => (
-          <EmailConfirmation {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />
-        )}
+        render={routeProps => <EmailConfirmation {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />}
       />
     </>
   )
