@@ -3,7 +3,7 @@ const workboxBuild = require('workbox-build');
 const buildSW = () => {
   // This will return a Promise
   return workboxBuild.injectManifest({
-    skipWaiting: true,
+    // skipWaiting: true,
     swSrc: 'src/sw-template.js', // this is your sw template file
     swDest: 'build/sw.js', // this will be created in the build step
     globDirectory: 'build',
