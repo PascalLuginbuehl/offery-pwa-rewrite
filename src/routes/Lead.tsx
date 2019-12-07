@@ -17,6 +17,7 @@ import LeadPageOrder from './CombinedRoutes/LeadPageOrder';
 import { thisExpression } from '@babel/types';
 import BuildingRoutes from './CombinedRoutes/BuildingRoutes';
 import ServiceRoutes from './CombinedRoutes/ServiceRoutes';
+import ConditionRoutes from './CombinedRoutes/ConditionRoutes';
 
 interface State {
   container: ILeadContainer | null
@@ -160,14 +161,14 @@ class Lead extends Component<Props, State> {
 
       const { history } = this.props
 
-      const nextPage = this.nextPageFunction(currentPage)
+      const nextPage = this.getNextPage(currentPage)
 
       // Quickfix due to TS Lint error
       history.push("/lead/" + (Lead as ILead).LeadId + nextPage)
     }
   }
 
-  nextPageFunction = (current: string): string => {
+  getNextPage = (current: string): string => {
     const { container } = this.state
 
     // Check if lead is even defined
@@ -224,7 +225,7 @@ class Lead extends Component<Props, State> {
 
       this.setState({ container: container })
 
-      this.props.history.replace("/lead/" + lead.LeadId + this.nextPageFunction("/building"))
+      this.props.history.replace("/lead/" + lead.LeadId + this.getNextPage("/building"))
 
       return
     } catch (e) {
@@ -281,19 +282,11 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
-          <BuildingRoutes
-            leadContainer={container}
-            matchUrl={match.url}
-            handleChangeAndSave={this.handleChangeAndSave}
-            redirectToNextPage={this.redirectToNextPage}
-          />
+          <BuildingRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 
-          <ServiceRoutes
-            leadContainer={container}
-            matchUrl={match.url}
-            handleChangeAndSave={this.handleChangeAndSave}
-            redirectToNextPage={this.redirectToNextPage}
-          />
+          <ServiceRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+
+          <ConditionRoutes getNextPage={this.getNextPage} leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
         </>
       )
     } else {
