@@ -1,10 +1,16 @@
-export interface IOffer {
-  OfferId: number
-  Created: string
+export interface IOFile {
+  OFileId: number
+  Created: Date
   DocName: string
-  Language: string
-  FromTemplate: string
   FileExtension: string
   FileFormat: number
   MediaTypeHeaderValue: string
+}
+
+export interface IOffer {
+  OfferId: number
+  Created: string
+  FromTemplate: string
+  Language: string
+  Files: IOFile[]
 }

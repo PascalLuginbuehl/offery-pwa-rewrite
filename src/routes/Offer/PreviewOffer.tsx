@@ -39,10 +39,19 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
     const {values: {selectedOfferId}} = this.props
 
     if (selectedOfferId) {
-      const blob = await OfferService.downloadPdf(selectedOfferId)
 
-      const string = window.URL.createObjectURL(blob)
-      this.setState({ pdfBlobBase64: string })
+      const { lead } = this.props
+      const offers = lead.Offers
+      const offer = offers.find(offer => offer.OfferId === selectedOfferId)
+      if(offer) {
+        const pdfFile = offer.Files.find(file => file.FileExtension === "pdf")
+
+        if(pdfFile) {
+          const blob = await OfferService.downloadPdf(selectedOfferId, pdfFile.OFileId)
+          const string = window.URL.createObjectURL(blob)
+          this.setState({ pdfBlobBase64: string })
+        }
+      }
     }
   }
 
@@ -62,7 +71,6 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
             component={FormikSimpleSelect}
             notTranslated
             options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime())
-              .filter(offer => offer.DocName !== "TEMPNAME-FILE-NOT-CREATED-YET" && offer.FileExtension === "pdf")
               .map(offer => ({
                 label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
                 value: offer.OfferId,
@@ -75,7 +83,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
           </Grid>
 
           {pdfBlobBase64 ? (
-            <iframe src={"https://docs.google.com/viewerng/viewer?url=" + pdfBlobBase64} style={{ width: "100%", height: "calc(100vh - 275px)" }} />
+            <iframe src={pdfBlobBase64} style={{ width: "100%", height: "calc(100vh - 275px)" }} />
           ) : null}
 
           {status && status.msg && <div>{status.msg}</div>}

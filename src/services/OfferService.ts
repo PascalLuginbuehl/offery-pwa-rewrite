@@ -13,9 +13,9 @@ class ServicesService {
     return json
   }
 
-  async getOffer(leadId: number, templateCategoryId: number, type: "pdf" | "docx", outAddressId: number, inAddressId: number): Promise<IOffer> {
+  async getOffer(leadId: number, templateCategoryId: number, outAddressId: number, inAddressId: number): Promise<IOffer> {
     return (
-      fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId + "/" + type + "/" + outAddressId + "/" + inAddressId, await LoginService.authorizeRequest())
+      fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId + "/" + outAddressId + "/" + inAddressId, await LoginService.authorizeRequest())
         .then(errorFunction)
         .then(response => response.json())
         // .then(middleWare)
@@ -24,8 +24,8 @@ class ServicesService {
     )
   }
 
-  async downloadPdf(offerId: number): Promise<any> {
-    return fetch(API_URL + "/offer/" + offerId + "/file", await LoginService.authorizeRequest())
+  async downloadPdf(offerId: number, fileId: number): Promise<any> {
+    return fetch(API_URL + "/offer/" + offerId + "/file/ " + fileId, await LoginService.authorizeRequest())
       .then(errorFunction)
       .then(response => response.blob())
   }

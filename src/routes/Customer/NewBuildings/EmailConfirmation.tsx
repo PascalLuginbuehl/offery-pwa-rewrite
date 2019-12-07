@@ -44,22 +44,26 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { isSubmitting, status, resource, selectedCompany, values, lead, buildingOptions } = this.props
-    const { EmailBodyContentIntroductionTextKey, EmailBodyContentOutroductionTextKey, EmailSubjectTextKey } = selectedCompany.Settings.VisitConfirmationSetting
+    const {
+      VisitConfirmEmailSubjectTextKey,
+      VisitConfirmEmailBodyContentOutroTextKey,
+      VisitConfirmEmailBodyContentIntroTextKey,
+    } = selectedCompany.Settings
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="EMAIL_CONFIRMATION" />
           <Grid item xs={12}>
-            <IntlTypography>{EmailBodyContentIntroductionTextKey}</IntlTypography>
-            <IntlTypography>{EmailSubjectTextKey}</IntlTypography>
+            <IntlTypography>{VisitConfirmEmailBodyContentIntroTextKey}</IntlTypography>
+            <IntlTypography>{VisitConfirmEmailSubjectTextKey}</IntlTypography>
 
             <IntlTypography>VISITING_DATE</IntlTypography>
             <Typography>
               <FormattedDate value={lead.VisitDate} />
             </Typography>
 
-            <IntlTypography>{EmailBodyContentOutroductionTextKey}</IntlTypography>
+            <IntlTypography>{VisitConfirmEmailBodyContentOutroTextKey}</IntlTypography>
           </Grid>
 
           <SelectAddress label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />

@@ -70,7 +70,7 @@ export default withStyles(styles)(
       handleSubmit: async (values, actions) => {
         const {templateCategoryId, inAddressId, outAddressId} = values
         if ((templateCategoryId && inAddressId && outAddressId)) {
-          const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, "pdf", outAddressId, inAddressId)
+          const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, outAddressId, inAddressId)
         }
         // console.log(values)
         // // actions.props.

@@ -19,16 +19,26 @@ export interface IOfferTemplateCategory {
   OfferTemplates: IOfferTemplate[]
 }
 
-export interface IVisitConfirmation {
-  VisitConfirmationSettingId: number
-  EmailSubjectTextKey: string
-  EmailBodyContentIntroductionTextKey: string
-  EmailBodyContentOutroductionTextKey: string
-}
 export interface ICompanySetting {
-  CompanySettingId: number
-  EnableDefaultHourPrice: boolean
-  VisitConfirmationSetting: IVisitConfirmation
+  ConditionEnableDefaultHourPrice: boolean
+  ConditionEnableDefaultHasCostCeiling: boolean
+  ConditionHourlyPriceRange: number[]
+
+  VisitConfirmEmailSubjectTextKey: string
+  VisitConfirmEmailBodyContentIntroTextKey: string
+  VisitConfirmEmailBodyContentOutroTextKey: string
+  OfferEmailSubjectTextKey: string
+  OfferEmailBodyContentIntroTextKey: string
+  OfferEmailBodyContentOutroTextKey: string
+
+  AppointmentVisitDuration: number
+  AppointmentMoveDuration: number
+  AppointmentPackDuration: number
+  AppointmentDeliveryDuration: number
+  AppointmentStorageDuration: number
+  AppointmentDisposalDuration: number
+  AppointmentCleaningDuration: number
+  AppointmentHandOverDuration: number
 }
 
 export interface ICarType {
