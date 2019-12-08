@@ -18,9 +18,11 @@ export interface IBuildingCopy {
   storageBuilding: IStorageBuilding | null
 }
 
+export type CombinedBuildings = IMoveOutBuilding | IMoveInBuilding | ICleaningBuilding | IDisposalOutBuilding | IStorageBuilding
+
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
-  onCopy: (building: IMoveOutBuilding | IMoveInBuilding | ICleaningBuilding | IDisposalOutBuilding | IStorageBuilding ) => void
+  onCopy: (building: CombinedBuildings ) => void
 }
 
 const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, onCopy }) => {
