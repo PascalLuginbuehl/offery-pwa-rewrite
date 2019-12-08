@@ -84,19 +84,12 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
-
       mapPropsToValues: props => ({ cleaningService: props.cleaningService, cleaning: props.cleaning }),
 
       handleSubmit: async (values, actions) => {
-        console.log(values)
-        // actions.props.
         await actions.props.onChangeAndSave(values.cleaningService, values.cleaning)
 
+        actions.resetForm()
         actions.setSubmitting(false)
         actions.props.nextPage()
       },

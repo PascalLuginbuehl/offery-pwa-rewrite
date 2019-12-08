@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, withWidth } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
@@ -10,7 +10,9 @@ import { ILead } from '../../interfaces/ILead';
 import OfferService from '../../services/OfferService';
 import FormikSimpleSelect from '../../components/FormikFields/FormikSimpleSelect';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-
+// import { Document, Page } from 'react-pdf'
+import { Document, Page } from "react-pdf/dist/entry.webpack"
+import { PDFDocumentProxy } from 'pdfjs-dist';
 const styles = (theme: Theme) =>
   createStyles({
 
@@ -27,12 +29,14 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 }
 
 interface State {
-  pdfBlobBase64: string
+  pdfBlobBase64: string | null
+  pages: number | null
 }
 
 class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
-    pdfBlobBase64: "about:blank",
+    pdfBlobBase64: null,
+    pages: null,
   }
 
   previewPDF = async () => {
@@ -55,39 +59,42 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
     }
   }
 
+  onDocumentLoadSuccess = ({ numPages }: PDFDocumentProxy) => {
+    this.setState({ pages: numPages });
+  }
+
   public render() {
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, lead, intl } = this.props
 
-    const { pdfBlobBase64 } = this.state
+    const { pdfBlobBase64, pages } = this.state
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="PREVIEW" />
-
           <Field
             label="BUILDING_TYPE"
             name="selectedOfferId"
             component={FormikSimpleSelect}
             notTranslated
-            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime())
-              .map(offer => ({
-                label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
-                value: offer.OfferId,
-              }))}
+            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
+              label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+              value: offer.OfferId,
+            }))}
           />
           <Grid item xs={6}>
             <Button onClick={this.previewPDF} disabled={!values.selectedOfferId} variant="contained" color="primary">
               <FormattedMessage id="DISPLAY_PDF" />
             </Button>
           </Grid>
-
           {pdfBlobBase64 ? (
-            <iframe src={pdfBlobBase64} style={{ width: "100%", height: "calc(100vh - 275px)" }} />
+            <Document file={pdfBlobBase64} onLoadSuccess={this.onDocumentLoadSuccess}>
+              {/* renderTextLayer 19 pixels to */}
+              {pages ? new Array(pages).fill("").map((e, i) => <Page key={i} pageIndex={i} renderTextLayer={false} width={Math.min(1080, window.innerWidth) - 50} />) : null}
+            </Document>
           ) : null}
-
+          {/* <iframe style={{ width: "100%", height: "calc(100vh - 275px)" }} /> */}
           {status && status.msg && <div>{status.msg}</div>}
-
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
