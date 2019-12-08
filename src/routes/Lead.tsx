@@ -229,6 +229,7 @@ class Lead extends Component<Props, State> {
       } else {
         console.log("Couldn't create")
         console.dir(e)
+        throw e
       }
     }
   }
