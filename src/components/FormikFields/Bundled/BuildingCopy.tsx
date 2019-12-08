@@ -16,7 +16,7 @@ import { Field } from "formik"
 import FormikSimpleSelect from "../FormikSimpleSelect"
 import { injectIntl, InjectedIntlProps } from "react-intl"
 import { IAddress, IPostAddress } from "../../../interfaces/IAddress"
-import { InputAdornment, IconButton, Grid } from "@material-ui/core"
+import { InputAdornment, IconButton, Grid, FormControl, InputLabel, Select, MenuItem, ListItemText } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 export interface IBuildingCopy {
@@ -33,25 +33,8 @@ interface Props extends InjectedIntlProps {
 }
 
 const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
-  const createLabelString = ({ moveOutBuilding, moveInBuilding, cleaningBuilding, disposalBuilding, storageBuilding }: IBuildingCopy) => {
-    const createString = (buildingTypeName: string, base: { Address: IPostAddress } | null) => {
-      if (base) {
-        const translatedBuildingTypeName = intl.formatMessage({ id: buildingTypeName })
-        return `${translatedBuildingTypeName}: ${base.Address.Street}, ${base.Address.City}`
-      }
-      return null
-    }
 
-    const options = [
-      { label: createString("MOVE_OUT_BUILDING", moveOutBuilding), value: 1 },
-      { label: createString("MOVE_IN_BUILDING", moveInBuilding), value: 2 },
-      { label: createString("STORAGE_BUILDING", disposalBuilding), value: 3 },
-      { label: createString("CLEANING_BUILDING", storageBuilding), value: 4 },
-      { label: createString("DISPOSAL_BUILDING", cleaningBuilding), value: 5 },
-    ]
-
-    return options.filter(string => !!string.label)
-  }
+  const [selectedCopy, setCopy] = React.useState<string | null>(null)
 
   const handleCopy = () => {
   //   IPostMoveOutBuilding
@@ -65,15 +48,33 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
 
   return (
     <Grid item xs={12} md={6} style={{ display: "flex" }}>
-      <Field
-        disableGrid
-        label="COPY_FROM"
-        name="copyFromSelect"
-        component={FormikSimpleSelect}
-        // options={[{label}]}
-        notTranslated
-        options={createLabelString(buildings)}
-      />
+      <FormControl>
+        <InputLabel>{intl.formatMessage({ id: "COPY_FROM" })}</InputLabel>
+        <Select
+          value={selectedCopy ? selectedCopy : ""}
+          onChange={e => setCopy(e.target.value as string)}
+          renderValue={(value: unknown) => {
+            if (value) {
+              const key = value as keyof IBuildingCopy
+              const building = buildings[key]
+              if (building) {
+                return building.Address.Street + ", " + building.Address.PLZ + " " + building.Address.City
+              }
+            }
+
+            return ""
+          }}
+        >
+          {buildings.moveOutBuilding ? (
+            <MenuItem value="moveOutBuilding" dense>
+              <ListItemText
+                primary={buildings.moveOutBuilding.Address.Street + ", " + buildings.moveOutBuilding.Address.PLZ + " " + buildings.moveOutBuilding.Address.City}
+                secondary={intl.formatMessage({ id: "MOVE_OUT_BUILDING" })}
+              />
+            </MenuItem>
+          ) : null}
+        </Select>
+      </FormControl>
       <IconButton onClick={handleCopy}>
         <FileCopyIcon />
       </IconButton>
