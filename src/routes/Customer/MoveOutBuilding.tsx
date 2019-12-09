@@ -2,12 +2,12 @@ import * as React from 'react'
 import { createStyles, Tabs, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
 import { FormikProps, withFormik } from 'formik';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import MoveOut from '../../../components/FormikFields/Bundled/MoveOut';
-import { IMoveOutBuilding, IPostMoveOutBuilding } from '../../../interfaces/IBuilding';
-import Form from '../../../components/FormikFields/Form';
-import { withResource, WithResourceProps } from '../../../providers/withResource';
-import Submit from '../../../components/FormikFields/Submit';
-import PageHeader from '../../../components/PageHeader';
+import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
+import { IMoveOutBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
+import Form from '../../components/FormikFields/Form';
+import { withResource, WithResourceProps } from '../../providers/withResource';
+import Submit from '../../components/FormikFields/Submit';
+import PageHeader from '../../components/PageHeader';
 
 const styles = (theme: Theme) =>
   createStyles({

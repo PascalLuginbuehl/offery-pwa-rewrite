@@ -2,12 +2,12 @@ import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
 import { FormikProps, withFormik } from "formik"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import { IPostStorageBuilding } from "../../../interfaces/IBuilding"
-import Form from "../../../components/FormikFields/Form"
-import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
-import PageHeader from "../../../components/PageHeader"
-import Storage from "../../../components/FormikFields/Bundled/Storage";
+import { IPostStorageBuilding } from "../../interfaces/IBuilding"
+import Form from "../../components/FormikFields/Form"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import Storage from "../../components/FormikFields/Bundled/Storage";
 
 const styles = (theme: Theme) => createStyles({})
 

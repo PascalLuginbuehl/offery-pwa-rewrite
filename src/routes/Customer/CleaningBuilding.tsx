@@ -2,15 +2,15 @@ import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
 import { Formik, FormikProps, withFormik } from "formik"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
-import { IPostMoveInBuilding, IPostStorageBuilding, IPostCleaningBuilding } from "../../../interfaces/IBuilding"
-import Form from "../../../components/FormikFields/Form"
-import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
-import PageHeader from "../../../components/PageHeader"
-import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
-import Storage from "../../../components/FormikFields/Bundled/Storage"
-import Cleaning from "../../../components/FormikFields/Bundled/Cleaning";
+import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
+import { IPostMoveInBuilding, IPostStorageBuilding, IPostCleaningBuilding } from "../../interfaces/IBuilding"
+import Form from "../../components/FormikFields/Form"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
+import Storage from "../../components/FormikFields/Bundled/Storage"
+import Cleaning from "../../components/FormikFields/Bundled/Cleaning";
 import { RouteComponentProps, Prompt } from "react-router";
 
 const styles = (theme: Theme) => createStyles({})

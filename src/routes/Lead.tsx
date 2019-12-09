@@ -6,7 +6,7 @@ import LeadAPI, { ILeadContainer } from './LeadAPI';
 import { emptyLead, ILead, IPostLead } from '../interfaces/ILead';
 import { withResource, WithResourceProps } from '../providers/withResource';
 import { emptyServices } from '../interfaces/IService';
-import NewCustomer from "./Customer/NewBuildings/NewCustomer"
+import NewCustomer from "./Customer/NewCustomer"
 import LeadPageOrder from './CombinedRoutes/LeadPageOrder';
 import BuildingRoutes from './CombinedRoutes/BuildingRoutes';
 import ServiceRoutes from './CombinedRoutes/ServiceRoutes';

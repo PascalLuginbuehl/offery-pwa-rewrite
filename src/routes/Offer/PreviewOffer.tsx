@@ -109,12 +109,6 @@ export default injectIntl(
         mapPropsToValues: props => ({ selectedOfferId : null}),
 
         handleSubmit: async (values, actions) => {
-          // console.log(values)
-          // // actions.props.
-          // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
-          // actions.setSubmitting(false)
-          // actions.props.nextPage()
-
           actions.setSubmitting(false)
           actions.resetForm()
           actions.props.nextPage()

@@ -2,19 +2,19 @@ import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field } from "formik"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
-import { IPostMoveInBuilding } from "../../../interfaces/IBuilding"
-import Form from "../../../components/FormikFields/Form"
-import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
-import PageHeader from "../../../components/PageHeader"
-import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
-import FormikGroups from "../../../components/FormikFields/Bundled/Groups";
-import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect";
-import FormikTextField from "../../../components/FormikFields/FormikTextField";
-import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox";
-import { IPostLead } from "../../../interfaces/ILead";
-import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker";
+import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
+import { IPostMoveInBuilding } from "../../interfaces/IBuilding"
+import Form from "../../components/FormikFields/Form"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups";
+import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect";
+import FormikTextField from "../../components/FormikFields/FormikTextField";
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox";
+import { IPostLead } from "../../interfaces/ILead";
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker";
 import { continueStatement } from "@babel/types";
 
 const styles = (theme: Theme) => createStyles({})

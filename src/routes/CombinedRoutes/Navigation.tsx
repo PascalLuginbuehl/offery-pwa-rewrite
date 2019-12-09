@@ -100,13 +100,9 @@ export default ({ leadContainer, matchUrl, portal }: Props) => {
         </NavFolder>
 
         <NavFolder to={`${matchUrl}/offer`} title="OFFER">
-          <Collapse in={services.HasCleaningServiceEnabled}>
-            <NavItem to={`${matchUrl}/offer/generate`} title="GENERATE" nested />
-          </Collapse>
+          <NavItem to={`${matchUrl}/offer/generate`} title="GENERATE" nested />
 
-          <Collapse in={services.HasPackServiceEnabled}>
-            <NavItem to={`${matchUrl}/offer/preview`} title="PREVIEW" nested />
-          </Collapse>
+          <NavItem to={`${matchUrl}/offer/preview`} title="PREVIEW" nested />
         </NavFolder>
       </>
 
