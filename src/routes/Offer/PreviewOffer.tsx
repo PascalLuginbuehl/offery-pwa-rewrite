@@ -73,7 +73,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
         <Form>
           <PageHeader title="PREVIEW" />
           <Field
-            label="BUILDING_TYPE"
+            label="OFFER"
             name="selectedOfferId"
             component={FormikSimpleSelect}
             notTranslated

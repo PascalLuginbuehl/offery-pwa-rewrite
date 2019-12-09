@@ -14,6 +14,8 @@ import GenerateOffer from "../Offer/GenerateOffer";
 import PreviewOffer from "../Offer/PreviewOffer";
 import { ILead } from "../../interfaces/ILead";
 import { emptyMoveServiceConditions, emptyPackServiceConditions, emptyStorageServiceConditions, emptyCleaningServiceConditions, emptyDisposalServiceConditions } from "../../interfaces/IConditions";
+import SendOffer from "../Offer/SendOffer";
+import Done from "../Offer/Done";
 
 interface Props {
   leadContainer: ILeadContainer
@@ -139,10 +141,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             disposalConditions={DisposalServiceConditions}
             disposalService={disposalService}
             onChangeAndSave={disposalConditions => {
-               const lead = Lead as ILead
-               const newLead = { ...lead, DisposalServiceConditions: disposalConditions }
+              const lead = Lead as ILead
+              const newLead = { ...lead, DisposalServiceConditions: disposalConditions }
 
-               return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
+              return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
             }}
             nextPage={redirectToNextPage("/conditions/disposal")}
           />
@@ -181,6 +183,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
       />
 
       <Route exact path={`${matchUrl}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
+
+      <Route exact path={`${matchUrl}/offer/send`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
+
+      <Route exact path={`${matchUrl}/offer/done`} render={routeProps => <Done {...routeProps} lead={Lead} />} />
     </>
   )
 }

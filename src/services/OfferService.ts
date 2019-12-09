@@ -25,9 +25,23 @@ class ServicesService {
   }
 
   async downloadPdf(offerId: number, fileId: number): Promise<any> {
-    return fetch(API_URL + "/offer/" + offerId + "/file/ " + fileId, await LoginService.authorizeRequest())
+    return fetch(API_URL + "/offer/" + offerId + "/file/" + fileId, await LoginService.authorizeRequest())
       .then(errorFunction)
       .then(response => response.blob())
+  }
+
+  async sendOffer(OfferId: number, CCEmailList: string[], Comment: string): Promise<any> {
+    return fetch(
+      API_URL + "/offer/send",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ OfferId, CCEmailList, Comment }),
+      })
+    )
+      .then(errorFunction)
   }
 }
 

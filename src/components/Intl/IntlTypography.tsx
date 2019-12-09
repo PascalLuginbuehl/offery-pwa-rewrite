@@ -1,6 +1,6 @@
 import TypographyOriginal, { TypographyProps } from '@material-ui/core/Typography'
 import * as React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl'
 
 interface Props extends TypographyProps, InjectedIntlProps {
 
@@ -11,8 +11,8 @@ class Typography extends React.Component<Props> {
     const { intl, ...props } = this.props
 
     return (
-      //@ts-ignore
-      <TypographyOriginal {...props}>{intl.formatMessage({id: this.props.children})}</TypographyOriginal>
+      // @ts-ignore
+      <TypographyOriginal {...props}><FormattedMessage id={this.props.children} values={{br: <br />}} /></TypographyOriginal>
     )
   }
 }
