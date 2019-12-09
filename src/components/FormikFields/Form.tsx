@@ -25,8 +25,6 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Pr
   const { dirty } = useFormikContext()
 
   const handleUnload = (e: BeforeUnloadEvent) => {
-    console.log("beforeunload called")
-
     if (dirty) {
       // Cancel the event
       e.preventDefault()
@@ -42,7 +40,6 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Pr
     return () => window.removeEventListener("beforeunload", handleUnload)
   })
 
-  console.log(dirty)
   return (
     <FormikForm>
       <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />

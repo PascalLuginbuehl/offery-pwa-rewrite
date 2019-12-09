@@ -15,6 +15,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField";
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox";
 import { IPostLead } from "../../../interfaces/ILead";
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker";
+import { continueStatement } from "@babel/types";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -33,7 +34,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     const { values, isSubmitting, status, resource, selectedCompany } = this.props
     const { VisitDate, MoveDate } = values
 
-
+    console.dir(status)
     return (
       <Grid item xs={12}>
         <Form>
@@ -123,7 +124,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="HasDisposalOutBuilding" label="DISPOSAL_BUILDING" component={FormikButtonCheckbox} />
           </FormikGroups>
 
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -139,11 +140,20 @@ export default injectIntl(
         mapPropsToValues: props => (props.lead),
 
         handleSubmit: async (values, actions) => {
-          await actions.props.onChangeAndSave(values)
+          try {
+            await actions.props.onChangeAndSave(values)
+            actions.setSubmitting(false)
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch(e) {
+            if(e.statusText) {
+              // Please report with following error message
 
-          actions.setSubmitting(false)
-          actions.resetForm()
-          actions.props.nextPage()
+            } else {
+              // Please report this error to us
+              actions.setStatus(e)
+            }
+          }
         },
       })(Customer)
     )

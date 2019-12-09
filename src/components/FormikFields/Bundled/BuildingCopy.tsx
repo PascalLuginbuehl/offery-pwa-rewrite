@@ -1,79 +1,103 @@
 import * as React from "react"
 import {
-  IPostMoveOutBuilding,
-  IPostMoveInBuilding,
-  IPostCleaningBuilding,
-  IPostDisposalOutBuilding,
   IDisposalOutBuilding,
   IMoveInBuilding,
   IMoveOutBuilding,
   IStorageBuilding,
-  IPostStorageBuilding,
   ICleaningBuilding,
-  BaseBuilding,
 } from "../../../interfaces/IBuilding"
-import { Field } from "formik"
-import FormikSimpleSelect from "../FormikSimpleSelect"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import { IAddress, IPostAddress } from "../../../interfaces/IAddress"
-import { InputAdornment, IconButton, Grid } from "@material-ui/core"
+import { InputAdornment, IconButton, Grid, FormControl, InputLabel, Select, MenuItem, ListItemText } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 export interface IBuildingCopy {
-  moveOutBuilding: IPostMoveOutBuilding | IMoveOutBuilding | null
-  moveInBuilding: IPostMoveInBuilding | IMoveInBuilding | null
-  cleaningBuilding: IPostCleaningBuilding | ICleaningBuilding | null
-  disposalBuilding: IPostDisposalOutBuilding | IDisposalOutBuilding | null
-  storageBuilding: IPostStorageBuilding | IStorageBuilding | null
+  moveOutBuilding: IMoveOutBuilding | null
+  moveInBuilding: IMoveInBuilding | null
+  cleaningBuilding: ICleaningBuilding | null
+  disposalBuilding: IDisposalOutBuilding | null
+  storageBuilding: IStorageBuilding | null
 }
+
+export type CombinedBuildings = IMoveOutBuilding | IMoveInBuilding | ICleaningBuilding | IDisposalOutBuilding | IStorageBuilding
 
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
-  onCopy: () => void
+  onCopy: (building: CombinedBuildings ) => void
 }
 
-const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
-  const createLabelString = ({ moveOutBuilding, moveInBuilding, cleaningBuilding, disposalBuilding, storageBuilding }: IBuildingCopy) => {
-    const createString = (buildingTypeName: string, base: { Address: IPostAddress } | null) => {
-      if (base) {
-        const translatedBuildingTypeName = intl.formatMessage({ id: buildingTypeName })
-        return `${translatedBuildingTypeName}: ${base.Address.Street}, ${base.Address.City}`
-      }
-      return null
-    }
-
-    const options = [
-      { label: createString("MOVE_OUT_BUILDING", moveOutBuilding), value: 1 },
-      { label: createString("MOVE_IN_BUILDING", moveInBuilding), value: 2 },
-      { label: createString("STORAGE_BUILDING", disposalBuilding), value: 3 },
-      { label: createString("CLEANING_BUILDING", storageBuilding), value: 4 },
-      { label: createString("DISPOSAL_BUILDING", cleaningBuilding), value: 5 },
-    ]
-
-    return options.filter(string => !!string.label)
-  }
+const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, onCopy }) => {
+  const [selectedCopy, setCopy] = React.useState<keyof IBuildingCopy | null>(null)
 
   const handleCopy = () => {
-  //   IPostMoveOutBuilding
-  //   IPostMoveInBuilding
-  //   IPostCleaningBuilding
-  //   IPostDisposalOutBuilding
-  //   IPostStorageBuilding
+    if (selectedCopy) {
+      const building = buildings[selectedCopy]
+      if (building) {
+        onCopy(building)
+      }
+    }
   }
-
-  // buidlings.type.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))
 
   return (
     <Grid item xs={12} md={6} style={{ display: "flex" }}>
-      <Field
-        disableGrid
-        label="COPY_FROM"
-        name="copyFromSelect"
-        component={FormikSimpleSelect}
-        // options={[{label}]}
-        notTranslated
-        options={createLabelString(buildings)}
-      />
+      <FormControl>
+        <InputLabel>{intl.formatMessage({ id: "COPY_FROM" })}</InputLabel>
+        <Select
+          value={selectedCopy ? selectedCopy : ""}
+          onChange={e => setCopy(e.target.value as keyof IBuildingCopy)}
+          renderValue={(value: unknown) => {
+            if (value) {
+              const key = value as keyof IBuildingCopy
+              const building = buildings[key]
+              if (building) {
+                return building.Address.Street + ", " + building.Address.PLZ + " " + building.Address.City
+              }
+            }
+
+            return ""
+          }}
+        >
+          {buildings.moveOutBuilding ? (
+            <MenuItem value="moveOutBuilding" dense>
+              <ListItemText
+                primary={buildings.moveOutBuilding.Address.Street + ", " + buildings.moveOutBuilding.Address.PLZ + " " + buildings.moveOutBuilding.Address.City}
+                secondary={intl.formatMessage({ id: "MOVE_OUT_BUILDING" })}
+              />
+            </MenuItem>
+          ) : null}
+          {buildings.moveInBuilding ? (
+            <MenuItem value="moveInBuilding" dense>
+              <ListItemText
+                primary={buildings.moveInBuilding.Address.Street + ", " + buildings.moveInBuilding.Address.PLZ + " " + buildings.moveInBuilding.Address.City}
+                secondary={intl.formatMessage({ id: "MOVE_IN_BUILDING" })}
+              />
+            </MenuItem>
+          ) : null}
+          {buildings.disposalBuilding ? (
+            <MenuItem value="disposalBuilding" dense>
+              <ListItemText
+                primary={buildings.disposalBuilding.Address.Street + ", " + buildings.disposalBuilding.Address.PLZ + " " + buildings.disposalBuilding.Address.City}
+                secondary={intl.formatMessage({ id: "DISPOSAL_BUILDING" })}
+              />
+            </MenuItem>
+          ) : null}
+          {buildings.storageBuilding ? (
+            <MenuItem value="storageBuilding" dense>
+              <ListItemText
+                primary={buildings.storageBuilding.Address.Street + ", " + buildings.storageBuilding.Address.PLZ + " " + buildings.storageBuilding.Address.City}
+                secondary={intl.formatMessage({ id: "STORAGE_BUILDING" })}
+              />
+            </MenuItem>
+          ) : null}
+          {buildings.cleaningBuilding ? (
+            <MenuItem value="cleaningBuilding" dense>
+              <ListItemText
+                primary={buildings.cleaningBuilding.Address.Street + ", " + buildings.cleaningBuilding.Address.PLZ + " " + buildings.cleaningBuilding.Address.City}
+                secondary={intl.formatMessage({ id: "CLEANING_BUILDING" })}
+              />
+            </MenuItem>
+          ) : null}
+        </Select>
+      </FormControl>
       <IconButton onClick={handleCopy}>
         <FileCopyIcon />
       </IconButton>

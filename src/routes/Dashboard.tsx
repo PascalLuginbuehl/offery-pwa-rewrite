@@ -107,7 +107,7 @@ class Dashboard extends React.Component<Props, State> {
 
     if (currentTab == 0) {
       if (leads) {
-        const tempLeads = leads.sort(({ Lead: { VisitDate } }, { Lead: { VisitDate: VisitDate2 } }) => (VisitDate && VisitDate2 ? VisitDate2.getTime() - VisitDate.getTime() : 0))
+        const tempLeads = leads.sort(({ Lead: { Created } }, { Lead: { Created: Created2 } }) => (Created && Created2 ? Created2.getTime() - Created.getTime() : 0))
         return isWidthUp("sm", width) ? <TableDashboard leads={tempLeads} /> : <MobileDashboard leads={tempLeads} />
       } else {
         return (

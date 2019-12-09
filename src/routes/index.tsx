@@ -175,16 +175,8 @@ class Index extends React.Component<Props, State> {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            {/* <Route exact={true} path="/:id" component={GanttRoute} /> */}
-            {/* <Route path="/login" component={login} /> */}
-            {/* <Route path="/shop" component={shop} /> */}
-            {/* <Route path="/lead/move-out-building" component={moveOutBuilding} /> */}
             <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} closeNavigation={this.closeNavigation} />} />
             <Route path="/" component={Dashboard} />
-
-            {/* <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} />} /> */}
-
-            {/* <Route exact path="" component={Lead} /> */}
           </Switch>
         </main>
       </div>

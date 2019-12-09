@@ -248,3 +248,7 @@ NOT_SET,Not set,Nicht angegeben
 AREAS,Areas,Bereiche
 BUILDING,Building,Gebäude
 PERSONAL_COST,Personal cost,Personalkosten
+
+TEMPLATE_CATEGORY,Template Category,Vorlage Kategorie
+MOVE_OUT_ADDRESS,Move out address,Auszugsgebäude Address
+MOVE_IN_ADDRESS,Move in address,Einzugsgebäude Address

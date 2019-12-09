@@ -1,7 +1,7 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
 import * as React from 'react'
 import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostCleaningBuilding } from '../../interfaces/IBuilding';
+import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostCleaningBuilding, emptyCleaningBuilding } from '../../interfaces/IBuilding';
 // import TestService from 'services/TestService'
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
 import FormikTextField from '../../components/FormikFields/FormikTextField';
@@ -13,7 +13,7 @@ import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
 import PageHeader from '../../components/PageHeader';
 import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
 import FormikDivider from '../../components/FormikFields/FormikDivider';
-import BuildingCopy, { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import BuildingCopy, { IBuildingCopy, CombinedBuildings } from '../../components/FormikFields/Bundled/BuildingCopy';
 import Cleaning from '../../components/FormikFields/Bundled/Cleaning';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import IntlTypography from '../../components/Intl/IntlTypography';
@@ -76,8 +76,18 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
     )
   }
 
-  handleCopy = () => {
+  handleCopy = (building: CombinedBuildings) => {
+    const keys = Object.keys(emptyCleaningBuilding) as Array<keyof IPostCleaningBuilding>
 
+    keys.map(key => {
+      if (building.hasOwnProperty(key)) {
+        // @ts-ignore
+        const value = building[key]
+        //@ts-ignore
+        this.props.setFieldValue("cleaning." + key, value)
+
+      }
+    })
   }
 }
 
