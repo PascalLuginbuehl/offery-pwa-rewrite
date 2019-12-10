@@ -52,11 +52,9 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, get
       // @ts-ignore
       const foundSomething = keys.find(key => values[prefix][key] !== getKeysFromBuilding[key])
 
-      console.log(foundSomething)
       if (foundSomething) {
         const result = window.confirm(intl.formatMessage({id: "BUILDING_IS_ALREADY_FILLED_OVERRIDE"}))
-        console.log(result)
-        // Cancel if
+        // Cancel if already values got put into thign
         if(!result) {
           return
         }

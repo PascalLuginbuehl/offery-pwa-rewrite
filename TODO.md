@@ -1,6 +1,5 @@
 - Service worker disablen
-- Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
-- Enstsorugngsgebäude kopieren von Auszugsgebäude
+
 
 Anzahl ändern mit doppelklick oder so
 
@@ -8,6 +7,8 @@ Anzahl ändern mit doppelklick oder so
 
 Mehrer materialshops von anderen Shops anzeigen
 -> möchten sie überschreiben?
+
+
 Konditionen standard offen?
 
 Min max CHF nicht anzeigen

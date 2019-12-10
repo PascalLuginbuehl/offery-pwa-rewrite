@@ -49,3 +49,7 @@ Conditions automatisch stundensatz öffnen
 MoveService kaputt
 
 -Kundenerfasssung: Unausgefülltes Formular macht formreset
+
+
+- Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
+- Enstsorugngsgebäude kopieren von Auszugsgebäude
