@@ -140,6 +140,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <CleaningBuilding
             {...routeProps}
+            buildingOptions={buildingOptions}
             cleaningBuilding={cleaningBuilding}
             onChangeAndSave={newCleaningBuilding => {
               return handleChangeAndSave(newCleaningBuilding, "cleaning", LeadAPI.SaveCleaning(newCleaningBuilding, Lead.LeadId))

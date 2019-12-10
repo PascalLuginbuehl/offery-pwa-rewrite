@@ -65,29 +65,14 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <IntlTypography variant="h6">CLEANING_BUILDING</IntlTypography>
           </Grid>
-          <BuildingCopy buildings={buildingOptions} onCopy={this.handleCopy} />
 
-          <Cleaning prefix={"cleaning"} resource={resource} />
+          <Cleaning buildingOptions={buildingOptions} prefix={"cleaning"} resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
-  }
-
-  handleCopy = (building: CombinedBuildings) => {
-    const keys = Object.keys(emptyCleaningBuilding) as Array<keyof IPostCleaningBuilding>
-
-    keys.map(key => {
-      if (building.hasOwnProperty(key)) {
-        // @ts-ignore
-        const value = building[key]
-        //@ts-ignore
-        this.props.setFieldValue("cleaning." + key, value)
-
-      }
-    })
   }
 }
 

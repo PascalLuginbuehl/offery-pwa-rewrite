@@ -5,10 +5,13 @@ import {
   IMoveOutBuilding,
   IStorageBuilding,
   ICleaningBuilding,
+  emptyCleaningBuilding,
+  IPostCleaningBuilding,
 } from "../../../interfaces/IBuilding"
 import { injectIntl, InjectedIntlProps } from "react-intl"
 import { InputAdornment, IconButton, Grid, FormControl, InputLabel, Select, MenuItem, ListItemText } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
+import { useFormikContext } from "formik";
 
 export interface IBuildingCopy {
   moveOutBuilding: IMoveOutBuilding | null
@@ -22,17 +25,32 @@ export type CombinedBuildings = IMoveOutBuilding | IMoveInBuilding | ICleaningBu
 
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
-  onCopy: (building: CombinedBuildings ) => void
 }
 
-const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, onCopy }) => {
+const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
   const [selectedCopy, setCopy] = React.useState<keyof IBuildingCopy | null>(null)
+  const formik = useFormikContext()
+
+  console.log(formik)
+
+  const handleCopy2 = (building: CombinedBuildings) => {
+    const keys = Object.keys(emptyCleaningBuilding) as Array<keyof IPostCleaningBuilding>
+
+    keys.map(key => {
+      if (building.hasOwnProperty(key)) {
+        // @ts-ignore
+        const value = building[key]
+        //@ts-ignore
+        this.props.setFieldValue("cleaning." + key, value)
+      }
+    })
+  }
 
   const handleCopy = () => {
     if (selectedCopy) {
       const building = buildings[selectedCopy]
       if (building) {
-        onCopy(building)
+        // onCopy(building)
       }
     }
   }

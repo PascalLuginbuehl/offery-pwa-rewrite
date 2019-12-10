@@ -7,10 +7,13 @@ import Switch from "../Switch"
 import Address from "./Address"
 import FormikGroups from "./Groups";
 import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText";
+import BuildingCopy, { CombinedBuildings, IBuildingCopy } from "./BuildingCopy";
 
-export default ({ prefix, resource }: { prefix: string; resource: IResource }) => {
+export default ({ prefix, resource, buildingOptions }: { prefix: string; resource: IResource; buildingOptions: IBuildingCopy }) => {
   return (
     <>
+      <BuildingCopy buildings={buildingOptions} />
+
       <Address prefix={prefix + ".Address"} />
       <FormikGroups label="BUILDING" xs={12}>
         <Field
