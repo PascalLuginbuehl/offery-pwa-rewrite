@@ -13,6 +13,7 @@ import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePi
 import Disposal from '../../components/FormikFields/Bundled/Disposal';
 import IntlTypography from '../../components/Intl/IntlTypography';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
+import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,12 +28,12 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding | null) => void
-  HasMoveService: boolean
+  buildingOptions: IBuildingCopy
 }
 
 class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource } = this.props
+    const { isSubmitting, status, resource, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
@@ -51,7 +52,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <IntlTypography variant="h6">DISPOSAL_BUILDING</IntlTypography>
           </Grid>
-          <Disposal prefix="disposal" resource={resource} />
+          <Disposal buildingOptions={buildingOptions} prefix="disposal" resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
 

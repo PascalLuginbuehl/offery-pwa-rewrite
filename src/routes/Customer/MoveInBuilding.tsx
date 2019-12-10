@@ -9,6 +9,7 @@ import { withResource, WithResourceProps } from "../../providers/withResource"
 import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -20,18 +21,19 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   nextPage: () => void
   onChangeAndSave: (moveInBuilding: IPostMoveInBuilding) => void
   moveInBuilding: IPostMoveInBuilding
+  buildingOptions: IBuildingCopy
 }
 
 class MoveInBuilding extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="MOVE_IN_BUILDING" />
 
-          <MoveIn prefix="moveInBuilding" resource={resource} />
+          <MoveIn buildingOptions={buildingOptions} prefix="moveInBuilding" resource={resource} />
           {status && status.msg && <div>{status.msg}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>

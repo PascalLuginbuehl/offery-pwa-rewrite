@@ -253,3 +253,4 @@ TEMPLATE_CATEGORY,Template Category,Vorlage Kategorie
 MOVE_OUT_ADDRESS,Move out address,Auszugsgebäude Address
 MOVE_IN_ADDRESS,Move in address,Einzugsgebäude Address
 VEHICLES,Vehicles,Fahrzeuge
+BUILDING_IS_ALREADY_FILLED_OVERRIDE,"Building is already filled out, override?","Dieses Gebäude ist bereits ausgefüllt, Überschreiben?"

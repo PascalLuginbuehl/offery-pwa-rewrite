@@ -8,6 +8,7 @@ import Form from '../../components/FormikFields/Form';
 import { withResource, WithResourceProps } from '../../providers/withResource';
 import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
+import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -22,6 +23,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   nextPage: () => void
   onChangeAndSave: (moveOutBuilding: IPostMoveOutBuilding) => void
   moveOutBuilding: IPostMoveOutBuilding
+  buildingOptions: IBuildingCopy
 }
 
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
@@ -31,6 +33,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
       status,
       resource,
       selectedCompany,
+      buildingOptions,
     } = this.props
 
     console.log(selectedCompany.CarTypes)
@@ -40,7 +43,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
         <Form>
           <PageHeader title="MOVE_OUT_BUILDING" />
 
-          <MoveOut prefix="moveOutBuilding" resource={resource} />
+          <MoveOut buildingOptions={buildingOptions} prefix="moveOutBuilding" resource={resource} />
           {status && status.msg && <div>{status.msg}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>

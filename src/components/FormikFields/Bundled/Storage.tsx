@@ -8,10 +8,14 @@ import { IResource } from "../../../interfaces/IResource"
 import Switch from "../Switch"
 import Address from "./Address"
 import FormikGroups from "./Groups";
+import BuildingCopy, { IBuildingCopy } from "./BuildingCopy";
+import { emptyStorageBuilding } from "../../../interfaces/IBuilding";
 
-export default ({ prefix, resource }: { prefix: string; resource: IResource }) => {
+export default ({ prefix, resource, buildingOptions }: { prefix: string; resource: IResource; buildingOptions: IBuildingCopy }) => {
   return (
     <>
+      <BuildingCopy getKeysFromBuilding={emptyStorageBuilding} prefix={prefix} buildings={buildingOptions} />
+
       <FormikGroups label="CONTACT_PERSON" xs={12}>
         <Field label="FULL_NAME" name={`${prefix}.StorageCompany.ContactPersonFullName`} component={FormikTextField} required />
         <Field label="COMPANY" name={`${prefix}.StorageCompany.CompanyName`} component={FormikTextField} />

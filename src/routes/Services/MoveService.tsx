@@ -14,6 +14,7 @@ import MoveIn from '../../components/FormikFields/Bundled/MoveIn';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import { IPutMoveService } from '../../interfaces/IService';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
+import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -29,6 +30,7 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding | null, moveOut: IPostMoveOutBuilding | null) => void
+  buildingOptions: IBuildingCopy
 }
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
@@ -36,7 +38,8 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
     const {
       isSubmitting,
       status,
-      resource
+      resource,
+      buildingOptions,
     } = this.props
 
     // const { data } = this.props
@@ -68,12 +71,12 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
 
-          <MoveOut prefix={"moveOut"} resource={resource} />
+          <MoveOut buildingOptions={buildingOptions}  prefix={"moveOut"} resource={resource} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
-          <MoveIn prefix={"moveIn"} resource={resource} />
+          <MoveIn buildingOptions={buildingOptions}  prefix={"moveIn"} resource={resource} />
 
           {status && status.msg && <div>{status.msg}</div>}
 

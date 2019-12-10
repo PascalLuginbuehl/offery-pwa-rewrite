@@ -15,6 +15,7 @@ import Storage from '../../components/FormikFields/Bundled/Storage';
 import IntlTypography from '../../components/Intl/IntlTypography';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
+import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -29,6 +30,7 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding | null) => void
+  buildingOptions: IBuildingCopy
 }
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
@@ -44,6 +46,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       resource,
       storageService,
+      buildingOptions,
     } = this.props
 
     return (
@@ -67,7 +70,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
 
-          <Storage prefix={"storage"} resource={resource} />
+          <Storage buildingOptions={buildingOptions}  prefix={"storage"} resource={resource} />
 
 
           {status && status.msg && <div>{status.msg}</div>}

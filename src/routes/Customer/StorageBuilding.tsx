@@ -8,6 +8,7 @@ import { withResource, WithResourceProps } from "../../providers/withResource"
 import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import Storage from "../../components/FormikFields/Bundled/Storage";
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -19,18 +20,19 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   nextPage: () => void
   onChangeAndSave: (storageBuilding: IPostStorageBuilding) => void
   storageBuilding: IPostStorageBuilding
+  buildingOptions: IBuildingCopy
 }
 
 class StorageBuilding extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="STORAGE_BUILDING" />
 
-          <Storage prefix="storageBuilding" resource={resource} />
+          <Storage buildingOptions={buildingOptions} prefix="storageBuilding" resource={resource} />
           {status && status.msg && <div>{status.msg}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>

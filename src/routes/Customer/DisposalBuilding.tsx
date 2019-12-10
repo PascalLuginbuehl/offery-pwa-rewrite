@@ -11,6 +11,7 @@ import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
 import Storage from "../../components/FormikFields/Bundled/Storage"
 import Disposal from "../../components/FormikFields/Bundled/Disposal";
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -21,19 +22,20 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
   onChangeAndSave: (disposalBuilding: IPostDisposalOutBuilding) => void
+  buildingOptions: IBuildingCopy
   disposalBuilding: IPostDisposalOutBuilding
 }
 
 class DisposalBuilding extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="DISPOSAL_BUILDING" />
 
-          <Disposal prefix="disposalBuilding" resource={resource} />
+          <Disposal buildingOptions={buildingOptions} prefix="disposalBuilding" resource={resource} />
           {status && status.msg && <div>{status.msg}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>

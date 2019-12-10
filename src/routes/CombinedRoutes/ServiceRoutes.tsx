@@ -87,6 +87,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <MoveService
             {...routeProps}
+            buildingOptions={buildingOptions}
             moveOut={moveOutBuilding}
             moveIn={moveInBuilding}
             moveService={moveService ? moveService : emptyMoveService}
@@ -143,6 +144,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <PackService
             {...routeProps}
+            buildingOptions={buildingOptions}
             moveOut={moveOutBuilding}
             packService={packService}
             onChangeAndSave={(packServiceData, moveOutData) => {
@@ -180,6 +182,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <StorageService
             {...routeProps}
+            buildingOptions={buildingOptions}
             storage={storageBuilding}
             storageService={storageService ? storageService : emptyStorageService}
             onChangeAndSave={(storageServiceData, storageData) => {
@@ -234,9 +237,9 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <DisposalService
             {...routeProps}
+            buildingOptions={buildingOptions}
             disposal={disposalBuilding}
             disposalService={disposalService ? disposalService : emptyDisposalService}
-            HasMoveService={services.HasMoveServiceEnabled}
             onChangeAndSave={(disposalServiceData, disposalData) => {
               return Promise.all([
                 handleChangeAndSave(disposalServiceData, "disposalService", LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData)),

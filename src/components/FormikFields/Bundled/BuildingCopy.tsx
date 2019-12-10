@@ -7,6 +7,10 @@ import {
   ICleaningBuilding,
   emptyCleaningBuilding,
   IPostCleaningBuilding,
+  IPostMoveOutBuilding,
+  IPostDisposalOutBuilding,
+  IPostStorageBuilding,
+  IPostMoveInBuilding,
 } from "../../../interfaces/IBuilding"
 import { injectIntl, InjectedIntlProps } from "react-intl"
 import { InputAdornment, IconButton, Grid, FormControl, InputLabel, Select, MenuItem, ListItemText } from "@material-ui/core"
@@ -21,38 +25,61 @@ export interface IBuildingCopy {
   storageBuilding: IStorageBuilding | null
 }
 
-export type CombinedBuildings = IMoveOutBuilding | IMoveInBuilding | ICleaningBuilding | IDisposalOutBuilding | IStorageBuilding
+export type CombinedBuildings = IPostMoveOutBuilding | IPostMoveInBuilding | IPostCleaningBuilding | IPostDisposalOutBuilding | IPostStorageBuilding
 
 interface Props extends InjectedIntlProps {
   buildings: IBuildingCopy
+  prefix: string
+  getKeysFromBuilding: CombinedBuildings
 }
 
-const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
-  const [selectedCopy, setCopy] = React.useState<keyof IBuildingCopy | null>(null)
-  const formik = useFormikContext()
+const nameMap = {
+  moveOutBuilding: "MOVE_OUT_BUILDING",
+  moveInBuilding: "MOVE_IN_BUILDING",
+  disposalBuilding: "DISPOSAL_BUILDING",
+  storageBuilding: "STORAGE_BUILDING",
+  cleaningBuilding: "CLEANING_BUILDING",
+}
 
-  console.log(formik)
-
-  const handleCopy2 = (building: CombinedBuildings) => {
-    const keys = Object.keys(emptyCleaningBuilding) as Array<keyof IPostCleaningBuilding>
-
-    keys.map(key => {
-      if (building.hasOwnProperty(key)) {
-        // @ts-ignore
-        const value = building[key]
-        //@ts-ignore
-        this.props.setFieldValue("cleaning." + key, value)
-      }
-    })
-  }
+const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, getKeysFromBuilding }) => {
+  const [selectedCopy, setCopy] = React.useState<keyof IBuildingCopy | undefined>(undefined)
+  const {setFieldValue, values} = useFormikContext<{[key: string]: any}>()
 
   const handleCopy = () => {
-    if (selectedCopy) {
-      const building = buildings[selectedCopy]
-      if (building) {
-        // onCopy(building)
+    const keys = Object.keys(getKeysFromBuilding) as Array<keyof CombinedBuildings>
+
+    if(values.hasOwnProperty(prefix)) {
+      // @ts-ignore
+      const foundSomething = keys.find(key => values[prefix][key] !== getKeysFromBuilding[key])
+
+      console.log(foundSomething)
+      if (foundSomething) {
+        const result = window.confirm(intl.formatMessage({id: "BUILDING_IS_ALREADY_FILLED_OVERRIDE"}))
+        console.log(result)
+        // Cancel if
+        if(!result) {
+          return
+        }
       }
     }
+
+    if (selectedCopy) {
+      const building = buildings[selectedCopy]
+
+      if (building) {
+
+        keys.map(key => {
+          if (building.hasOwnProperty(key)) {
+            // @ts-ignore
+            const value = building[key]
+            //@ts-ignore
+            setFieldValue(prefix + "." + key, value)
+          }
+        })
+      }
+    }
+
+    setCopy(undefined)
   }
 
   return (
@@ -64,16 +91,22 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
           onChange={e => setCopy(e.target.value as keyof IBuildingCopy)}
           renderValue={(value: unknown) => {
             if (value) {
-              const key = value as keyof IBuildingCopy
-              const building = buildings[key]
-              if (building) {
-                return building.Address.Street + ", " + building.Address.PLZ + " " + building.Address.City
+              const key = value as keyof typeof nameMap
+              const buildingName = nameMap[key]
+              if (buildingName) {
+                return intl.formatMessage({ id: buildingName })
               }
             }
 
             return ""
           }}
         >
+          <MenuItem value={undefined} dense>
+            <ListItemText
+              primary={intl.formatMessage({id: "SELECT"})}
+            />
+          </MenuItem>
+
           {buildings.moveOutBuilding ? (
             <MenuItem value="moveOutBuilding" dense>
               <ListItemText
@@ -116,7 +149,7 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl }) => {
           ) : null}
         </Select>
       </FormControl>
-      <IconButton onClick={handleCopy}>
+      <IconButton onClick={handleCopy} disabled={!selectedCopy}>
         <FileCopyIcon />
       </IconButton>
     </Grid>

@@ -76,6 +76,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <MoveOutBuilding
             {...routeProps}
+            buildingOptions={buildingOptions}
             moveOutBuilding={moveOutBuilding}
             onChangeAndSave={newMoveOutBuilding => {
               return handleChangeAndSave(newMoveOutBuilding, "moveOut", LeadAPI.SaveMoveOut(newMoveOutBuilding, Lead.LeadId))
@@ -92,6 +93,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <MoveInBuilding
             {...routeProps}
+            buildingOptions={buildingOptions}
             moveInBuilding={moveInBuilding}
             onChangeAndSave={newMoveInBuilding => {
               return handleChangeAndSave(newMoveInBuilding, "moveIn", LeadAPI.SaveMoveIn(newMoveInBuilding, Lead.LeadId))
@@ -108,6 +110,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <StorageBuilding
             {...routeProps}
+            buildingOptions={buildingOptions}
             storageBuilding={storageBuilding}
             onChangeAndSave={newStorageBuilding => {
               return handleChangeAndSave(newStorageBuilding, "storage", LeadAPI.SaveStorage(newStorageBuilding, Lead.LeadId))
@@ -124,6 +127,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
         render={routeProps => (
           <DisposalBuilding
             {...routeProps}
+            buildingOptions={buildingOptions}
             disposalBuilding={disposalBuilding}
             onChangeAndSave={newDisposalBuilding => {
               return handleChangeAndSave(newDisposalBuilding, "disposal", LeadAPI.SaveDisposal(newDisposalBuilding, Lead.LeadId))

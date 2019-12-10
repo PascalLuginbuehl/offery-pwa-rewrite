@@ -9,13 +9,14 @@ import Switch from "../Switch"
 import Address from './Address';
 import FormikGroups from './Groups';
 import FormikNumberEndAdornmentText from '../Numbers/FormikNumberEndAdornmentText';
+import BuildingCopy, { IBuildingCopy } from './BuildingCopy';
+import { emptyMoveInBuilding } from '../../../interfaces/IBuilding';
 
-export default ({ prefix, resource }: {prefix: string, resource: IResource}) => {
+export default ({ prefix, resource, buildingOptions }: { prefix: string, resource: IResource; buildingOptions: IBuildingCopy}) => {
   return (
     <>
-      {/* <Grid item xs={12}>
-        <IntlTypography variant="h5">MOVE_IN_BUILDING</IntlTypography>
-      </Grid> */}
+      <BuildingCopy getKeysFromBuilding={emptyMoveInBuilding} prefix={prefix} buildings={buildingOptions} />
+
       <Address prefix={prefix + ".Address"} />
 
       <FormikGroups label="BUILDING" xs={12}>

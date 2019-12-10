@@ -13,6 +13,7 @@ import FormikDivider from '../../components/FormikFields/FormikDivider';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import IntlTypography from '../../components/Intl/IntlTypography';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
+import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,6 +28,7 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding | null) => void
+  buildingOptions: IBuildingCopy
 }
 
 class PackService extends React.Component<Props & FormikProps<Values>, {}> {
@@ -35,6 +37,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
       isSubmitting,
       status,
       resource,
+      buildingOptions,
     } = this.props
 
     console.log(this.props)
@@ -55,7 +58,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
 
-          <MoveOut prefix={"moveOut"} resource={resource} />
+          <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
 
 
           {status && status.msg && <div>{status.msg}</div>}

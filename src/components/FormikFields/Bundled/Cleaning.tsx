@@ -8,11 +8,12 @@ import Address from "./Address"
 import FormikGroups from "./Groups";
 import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText";
 import BuildingCopy, { CombinedBuildings, IBuildingCopy } from "./BuildingCopy";
+import { emptyCleaningBuilding } from "../../../interfaces/IBuilding";
 
 export default ({ prefix, resource, buildingOptions }: { prefix: string; resource: IResource; buildingOptions: IBuildingCopy }) => {
   return (
     <>
-      <BuildingCopy buildings={buildingOptions} />
+      <BuildingCopy getKeysFromBuilding={emptyCleaningBuilding} prefix={prefix} buildings={buildingOptions} />
 
       <Address prefix={prefix + ".Address"} />
       <FormikGroups label="BUILDING" xs={12}>
