@@ -1,5 +1,5 @@
 if ('function' === typeof importScripts) {
-    importScripts(
+  importScripts(
     'https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js'
   );
   /* global workbox */
@@ -10,9 +10,9 @@ if ('function' === typeof importScripts) {
     workbox.precaching.precacheAndRoute([]);
 
     /* custom cache rules*/
-    workbox.routing.registerNavigationRoute('/index.html', {
-      blacklist: [/^\/_/, /\/[^\/]+\.[^\/]+$/, /^\/help/],
-    });
+    workbox.routing.registerNavigationRoute('/index.html',
+      new workbox.strategies.NetworkFirst({ blacklist: [/^\/_/, /\/[^\/]+\.[^\/]+$/, /^\/help/] })
+    );
 
     workbox.routing.registerRoute(
       /\.(?:png|gif|jpg|jpeg)$/,
