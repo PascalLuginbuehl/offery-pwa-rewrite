@@ -43,7 +43,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
     const parsedCarAmounts = value as ICarAmount[]
 
     return (
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12}>
         <FieldArray
           name={name}
           render={arrayHelpers => (

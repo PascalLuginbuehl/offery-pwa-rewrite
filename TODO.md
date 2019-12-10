@@ -1,14 +1,14 @@
-Service worker disablen
-
-Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
-
-Enstsorugngsgebäude kopieren von Auszugsgebäude
+- Service worker disablen
+- Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
+- Enstsorugngsgebäude kopieren von Auszugsgebäude
 
 Anzahl ändern mit doppelklick oder so
 
+
+
 Mehrer materialshops von anderen Shops anzeigen
-
-
+-> möchten sie überschreiben?
+Konditionen standard offen?
 
 Min max CHF nicht anzeigen
 
@@ -22,11 +22,38 @@ https://dev.azure.com/burimcakolli0689/Offery/_git/Offery-API?path=%2FOffery-API
 
 Aus <https://dev.azure.com/burimcakolli0689/Offery/_git/Offery-API?path=%2FOffery-API%2FOffery-API%2FControllers%2FOfferController.cs&_a=content>
 
-
-
 Rabbat automatisch abziehen
 
 Kostendach automatisch berechnen und disabled lassen
+
+
+
+DONE überstzunge
+
+Automatisch übertragen offer per URL
+
+Beim Genereieeren Standardmässig einzugf und auszug anwählen
+SelectAddress auszugsgebäude
+
+Login entfernen
+
+Laden sie die Seite neu!
+
+
+
+
+-Bei Erfassung von Gebäuden sind die auswählbaren Besichtigungsadressen bei E-Mail bestätigung nicht angezeigt/auswählbar (erst bei reload)
+
+-Reinigung reset form vergessen
+
+-Pauschalpreis -> Min max entfernen
+
+-Berechnungen implementieren
+
+-Kostendach disable
+
+
+NOch nichts archiviert
 
 
 

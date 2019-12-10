@@ -149,6 +149,7 @@ export default injectIntl(
             if(e.statusText) {
               // Please report with following error message
 
+              actions.setStatus(e)
             } else {
               // Please report this error to us
               actions.setStatus(e)

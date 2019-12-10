@@ -47,3 +47,5 @@ Customer name Required
 Conditions automatisch stundensatz öffnen
 
 MoveService kaputt
+
+-Kundenerfasssung: Unausgefülltes Formular macht formreset

@@ -64,11 +64,19 @@ class Customer extends React.Component<Props & FormikProps<Values>, State> {
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="EMAIL_CONFIRMATION" />
+          <PageHeader title="SEND_OFFER" />
           <Grid item xs={12}>
-            <IntlTypography>{OfferEmailBodyContentIntroTextKey}</IntlTypography>
-            <IntlTypography>{OfferEmailSubjectTextKey}</IntlTypography>
-            <IntlTypography>{OfferEmailBodyContentOutroTextKey}</IntlTypography>
+            <Typography>
+              <FormattedMessage id={OfferEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
+            </Typography>
+
+            <Typography>
+              <FormattedMessage id={OfferEmailSubjectTextKey} values={{ br: <br /> }} />
+            </Typography>
+
+            <Typography>
+              <FormattedMessage id={OfferEmailBodyContentOutroTextKey} values={{ br: <br /> }} />
+            </Typography>
           </Grid>
 
           <Field
@@ -84,33 +92,30 @@ class Customer extends React.Component<Props & FormikProps<Values>, State> {
 
           <FieldArray
             name="CCEmailList"
-            render={arrayHelpers => (
-              <div>
-                <List dense>
-                  {values.CCEmailList.map((email, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={email} />
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
-                          <RemoveCircleOutlineIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))}
-
-                  <ListItem>
-                    <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={this.handleChange} />} />
-
+            render={arrayHelpers =>
+              <List dense>
+                {values.CCEmailList.map((email, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={email} />
                     <ListItemSecondaryAction>
-                      <IconButton disabled={isSubmitting || !emailValue} onClick={() => arrayHelpers.push(emailValue)} edge="end">
-                        <AddIcon />
+                      <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
+                        <RemoveCircleOutlineIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
-                </List>
-                {}
-              </div>
-            )}
+                ))}
+
+                <ListItem>
+                  <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={this.handleChange} />} />
+
+                  <ListItemSecondaryAction>
+                    <IconButton disabled={isSubmitting || !emailValue} onClick={() => arrayHelpers.push(emailValue)} edge="end">
+                      <AddIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
+            }
           />
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />

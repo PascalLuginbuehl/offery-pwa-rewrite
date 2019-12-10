@@ -41,6 +41,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="PACK_CONDITIONS" />
 
           <ServiceConditions
+            disabledVehicles
             additionalCost={0}
             setFieldValue={setFieldValue}
             values={values}

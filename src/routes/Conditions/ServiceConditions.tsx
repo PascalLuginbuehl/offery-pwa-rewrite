@@ -9,13 +9,16 @@ import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
 import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import { Field } from 'formik';
+import CarSelection from './CarSelection';
+import { withResource, WithResourceProps } from '../../providers/withResource';
 
 
-interface Props<Values extends {ServiceConditions: IServiceConditions}> extends InjectedIntlProps {
+interface Props<Values extends {ServiceConditions: IServiceConditions}> extends InjectedIntlProps, WithResourceProps {
   setFieldValue: (field: keyof Values | any, value: any) => void
   values: Values
   additionalCost: number
   personalCostAddon?: React.ReactNode
+  disabledVehicles?: boolean
 }
 
 class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceConditions }> extends React.Component<Props<Values>, {}> {
@@ -48,7 +51,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       children,
 
       intl,
+      selectedCompany,
       personalCostAddon,
+      disabledVehicles = false,
     } = this.props
 
     return (
@@ -68,22 +73,34 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           </Tabs>
         </Grid>
 
-        <FormikGroups label="PERSONAL_COST" xs={12}>
+        <FormikGroups label="PERSONAL_COST" xs={12} {...(disabledVehicles ? {} : { md: 6 })}>
           <Field
             label="WORKERS_AMOUNT"
             name={`ServiceConditions.WorkersAmount`}
             type="number"
             component={FormikTextField}
             inputProps={{ step: 1, min: 0 }}
-            overrideGrid={{ xs: 6, md: 3 }}
+            overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
           />
 
-          <Field label="PRICE_PER_HOUR" name={`ServiceConditions.PricePerHour`} component={FormikNumberEndAdornmentText} adornmentText="CHF/h" />
+          <Field
+            label="PRICE_PER_HOUR"
+            name={`ServiceConditions.PricePerHour`}
+            component={FormikNumberEndAdornmentText}
+            adornmentText="CHF/h"
+            overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
+          />
 
-          <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} />
+          <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
 
           {personalCostAddon}
         </FormikGroups>
+
+        {disabledVehicles ? null : (
+          <FormikGroups label="VEHICLES" xs={12} md={6}>
+            <Field component={CarSelection} name="CarAmounts" carTypes={selectedCompany.CarTypes} />
+          </FormikGroups>
+        )}
 
         {children}
 
@@ -184,6 +201,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   }
 }
 
-export default injectIntl(
-  ServiceConditionsBundle
+ export default
+   injectIntl(
+  withResource(ServiceConditionsBundle)
 )

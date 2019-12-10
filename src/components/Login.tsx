@@ -60,8 +60,8 @@ interface Props extends WithStyles<typeof styles> {
 
 class Login extends React.Component<Props, State> {
   public state = {
-    Email: "development@besapp.net",
-    Password: "SuperPass",
+    Email: "",
+    Password: "",
   }
 
   private handleSubmit = async (): Promise<void> => {

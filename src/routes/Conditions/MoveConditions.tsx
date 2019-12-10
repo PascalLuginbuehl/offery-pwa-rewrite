@@ -80,8 +80,6 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
             ) : null}
           </ServiceConditions>
 
-          <Field component={CarSelection} name="CarAmounts" carTypes={selectedCompany.CarTypes} />
-
           {status && status.msg && <div>{status.msg}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
