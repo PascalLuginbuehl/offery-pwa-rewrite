@@ -49,7 +49,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
           render={arrayHelpers => (
             <List dense>
               {parsedCarAmounts.map(car => (
-                <ListItem key={car.CarType.CarTypeId}>
+                <ListItem key={car.CarType.CarTypeId} dense>
                   <ListItemText primary={car.Amount + "x " + intl.formatMessage({ id: car.CarType.NameTextKey })} />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" onClick={() => this.removeCar(arrayHelpers, car.CarType.CarTypeId)}>

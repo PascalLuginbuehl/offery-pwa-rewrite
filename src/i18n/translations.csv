@@ -254,3 +254,5 @@ MOVE_OUT_ADDRESS,Move out address,Auszugsgebäude Address
 MOVE_IN_ADDRESS,Move in address,Einzugsgebäude Address
 VEHICLES,Vehicles,Fahrzeuge
 BUILDING_IS_ALREADY_FILLED_OVERRIDE,"Building is already filled out, override?","Dieses Gebäude ist bereits ausgefüllt, Überschreiben?"
+SEND,Send,Versenden
+SEND_OFFER,Send offer,Offerte Versenden

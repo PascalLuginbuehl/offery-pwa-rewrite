@@ -22,10 +22,11 @@ interface Props {
   handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => void
   redirectToNextPage: (currentUrl: string) => () => void
   getNextPage: (originalPath: string) => string
+  handleChange: (value: any, name: keyof ILeadContainer) => void
   matchUrl: string
 }
 
-export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage }: Props) => {
+export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) => {
   const {
     Lead,
     services,
@@ -179,12 +180,14 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
       <Route
         exact
         path={`${matchUrl}/offer/generate`}
-        render={routeProps => <GenerateOffer {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} />}
+        render={routeProps => <GenerateOffer {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />}
       />
 
       <Route exact path={`${matchUrl}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
+      <Route exact path={`${matchUrl}/offer/preview/:offerId`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
 
       <Route exact path={`${matchUrl}/offer/send`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
+      <Route exact path={`${matchUrl}/offer/send/:offerId`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
 
       <Route exact path={`${matchUrl}/offer/done`} render={routeProps => <Done {...routeProps} lead={Lead} />} />
     </>

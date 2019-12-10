@@ -22,7 +22,7 @@ class OfferDone extends React.Component<Props> {
       <Grid item xs={12}>
         <PageHeader title="DONE" />
         <Grid item xs={12}>
-          <IntlTypography>DONE_TEXT</IntlTypography>
+          <IntlTypography>LEAD_FINISHED_TEXT</IntlTypography>
         </Grid>
       </Grid>
     )

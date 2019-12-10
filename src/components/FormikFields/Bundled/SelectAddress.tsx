@@ -46,9 +46,9 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedInt
     const options: AdressObj[] = [
       { label: "MOVE_OUT_BUILDING", container: moveOutBuilding as BaseBuilding },
       { label: "MOVE_IN_BUILDING", container: moveInBuilding as BaseBuilding },
-      { label: "STORAGE_BUILDING", container: disposalBuilding as BaseBuilding },
-      { label: "CLEANING_BUILDING", container: storageBuilding as BaseBuilding },
-      { label: "DISPOSAL_BUILDING", container: cleaningBuilding as {Address: IAddress} },
+      { label: "STORAGE_BUILDING", container: storageBuilding as BaseBuilding },
+      { label: "DISPOSAL_BUILDING", container: disposalBuilding as BaseBuilding },
+      { label: "CLEANING_BUILDING", container: cleaningBuilding as {Address: IAddress} },
     ]
       .filter((value) => {
         return value.container !== null && value.container !== undefined
@@ -77,7 +77,8 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedInt
               const foundBuilding = options.find(building => building.container.AddressId === value)
 
               if (foundBuilding) {
-                return foundBuilding.container.Street + ", " + foundBuilding.container.PLZ + " " + foundBuilding.container.City
+                return intl.formatMessage({id: foundBuilding.label})
+                // return foundBuilding.container.Street + ", " + foundBuilding.container.PLZ + " " + foundBuilding.container.City
               }
             }
 
@@ -91,11 +92,11 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedInt
           {...field}
           value={field.value === undefined || field.value === null ? "" : field.value}
         >
-          {options.map(building => (
-            <MenuItem value={building.container.AddressId} dense>
+          {options.map((building, index) => (
+            <MenuItem value={building.container.AddressId} dense key={index}>
               <ListItemText
                 primary={building.container.Street + ", " + building.container.PLZ + " " + building.container.City}
-                secondary={intl.formatMessage({ id: "MOVE_OUT_BUILDING" })}
+                secondary={intl.formatMessage({ id: building.label })}
               />
             </MenuItem>
           ))}

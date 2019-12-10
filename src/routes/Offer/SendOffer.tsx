@@ -25,6 +25,7 @@ import SelectAddress from "../../components/FormikFields/Bundled/SelectAddress"
 import OfferService from "../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
+import { RouteComponentProps } from "react-router";
 
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
@@ -39,7 +40,7 @@ interface Values {
   Comment: string
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
   lead: ILead
 }
@@ -48,7 +49,10 @@ interface State {
   emailValue: string
 }
 
-class Customer extends React.Component<Props & FormikProps<Values>, State> {
+// KWIKFIX for email
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
     emailValue: "",
   }
@@ -90,33 +94,35 @@ class Customer extends React.Component<Props & FormikProps<Values>, State> {
             }))}
           />
 
-          <FieldArray
-            name="CCEmailList"
-            render={arrayHelpers =>
-              <List dense>
-                {values.CCEmailList.map((email, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={email} />
+          <Grid item xs={12} md={6}>
+            <FieldArray
+              name="CCEmailList"
+              render={arrayHelpers =>
+                <List dense>
+                  {values.CCEmailList.map((email, index) => (
+                    <ListItem key={index} dense>
+                      <ListItemText primary={email} />
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
+                          <RemoveCircleOutlineIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+
+                  <ListItem>
+                    <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={this.handleChange} />} />
+
                     <ListItemSecondaryAction>
-                      <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
-                        <RemoveCircleOutlineIcon />
+                      <IconButton disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())} onClick={() => {arrayHelpers.push(emailValue); this.setState({emailValue: ""})}} edge="end">
+                        <AddIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
-                ))}
-
-                <ListItem>
-                  <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={this.handleChange} />} />
-
-                  <ListItemSecondaryAction>
-                    <IconButton disabled={isSubmitting || !emailValue} onClick={() => arrayHelpers.push(emailValue)} edge="end">
-                      <AddIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </List>
-            }
-          />
+                </List>
+              }
+            />
+          </Grid>
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
@@ -152,7 +158,20 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({ OfferId: null, Comment: "", CCEmailList: [] }),
+        mapPropsToValues: props => {
+          if (props.match.params.offerId) {
+            const selectedOfferId = parseInt(props.match.params.offerId)
+            if (!isNaN(selectedOfferId)) {
+              const offer = props.lead.Offers.find(offer => offer.OfferId === selectedOfferId)
+
+              if (offer) {
+                return { OfferId: selectedOfferId, Comment: "", CCEmailList: [] }
+              }
+            }
+          }
+
+          return { OfferId: null, Comment: "", CCEmailList: [] }
+        },
 
         handleSubmit: async (values, actions) => {
           actions.setSubmitting(false)
@@ -160,7 +179,7 @@ export default injectIntl(
           actions.resetForm()
           actions.props.nextPage()
         },
-      })(Customer)
+      })(SendOffer)
     )
   )
 )

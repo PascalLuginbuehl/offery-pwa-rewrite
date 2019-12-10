@@ -149,7 +149,7 @@ class Lead extends Component<Props, State> {
     })
   }
 
-  redirectToNextPage = (currentPage: string) => () => {
+  redirectToNextPage = (currentPage: string) => (stringAddition: string = "") => {
     const { container } = this.state
     if (container) {
       const { Lead } = container
@@ -159,7 +159,7 @@ class Lead extends Component<Props, State> {
       const nextPage = this.getNextPage(currentPage)
 
       // Quickfix due to TS Lint error
-      history.push("/lead/" + (Lead as ILead).LeadId + nextPage)
+      history.push("/lead/" + (Lead as ILead).LeadId + nextPage + stringAddition)
     }
   }
 
@@ -287,7 +287,7 @@ class Lead extends Component<Props, State> {
 
           <ServiceRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 
-          <ConditionRoutes getNextPage={this.getNextPage} leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+          <ConditionRoutes handleChange={this.handleChange} getNextPage={this.getNextPage} leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
         </>
       )
     } else {

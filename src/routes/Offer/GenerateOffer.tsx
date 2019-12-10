@@ -12,6 +12,7 @@ import SelectAddress from '../../components/FormikFields/Bundled/SelectAddress';
 import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
 import OfferService from '../../services/OfferService';
 import { ILead } from '../../interfaces/ILead';
+import { ILeadContainer } from '../LeadAPI';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,10 +27,11 @@ interface Values {
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
-  nextPage: () => void
+  nextPage: (stringAddition?: string) => void
   // onSaveAndNextPage: (templateCategoryId: number, type: number, outAddressId: number, inAddressId: number) => Promise<any>
   buildingOptions: IBuildingCopy
   lead: ILead
+  onChange: (value: any, name: keyof ILeadContainer) => void
 }
 
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
@@ -71,14 +73,19 @@ export default withStyles(styles)(
         const {templateCategoryId, inAddressId, outAddressId} = values
         if ((templateCategoryId && inAddressId && outAddressId)) {
           const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, outAddressId, inAddressId)
-        }
-        // console.log(values)
-        // // actions.props.
-        // await actions.props.onChangeAndSave(values.cleaningService, values.moveOut)
 
-        actions.setSubmitting(false)
-        actions.resetForm()
-        actions.props.nextPage()
+          // Update Lead
+          const { props } = actions
+          props.onChange({ ...props.lead, Offers: [...props.lead.Offers, offer] }, "Lead")
+
+          actions.setSubmitting(false)
+          actions.resetForm()
+          actions.props.nextPage("/" + offer.OfferId)
+        } else {
+          actions.setSubmitting(false)
+          actions.resetForm()
+          actions.props.nextPage()
+        }
       },
     })(GenerateOffer)
   )

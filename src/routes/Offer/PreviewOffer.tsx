@@ -13,6 +13,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 // import { Document, Page } from 'react-pdf'
 import { Document, Page } from "react-pdf/dist/entry.webpack"
 import { PDFDocumentProxy } from 'pdfjs-dist';
+import { RouteComponentProps } from 'react-router';
 const styles = (theme: Theme) =>
   createStyles({
 
@@ -23,8 +24,8 @@ interface Values {
   selectedOfferId: number | null
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
-  nextPage: () => void,
+interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+  nextPage: (stringAddition?: string) => void,
   lead: ILead,
 }
 
@@ -37,6 +38,10 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
     pdfBlobBase64: null,
     pages: null,
+  }
+
+  componentDidMount() {
+
   }
 
   previewPDF = async () => {
@@ -87,12 +92,15 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
               <FormattedMessage id="DISPLAY_PDF" />
             </Button>
           </Grid>
-          {pdfBlobBase64 ? (
-            <Document file={pdfBlobBase64} onLoadSuccess={this.onDocumentLoadSuccess}>
-              {/* renderTextLayer 19 pixels to */}
-              {pages ? new Array(pages).fill("").map((e, i) => <Page key={i} pageIndex={i} renderTextLayer={false} width={Math.min(1080, window.innerWidth) - 50} />) : null}
-            </Document>
-          ) : null}
+
+          <Grid item xs={12}>
+            {pdfBlobBase64 ? (
+              <Document file={pdfBlobBase64} onLoadSuccess={this.onDocumentLoadSuccess}>
+                {/* renderTextLayer 19 pixels to */}
+                {pages ? new Array(pages).fill("").map((e, i) => <Page key={i} pageIndex={i} renderTextLayer={false} width={Math.min(1080, window.innerWidth) - 50} />) : null}
+              </Document>
+            ) : null}
+          </Grid>
           {/* <iframe style={{ width: "100%", height: "calc(100vh - 275px)" }} /> */}
           {status && status.msg && <div>{status.msg}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>
@@ -106,12 +114,28 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({ selectedOfferId : null}),
+        mapPropsToValues: props => {
+          if (props.match.params.offerId) {
+            const selectedOfferId = parseInt(props.match.params.offerId)
+            if (!isNaN(selectedOfferId)) {
+              const offer = props.lead.Offers.find(offer => offer.OfferId === selectedOfferId)
+
+              if(offer) {
+                return { selectedOfferId}
+              }
+            }
+          }
+          return { selectedOfferId : null}
+        },
 
         handleSubmit: async (values, actions) => {
           actions.setSubmitting(false)
           actions.resetForm()
-          actions.props.nextPage()
+          if(values.selectedOfferId) {
+            actions.props.nextPage("/" + values.selectedOfferId)
+          } else {
+            actions.props.nextPage()
+          }
         },
       })(PreviewOffer)
     )
