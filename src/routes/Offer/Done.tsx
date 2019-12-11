@@ -20,9 +20,11 @@ class OfferDone extends React.Component<Props> {
 
     return (
       <Grid item xs={12}>
-        <PageHeader title="DONE" />
-        <Grid item xs={12}>
-          <IntlTypography>LEAD_FINISHED_TEXT</IntlTypography>
+        <Grid container spacing={1} style={{padding: 8}}>
+          <Grid item xs={12}>
+            <PageHeader title="OFFER_DONE" />
+            <IntlTypography>LEAD_FINISHED_TEXT</IntlTypography>
+          </Grid>
         </Grid>
       </Grid>
     )
