@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
 import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
@@ -98,7 +98,13 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
             <FieldArray
               name="CCEmailList"
               render={arrayHelpers =>
-                <List dense>
+                <List
+                  dense
+                  subheader={
+                    <ListSubheader>
+                      <FormattedMessage id="CC_EMAILS"></FormattedMessage>
+                    </ListSubheader>
+                  }>
                   {values.CCEmailList.map((email, index) => (
                     <ListItem key={index} dense>
                       <ListItemText primary={email} />
@@ -129,7 +135,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
           {status && status.msg && <div>{status.msg}</div>}
 
           <Grid item xs={12}>
-            <Button onClick={this.sendAndSubmit} disabled={!values.OfferId || isSubmitting} variant="contained">
+            <Button onClick={this.sendAndSubmit} disabled={!values.OfferId || isSubmitting} variant="contained" color="primary">
               <FormattedMessage id="SEND_EMAIL" />
             </Button>
           </Grid>

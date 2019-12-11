@@ -14,6 +14,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { Document, Page } from "react-pdf/dist/entry.webpack"
 import { PDFDocumentProxy } from 'pdfjs-dist';
 import { RouteComponentProps } from 'react-router';
+import { IOffer, IOFile } from '../../interfaces/IOffer';
 const styles = (theme: Theme) =>
   createStyles({
 
@@ -44,24 +45,59 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
 
   }
 
-  previewPDF = async () => {
-    const {values: {selectedOfferId}} = this.props
+  getOfferBlob = async (offer: IOffer, file: IOFile) => {
+    const blob = await OfferService.downloadFile(offer.OfferId, file.OFileId)
+    return blob
+  }
+
+  getOffer = (): IOffer => {
+    const { values: { selectedOfferId } } = this.props
 
     if (selectedOfferId) {
 
       const { lead } = this.props
       const offers = lead.Offers
       const offer = offers.find(offer => offer.OfferId === selectedOfferId)
-      if(offer) {
-        const pdfFile = offer.Files.find(file => file.FileExtension === "pdf")
-
-        if(pdfFile) {
-          const blob = await OfferService.downloadPdf(selectedOfferId, pdfFile.OFileId)
-          const string = window.URL.createObjectURL(blob)
-          this.setState({ pdfBlobBase64: string })
-        }
+      if (offer) {
+        return offer
       }
     }
+
+    throw new Error("Offer not found")
+  }
+
+  getFile = (offer: IOffer, extension: "pdf" | "docx") => {
+    const pdfFile = offer.Files.find(file => file.FileExtension === extension)
+
+    if (pdfFile) {
+      return pdfFile
+    }
+    throw new Error("Offer not found")
+  }
+
+  previewPDF = async () => {
+    const offer = this.getOffer()
+    const file = this.getFile(offer, "pdf")
+    const blob = await this.getOfferBlob(offer, file)
+
+    const string = window.URL.createObjectURL(blob)
+    this.setState({ pdfBlobBase64: string })
+
+  }
+
+  downloadWord = async () => {
+    const offer = this.getOffer()
+    const file = this.getFile(offer, "docx")
+    const blob = await this.getOfferBlob(offer, file)
+
+
+    const string = window.URL.createObjectURL(blob)
+
+    var a = document.createElement("a");
+
+    a.href = string
+    a.download = file.DocName
+    a.click()
   }
 
   onDocumentLoadSuccess = ({ numPages }: PDFDocumentProxy) => {
@@ -90,6 +126,12 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
           <Grid item xs={6}>
             <Button onClick={this.previewPDF} disabled={!values.selectedOfferId} variant="contained" color="primary">
               <FormattedMessage id="DISPLAY_PDF" />
+            </Button>
+
+            &nbsp;
+
+            <Button onClick={this.downloadWord} disabled={!values.selectedOfferId} variant="contained">
+              <FormattedMessage id="DOWNLOAD_WORD" />
             </Button>
           </Grid>
 

@@ -24,7 +24,7 @@ class ServicesService {
     )
   }
 
-  async downloadPdf(offerId: number, fileId: number): Promise<any> {
+  async downloadFile(offerId: number, fileId: number): Promise<any> {
     return fetch(API_URL + "/offer/" + offerId + "/file/" + fileId, await LoginService.authorizeRequest())
       .then(errorFunction)
       .then(response => response.blob())

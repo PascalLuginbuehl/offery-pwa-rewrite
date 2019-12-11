@@ -42,6 +42,8 @@ Laden sie die Seite neu!
 
 
 
+Download Word
+
 
 -Bei Erfassung von Gebäuden sind die auswählbaren Besichtigungsadressen bei E-Mail bestätigung nicht angezeigt/auswählbar (erst bei reload)
 
