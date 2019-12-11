@@ -53,3 +53,31 @@ MoveService kaputt
 
 - Fahrzeuge in Konditionen erfassbar (simpel add/remove xAnzahl FahrzeugTyp)
 - Enstsorugngsgebäude kopieren von Auszugsgebäude
+
+
+
+Anzahl ändern mit doppelklick oder so
+
+
+
+DONE überstzunge
+
+Automatisch übertragen offer per URL
+
+Download Word
+
+
+
+-Bei Erfassung von Gebäuden sind die auswählbaren Besichtigungsadressen bei E-Mail bestätigung nicht angezeigt/auswählbar (erst bei reload)
+
+-Reinigung reset form vergessen
+
+-Pauschalpreis -> Min max entfernen
+
+-Berechnungen implementieren
+
+-> möchten sie überschreiben?
+
+
+Login entfernen
+SelectAddress auszugsgebäude
