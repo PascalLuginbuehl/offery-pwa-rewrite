@@ -107,7 +107,7 @@ export class ResourceProvider extends React.Component<Props, State> {
   public render() {
     const { resource, selectedCompany, resourceAwait, loggedIn } = this.state
 
-
+    console.log(resource)
     const texts = resource ? resource.Texts : []
 
     if(loggedIn && resource) {

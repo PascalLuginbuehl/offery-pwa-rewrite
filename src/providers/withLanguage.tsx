@@ -42,13 +42,14 @@ class LanguageProvider extends React.Component<Props, State> {
   componentDidMount() {
     // Determin language
 
-    const localStorageLocale = localStorage.getItem("PIKETT_TOOL_MOBILE_LOCALE")
+    const localStorageLocale = localStorage.getItem("OFFERY_INTL_LOCALE")
 
     // @ts-ignore Sets locale acording to local storage
     const determinedLocale = localStorageLocale || navigator.s && navigator.s[0] || navigator.language || navigator.user
 
     // Get a clean locale WithoutRegionCode
-    const cleanLocale = determinedLocale.toLowerCase().split(/[_-]+/)[0]
+    const cleanLocale = "de"
+    // const cleanLocale = determinedLocale.toLowerCase().split(/[_-]+/)[0]
 
     this.setState({locale: cleanLocale})
 
@@ -69,30 +70,32 @@ class LanguageProvider extends React.Component<Props, State> {
       //@ts-ignore Copy translations over to extraMessages
       additionalTranlations.map(e => extraMessages[e.TextKey] = e[localeKey.toUpperCase()].replace(/(?:\r\n|\r|\n)/g, '{br}'))
     }
-
-
     // Merge translations
     this.setState({ finalMessages: { ...messages, ...extraMessages } })
   }
 
   // Run this function when new Additions Translations get Added Dynamicly
-  componentWillReceiveProps(nextProps: Props) {
-    this.generateMessagesObject(this.props.additionalTranlations, this.state.locale)
-  }
+  // componentWillReceiveProps(nextProps: Props) {
+  // }
 
+  // componentDidUpdate(prevProps: Props){
+  //   const { additionalTranlations} = this.props
+  //   if(prevProps.additionalTranlations !== additionalTranlations) {
+  //     this.generateMessagesObject(additionalTranlations, this.state.locale)
+  //   }
+  // }
 
   // you must specify what you’re adding to the context
   public changeLanguage = (newLocale: string) => {
     this.generateMessagesObject(this.props.additionalTranlations, newLocale)
 
-    localStorage.setItem("PIKETT_TOOL_MOBILE_LOCALE", newLocale)
+    localStorage.setItem("OFFERY_INTL_LOCALE", newLocale)
 
     this.setState({locale: newLocale})
   }
 
   public render() {
     const { locale, finalMessages } = this.state
-
     return (
       <Provider value={{ changeLanguage: this.changeLanguage, locale, messages: finalMessages }}>
         <IntlProvider

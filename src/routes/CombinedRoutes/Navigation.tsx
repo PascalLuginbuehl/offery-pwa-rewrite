@@ -79,7 +79,7 @@ export default ({ leadContainer, matchUrl, portal }: Props) => {
       </NavFolder>
 
       <NavFolder to={`${matchUrl}/conditions`} title="CONDITIONS">
-        <Collapse in={services.HasCleaningServiceEnabled}>
+        <Collapse in={services.HasMoveServiceEnabled}>
           <NavItem to={`${matchUrl}/conditions/move`} title="MOVE_CONDITIONS" nested />
         </Collapse>
 
