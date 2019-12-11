@@ -68,7 +68,7 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Cleaning buildingOptions={buildingOptions} prefix={"cleaning"} resource={resource} />
 
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
@@ -82,11 +82,15 @@ export default withStyles(styles)(
       mapPropsToValues: props => ({ cleaningService: props.cleaningService, cleaning: props.cleaning }),
 
       handleSubmit: async (values, actions) => {
-        await actions.props.onChangeAndSave(values.cleaningService, values.cleaning)
+        try {
+          await actions.props.onChangeAndSave(values.cleaningService, values.cleaning)
 
-        actions.resetForm()
-        actions.setSubmitting(false)
-        actions.props.nextPage()
+          actions.resetForm()
+          actions.setSubmitting(false)
+          actions.props.nextPage()
+        } catch(e) {
+          actions.setStatus(e)
+        }
       },
     })(CleaningService)
   )

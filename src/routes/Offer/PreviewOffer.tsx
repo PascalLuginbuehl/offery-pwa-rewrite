@@ -144,7 +144,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
             ) : null}
           </Grid>
           {/* <iframe style={{ width: "100%", height: "calc(100vh - 275px)" }} /> */}
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
@@ -171,12 +171,16 @@ export default injectIntl(
         },
 
         handleSubmit: async (values, actions) => {
-          actions.setSubmitting(false)
-          actions.resetForm()
-          if(values.selectedOfferId) {
-            actions.props.nextPage("/" + values.selectedOfferId)
-          } else {
-            actions.props.nextPage()
+          try {
+            actions.setSubmitting(false)
+            actions.resetForm()
+            if(values.selectedOfferId) {
+              actions.props.nextPage("/" + values.selectedOfferId)
+            } else {
+              actions.props.nextPage()
+            }
+          } catch(e) {
+            actions.setStatus(e)
           }
         },
       })(PreviewOffer)

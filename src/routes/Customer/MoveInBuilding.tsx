@@ -34,7 +34,7 @@ class MoveInBuilding extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="MOVE_IN_BUILDING" />
 
           <MoveIn buildingOptions={buildingOptions} prefix="moveInBuilding" resource={resource} />
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -50,12 +50,16 @@ export default injectIntl(
         mapPropsToValues: props => ({ moveInBuilding: props.moveInBuilding }),
 
         handleSubmit: async (values, actions) => {
-          await actions.props.onChangeAndSave(values.moveInBuilding)
+          try {
+            await actions.props.onChangeAndSave(values.moveInBuilding)
 
-          actions.setSubmitting(false)
+            actions.setSubmitting(false)
 
-          actions.resetForm()
-          actions.props.nextPage()
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch(e) {
+            actions.setStatus(e)
+          }
         },
       })(MoveInBuilding)
     )

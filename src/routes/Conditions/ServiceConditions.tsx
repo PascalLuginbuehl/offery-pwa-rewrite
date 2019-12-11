@@ -59,8 +59,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
     return (
       <>
-        {values.ServiceConditions.IsHourlyRate ? "true" : "false"}
-      {values.ServiceConditions.HasCostCeiling ? "true" : "false"}
         <Grid item xs={12}>
           <Tabs
             value={this.getRateProfile(values.ServiceConditions.IsHourlyRate, values.ServiceConditions.HasCostCeiling)}
@@ -125,7 +123,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           </FormikGroups>
         ) : null}
 
-        <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.HasCostCeiling && values.ServiceConditions.IsHourlyRate ? 12 : 6}>
+        <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.IsHourlyRate ? 12 : 6}>
           {/* Calculations */}
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
             <>

@@ -61,7 +61,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
 
 
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -76,12 +76,16 @@ export default withStyles(styles)(
       mapPropsToValues: props => ({ packService: props.packService, moveOut: props.moveOut }),
 
       handleSubmit: async (values, actions) => {
-        await actions.props.onChangeAndSave(values.packService, values.moveOut)
+        try {
+          await actions.props.onChangeAndSave(values.packService, values.moveOut)
 
-        actions.setSubmitting(false)
+          actions.setSubmitting(false)
 
-        actions.resetForm()
-        actions.props.nextPage()
+          actions.resetForm()
+          actions.props.nextPage()
+        } catch(e) {
+          actions.setStatus(e)
+        }
 
       }
 

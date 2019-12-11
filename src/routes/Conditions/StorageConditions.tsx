@@ -112,7 +112,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
             </Grid>
           </FormikGroups>
 
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -139,12 +139,16 @@ export default injectIntl(
         mapPropsToValues: props => ({ ...props.storageConditions }),
 
         handleSubmit: async (values, actions) => {
-          await actions.props.onChangeAndSave(values)
+          try {
+            await actions.props.onChangeAndSave(values)
 
-          actions.setSubmitting(false)
+            actions.setSubmitting(false)
 
-          actions.resetForm()
-          actions.props.nextPage()
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch(e) {
+            actions.setStatus(e)
+          }
         }
 
       })(StorageConditions)

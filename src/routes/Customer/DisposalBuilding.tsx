@@ -36,7 +36,7 @@ class DisposalBuilding extends React.Component<Props & FormikProps<Values>, {}> 
           <PageHeader title="DISPOSAL_BUILDING" />
 
           <Disposal buildingOptions={buildingOptions} prefix="disposalBuilding" resource={resource} />
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -52,12 +52,16 @@ export default injectIntl(
         mapPropsToValues: props => ({ disposalBuilding: props.disposalBuilding }),
 
         handleSubmit: async (values, actions) => {
-          await actions.props.onChangeAndSave(values.disposalBuilding)
+          try {
+            await actions.props.onChangeAndSave(values.disposalBuilding)
 
-          actions.setSubmitting(false)
+            actions.setSubmitting(false)
 
-          actions.resetForm()
-          actions.props.nextPage()
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch (e) {
+            actions.setStatus(e)
+          }
         },
       })(DisposalBuilding)
     )

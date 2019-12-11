@@ -75,15 +75,16 @@ class LanguageProvider extends React.Component<Props, State> {
   }
 
   // Run this function when new Additions Translations get Added Dynamicly
-  // componentWillReceiveProps(nextProps: Props) {
-  // }
+  componentWillReceiveProps(nextProps: Props) {
+    this.generateMessagesObject(nextProps.additionalTranlations, this.state.locale)
+  }
 
-  // componentDidUpdate(prevProps: Props){
-  //   const { additionalTranlations} = this.props
-  //   if(prevProps.additionalTranlations !== additionalTranlations) {
-  //     this.generateMessagesObject(additionalTranlations, this.state.locale)
-  //   }
-  // }
+  componentDidUpdate(prevProps: Props){
+    const { additionalTranlations} = this.props
+    if(prevProps.additionalTranlations !== additionalTranlations) {
+      this.generateMessagesObject(additionalTranlations, this.state.locale)
+    }
+  }
 
   // you must specify what you’re adding to the context
   public changeLanguage = (newLocale: string) => {

@@ -76,7 +76,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           {/* <SelectAddress label="" name="AddressId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Grid item xs={12}>
             <Button onClick={this.sendAndSubmit} disabled={!values.AddressId} variant="contained">
@@ -111,10 +111,14 @@ export default injectIntl(
         mapPropsToValues: props => ({ AddressId: null, Comment: "" }),
 
         handleSubmit: async (values, actions) => {
-          actions.setSubmitting(false)
+          try {
+            actions.setSubmitting(false)
 
-          actions.resetForm()
-          actions.props.nextPage()
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch(e) {
+            actions.setStatus(e)
+          }
         },
       })(Customer)
     )

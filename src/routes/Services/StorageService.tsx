@@ -73,7 +73,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Storage buildingOptions={buildingOptions}  prefix={"storage"} resource={resource} />
 
 
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -94,12 +94,16 @@ export default withStyles(styles)(
       mapPropsToValues: props => ({ storageService: props.storageService, storage: props.storage }),
 
       handleSubmit: async (values, actions) => {
-        await actions.props.onChangeAndSave(values.storageService, values.storage)
+        try {
+          await actions.props.onChangeAndSave(values.storageService, values.storage)
 
-        actions.setSubmitting(false)
+          actions.setSubmitting(false)
 
-        actions.resetForm()
-        actions.props.nextPage()
+          actions.resetForm()
+          actions.props.nextPage()
+        } catch(e) {
+          actions.setStatus(e)
+        }
       },
     })(StorageService)
   )

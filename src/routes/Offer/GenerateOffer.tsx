@@ -55,7 +55,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
 
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting || !outAddressId || !inAddressId || !templateCategoryId}></Submit>
         </Form>
@@ -70,21 +70,26 @@ export default withStyles(styles)(
       mapPropsToValues: props => ({ templateCategoryId: null, outAddressId: null, inAddressId: null }),
 
       handleSubmit: async (values, actions) => {
-        const {templateCategoryId, inAddressId, outAddressId} = values
-        if ((templateCategoryId && inAddressId && outAddressId)) {
-          const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, outAddressId, inAddressId)
+        try {
+          const {templateCategoryId, inAddressId, outAddressId} = values
+          if ((templateCategoryId && inAddressId && outAddressId)) {
+            const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, outAddressId, inAddressId)
 
-          // Update Lead
-          const { props } = actions
-          props.onChange({ ...props.lead, Offers: [...props.lead.Offers, offer] }, "Lead")
+            // Update Lead
+            const { props } = actions
+            props.onChange({ ...props.lead, Offers: [...props.lead.Offers, offer] }, "Lead")
 
-          actions.setSubmitting(false)
-          actions.resetForm()
-          actions.props.nextPage("/" + offer.OfferId)
-        } else {
-          actions.setSubmitting(false)
-          actions.resetForm()
-          actions.props.nextPage()
+            actions.setSubmitting(false)
+            actions.resetForm()
+            actions.props.nextPage("/" + offer.OfferId)
+          } else {
+            actions.setSubmitting(false)
+            actions.resetForm()
+            actions.props.nextPage()
+          }
+
+        } catch(e) {
+          actions.setStatus(e)
         }
       },
     })(GenerateOffer)

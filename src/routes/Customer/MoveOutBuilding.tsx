@@ -42,7 +42,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
           <PageHeader title="MOVE_OUT_BUILDING" />
 
           <MoveOut buildingOptions={buildingOptions} prefix="moveOutBuilding" resource={resource} />
-          {status && status.msg && <div>{status.msg}</div>}
+          {status && status.json && <div>{status.json.Message}</div>}
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
