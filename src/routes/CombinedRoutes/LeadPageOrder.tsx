@@ -8,10 +8,10 @@ export default (lead: ILead, services: IServices) => {
 
   return [
     { name: "/building", active: true },
-    { name: "/building/move-out", active: HasMoveInBuilding },
-    { name: "/building/move-in", active: HasMoveOutBuilding },
-    { name: "/building/storage", active: HasDisposalOutBuilding },
-    { name: "/building/disposal", active: HasStorageInBuilding },
+    { name: "/building/move-out", active: HasMoveOutBuilding },
+    { name: "/building/move-in", active: HasMoveInBuilding },
+    { name: "/building/storage", active: HasStorageInBuilding },
+    { name: "/building/disposal", active: HasDisposalOutBuilding },
     { name: "/building/cleaning", active: HasCleaningBuilding },
     { name: "/building/email-confirmation", active: true },
     { name: "/services", active: true },

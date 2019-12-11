@@ -27,7 +27,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding | null) => void
+  onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding) => void
   buildingOptions: IBuildingCopy
 }
 

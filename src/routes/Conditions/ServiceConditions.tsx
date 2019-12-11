@@ -83,13 +83,15 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
           />
 
-          <Field
-            label="PRICE_PER_HOUR"
-            name={`ServiceConditions.PricePerHour`}
-            component={FormikNumberEndAdornmentText}
-            adornmentText="CHF/h"
-            overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
-          />
+          {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? null : (
+            <Field
+              label="PRICE_PER_HOUR"
+              name={`ServiceConditions.PricePerHour`}
+              component={FormikNumberEndAdornmentText}
+              adornmentText="CHF/h"
+              overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
+            />
+          )}
 
           <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
 

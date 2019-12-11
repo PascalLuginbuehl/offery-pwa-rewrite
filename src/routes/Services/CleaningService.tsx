@@ -32,7 +32,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding | null) => void
+  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding) => void
   buildingOptions: IBuildingCopy
 }
 

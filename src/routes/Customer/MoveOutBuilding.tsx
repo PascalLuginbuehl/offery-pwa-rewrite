@@ -36,8 +36,6 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
       buildingOptions,
     } = this.props
 
-    console.log(selectedCompany.CarTypes)
-
     return (
       <Grid item xs={12}>
         <Form>
@@ -60,12 +58,16 @@ export default injectIntl(
         mapPropsToValues: props => ({ moveOutBuilding: props.moveOutBuilding }),
 
         handleSubmit: async (values, actions) => {
-          await actions.props.onChangeAndSave(values.moveOutBuilding)
+          try {
+            await actions.props.onChangeAndSave(values.moveOutBuilding)
 
-          actions.setSubmitting(false)
+            actions.setSubmitting(false)
 
-          actions.resetForm()
-          actions.props.nextPage()
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch(e) {
+            actions.setStatus(e)
+          }
         }
 
       })(CleaningConditions)

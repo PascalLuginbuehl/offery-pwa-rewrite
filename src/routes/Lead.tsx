@@ -49,12 +49,13 @@ class Lead extends Component<Props, State> {
 
   public handleChangeAndSave = async (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => {
     const { container } = this.state
-    this.handleChange(value, name);
 
     if(container) {
       const { Lead } = container
+
       try {
         await savePromise
+        this.handleChange(value, name)
         // saveWasSuccessFull, update offlineOrigin and offline
       } catch (e) {
         // Check if it is an offline error
@@ -112,7 +113,7 @@ class Lead extends Component<Props, State> {
 
   saveOfflineToOnline = async (potentialLeadId: number, offlineLead: ILeadContainer) => {
     try {
-      await LeadAPI.SaveToApi(potentialLeadId, offlineLead)
+      // await LeadAPI.SaveToApi(potentialLeadId, offlineLead)
 
       try {
         await this.loadFromOnline(potentialLeadId)
@@ -283,7 +284,7 @@ class Lead extends Component<Props, State> {
 
       return (
         <>
-          <BuildingRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
+          <BuildingRoutes handleChange={this.handleChange} leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 
           <ServiceRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 

@@ -27,7 +27,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding | null) => void
+  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding) => void
   buildingOptions: IBuildingCopy
 }
 

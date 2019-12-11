@@ -49,7 +49,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
       VisitConfirmEmailBodyContentOutroTextKey,
       VisitConfirmEmailBodyContentIntroTextKey,
     } = selectedCompany.Settings
-
+    console.log(buildingOptions)
     return (
       <Grid item xs={12}>
         <Form>

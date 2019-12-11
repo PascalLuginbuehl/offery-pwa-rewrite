@@ -34,7 +34,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     const { values, isSubmitting, status, resource, selectedCompany } = this.props
     const { VisitDate, MoveDate } = values
 
-    console.dir(status)
     return (
       <Grid item xs={12}>
         <Form>
@@ -71,7 +70,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
             <Field label="COMPANY" name="Customer.CompanyName" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
-            <Field label="EMAIL" name="Customer.Email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
+            <Field label="EMAIL" name="Customer.Email" type="email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
             <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
           </FormikGroups>
 
@@ -120,8 +119,8 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="HasMoveOutBuilding" label="MOVE_OUT_BUILDING" component={FormikButtonCheckbox} />
             <Field name="HasMoveInBuilding" label="MOVE_IN_BUILDING" component={FormikButtonCheckbox} />
             <Field name="HasStorageInBuilding" label="STORAGE_BUILDING" component={FormikButtonCheckbox} />
-            <Field name="HasCleaningBuilding" label="CLEANING_BUILDING" component={FormikButtonCheckbox} />
             <Field name="HasDisposalOutBuilding" label="DISPOSAL_BUILDING" component={FormikButtonCheckbox} />
+            <Field name="HasCleaningBuilding" label="CLEANING_BUILDING" component={FormikButtonCheckbox} />
           </FormikGroups>
 
           {status && status.json && <div>{status.json.Message}</div>}
