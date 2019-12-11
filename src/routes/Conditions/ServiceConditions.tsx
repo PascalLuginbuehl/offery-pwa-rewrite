@@ -26,9 +26,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     if (HasCostCeiling) {
       return 2
     } else if (IsHourlyRate) {
-      return 1
-    } else {
       return 0
+    } else {
+      return 1
     }
   }
 
@@ -37,10 +37,11 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     this.props.setFieldValue("ServiceConditions.HasCostCeiling", false)
 
     if (position === 0) {
-      return
-    } else if (position === 1) {
       this.props.setFieldValue("ServiceConditions.IsHourlyRate", true)
+    } else if (position === 1) {
+      return
     } else if (position === 2) {
+      this.props.setFieldValue("ServiceConditions.IsHourlyRate", true)
       this.props.setFieldValue("ServiceConditions.HasCostCeiling", true)
     }
   }
@@ -58,6 +59,8 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
     return (
       <>
+        {values.ServiceConditions.IsHourlyRate ? "true" : "false"}
+      {values.ServiceConditions.HasCostCeiling ? "true" : "false"}
         <Grid item xs={12}>
           <Tabs
             value={this.getRateProfile(values.ServiceConditions.IsHourlyRate, values.ServiceConditions.HasCostCeiling)}
@@ -67,8 +70,8 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             variant="fullWidth"
             centered
           >
-            <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={1} />
-            <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={0} />
+            <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={0} />
+            <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={1} />
             <Tab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
           </Tabs>
         </Grid>
@@ -83,7 +86,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
           />
 
-          {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? null : (
+          {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
             <Field
               label="PRICE_PER_HOUR"
               name={`ServiceConditions.PricePerHour`}
@@ -91,9 +94,11 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
               adornmentText="CHF/h"
               overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
             />
-          )}
+          ) : null}
 
-          <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
+          {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
+            <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
+          ) : null}
 
           {personalCostAddon}
         </FormikGroups>
@@ -106,7 +111,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
         {children}
 
-        {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? null : (
+        {!values.ServiceConditions.HasCostCeiling && values.ServiceConditions.IsHourlyRate ? (
           <FormikGroups label="HOURS_OF_WORK" xs={12} md={6}>
             <Field label="MIN" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
@@ -118,9 +123,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
             <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 7, md: undefined }} />
           </FormikGroups>
-        )}
+        ) : null}
 
-        <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? 12 : 6}>
+        <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.HasCostCeiling && values.ServiceConditions.IsHourlyRate ? 12 : 6}>
           {/* Calculations */}
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
             <>
