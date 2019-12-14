@@ -16,6 +16,7 @@ import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonChec
 import { IPostLead } from "../../interfaces/ILead";
 import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker";
 import { continueStatement } from "@babel/types";
+import HttpErrorHandler from "../../components/HttpErrorHandler";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -123,7 +124,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="HasCleaningBuilding" label="CLEANING_BUILDING" component={FormikButtonCheckbox} />
           </FormikGroups>
 
-          {status && status.json && <div>{status.json.Message}</div>}
+          <HttpErrorHandler status={status} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
@@ -145,14 +146,7 @@ export default injectIntl(
             actions.resetForm()
             actions.props.nextPage()
           } catch(e) {
-            if(e.statusText) {
-              // Please report with following error message
-
-              actions.setStatus(e)
-            } else {
-              // Please report this error to us
-              actions.setStatus(e)
-            }
+            actions.setStatus(e)
           }
         },
       })(Customer)
