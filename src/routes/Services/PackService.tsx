@@ -14,6 +14,8 @@ import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePi
 import IntlTypography from '../../components/Intl/IntlTypography';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
 import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import { handleChangeFunction } from '../../components/Validator/HandleChangeFunction';
+import HttpErrorHandler from '../../components/HttpErrorHandler';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,9 +40,9 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       resource,
       buildingOptions,
+      values,
     } = this.props
 
-    console.log(this.props)
     return (
       <Grid item xs={12}>
         <Form>
@@ -60,6 +62,8 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
 
+
+          <HttpErrorHandler status={status} data={values} />
 
           {status && status.json && <div>{status.json.Message}</div>}
 
@@ -86,7 +90,6 @@ export default withStyles(styles)(
         } catch(e) {
           actions.setStatus(e)
         }
-
       }
 
     })(PackService)

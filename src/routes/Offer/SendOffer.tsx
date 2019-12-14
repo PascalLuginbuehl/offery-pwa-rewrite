@@ -26,6 +26,7 @@ import OfferService from "../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { RouteComponentProps } from "react-router";
+import HttpErrorHandler from "../../components/HttpErrorHandler";
 
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
@@ -132,7 +133,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
-          {status && status.json && <div>{status.json.Message}</div>}
+          <HttpErrorHandler status={status} data={values} />
 
           <Grid item xs={12}>
             <Button onClick={this.sendAndSubmit} disabled={!values.OfferId || isSubmitting} variant="contained" color="primary">

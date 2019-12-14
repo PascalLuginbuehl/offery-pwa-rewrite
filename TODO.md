@@ -24,7 +24,7 @@ Beim Genereieeren Standardmässig einzugs und auszug anwählen
 Fehlermeldungen einfügen
 -> Laden sie die Seite neu!
 
--Kostendach disable
+- Kostendach disable
 
 Noch nichts archiviert umstylen
 

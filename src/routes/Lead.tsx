@@ -74,8 +74,8 @@ class Lead extends Component<Props, State> {
             throw { message: "Couldn't save offline", error: e }
           }
         } else {
-          console.log("Unknown error:", e)
-          throw { message: "Error while saving:", error: e }
+          console.log("Error while saving:", e)
+          throw e
         }
       }
     }

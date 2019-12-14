@@ -18,6 +18,7 @@ import Cleaning from '../../components/FormikFields/Bundled/Cleaning';
 import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
 import IntlTypography from '../../components/Intl/IntlTypography';
 import FormikGroups from '../../components/FormikFields/Bundled/Groups';
+import HttpErrorHandler from '../../components/HttpErrorHandler';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,7 +39,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, buildingOptions, resource } = this.props
+    const { isSubmitting, status, buildingOptions, resource, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -68,7 +69,8 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Cleaning buildingOptions={buildingOptions} prefix={"cleaning"} resource={resource} />
 
-          {status && status.json && <div>{status.json.Message}</div>}
+          <HttpErrorHandler status={status} data={values} />
+
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>

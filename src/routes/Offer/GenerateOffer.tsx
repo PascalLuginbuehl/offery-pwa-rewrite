@@ -13,6 +13,7 @@ import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCop
 import OfferService from '../../services/OfferService';
 import { ILead } from '../../interfaces/ILead';
 import { ILeadContainer } from '../LeadAPI';
+import HttpErrorHandler from '../../components/HttpErrorHandler';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,7 +37,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values: {templateCategoryId, inAddressId, outAddressId}, isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
+    const { values: { templateCategoryId, inAddressId, outAddressId }, isSubmitting, status, resource, selectedCompany, buildingOptions, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -55,7 +56,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
 
-          {status && status.json && <div>{status.json.Message}</div>}
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting || !outAddressId || !inAddressId || !templateCategoryId}></Submit>
         </Form>

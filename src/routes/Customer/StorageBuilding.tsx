@@ -9,6 +9,7 @@ import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import Storage from "../../components/FormikFields/Bundled/Storage";
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
+import HttpErrorHandler from "../../components/HttpErrorHandler";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -25,7 +26,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class StorageBuilding extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -33,7 +34,8 @@ class StorageBuilding extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="STORAGE_BUILDING" />
 
           <Storage buildingOptions={buildingOptions} prefix="storageBuilding" resource={resource} />
-          {status && status.json && <div>{status.json.Message}</div>}
+
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>

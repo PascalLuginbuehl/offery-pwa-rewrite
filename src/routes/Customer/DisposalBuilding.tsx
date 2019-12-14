@@ -12,6 +12,7 @@ import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
 import Storage from "../../components/FormikFields/Bundled/Storage"
 import Disposal from "../../components/FormikFields/Bundled/Disposal";
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
+import HttpErrorHandler from "../../components/HttpErrorHandler";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -28,7 +29,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class DisposalBuilding extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -36,7 +37,8 @@ class DisposalBuilding extends React.Component<Props & FormikProps<Values>, {}> 
           <PageHeader title="DISPOSAL_BUILDING" />
 
           <Disposal buildingOptions={buildingOptions} prefix="disposalBuilding" resource={resource} />
-          {status && status.json && <div>{status.json.Message}</div>}
+
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>

@@ -15,6 +15,7 @@ import { Document, Page } from "react-pdf/dist/entry.webpack"
 import { PDFDocumentProxy } from 'pdfjs-dist';
 import { RouteComponentProps } from 'react-router';
 import { IOffer, IOFile } from '../../interfaces/IOffer';
+import HttpErrorHandler from '../../components/HttpErrorHandler';
 const styles = (theme: Theme) =>
   createStyles({
 
@@ -143,8 +144,11 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
               </Document>
             ) : null}
           </Grid>
+
           {/* <iframe style={{ width: "100%", height: "calc(100vh - 275px)" }} /> */}
-          {status && status.json && <div>{status.json.Message}</div>}
+
+          <HttpErrorHandler status={status} data={values} />
+
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>

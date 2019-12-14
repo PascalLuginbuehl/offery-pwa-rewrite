@@ -10,6 +10,7 @@ import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
+import HttpErrorHandler from "../../components/HttpErrorHandler";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -26,7 +27,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class MoveInBuilding extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany, buildingOptions } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -34,7 +35,8 @@ class MoveInBuilding extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="MOVE_IN_BUILDING" />
 
           <MoveIn buildingOptions={buildingOptions} prefix="moveInBuilding" resource={resource} />
-          {status && status.json && <div>{status.json.Message}</div>}
+
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>

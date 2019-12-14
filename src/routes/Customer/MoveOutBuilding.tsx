@@ -9,6 +9,7 @@ import { withResource, WithResourceProps } from '../../providers/withResource';
 import Submit from '../../components/FormikFields/Submit';
 import PageHeader from '../../components/PageHeader';
 import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import HttpErrorHandler from '../../components/HttpErrorHandler';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -34,6 +35,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
       resource,
       selectedCompany,
       buildingOptions,
+      values,
     } = this.props
 
     return (
@@ -42,7 +44,8 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
           <PageHeader title="MOVE_OUT_BUILDING" />
 
           <MoveOut buildingOptions={buildingOptions} prefix="moveOutBuilding" resource={resource} />
-          {status && status.json && <div>{status.json.Message}</div>}
+
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>

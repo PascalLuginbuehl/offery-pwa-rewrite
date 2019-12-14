@@ -124,7 +124,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="HasCleaningBuilding" label="CLEANING_BUILDING" component={FormikButtonCheckbox} />
           </FormikGroups>
 
-          <HttpErrorHandler status={status} />
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
