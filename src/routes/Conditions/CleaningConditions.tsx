@@ -129,8 +129,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
   getCost = (): number => {
     const { EstimatedHoursOfWorkWhenFixPrice, HighPressureGarageCleaningFixPrice, CleaningFireplacePrice, CleaningCarpetPrice, CleaningWindowsPrice, CleaningWindowsWithShuttersPrice, CleaningSpecialPrice, FixPrice, DiscountInPercent } = this.props.values
 
-    return ((EstimatedHoursOfWorkWhenFixPrice ? EstimatedHoursOfWorkWhenFixPrice : 0)
-    + (HighPressureGarageCleaningFixPrice ? HighPressureGarageCleaningFixPrice : 0)
+    return ((HighPressureGarageCleaningFixPrice ? HighPressureGarageCleaningFixPrice : 0)
     + (CleaningFireplacePrice ? CleaningFireplacePrice : 0)
     + (CleaningCarpetPrice ? CleaningCarpetPrice : 0)
     + (CleaningWindowsPrice ? CleaningWindowsPrice : 0)
