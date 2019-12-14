@@ -18,15 +18,22 @@ export interface FormikSelectProps extends FormikTextFieldProps {
 
 class FormikSimpleSelect extends React.Component<FormikSelectProps> {
   render() {
-    const { intl, options, notTranslated = false, ...props } = this.props
+    const { intl, options, notTranslated = false, required, ...props } = this.props
 
     return (
       <FormikTextField
         select
+        required={required}
         // @ts-ignore
         ref={props.ref}
         {...props}
       >
+          {/*
+          // @ts-ignore */}
+          <MenuItem value={null} disabled={required}>
+            <em><FormattedMessage id={"SELECT_DOT_DOT_DOT"} /></em>
+          </MenuItem>
+        }
         {options.map(option => (
           <MenuItem key={option.value} value={option.value}>
             {notTranslated ? option.label : <FormattedMessage id={option.label} />}

@@ -54,6 +54,8 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
         // views={["year", "month", "date"]}
         format={"dd.MM.yyyy hh:mm"}
         minutesStep={5}
+
+        ampm={false}
         fullWidth
         required={required}
         helperText={showError ? fieldError : helperText}
