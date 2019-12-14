@@ -4,6 +4,7 @@ Konditionen standard offen?
 Min max CHF nicht anzeigen
 Konditionfelder immer required wenn enabled/shown
 -> Macht das sinn?
+
 Conditions anfahrt und rückfahr * stundensatz
 https://dev.azure.com/burimcakolli0689/Offery/_git/Offery-API?path=%2FOffery-API%2FOffery-API%2FControllers%2FOfferController.cs&version=GBmaster&line=1495&lineEnd=1496&lineStartColumn=1&lineEndColumn=1&lineStyle=plain
 

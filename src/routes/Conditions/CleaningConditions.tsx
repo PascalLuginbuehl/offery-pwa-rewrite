@@ -41,15 +41,20 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
         <Form>
           <PageHeader title="CLEANING_CONDITIONS" />
 
-          <FormikGroups label="PERSONAL_COST" xs={12} md={6}>
-            <Field label="CLEANING_PERSONAL_AMOUNT" name="WorkersAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6 }} />
+          <Field label="HANDOUT_WARRANTY" name="HandoutGaranty" component={FormikButtonCheckbox} />
+
+          <FormikGroups label="PERSONAL_COST" xs={12}>
+            <Field label="CLEANING_PERSONAL_AMOUNT" name="WorkersAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
             <Field
               label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
               name="EstimatedHoursOfWorkWhenFixPrice"
               component={FormikNumberEndAdornmentText}
               adornmentText="h"
-              overrideGrid={{ xs: 6 }}
+              overrideGrid={{ xs: 6, md: 3 }}
             />
+
+            <Field label="FIX_PRICE" name="FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
+
           </FormikGroups>
 
           {cleaningService.HighPressureGarageCleaningService || cleaningService.HighPressureTerraceCleaningService ? (
@@ -97,9 +102,9 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
             </FormikGroups>
           ) : null}
 
-          <Field label="HANDOUT_WARRANTY" name="HandoutGaranty" component={FormikButtonCheckbox} />
-
           <FormikGroups label="PRICE" xs={12} md={6}>
+            <Field label="DISCOUNT_IN_PERCENT" name="DiscountInPercent" component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
+
             <Grid item xs={5}>
               <MuiTextField
                 label={intl.formatMessage({ id: "PRICE" })}
@@ -109,8 +114,6 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
                 InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
               />
             </Grid>
-
-            <Field label="DISCOUNT_IN_PERCENT" name="DiscountInPercent" component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
           </FormikGroups>
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
@@ -124,15 +127,18 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
   }
 
   getCost = (): number => {
-    const { EstimatedHoursOfWorkWhenFixPrice, HighPressureGarageCleaningFixPrice, CleaningFireplacePrice, CleaningCarpetPrice, CleaningWindowsPrice, CleaningWindowsWithShuttersPrice, CleaningSpecialPrice } = this.props.values
+    const { EstimatedHoursOfWorkWhenFixPrice, HighPressureGarageCleaningFixPrice, CleaningFireplacePrice, CleaningCarpetPrice, CleaningWindowsPrice, CleaningWindowsWithShuttersPrice, CleaningSpecialPrice, FixPrice, DiscountInPercent } = this.props.values
 
-    return (EstimatedHoursOfWorkWhenFixPrice ? EstimatedHoursOfWorkWhenFixPrice : 0)
+    return ((EstimatedHoursOfWorkWhenFixPrice ? EstimatedHoursOfWorkWhenFixPrice : 0)
     + (HighPressureGarageCleaningFixPrice ? HighPressureGarageCleaningFixPrice : 0)
     + (CleaningFireplacePrice ? CleaningFireplacePrice : 0)
     + (CleaningCarpetPrice ? CleaningCarpetPrice : 0)
     + (CleaningWindowsPrice ? CleaningWindowsPrice : 0)
     + (CleaningWindowsWithShuttersPrice ? CleaningWindowsWithShuttersPrice : 0)
     + (CleaningSpecialPrice ? CleaningSpecialPrice : 0)
+    + (FixPrice ? FixPrice : 0))
+      * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
+
   }
 }
 
