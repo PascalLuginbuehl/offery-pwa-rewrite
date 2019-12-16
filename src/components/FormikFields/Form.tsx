@@ -19,6 +19,39 @@ const styles = (theme: Theme) =>
     },
   })
 
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: any; errorInfo: any }> {
+  state = { error: null, errorInfo: null }
+
+  componentDidCatch(error: any, errorInfo: any) {
+    console.log(error)
+    this.setState({
+      error: error,
+      errorInfo: errorInfo,
+    })
+  }
+
+  render() {
+    if (this.state.errorInfo) {
+      return (
+        <div>
+          <h2>Something went wrong.</h2>
+          <details style={{ whiteSpace: "pre-wrap" }}>
+            {/*
+            //@ts-ignore */}
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {/*
+            //@ts-ignore */}
+            {this.state.errorInfo.componentStack}
+          </details>
+        </div>
+      )
+    }
+
+    return this.props.children
+  }
+}
+
 interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, InjectedIntlProps {}
 
 const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Props) => {
@@ -43,17 +76,19 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Pr
   const { values, status, isSubmitting } = useFormikContext()
 
   return (
-    <FormikForm>
-      <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
+    <ErrorBoundary>
+      <FormikForm>
+        <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
 
-      <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
-        {children}
+        <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
+          {children}
 
-        <HttpErrorHandler status={status} data={values} />
+          <HttpErrorHandler status={status} data={values} />
 
           <Submit isSubmitting={isSubmitting}></Submit>
-      </Grid>
-    </FormikForm>
+        </Grid>
+      </FormikForm>
+    </ErrorBoundary>
   )
 }
 

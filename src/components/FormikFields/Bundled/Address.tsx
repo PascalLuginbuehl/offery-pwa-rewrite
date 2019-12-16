@@ -6,9 +6,9 @@ import Select from "../Select"
 import FormikTextField from "../FormikTextField"
 import { IResource } from "../../../interfaces/IResource"
 import Switch from "../Switch"
-import FormikGroups from "./Groups";
+import FormikGroups from "./Groups"
 
-export default ({ prefix }: { prefix: string; }) => {
+export default function Address({ prefix }: { prefix: string }) {
   return (
     <FormikGroups label="ADDRESS" xs={12}>
       <Field label="STREET" name={`${prefix}.Street`} component={FormikTextField} overrideGrid={{ xs: 12, sm: 5, md: undefined }} />

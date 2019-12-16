@@ -15,7 +15,7 @@ import {
 import { injectIntl, InjectedIntlProps } from "react-intl"
 import { InputAdornment, IconButton, Grid, FormControl, InputLabel, Select, MenuItem, ListItemText } from "@material-ui/core"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
-import { useFormikContext } from "formik";
+import { useFormikContext } from "formik"
 
 export interface IBuildingCopy {
   moveOutBuilding: IMoveOutBuilding | null
@@ -41,21 +41,21 @@ const nameMap = {
   cleaningBuilding: "CLEANING_BUILDING",
 }
 
-const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, getKeysFromBuilding }) => {
+const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, getKeysFromBuilding }: Props) => {
   const [selectedCopy, setCopy] = React.useState<keyof IBuildingCopy | undefined>(undefined)
-  const {setFieldValue, values} = useFormikContext<{[key: string]: any}>()
+  const { setFieldValue, values } = useFormikContext<{ [key: string]: any }>()
 
   const handleCopy = () => {
     const keys = Object.keys(getKeysFromBuilding) as Array<keyof CombinedBuildings>
 
-    if(values.hasOwnProperty(prefix)) {
+    if (values.hasOwnProperty(prefix)) {
       // @ts-ignore
       const foundSomething = keys.find(key => values[prefix][key] !== getKeysFromBuilding[key])
 
       if (foundSomething) {
-        const result = window.confirm(intl.formatMessage({id: "BUILDING_IS_ALREADY_FILLED_OVERRIDE"}))
+        const result = window.confirm(intl.formatMessage({ id: "BUILDING_IS_ALREADY_FILLED_OVERRIDE" }))
         // Cancel if already values got put into thign
-        if(!result) {
+        if (!result) {
           return
         }
       }
@@ -65,7 +65,6 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, get
       const building = buildings[selectedCopy]
 
       if (building) {
-
         keys.map(key => {
           if (building.hasOwnProperty(key)) {
             // @ts-ignore
@@ -100,9 +99,7 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, get
           }}
         >
           <MenuItem value={undefined} dense>
-            <ListItemText
-              primary={intl.formatMessage({id: "SELECT"})}
-            />
+            <ListItemText primary={intl.formatMessage({ id: "SELECT" })} />
           </MenuItem>
 
           {buildings.moveOutBuilding ? (
