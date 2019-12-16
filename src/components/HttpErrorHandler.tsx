@@ -9,35 +9,34 @@ const styles = (theme: Theme) =>
   })
 
 interface Props extends WithStyles<typeof styles> {
-  status: Object | "string" | undefined,
-  data: Object | undefined,
+  status: { statusText?: string; json?: { Message?: string; ModelState?: { [key: string]: any } } } | "string" | undefined
+  data: { [key: string]: any } | undefined
 }
 
 class HttpErrorHandler extends React.Component<Props> {
   public render() {
-    // const { status, data } = this.props
-    const data = {}
+    const { status, data } = this.props
+    // const data = {}
 
-    const status = { "statusText": "Bad Request", "json": { "Message": "The request is invalid.", "ModelState": { "newLead.VisitDate": [`The VisitDate field is required.`] } } }
+    // const status = { "statusText": "Bad Request", "json": { "Message": "The request is invalid.", "ModelState": { "newLead.VisitDate": [`The VisitDate field is required.`] } } }
     console.log(status)
 
     const googleForm = "https://docs.google.com/forms/d/e/1FAIpQLSeSAFYYuETOeifVAEZJMAOejCXyNZXlBzlvdbdVjKoOMQRRsQ/viewform?usp=pp_url&"
 
-
-    if(status) {
+    if (status) {
       let errorMessage = ""
       let stackTrace = ""
 
       if (typeof status === "object") {
-        if (status.hasOwnProperty("statusText")) {
+        if (status.statusText !== undefined) {
           errorMessage = status.statusText
         }
 
-        if (status.hasOwnProperty('json')) {
-          if (status.json.hasOwnProperty('Message')) {
+        if (status.json !== undefined) {
+          if (status.json.Message !== undefined) {
             errorMessage = status.json.Message
 
-            if (status.json.hasOwnProperty('ModelState')) {
+            if (status.json.ModelState !== undefined) {
               stackTrace = JSON.stringify(status.json.ModelState)
             }
           }
@@ -59,21 +58,26 @@ class HttpErrorHandler extends React.Component<Props> {
         "entry.533978395": JSON.stringify(data),
       }
 
-      var queryString = Object.keys(preFilledFormValues).map((key) => {
-        // @ts-ignore
-        return encodeURIComponent(key) + '=' + encodeURIComponent(preFilledFormValues[key])
-      }).join('&')
+      const queryString = Object.keys(preFilledFormValues)
+        .map(key => {
+          // @ts-ignore
+          return encodeURIComponent(key) + '=' + encodeURIComponent(preFilledFormValues[key])
+        })
+        .join("&")
 
-      return <Grid item xs={12}>
-        <IntlTypography color="error">ERROR_WHILE_SAVING</IntlTypography>
+      return (
+        <Grid item xs={12}>
+          <IntlTypography color="error">ERROR_WHILE_SAVING</IntlTypography>
 
-        <Typography>
-          <IntlTypography component="span">FILL_FOLLOWING_FORM</IntlTypography>
-          &nbsp;
-
-          <a target="_blank" href={googleForm + queryString}><FormattedMessage id="FORM" /></a>
-        </Typography>
-      </Grid>
+          <Typography>
+            <IntlTypography component="span">FILL_FOLLOWING_FORM</IntlTypography>
+            &nbsp;
+            <a target="_blank" href={googleForm + queryString}>
+              <FormattedMessage id="FORM" />
+            </a>
+          </Typography>
+        </Grid>
+      )
     }
 
     return null
