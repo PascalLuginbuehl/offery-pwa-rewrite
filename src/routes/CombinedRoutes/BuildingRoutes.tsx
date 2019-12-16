@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { Route } from "react-router";
-import NewCustomer from "../Customer/NewCustomer";
-import LeadAPI, { ILeadContainer } from "../LeadAPI";
-import MoveOutBuilding from "../Customer/MoveOutBuilding";
-import EmailConfirmation from "../Customer/EmailConfirmation";
-import CleaningBuilding from "../Customer/CleaningBuilding";
-import DisposalBuilding from "../Customer/DisposalBuilding";
-import StorageBuilding from "../Customer/StorageBuilding";
-import MoveInBuilding from "../Customer/MoveInBuilding";
-import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../interfaces/IBuilding";
-import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
-import { ICustomer } from '../../interfaces/ILead';
+import React, { Component } from "react"
+import { Route } from "react-router"
+import NewCustomer from "../Customer/NewCustomer"
+import LeadAPI, { ILeadContainer } from "../LeadAPI"
+import MoveOutBuilding from "../Customer/MoveOutBuilding"
+import EmailConfirmation from "../Customer/EmailConfirmation"
+import CleaningBuilding from "../Customer/CleaningBuilding"
+import DisposalBuilding from "../Customer/DisposalBuilding"
+import StorageBuilding from "../Customer/StorageBuilding"
+import MoveInBuilding from "../Customer/MoveInBuilding"
+import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../interfaces/IBuilding"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import { ICustomer } from "../../interfaces/ILead"
 
 interface Props {
   leadContainer: ILeadContainer
-  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => void
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>
   redirectToNextPage: (currentUrl: string) => () => void
   matchUrl: string
   handleChange: (value: any, name: keyof ILeadContainer) => void
 }
 
-export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, handleChange }: Props) => {
+export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, handleChange }: Props) {
   const { Lead, moveOut, moveIn, storage, disposal, cleaning } = leadContainer
 
   const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
@@ -48,7 +48,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             lead={Lead}
             onChangeAndSave={lead => {
               // Fixing PostLead to Lead back together
-              handleChangeAndSave(
+              return handleChangeAndSave(
                 lead,
                 "Lead",
                 LeadAPI.SaveLead({
@@ -79,14 +79,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             buildingOptions={buildingOptions}
             moveOutBuilding={moveOutBuilding}
-            onChangeAndSave={async (newMoveOutBuilding) => {
-              try {
-                const createdMoveOut = await LeadAPI.SaveMoveOut(newMoveOutBuilding, Lead.LeadId)
-                handleChange(createdMoveOut, "moveOut")
-                return
-              } catch (e) {
-                throw e
-              }
+            onChangeAndSave={async newMoveOutBuilding => {
+              const createdMoveOut = await LeadAPI.SaveMoveOut(newMoveOutBuilding, Lead.LeadId)
+              handleChange(createdMoveOut, "moveOut")
+              return
             }}
             nextPage={redirectToNextPage("/building/move-out")}
           />
@@ -102,14 +98,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             buildingOptions={buildingOptions}
             moveInBuilding={moveInBuilding}
-            onChangeAndSave={async (newMoveInBuilding) => {
-              try {
-                const createdMoveIn = await LeadAPI.SaveMoveIn(newMoveInBuilding, Lead.LeadId)
-                handleChange(createdMoveIn, "moveIn")
-                return
-              } catch (e) {
-                throw e
-              }
+            onChangeAndSave={async newMoveInBuilding => {
+              const createdMoveIn = await LeadAPI.SaveMoveIn(newMoveInBuilding, Lead.LeadId)
+              handleChange(createdMoveIn, "moveIn")
+              return
             }}
             nextPage={redirectToNextPage("/building/move-in")}
           />
@@ -125,14 +117,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             buildingOptions={buildingOptions}
             storageBuilding={storageBuilding}
-            onChangeAndSave={async (newStorageBuilding) => {
-              try {
-                const createdStorage = await LeadAPI.SaveStorage(newStorageBuilding, Lead.LeadId)
-                handleChange(createdStorage, "storage")
-                return
-              } catch (e) {
-                throw e
-              }
+            onChangeAndSave={async newStorageBuilding => {
+              const createdStorage = await LeadAPI.SaveStorage(newStorageBuilding, Lead.LeadId)
+              handleChange(createdStorage, "storage")
+              return
             }}
             nextPage={redirectToNextPage("/building/storage")}
           />
@@ -148,14 +136,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             buildingOptions={buildingOptions}
             disposalBuilding={disposalBuilding}
-            onChangeAndSave={async (newDisposalBuilding) => {
-              try {
-                const createdDisposal = await LeadAPI.SaveDisposal(newDisposalBuilding, Lead.LeadId)
-                handleChange(createdDisposal, "disposal")
-                return
-              } catch (e) {
-                throw e
-              }
+            onChangeAndSave={async newDisposalBuilding => {
+              const createdDisposal = await LeadAPI.SaveDisposal(newDisposalBuilding, Lead.LeadId)
+              handleChange(createdDisposal, "disposal")
+              return
             }}
             nextPage={redirectToNextPage("/building/disposal")}
           />
@@ -171,14 +155,10 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             buildingOptions={buildingOptions}
             cleaningBuilding={cleaningBuilding}
-            onChangeAndSave={async (newCleaningBuilding) => {
-              try {
-                const createdCleaning = await LeadAPI.SaveCleaning(newCleaningBuilding, Lead.LeadId)
-                handleChange(createdCleaning, "cleaning")
-                return
-              } catch (e) {
-                throw e
-              }
+            onChangeAndSave={async newCleaningBuilding => {
+              const createdCleaning = await LeadAPI.SaveCleaning(newCleaningBuilding, Lead.LeadId)
+              handleChange(createdCleaning, "cleaning")
+              return
             }}
             nextPage={redirectToNextPage("/building/cleaning")}
           />

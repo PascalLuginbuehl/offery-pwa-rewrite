@@ -10,9 +10,9 @@ import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
 import Storage from "../../components/FormikFields/Bundled/Storage"
-import Cleaning from "../../components/FormikFields/Bundled/Cleaning";
-import { RouteComponentProps, Prompt } from "react-router";
-import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
+import Cleaning from "../../components/FormikFields/Bundled/Cleaning"
+import { RouteComponentProps, Prompt } from "react-router"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -22,7 +22,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
   nextPage: () => void
-  onChangeAndSave: (cleaningBuilding: IPostCleaningBuilding) => void
+  onChangeAndSave: (cleaningBuilding: IPostCleaningBuilding) => Promise<void>
   cleaningBuilding: IPostCleaningBuilding
   buildingOptions: IBuildingCopy
 }
@@ -37,9 +37,6 @@ class CleaningBuilding extends React.Component<Props & FormikProps<Values>, {}> 
           <PageHeader title="CLEANING_BUILDING" />
 
           <Cleaning buildingOptions={buildingOptions} prefix="cleaningBuilding" resource={resource} />
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -60,7 +57,7 @@ export default injectIntl(
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

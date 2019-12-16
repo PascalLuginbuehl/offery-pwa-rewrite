@@ -1,44 +1,32 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { FormikProps, Field, withFormik } from 'formik';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import { IPutServices } from '../../interfaces/IService';
-import PageHeader from '../../components/PageHeader';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { FormikProps, Field, withFormik } from "formik"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import { IPutServices } from "../../interfaces/IService"
+import PageHeader from "../../components/PageHeader"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+const styles = (theme: Theme) => createStyles({})
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
   data: IPutServices
-  onChangeAndSave: (data: IPutServices) => void
+  onChangeAndSave: (data: IPutServices) => Promise<void>
   nextPage: () => void
 }
 
 class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-    } = this.props
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status } = this.props
 
     const { data } = this.props
 
     return (
       <Grid item xs={12}>
         <Form>
-          <PageHeader title="SERVICES"/>
+          <PageHeader title="SERVICES" />
 
           <Field name="HasMoveServiceEnabled" label="MOVE" component={FormikButtonCheckbox} />
 
@@ -49,10 +37,6 @@ class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
           <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={FormikButtonCheckbox} />
 
           <Field name="HasCleaningServiceEnabled" label="CLEANING" component={FormikButtonCheckbox} />
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -69,14 +53,12 @@ export default withStyles(styles)(
           await actions.props.onChangeAndSave(values)
           actions.setSubmitting(false)
 
-
           actions.resetForm()
           actions.props.nextPage()
-        } catch(e) {
+        } catch (e) {
           actions.setStatus(e)
         }
-      }
-
+      },
     })(Index)
   )
 )

@@ -1,32 +1,28 @@
-import * as React from 'react'
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { IMoveServiceConditions, IPackServiceConditions, IDisposalServiceConditions } from '../../interfaces/IConditions';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import ServiceConditions from './ServiceConditions';
-import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
-import { IPutDisposalSerivce } from '../../interfaces/IService';
+import * as React from "react"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from "formik"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { IMoveServiceConditions, IPackServiceConditions, IDisposalServiceConditions } from "../../interfaces/IConditions"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import ServiceConditions from "./ServiceConditions"
+import FormikNumberEndAdornmentText from "../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
+import FormikDivider from "../../components/FormikFields/FormikDivider"
+import { IPutDisposalSerivce } from "../../interfaces/IService"
 
-const styles = (theme: Theme) =>
-  createStyles({
+const styles = (theme: Theme) => createStyles({})
 
-  })
-
-interface Values extends IDisposalServiceConditions {
-}
+interface Values extends IDisposalServiceConditions {}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (disposalConditions: IDisposalServiceConditions) => void
+  onChangeAndSave: (disposalConditions: IDisposalServiceConditions) => Promise<void>
   disposalConditions: IDisposalServiceConditions
   disposalService: IPutDisposalSerivce
 }
@@ -90,20 +86,22 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
               </Grid>
             </FormikGroups>
           </ServiceConditions>
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
   }
 
   getAdditionalCost = (): number => {
-    const { values: { LampDemontagePrice, FurnitureLiftPrice, CostEntry, Volume, CostPerCubicInMoney } } = this.props
+    const {
+      values: { LampDemontagePrice, FurnitureLiftPrice, CostEntry, Volume, CostPerCubicInMoney },
+    } = this.props
 
-    return (CostEntry ? CostEntry : 0) + (LampDemontagePrice ? LampDemontagePrice : 0) + (FurnitureLiftPrice ? FurnitureLiftPrice : 0)
-      + ((Volume ? Volume : 0) * (CostPerCubicInMoney ? CostPerCubicInMoney : 0))
+    return (
+      (CostEntry ? CostEntry : 0) +
+      (LampDemontagePrice ? LampDemontagePrice : 0) +
+      (FurnitureLiftPrice ? FurnitureLiftPrice : 0) +
+      (Volume ? Volume : 0) * (CostPerCubicInMoney ? CostPerCubicInMoney : 0)
+    )
   }
 }
 
@@ -120,12 +118,10 @@ export default injectIntl(
             actions.setSubmitting(false)
             actions.resetForm()
             actions.props.nextPage()
-
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(DisposalConditions)
     )
   )

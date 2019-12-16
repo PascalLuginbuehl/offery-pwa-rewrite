@@ -1,52 +1,34 @@
-import * as React from 'react'
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { IMoveServiceConditions, IPackServiceConditions, IStorageServiceConditions } from '../../interfaces/IConditions';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import ServiceConditions from './ServiceConditions';
-import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import { IPutStorageService } from '../../interfaces/IService';
+import * as React from "react"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from "formik"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { IMoveServiceConditions, IPackServiceConditions, IStorageServiceConditions } from "../../interfaces/IConditions"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import ServiceConditions from "./ServiceConditions"
+import FormikNumberEndAdornmentText from "../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
+import { IPutStorageService } from "../../interfaces/IService"
 
-const styles = (theme: Theme) =>
-  createStyles({
+const styles = (theme: Theme) => createStyles({})
 
-  })
-
-interface Values extends IStorageServiceConditions {
-}
+interface Values extends IStorageServiceConditions {}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (storageConditions: IStorageServiceConditions) => void
+  onChangeAndSave: (storageConditions: IStorageServiceConditions) => Promise<void>
   storageConditions: IStorageServiceConditions
   storageService: IPutStorageService
 }
 
 class StorageConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-      intl,
-      resource,
-      setFieldValue,
-      selectedCompany,
-      storageService
-    } = this.props
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, intl, resource, setFieldValue, selectedCompany, storageService } = this.props
 
     console.log(selectedCompany.CarTypes)
 
@@ -111,24 +93,24 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
               />
             </Grid>
           </FormikGroups>
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
   }
 
   getAdditionalCost = (): number => {
-    const { values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice } } = this.props
+    const {
+      values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice },
+    } = this.props
 
-    return (PianoPrice ? PianoPrice : 0)
-      + (LampDemontagePrice ? LampDemontagePrice : 0)
-      + (FurnitureLiftPrice ? FurnitureLiftPrice : 0)
-      + (BorePrice ? BorePrice : 0)
-      + (MontageServicePrice ? MontageServicePrice : 0)
-      + (DeMontageServicePrice ? DeMontageServicePrice : 0)
+    return (
+      (PianoPrice ? PianoPrice : 0) +
+      (LampDemontagePrice ? LampDemontagePrice : 0) +
+      (FurnitureLiftPrice ? FurnitureLiftPrice : 0) +
+      (BorePrice ? BorePrice : 0) +
+      (MontageServicePrice ? MontageServicePrice : 0) +
+      (DeMontageServicePrice ? DeMontageServicePrice : 0)
+    )
   }
 }
 
@@ -146,11 +128,10 @@ export default injectIntl(
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(StorageConditions)
     )
   )

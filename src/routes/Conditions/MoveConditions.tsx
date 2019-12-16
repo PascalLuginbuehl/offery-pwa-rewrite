@@ -1,45 +1,33 @@
-import * as React from 'react'
-import Form from '../../components/FormikFields/Form';
-import { createStyles, Theme, WithStyles, withStyles, Grid, ListItem, List, ListItemText, ListItemSecondaryAction, TextField, MenuItem, IconButton } from '@material-ui/core'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, withFormik, FieldArray } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { IMoveServiceConditions } from '../../interfaces/IConditions';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import ServiceConditions from './ServiceConditions';
-import { IPutMoveService } from '../../interfaces/IService';
-import CarSelection from './CarSelection';
+import * as React from "react"
+import Form from "../../components/FormikFields/Form"
+import { createStyles, Theme, WithStyles, withStyles, Grid, ListItem, List, ListItemText, ListItemSecondaryAction, TextField, MenuItem, IconButton } from "@material-ui/core"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { Formik, FormikProps, Field, withFormik, FieldArray } from "formik"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { IMoveServiceConditions } from "../../interfaces/IConditions"
+import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
+import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import ServiceConditions from "./ServiceConditions"
+import { IPutMoveService } from "../../interfaces/IService"
+import CarSelection from "./CarSelection"
 
-const styles = (theme: Theme) =>
-  createStyles({
+const styles = (theme: Theme) => createStyles({})
 
-  })
-
-interface Values extends IMoveServiceConditions {
-}
+interface Values extends IMoveServiceConditions {}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (moveConditions: IMoveServiceConditions) => void
+  onChangeAndSave: (moveConditions: IMoveServiceConditions) => Promise<void>
   moveConditions: IMoveServiceConditions
   moveService: IPutMoveService
 }
 
 class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      isSubmitting,
-      status,
-      setFieldValue,
-      selectedCompany,
-      moveService,
-      intl,
-    } = this.props
+    const { values, isSubmitting, status, setFieldValue, selectedCompany, moveService, intl } = this.props
 
     return (
       <Grid item xs={12}>
@@ -79,23 +67,24 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               </FormikGroups>
             ) : null}
           </ServiceConditions>
-
-          {status && status.json && <div>{status.json.Message}</div>}
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
   }
 
   getAdditionalCost = (): number => {
-    const { values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice } } = this.props
+    const {
+      values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice },
+    } = this.props
 
-    return (PianoPrice ? PianoPrice : 0)
-    + (LampDemontagePrice ? LampDemontagePrice : 0)
-    + (FurnitureLiftPrice ? FurnitureLiftPrice : 0)
-    + (BorePrice ? BorePrice : 0)
-    + (MontageServicePrice ? MontageServicePrice : 0)
-    + (DeMontageServicePrice ? DeMontageServicePrice : 0)
+    return (
+      (PianoPrice ? PianoPrice : 0) +
+      (LampDemontagePrice ? LampDemontagePrice : 0) +
+      (FurnitureLiftPrice ? FurnitureLiftPrice : 0) +
+      (BorePrice ? BorePrice : 0) +
+      (MontageServicePrice ? MontageServicePrice : 0) +
+      (DeMontageServicePrice ? DeMontageServicePrice : 0)
+    )
   }
 }
 
@@ -103,7 +92,7 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({...props.moveConditions }),
+        mapPropsToValues: props => ({ ...props.moveConditions }),
 
         handleSubmit: async (values, actions) => {
           try {
@@ -112,12 +101,10 @@ export default injectIntl(
             actions.setSubmitting(false)
             actions.resetForm()
             actions.props.nextPage()
-
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(MoveConditions)
     )
   )

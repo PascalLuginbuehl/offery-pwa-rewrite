@@ -1,24 +1,21 @@
-import { createStyles, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostDisposalOutBuilding } from '../../interfaces/IBuilding';
-import { FormikProps, Field, withFormik } from 'formik';
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import { IPutDisposalSerivce } from '../../interfaces/IService';
-import PageHeader from '../../components/PageHeader';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
-import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
-import Disposal from '../../components/FormikFields/Bundled/Disposal';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { IPostDisposalOutBuilding } from "../../interfaces/IBuilding"
+import { FormikProps, Field, withFormik } from "formik"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import { IPutDisposalSerivce } from "../../interfaces/IService"
+import PageHeader from "../../components/PageHeader"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
+import FormikDivider from "../../components/FormikFields/FormikDivider"
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
+import Disposal from "../../components/FormikFields/Bundled/Disposal"
+import IntlTypography from "../../components/Intl/IntlTypography"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   disposalService: IPutDisposalSerivce
@@ -27,7 +24,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding) => void
+  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -53,10 +50,6 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">DISPOSAL_BUILDING</IntlTypography>
           </Grid>
           <Disposal buildingOptions={buildingOptions} prefix="disposal" resource={resource} />
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -76,7 +69,7 @@ export default withStyles(styles)(
 
           actions.resetForm()
           actions.props.nextPage()
-        } catch(e) {
+        } catch (e) {
           actions.setStatus(e)
         }
       },

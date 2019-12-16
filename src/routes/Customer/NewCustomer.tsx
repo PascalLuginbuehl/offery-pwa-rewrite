@@ -9,24 +9,22 @@ import { withResource, WithResourceProps } from "../../providers/withResource"
 import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
-import FormikGroups from "../../components/FormikFields/Bundled/Groups";
-import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect";
-import FormikTextField from "../../components/FormikFields/FormikTextField";
-import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox";
-import { IPostLead } from "../../interfaces/ILead";
-import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker";
-import { continueStatement } from "@babel/types";
-import HttpErrorHandler from "../../components/HttpErrorHandler";
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
+import { IPostLead } from "../../interfaces/ILead"
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
+import { continueStatement } from "@babel/types"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 const styles = (theme: Theme) => createStyles({})
 
-interface Values extends IPostLead {
-
-}
+type Values = IPostLead
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (lead: IPostLead) => void
+  onChangeAndSave: (lead: IPostLead) => Promise<void>
   lead: IPostLead
 }
 
@@ -123,10 +121,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="HasDisposalOutBuilding" label="DISPOSAL_BUILDING" component={FormikButtonCheckbox} />
             <Field name="HasCleaningBuilding" label="CLEANING_BUILDING" component={FormikButtonCheckbox} />
           </FormikGroups>
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -137,7 +131,7 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => (props.lead),
+        mapPropsToValues: props => props.lead,
 
         handleSubmit: async (values, actions) => {
           try {
@@ -145,7 +139,7 @@ export default injectIntl(
             actions.setSubmitting(false)
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

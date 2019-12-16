@@ -1,26 +1,23 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostStorageBuilding } from '../../interfaces/IBuilding';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService } from '../../interfaces/IService';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import PageHeader from '../../components/PageHeader';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
-import Storage from '../../components/FormikFields/Bundled/Storage';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
-import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostStorageBuilding } from "../../interfaces/IBuilding"
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import { IPutServices, emptyServices, IPutMoveService, IPutPackService, IPutStorageService } from "../../interfaces/IService"
+import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
+import PageHeader from "../../components/PageHeader"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
+import FormikDivider from "../../components/FormikFields/FormikDivider"
+import Storage from "../../components/FormikFields/Bundled/Storage"
+import IntlTypography from "../../components/Intl/IntlTypography"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   storageService: IPutStorageService
@@ -29,25 +26,13 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding) => void
+  onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-      resource,
-      storageService,
-      buildingOptions,
-    } = this.props
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, storageService, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
@@ -70,12 +55,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
 
-          <Storage buildingOptions={buildingOptions}  prefix={"storage"} resource={resource} />
-
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
+          <Storage buildingOptions={buildingOptions} prefix={"storage"} resource={resource} />
         </Form>
       </Grid>
     )
@@ -101,7 +81,7 @@ export default withStyles(styles)(
 
           actions.resetForm()
           actions.props.nextPage()
-        } catch(e) {
+        } catch (e) {
           actions.setStatus(e)
         }
       },

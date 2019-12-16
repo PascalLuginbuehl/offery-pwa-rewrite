@@ -5,28 +5,34 @@ import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCop
 import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../interfaces/IService"
 import { emptyMaterialOrder, ShopTypeEnum } from "../../interfaces/IShop"
 import { InventoryKeysEnum, emptyInventory } from "../../interfaces/IInventars"
-import MoveConditions from "../Conditions/MoveConditions";
-import PackConditions from "../Conditions/PackConditions";
-import StorageConditions from "../Conditions/StorageConditions";
-import DisposalConditions from "../Conditions/DisposalConditions";
-import CleaningConditions from "../Conditions/CleaningConditions";
-import GenerateOffer from "../Offer/GenerateOffer";
-import PreviewOffer from "../Offer/PreviewOffer";
-import { ILead } from "../../interfaces/ILead";
-import { emptyMoveServiceConditions, emptyPackServiceConditions, emptyStorageServiceConditions, emptyCleaningServiceConditions, emptyDisposalServiceConditions } from "../../interfaces/IConditions";
-import SendOffer from "../Offer/SendOffer";
-import Done from "../Offer/Done";
+import MoveConditions from "../Conditions/MoveConditions"
+import PackConditions from "../Conditions/PackConditions"
+import StorageConditions from "../Conditions/StorageConditions"
+import DisposalConditions from "../Conditions/DisposalConditions"
+import CleaningConditions from "../Conditions/CleaningConditions"
+import GenerateOffer from "../Offer/GenerateOffer"
+import PreviewOffer from "../Offer/PreviewOffer"
+import { ILead } from "../../interfaces/ILead"
+import {
+  emptyMoveServiceConditions,
+  emptyPackServiceConditions,
+  emptyStorageServiceConditions,
+  emptyCleaningServiceConditions,
+  emptyDisposalServiceConditions,
+} from "../../interfaces/IConditions"
+import SendOffer from "../Offer/SendOffer"
+import Done from "../Offer/Done"
 
 interface Props {
   leadContainer: ILeadContainer
-  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => void
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>
   redirectToNextPage: (currentUrl: string) => () => void
   getNextPage: (originalPath: string) => string
   handleChange: (value: any, name: keyof ILeadContainer) => void
   matchUrl: string
 }
 
-export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) => {
+export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) {
   const {
     Lead,
     services,
@@ -82,8 +88,8 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             moveConditions={MoveServiceConditions}
             moveService={moveService}
-            onChangeAndSave={moveConditions => {
-              const lead = Lead as ILead
+            onChangeAndSave={async moveConditions => {
+              const lead = Lead
               const newLead = { ...lead, MoveServiceConditions: moveConditions }
 
               return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
@@ -102,7 +108,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             {...routeProps}
             packConditions={PackServiceConditions}
             onChangeAndSave={packConditions => {
-              const lead = Lead as ILead
+              const lead = Lead
               const newLead = { ...lead, PackServiceConditions: packConditions }
 
               return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
@@ -122,7 +128,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             storageConditions={StorageServiceConditions}
             storageService={storageService}
             onChangeAndSave={storageConditions => {
-              const lead = Lead as ILead
+              const lead = Lead
               const newLead = { ...lead, StorageServiceConditions: storageConditions }
 
               return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
@@ -142,7 +148,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             disposalConditions={DisposalServiceConditions}
             disposalService={disposalService}
             onChangeAndSave={disposalConditions => {
-              const lead = Lead as ILead
+              const lead = Lead
               const newLead = { ...lead, DisposalServiceConditions: disposalConditions }
 
               return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
@@ -162,7 +168,7 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
             cleaningConditions={CleaningServiceConditions}
             cleaningService={cleaningService}
             onChangeAndSave={cleaningConditions => {
-              const lead = Lead as ILead
+              const lead = Lead
               const newLead = { ...lead, CleaningServiceConditions: cleaningConditions }
 
               return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
@@ -180,11 +186,17 @@ export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSa
       <Route
         exact
         path={`${matchUrl}/offer/generate`}
-        render={routeProps => <GenerateOffer {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />}
+        render={routeProps => (
+          <GenerateOffer {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+        )}
       />
 
       <Route exact path={`${matchUrl}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
-      <Route exact path={`${matchUrl}/offer/preview/:offerId`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
+      <Route
+        exact
+        path={`${matchUrl}/offer/preview/:offerId`}
+        render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />}
+      />
 
       <Route exact path={`${matchUrl}/offer/send`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
       <Route exact path={`${matchUrl}/offer/send/:offerId`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />

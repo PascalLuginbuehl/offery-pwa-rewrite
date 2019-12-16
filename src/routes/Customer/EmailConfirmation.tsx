@@ -22,7 +22,7 @@ import { IAddress } from "../../interfaces/IAddress"
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../services/LeadService"
 import SelectAddress from "../../components/FormikFields/Bundled/SelectAddress"
-import HttpErrorHandler from "../../components/HttpErrorHandler";
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -45,11 +45,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { isSubmitting, status, resource, selectedCompany, values, lead, buildingOptions } = this.props
-    const {
-      VisitConfirmEmailSubjectTextKey,
-      VisitConfirmEmailBodyContentOutroTextKey,
-      VisitConfirmEmailBodyContentIntroTextKey,
-    } = selectedCompany.Settings
+    const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
     console.log(buildingOptions)
     return (
       <Grid item xs={12}>
@@ -78,15 +74,11 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
-          <HttpErrorHandler status={status} data={values} />
-
           <Grid item xs={12}>
             <Button onClick={this.sendAndSubmit} disabled={!values.AddressId} variant="contained">
               <FormattedMessage id="SEND_EMAIL" />
             </Button>
           </Grid>
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -112,13 +104,13 @@ export default injectIntl(
       withFormik<Props, Values>({
         mapPropsToValues: props => ({ AddressId: null, Comment: "" }),
 
-        handleSubmit: async (values, actions) => {
+        handleSubmit: (values, actions) => {
           try {
             actions.setSubmitting(false)
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

@@ -1,25 +1,22 @@
-import { createStyles, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
-import { FormikProps, Field, withFormik } from 'formik';
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import PageHeader from '../../components/PageHeader';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import MoveIn from '../../components/FormikFields/Bundled/MoveIn';
-import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
-import { IPutMoveService } from '../../interfaces/IService';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { IPostMoveInBuilding, IPostMoveOutBuilding } from "../../interfaces/IBuilding"
+import { FormikProps, Field, withFormik } from "formik"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
+import PageHeader from "../../components/PageHeader"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
+import FormikDivider from "../../components/FormikFields/FormikDivider"
+import IntlTypography from "../../components/Intl/IntlTypography"
+import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
+import { IPutMoveService } from "../../interfaces/IService"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   moveService: IPutMoveService
@@ -35,12 +32,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      isSubmitting,
-      status,
-      resource,
-      buildingOptions,
-    } = this.props
+    const { isSubmitting, status, resource, buildingOptions } = this.props
 
     // const { data } = this.props
 
@@ -71,16 +63,12 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
 
-          <MoveOut buildingOptions={buildingOptions}  prefix={"moveOut"} resource={resource} />
+          <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
-          <MoveIn buildingOptions={buildingOptions}  prefix={"moveIn"} resource={resource} />
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
+          <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} />
         </Form>
       </Grid>
     )
@@ -90,7 +78,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService}),
+      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService }),
 
       handleSubmit: async (values, actions) => {
         try {
@@ -100,11 +88,10 @@ export default withStyles(styles)(
 
           actions.resetForm()
           actions.props.nextPage()
-        } catch(e) {
+        } catch (e) {
           actions.setStatus(e)
         }
-      }
-
+      },
     })(Index)
   )
 )

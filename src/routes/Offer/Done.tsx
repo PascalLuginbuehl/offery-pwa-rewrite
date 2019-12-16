@@ -5,8 +5,7 @@ import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "
 import { withResource, WithResourceProps } from "../../providers/withResource"
 import PageHeader from "../../components/PageHeader"
 import IntlTypography from "../../components/Intl/IntlTypography"
-import { ILead } from "../../interfaces/ILead";
-
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -20,7 +19,7 @@ class OfferDone extends React.Component<Props> {
 
     return (
       <Grid item xs={12}>
-        <Grid container spacing={1} style={{padding: 8}}>
+        <Grid container spacing={1} style={{ padding: 8 }}>
           <Grid item xs={12}>
             <PageHeader title="OFFER_DONE" />
             <IntlTypography>LEAD_FINISHED_TEXT</IntlTypography>
@@ -31,10 +30,4 @@ class OfferDone extends React.Component<Props> {
   }
 }
 
-export default injectIntl(
-  withStyles(styles)(
-    withResource(
-      OfferDone
-    )
-  )
-)
+export default injectIntl(withStyles(styles)(withResource(OfferDone)))

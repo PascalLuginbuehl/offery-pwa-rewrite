@@ -1,33 +1,46 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, ButtonBase, Paper, IconButton, TextField as MuiTextfield  } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, ArrayHelpers, FieldArray } from 'formik';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder, ShopTypeEnum } from '../../interfaces/IShop';
-import { IProduct } from '../../interfaces/IProduct';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import SelectGridItem from '../../components/ShopElements/SelectGridItem';
-import PageHeader from '../../components/PageHeader';
-import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
-import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
+import {
+  createStyles,
+  Tab,
+  Tabs,
+  Theme,
+  WithStyles,
+  withStyles,
+  Grid,
+  Button,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  ButtonBase,
+  Paper,
+  IconButton,
+  TextField as MuiTextfield,
+} from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import IntlTypography from "../../components/Intl/IntlTypography"
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, ArrayHelpers, FieldArray } from "formik"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder, ShopTypeEnum } from "../../interfaces/IShop"
+import { IProduct } from "../../interfaces/IProduct"
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
+import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import SelectGridItem from "../../components/ShopElements/SelectGridItem"
+import PageHeader from "../../components/PageHeader"
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
+import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
 
-
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
-
-
+const styles = (theme: Theme) => createStyles({})
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
-  onChangeAndSave: (data: IMaterialOrder) => void,
-  shopTypeKey: ShopTypeEnum,
-  materialOrder: IMaterialOrder,
+  onChangeAndSave: (data: IMaterialOrder) => Promise<void>
+  shopTypeKey: ShopTypeEnum
+  materialOrder: IMaterialOrder
   nextPage: () => void
 }
 
@@ -36,7 +49,6 @@ interface State {
 }
 
 class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
-
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
   }
@@ -50,20 +62,17 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
     // Merge item with new Products
     let itemNotInList = true
     items = items.map(item => {
-      if(
-        item.ProductId == product.ProductId
-        &&
-        item.IsForFree == (CurrentlyOpenStateEnum.Free == currentlyOpen)
-        &&
+      if (
+        item.ProductId == product.ProductId &&
+        item.IsForFree == (CurrentlyOpenStateEnum.Free == currentlyOpen) &&
         item.IsRent == (CurrentlyOpenStateEnum.Rent == currentlyOpen)
       ) {
         itemNotInList = false
-        return { ...item, Amount: item.Amount + 1}
+        return { ...item, Amount: item.Amount + 1 }
       } else {
         return item
       }
     })
-
 
     if (itemNotInList) {
       const order: IOrderPosition = {
@@ -92,30 +101,30 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
 
   removeOneItem = (index: number) => {
     const { handleChange, values, shopTypeKey } = this.props
-    let items = this.getSelectedList()
+    const items = this.getSelectedList()
 
-    const newItems = [...items.map((item, itemIndex) => {
-      if (index == itemIndex) {
-        return {
-          ...item,
-          Amount: item.Amount - 1,
+    const newItems = [
+      ...items.map((item, itemIndex) => {
+        if (index == itemIndex) {
+          return {
+            ...item,
+            Amount: item.Amount - 1,
+          }
         }
-      }
 
-      return item
-    })]
-    // Filter for Amount 0
-    .filter(item => item.Amount > 0)
+        return item
+      }),
+    ]
+      // Filter for Amount 0
+      .filter(item => item.Amount > 0)
 
     handleChange({ target: { value: newItems, name: shopTypeKey } })
   }
 
   filterShowList = (currentlyOpen: CurrentlyOpenStateEnum) => (item: IOrderPosition) => {
     if (
-      (currentlyOpen == CurrentlyOpenStateEnum.Rent && item.IsRent)
-        ||
-      (currentlyOpen == CurrentlyOpenStateEnum.Free && item.IsForFree)
-        ||
+      (currentlyOpen == CurrentlyOpenStateEnum.Rent && item.IsRent) ||
+      (currentlyOpen == CurrentlyOpenStateEnum.Free && item.IsForFree) ||
       (currentlyOpen == CurrentlyOpenStateEnum.Buy && !item.IsForFree && !item.IsRent)
     ) {
       return true
@@ -125,31 +134,17 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
   }
 
   handleTabChange = (e: React.ChangeEvent<{}>, value: CurrentlyOpenStateEnum) => {
-    this.setState({currentlyOpen: value})
+    this.setState({ currentlyOpen: value })
   }
 
   getSelectedList = (): IOrderPosition[] => {
-    const { shopTypeKey, values} = this.props
+    const { shopTypeKey, values } = this.props
 
     return values[shopTypeKey]
   }
 
   public render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      status,
-      resource,
-      selectedCompany,
-      intl,
-      shopTypeKey
-    } = this.props
-
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, selectedCompany, intl, shopTypeKey } = this.props
 
     const selectedItemList = this.getSelectedList()
 
@@ -249,17 +244,14 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
               )}
             />
           </Grid>
-          {status && status.json && <div>{status.json.Message}</div>}
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
   }
 }
 
-export default
-injectIntl(
-  withStyles(styles, {name: "MoveShop"})(
+export default injectIntl(
+  withStyles(styles, { name: "MoveShop" })(
     withResource(
       withFormik<Props, IMaterialOrder>({
         mapPropsToValues: props => props.materialOrder,
@@ -272,11 +264,10 @@ injectIntl(
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(MaterialShop)
     )
   )

@@ -1,39 +1,35 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostCleaningBuilding, emptyCleaningBuilding } from '../../interfaces/IBuilding';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { IPostMoveInBuilding, IPostMoveOutBuilding, IPostCleaningBuilding, emptyCleaningBuilding } from "../../interfaces/IBuilding"
 // import TestService from 'services/TestService'
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import { IPutCleaningService } from '../../interfaces/IService';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import PageHeader from '../../components/PageHeader';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikDivider from '../../components/FormikFields/FormikDivider';
-import BuildingCopy, { IBuildingCopy, CombinedBuildings } from '../../components/FormikFields/Bundled/BuildingCopy';
-import Cleaning from '../../components/FormikFields/Bundled/Cleaning';
-import FormikDateTimePicker from '../../components/FormikFields/FormikDateTimePicker';
-import IntlTypography from '../../components/Intl/IntlTypography';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import HttpErrorHandler from '../../components/HttpErrorHandler';
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import { IPutCleaningService } from "../../interfaces/IService"
+import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
+import PageHeader from "../../components/PageHeader"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
+import FormikDivider from "../../components/FormikFields/FormikDivider"
+import BuildingCopy, { IBuildingCopy, CombinedBuildings } from "../../components/FormikFields/Bundled/BuildingCopy"
+import Cleaning from "../../components/FormikFields/Bundled/Cleaning"
+import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
+import IntlTypography from "../../components/Intl/IntlTypography"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   cleaningService: IPutCleaningService
   cleaning: IPostCleaningBuilding
 }
 
-
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding) => void
+  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -68,10 +64,6 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Cleaning buildingOptions={buildingOptions} prefix={"cleaning"} resource={resource} />
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -90,7 +82,7 @@ export default withStyles(styles)(
           actions.resetForm()
           actions.setSubmitting(false)
           actions.props.nextPage()
-        } catch(e) {
+        } catch (e) {
           actions.setStatus(e)
         }
       },

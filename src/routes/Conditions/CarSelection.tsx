@@ -3,9 +3,9 @@ import * as React from "react"
 import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText, TextField, MenuItem } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import { ArrayHelpers, FieldProps, FieldArray } from "formik"
-import { ICarType } from "../../interfaces/ICompany";
-import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl";
-import { ICarAmount } from "../../interfaces/IConditions";
+import { ICarType } from "../../interfaces/ICompany"
+import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import { ICarAmount } from "../../interfaces/IConditions"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 
 export interface FormikGroupListProps {
@@ -96,7 +96,7 @@ class FormikGroupList extends React.PureComponent<Props, State> {
     const index = parsedCarAmounts.findIndex(car => car.CarType.CarTypeId === removeId)
     const car = parsedCarAmounts[index]
 
-    if(car.Amount > 1) {
+    if (car.Amount > 1) {
       arrayHelpers.replace(index, { ...car, Amount: car.Amount - 1 })
     } else {
       arrayHelpers.remove(index)

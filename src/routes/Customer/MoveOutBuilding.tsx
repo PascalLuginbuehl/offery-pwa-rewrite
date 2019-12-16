@@ -1,20 +1,17 @@
-import * as React from 'react'
-import { createStyles, Tabs, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
-import { FormikProps, withFormik } from 'formik';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import MoveOut from '../../components/FormikFields/Bundled/MoveOut';
-import { IMoveOutBuilding, IPostMoveOutBuilding } from '../../interfaces/IBuilding';
-import Form from '../../components/FormikFields/Form';
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
-import HttpErrorHandler from '../../components/HttpErrorHandler';
+import * as React from "react"
+import { createStyles, Tabs, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+import { FormikProps, withFormik } from "formik"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
+import { IMoveOutBuilding, IPostMoveOutBuilding } from "../../interfaces/IBuilding"
+import Form from "../../components/FormikFields/Form"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   moveOutBuilding: IPostMoveOutBuilding
@@ -22,21 +19,14 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (moveOutBuilding: IPostMoveOutBuilding) => void
+  onChangeAndSave: (moveOutBuilding: IPostMoveOutBuilding) => Promise<void>
   moveOutBuilding: IPostMoveOutBuilding
   buildingOptions: IBuildingCopy
 }
 
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      isSubmitting,
-      status,
-      resource,
-      selectedCompany,
-      buildingOptions,
-      values,
-    } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildingOptions, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -44,10 +34,6 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
           <PageHeader title="MOVE_OUT_BUILDING" />
 
           <MoveOut buildingOptions={buildingOptions} prefix="moveOutBuilding" resource={resource} />
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -68,11 +54,10 @@ export default injectIntl(
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(CleaningConditions)
     )
   )

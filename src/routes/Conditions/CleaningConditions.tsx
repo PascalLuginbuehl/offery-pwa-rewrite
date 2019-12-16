@@ -1,31 +1,27 @@
-import * as React from 'react'
-import Form from '../../components/FormikFields/Form';
-import { createStyles, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { FormikProps, Field, withFormik } from 'formik';
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { ICleaningServiceConditions } from '../../interfaces/IConditions';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import FormikButtonCheckbox from '../../components/FormikFields/FormikButtonCheckbox';
-import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
-import { IPutCleaningService } from '../../interfaces/IService';
+import * as React from "react"
+import Form from "../../components/FormikFields/Form"
+import { createStyles, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { FormikProps, Field, withFormik } from "formik"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { ICleaningServiceConditions } from "../../interfaces/IConditions"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
+import FormikNumberEndAdornmentText from "../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
+import FormikPercent from "../../components/FormikFields/Numbers/FormikPercent"
+import { IPutCleaningService } from "../../interfaces/IService"
 
-const styles = (theme: Theme) =>
-  createStyles({
+const styles = (theme: Theme) => createStyles({})
 
-  })
-
-interface Values extends ICleaningServiceConditions {
-}
+interface Values extends ICleaningServiceConditions {}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (cleaningConditions: ICleaningServiceConditions) => void
+  onChangeAndSave: (cleaningConditions: ICleaningServiceConditions) => Promise<void>
   cleaningConditions: ICleaningServiceConditions
   cleaningService: IPutCleaningService
 }
@@ -44,7 +40,14 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
           <Field label="HANDOUT_WARRANTY" name="HandoutGaranty" component={FormikButtonCheckbox} />
 
           <FormikGroups label="PERSONAL_COST" xs={12}>
-            <Field label="CLEANING_PERSONAL_AMOUNT" name="WorkersAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: 3 }} />
+            <Field
+              label="CLEANING_PERSONAL_AMOUNT"
+              name="WorkersAmount"
+              type="number"
+              component={FormikTextField}
+              inputProps={{ step: 1, min: 0 }}
+              overrideGrid={{ xs: 6, md: 3 }}
+            />
             <Field
               label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
               name="EstimatedHoursOfWorkWhenFixPrice"
@@ -54,7 +57,6 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
             />
 
             <Field label="FIX_PRICE" name="FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
-
           </FormikGroups>
 
           {cleaningService.HighPressureGarageCleaningService || cleaningService.HighPressureTerraceCleaningService ? (
@@ -117,27 +119,34 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
           </FormikGroups>
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
   }
 
   getCost = (): number => {
-    const { EstimatedHoursOfWorkWhenFixPrice, HighPressureGarageCleaningFixPrice, CleaningFireplacePrice, CleaningCarpetPrice, CleaningWindowsPrice, CleaningWindowsWithShuttersPrice, CleaningSpecialPrice, FixPrice, DiscountInPercent } = this.props.values
+    const {
+      EstimatedHoursOfWorkWhenFixPrice,
+      HighPressureGarageCleaningFixPrice,
+      CleaningFireplacePrice,
+      CleaningCarpetPrice,
+      CleaningWindowsPrice,
+      CleaningWindowsWithShuttersPrice,
+      CleaningSpecialPrice,
+      FixPrice,
+      DiscountInPercent,
+    } = this.props.values
 
-    return ((HighPressureGarageCleaningFixPrice ? HighPressureGarageCleaningFixPrice : 0)
-    + (CleaningFireplacePrice ? CleaningFireplacePrice : 0)
-    + (CleaningCarpetPrice ? CleaningCarpetPrice : 0)
-    + (CleaningWindowsPrice ? CleaningWindowsPrice : 0)
-    + (CleaningWindowsWithShuttersPrice ? CleaningWindowsWithShuttersPrice : 0)
-    + (CleaningSpecialPrice ? CleaningSpecialPrice : 0)
-    + (FixPrice ? FixPrice : 0))
-      * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
-
+    return (
+      ((HighPressureGarageCleaningFixPrice ? HighPressureGarageCleaningFixPrice : 0) +
+        (CleaningFireplacePrice ? CleaningFireplacePrice : 0) +
+        (CleaningCarpetPrice ? CleaningCarpetPrice : 0) +
+        (CleaningWindowsPrice ? CleaningWindowsPrice : 0) +
+        (CleaningWindowsWithShuttersPrice ? CleaningWindowsWithShuttersPrice : 0) +
+        (CleaningSpecialPrice ? CleaningSpecialPrice : 0) +
+        (FixPrice ? FixPrice : 0)) *
+      ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
+    )
   }
 }
 
@@ -157,8 +166,7 @@ export default injectIntl(
           } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(CleaningConditions)
     )
   )

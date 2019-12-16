@@ -1,37 +1,27 @@
-import * as React from 'react'
-import Form from '../../components/FormikFields/Form';
-import { createStyles, Theme, WithStyles, withStyles, Grid } from '@material-ui/core'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { FormikProps, withFormik } from 'formik';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { IPackServiceConditions } from '../../interfaces/IConditions';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import ServiceConditions from './ServiceConditions';
+import * as React from "react"
+import Form from "../../components/FormikFields/Form"
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { FormikProps, withFormik } from "formik"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { IPackServiceConditions } from "../../interfaces/IConditions"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import ServiceConditions from "./ServiceConditions"
 
-const styles = (theme: Theme) =>
-  createStyles({
+const styles = (theme: Theme) => createStyles({})
 
-  })
-
-interface Values extends IPackServiceConditions {
-}
+type Values = IPackServiceConditions
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (packConditions: IPackServiceConditions) => void
+  onChangeAndSave: (packConditions: IPackServiceConditions) => Promise<void>
   packConditions: IPackServiceConditions
 }
 
 class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const {
-      values,
-      isSubmitting,
-      status,
-      setFieldValue,
-      selectedCompany,
-    } = this.props
+    const { values, isSubmitting, status, setFieldValue, selectedCompany } = this.props
 
     console.log(selectedCompany.CarTypes)
 
@@ -40,18 +30,9 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="PACK_CONDITIONS" />
 
-          <ServiceConditions
-            disabledVehicles
-            additionalCost={0}
-            setFieldValue={setFieldValue}
-            values={values}
-          >
+          <ServiceConditions disabledVehicles additionalCost={0} setFieldValue={setFieldValue} values={values}>
             {/**/}
           </ServiceConditions>
-
-          {status && status.json && <div>{status.json.Message}</div>}
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -62,21 +43,20 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({...props.packConditions }),
+        mapPropsToValues: props => ({ ...props.packConditions }),
 
         handleSubmit: async (values, actions) => {
           try {
             await actions.props.onChangeAndSave(values)
 
-              actions.setSubmitting(false)
+            actions.setSubmitting(false)
 
-              actions.resetForm()
-              actions.props.nextPage()
-          } catch(e) {
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch (e) {
             actions.setStatus(e)
           }
-        }
-
+        },
       })(PackConditions)
     )
   )

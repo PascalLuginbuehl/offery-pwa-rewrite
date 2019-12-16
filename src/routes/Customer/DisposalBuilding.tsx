@@ -10,9 +10,9 @@ import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
 import Storage from "../../components/FormikFields/Bundled/Storage"
-import Disposal from "../../components/FormikFields/Bundled/Disposal";
-import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
-import HttpErrorHandler from "../../components/HttpErrorHandler";
+import Disposal from "../../components/FormikFields/Bundled/Disposal"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -22,7 +22,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (disposalBuilding: IPostDisposalOutBuilding) => void
+  onChangeAndSave: (disposalBuilding: IPostDisposalOutBuilding) => Promise<void>
   buildingOptions: IBuildingCopy
   disposalBuilding: IPostDisposalOutBuilding
 }
@@ -37,10 +37,6 @@ class DisposalBuilding extends React.Component<Props & FormikProps<Values>, {}> 
           <PageHeader title="DISPOSAL_BUILDING" />
 
           <Disposal buildingOptions={buildingOptions} prefix="disposalBuilding" resource={resource} />
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )

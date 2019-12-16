@@ -7,9 +7,9 @@ import Form from "../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../providers/withResource"
 import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
-import Storage from "../../components/FormikFields/Bundled/Storage";
-import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
-import HttpErrorHandler from "../../components/HttpErrorHandler";
+import Storage from "../../components/FormikFields/Bundled/Storage"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -19,7 +19,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (storageBuilding: IPostStorageBuilding) => void
+  onChangeAndSave: (storageBuilding: IPostStorageBuilding) => Promise<void>
   storageBuilding: IPostStorageBuilding
   buildingOptions: IBuildingCopy
 }
@@ -34,10 +34,6 @@ class StorageBuilding extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="STORAGE_BUILDING" />
 
           <Storage buildingOptions={buildingOptions} prefix="storageBuilding" resource={resource} />
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -58,7 +54,7 @@ export default injectIntl(
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

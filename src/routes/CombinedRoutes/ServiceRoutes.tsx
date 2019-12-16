@@ -2,27 +2,27 @@ import React, { Component } from "react"
 import { Route } from "react-router"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
-import Services from "../Services";
-import MoveService from "../Services/MoveService";
-import CleaningService from "../Services/CleaningService";
-import Inventory from "../Services/Inventory";
-import DisposalService from "../Services/DisposalService";
-import MaterialShop from "../Services/MaterialShop";
-import PackService from "../Services/PackService";
-import StorageService from "../Services/StorageService";
-import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyCleaningBuilding, emptyDisposalOutBuilding } from "../../interfaces/IBuilding";
-import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../interfaces/IService";
-import { emptyMaterialOrder, ShopTypeEnum } from "../../interfaces/IShop";
-import { InventoryKeysEnum, emptyInventory } from "../../interfaces/IInventars";
+import Services from "../Services"
+import MoveService from "../Services/MoveService"
+import CleaningService from "../Services/CleaningService"
+import Inventory from "../Services/Inventory"
+import DisposalService from "../Services/DisposalService"
+import MaterialShop from "../Services/MaterialShop"
+import PackService from "../Services/PackService"
+import StorageService from "../Services/StorageService"
+import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyCleaningBuilding, emptyDisposalOutBuilding } from "../../interfaces/IBuilding"
+import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../interfaces/IService"
+import { emptyMaterialOrder, ShopTypeEnum } from "../../interfaces/IShop"
+import { InventoryKeysEnum, emptyInventory } from "../../interfaces/IInventars"
 
 interface Props {
   leadContainer: ILeadContainer
-  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => void
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<any>
   redirectToNextPage: (currentUrl: string) => () => void
   matchUrl: string
 }
 
-export default ({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) => {
+export default function ServiceRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) {
   const {
     Lead,
     services,

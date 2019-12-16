@@ -1,5 +1,22 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
+import {
+  createStyles,
+  Theme,
+  WithStyles,
+  withStyles,
+  Grid,
+  TextField as MuiTextField,
+  Divider,
+  Typography,
+  Button,
+  ListItem,
+  List,
+  IconButton,
+  ListItemText,
+  ListItemSecondaryAction,
+  TextField,
+  ListSubheader,
+} from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
 import MoveOut from "../../components/FormikFields/Bundled/MoveOut"
@@ -25,9 +42,8 @@ import SelectAddress from "../../components/FormikFields/Bundled/SelectAddress"
 import OfferService from "../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
-import { RouteComponentProps } from "react-router";
-import HttpErrorHandler from "../../components/HttpErrorHandler";
-
+import { RouteComponentProps } from "react-router"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -98,14 +114,15 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
           <Grid item xs={12} md={6}>
             <FieldArray
               name="CCEmailList"
-              render={arrayHelpers =>
+              render={arrayHelpers => (
                 <List
                   dense
                   subheader={
                     <ListSubheader>
                       <FormattedMessage id="CC_EMAILS"></FormattedMessage>
                     </ListSubheader>
-                  }>
+                  }
+                >
                   {values.CCEmailList.map((email, index) => (
                     <ListItem key={index} dense>
                       <ListItemText primary={email} />
@@ -121,27 +138,30 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
                     <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={this.handleChange} />} />
 
                     <ListItemSecondaryAction>
-                      <IconButton disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())} onClick={() => {arrayHelpers.push(emailValue); this.setState({emailValue: ""})}} edge="end">
+                      <IconButton
+                        disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())}
+                        onClick={() => {
+                          arrayHelpers.push(emailValue)
+                          this.setState({ emailValue: "" })
+                        }}
+                        edge="end"
+                      >
                         <AddIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
-              }
+              )}
             />
           </Grid>
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-
-          <HttpErrorHandler status={status} data={values} />
 
           <Grid item xs={12}>
             <Button onClick={this.sendAndSubmit} disabled={!values.OfferId || isSubmitting} variant="contained" color="primary">
               <FormattedMessage id="SEND_EMAIL" />
             </Button>
           </Grid>
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -149,7 +169,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
 
   sendAndSubmit = async () => {
     const { lead, submitForm, values, setSubmitting } = this.props
-    const { OfferId, Comment, CCEmailList} = values
+    const { OfferId, Comment, CCEmailList } = values
 
     setSubmitting(true)
 
@@ -180,14 +200,13 @@ export default injectIntl(
           return { OfferId: null, Comment: "", CCEmailList: [] }
         },
 
-        handleSubmit: async (values, actions) => {
+        handleSubmit: (values, actions) => {
           try {
             actions.setSubmitting(false)
 
             actions.resetForm()
             actions.props.nextPage()
-
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

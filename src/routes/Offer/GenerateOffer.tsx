@@ -1,25 +1,21 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import FormikSimpleSelect from '../../components/FormikFields/FormikSimpleSelect';
-import { nullLiteral } from '@babel/types';
-import SelectAddress from '../../components/FormikFields/Bundled/SelectAddress';
-import { IBuildingCopy } from '../../components/FormikFields/Bundled/BuildingCopy';
-import OfferService from '../../services/OfferService';
-import { ILead } from '../../interfaces/ILead';
-import { ILeadContainer } from '../LeadAPI';
-import HttpErrorHandler from '../../components/HttpErrorHandler';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
+import { nullLiteral } from "@babel/types"
+import SelectAddress from "../../components/FormikFields/Bundled/SelectAddress"
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import OfferService from "../../services/OfferService"
+import { ILead } from "../../interfaces/ILead"
+import { ILeadContainer } from "../LeadAPI"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
-
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   templateCategoryId: number | null
@@ -37,7 +33,15 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values: { templateCategoryId, inAddressId, outAddressId }, isSubmitting, status, resource, selectedCompany, buildingOptions, values } = this.props
+    const {
+      values: { templateCategoryId, inAddressId, outAddressId },
+      isSubmitting,
+      status,
+      resource,
+      selectedCompany,
+      buildingOptions,
+      values,
+    } = this.props
 
     return (
       <Grid item xs={12}>
@@ -55,10 +59,6 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
           <Field component={SelectAddress} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
 
           <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting || !outAddressId || !inAddressId || !templateCategoryId}></Submit>
         </Form>
       </Grid>
     )
@@ -72,8 +72,8 @@ export default withStyles(styles)(
 
       handleSubmit: async (values, actions) => {
         try {
-          const {templateCategoryId, inAddressId, outAddressId} = values
-          if ((templateCategoryId && inAddressId && outAddressId)) {
+          const { templateCategoryId, inAddressId, outAddressId } = values
+          if (templateCategoryId && inAddressId && outAddressId) {
             const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, outAddressId, inAddressId)
 
             // Update Lead
@@ -88,8 +88,7 @@ export default withStyles(styles)(
             actions.resetForm()
             actions.props.nextPage()
           }
-
-        } catch(e) {
+        } catch (e) {
           actions.setStatus(e)
         }
       },

@@ -1,34 +1,30 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, withWidth } from '@material-ui/core'
-import * as React from 'react'
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from 'formik';
-import * as Yup from 'yup'
-import Form from '../../components/FormikFields/Form';
-import Submit from '../../components/FormikFields/Submit';
-import PageHeader from '../../components/PageHeader';
-import { ILead } from '../../interfaces/ILead';
-import OfferService from '../../services/OfferService';
-import FormikSimpleSelect from '../../components/FormikFields/FormikSimpleSelect';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, withWidth } from "@material-ui/core"
+import * as React from "react"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
+import * as Yup from "yup"
+import Form from "../../components/FormikFields/Form"
+import Submit from "../../components/FormikFields/Submit"
+import PageHeader from "../../components/PageHeader"
+import { ILead } from "../../interfaces/ILead"
+import OfferService from "../../services/OfferService"
+import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
+import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
 // import { Document, Page } from 'react-pdf'
 import { Document, Page } from "react-pdf/dist/entry.webpack"
-import { PDFDocumentProxy } from 'pdfjs-dist';
-import { RouteComponentProps } from 'react-router';
-import { IOffer, IOFile } from '../../interfaces/IOffer';
-import HttpErrorHandler from '../../components/HttpErrorHandler';
-const styles = (theme: Theme) =>
-  createStyles({
-
-  })
-
+import { PDFDocumentProxy } from "pdfjs-dist"
+import { RouteComponentProps } from "react-router"
+import { IOffer, IOFile } from "../../interfaces/IOffer"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
+const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   selectedOfferId: number | null
 }
 
 interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
-  nextPage: (stringAddition?: string) => void,
-  lead: ILead,
+  nextPage: (stringAddition?: string) => void
+  lead: ILead
 }
 
 interface State {
@@ -42,20 +38,17 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
     pages: null,
   }
 
-  componentDidMount() {
-
-  }
-
   getOfferBlob = async (offer: IOffer, file: IOFile) => {
     const blob = await OfferService.downloadFile(offer.OfferId, file.OFileId)
     return blob
   }
 
   getOffer = (): IOffer => {
-    const { values: { selectedOfferId } } = this.props
+    const {
+      values: { selectedOfferId },
+    } = this.props
 
     if (selectedOfferId) {
-
       const { lead } = this.props
       const offers = lead.Offers
       const offer = offers.find(offer => offer.OfferId === selectedOfferId)
@@ -83,7 +76,6 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
 
     const string = window.URL.createObjectURL(blob)
     this.setState({ pdfBlobBase64: string })
-
   }
 
   downloadWord = async () => {
@@ -91,10 +83,9 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
     const file = this.getFile(offer, "docx")
     const blob = await this.getOfferBlob(offer, file)
 
-
     const string = window.URL.createObjectURL(blob)
 
-    var a = document.createElement("a");
+    const a = document.createElement("a")
 
     a.href = string
     a.download = file.DocName
@@ -102,7 +93,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
   }
 
   onDocumentLoadSuccess = ({ numPages }: PDFDocumentProxy) => {
-    this.setState({ pages: numPages });
+    this.setState({ pages: numPages })
   }
 
   public render() {
@@ -128,9 +119,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
             <Button onClick={this.previewPDF} disabled={!values.selectedOfferId} variant="contained" color="primary">
               <FormattedMessage id="DISPLAY_PDF" />
             </Button>
-
             &nbsp;
-
             <Button onClick={this.downloadWord} disabled={!values.selectedOfferId} variant="contained">
               <FormattedMessage id="DOWNLOAD_WORD" />
             </Button>
@@ -146,10 +135,6 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
           </Grid>
 
           {/* <iframe style={{ width: "100%", height: "calc(100vh - 275px)" }} /> */}
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
         </Form>
       </Grid>
     )
@@ -166,24 +151,24 @@ export default injectIntl(
             if (!isNaN(selectedOfferId)) {
               const offer = props.lead.Offers.find(offer => offer.OfferId === selectedOfferId)
 
-              if(offer) {
-                return { selectedOfferId}
+              if (offer) {
+                return { selectedOfferId }
               }
             }
           }
-          return { selectedOfferId : null}
+          return { selectedOfferId: null }
         },
 
-        handleSubmit: async (values, actions) => {
+        handleSubmit: (values, actions) => {
           try {
             actions.setSubmitting(false)
             actions.resetForm()
-            if(values.selectedOfferId) {
+            if (values.selectedOfferId) {
               actions.props.nextPage("/" + values.selectedOfferId)
             } else {
               actions.props.nextPage()
             }
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

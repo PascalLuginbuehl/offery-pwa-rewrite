@@ -9,8 +9,8 @@ import { withResource, WithResourceProps } from "../../providers/withResource"
 import Submit from "../../components/FormikFields/Submit"
 import PageHeader from "../../components/PageHeader"
 import MoveIn from "../../components/FormikFields/Bundled/MoveIn"
-import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy";
-import HttpErrorHandler from "../../components/HttpErrorHandler";
+import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -20,7 +20,7 @@ interface Values {
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (moveInBuilding: IPostMoveInBuilding) => void
+  onChangeAndSave: (moveInBuilding: IPostMoveInBuilding) => Promise<void>
   moveInBuilding: IPostMoveInBuilding
   buildingOptions: IBuildingCopy
 }
@@ -33,12 +33,7 @@ class MoveInBuilding extends React.Component<Props & FormikProps<Values>, {}> {
       <Grid item xs={12}>
         <Form>
           <PageHeader title="MOVE_IN_BUILDING" />
-
-          <MoveIn buildingOptions={buildingOptions} prefix="moveInBuilding" resource={resource} />
-
-          <HttpErrorHandler status={status} data={values} />
-
-          <Submit isSubmitting={isSubmitting}></Submit>
+          <MoveIn buildingOptions={buildingOptions} prefix="moveInBuilding" resource={resource} />{" "}
         </Form>
       </Grid>
     )
@@ -59,7 +54,7 @@ export default injectIntl(
 
             actions.resetForm()
             actions.props.nextPage()
-          } catch(e) {
+          } catch (e) {
             actions.setStatus(e)
           }
         },

@@ -1,19 +1,18 @@
+import * as React from "react"
+import { Tab, Tabs, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import { IServiceConditions } from "../../interfaces/IConditions"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
+import FormikPercent from "../../components/FormikFields/Numbers/FormikPercent"
+import FormikNumberEndAdornmentText from "../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
+import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import { Field } from "formik"
+import CarSelection from "./CarSelection"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import RemoveIcon from "@material-ui/icons/Remove"
 
-import * as React from 'react'
-import { Tab, Tabs, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from '@material-ui/core'
-import FormikTextField from '../../components/FormikFields/FormikTextField';
-import { IServiceConditions } from '../../interfaces/IConditions';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import FormikPrice from '../../components/FormikFields/Numbers/FormikPrice';
-import FormikPercent from '../../components/FormikFields/Numbers/FormikPercent';
-import FormikNumberEndAdornmentText from '../../components/FormikFields/Numbers/FormikNumberEndAdornmentText';
-import FormikGroups from '../../components/FormikFields/Bundled/Groups';
-import { Field } from 'formik';
-import CarSelection from './CarSelection';
-import { withResource, WithResourceProps } from '../../providers/withResource';
-import RemoveIcon from '@material-ui/icons/Remove';
-
-interface Props<Values extends {ServiceConditions: IServiceConditions}> extends InjectedIntlProps, WithResourceProps {
+interface Props<Values extends { ServiceConditions: IServiceConditions }> extends InjectedIntlProps, WithResourceProps {
   setFieldValue: (field: keyof Values | any, value: any) => void
   values: Values
   additionalCost: number
@@ -104,7 +103,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
               name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`}
               component={FormikNumberEndAdornmentText}
               adornmentText="h"
-              overrideGrid={{xs: 6}}
+              overrideGrid={{ xs: 6 }}
             />
           ) : null}
 
@@ -123,8 +122,8 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           <FormikGroups label="HOURS_OF_WORK" xs={12} md={6}>
             <Field label="MIN" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
-            <Grid item xs={1} style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-              <RemoveIcon style={{ marginTop: 16}}/>
+            <Grid item xs={1} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <RemoveIcon style={{ marginTop: 16 }} />
             </Grid>
 
             <Field label="MAX" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
@@ -136,8 +135,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
         <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.IsHourlyRate && !values.ServiceConditions.HasCostCeiling ? 12 : 6}>
           {/* Calculations */}
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-
-            <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }}  />
+            <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }} />
           ) : null}
 
           <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
@@ -175,7 +173,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             </Grid>
           )}
 
-
           {values.ServiceConditions.HasCostCeiling ? (
             <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
           ) : null}
@@ -205,11 +202,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     } = this.props
 
     if (PricePerHour) {
-      return (
-      ((DriveHours ? DriveHours : 0) * PricePerHour)
-      + hours * PricePerHour
-      + this.getAdditionalCost())
-      * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
+      return ((DriveHours ? DriveHours : 0) * PricePerHour + hours * PricePerHour + this.getAdditionalCost()) * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
     }
   }
 
@@ -220,7 +213,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       },
     } = this.props
 
-    return (((FixPrice ? FixPrice : 0) + this.getAdditionalCost()) * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100))
+    return ((FixPrice ? FixPrice : 0) + this.getAdditionalCost()) * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
   }
 
   getMaxPrice = (): number | undefined => {
@@ -252,7 +245,4 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   }
 }
 
- export default
-   injectIntl(
-  withResource(ServiceConditionsBundle)
-)
+export default injectIntl(withResource(ServiceConditionsBundle))
