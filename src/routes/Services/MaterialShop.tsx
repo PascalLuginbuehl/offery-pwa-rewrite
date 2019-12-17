@@ -234,11 +234,23 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
                         })
                     ) : (
                       <TableRow>
-                        <TableCell rowSpan={10} colSpan={5} align="center">
+                        <TableCell colSpan={5} align="center">
                           <IntlTypography>EMPTY</IntlTypography>
                         </TableCell>
                       </TableRow>
                     )}
+
+                    <TableRow>
+                      <TableCell colSpan={5}>
+                        {[...values.MoveServicePositions, ...values.PackServicePositions, ...values.StorageServicePositions]
+                          .map(item => {
+                            const product = this.getCorrespondingProduct(item)
+
+                            return item.Amount + "x " + intl.formatMessage({ id: product.NameTextKey })
+                          })
+                          .join(", ")}
+                      </TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               )}
