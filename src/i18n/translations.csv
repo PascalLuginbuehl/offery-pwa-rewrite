@@ -264,3 +264,5 @@ SELECT_DOT_DOT_DOT,Select...,Auswählen...
 FILL_FOLLOWING_FORM,Fill following Form,"Bitte melden sie denn Fehler umgehend, indem sie das folgende Formular ausfüllen"
 ERROR_WHILE_SAVING,Error while saving,Während dem Speichervorgang ist ein Fehler aufgetreten.
 FORM,Form,Formular
+
+FLOOR_TYPE,Floor type,Bodenbelag

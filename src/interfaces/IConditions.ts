@@ -27,7 +27,6 @@ export interface ICarAmount {
 }
 
 export interface IMoveServiceConditions {
-
   ServiceConditions: IServiceConditions
   FurnitureLiftPrice: number | null
   PianoPrice: number | null
@@ -43,7 +42,6 @@ export interface IMoveServiceConditions {
 export interface IPackServiceConditions {
   ServiceConditions: IServiceConditions
 }
-
 
 export interface IDisposalServiceConditions {
   ServiceConditions: IServiceConditions
@@ -73,9 +71,7 @@ export interface IStorageServiceConditions {
   CarAmounts: ICarAmount[]
 }
 
-
 export interface ICleaningServiceConditions {
-
   FixPrice: number | null
   EstimatedHoursOfWorkWhenFixPrice: number | null
   DiscountInPercent: number | null
@@ -100,7 +96,6 @@ export interface ICleaningServiceConditions {
   HandoutGaranty: boolean
 }
 
-
 export const emptyServiceConditions: IServiceConditions = {
   IsHourlyRate: true,
   HasCostCeiling: false,
@@ -119,7 +114,6 @@ export const emptyServiceConditions: IServiceConditions = {
   DiscountInPercent: null,
 }
 
-
 export const emptyMoveServiceConditions: IMoveServiceConditions = {
   ServiceConditions: emptyServiceConditions,
   FurnitureLiftPrice: null,
@@ -132,7 +126,6 @@ export const emptyMoveServiceConditions: IMoveServiceConditions = {
   BorePrice: null,
   CarAmounts: [],
 }
-
 
 export const emptyPackServiceConditions: IPackServiceConditions = {
   ServiceConditions: emptyServiceConditions,
@@ -165,7 +158,6 @@ export const emptyStorageServiceConditions: IStorageServiceConditions = {
   BorePrice: null,
   CarAmounts: [],
 }
-
 
 export const emptyCleaningServiceConditions: ICleaningServiceConditions = {
   FixPrice: null,

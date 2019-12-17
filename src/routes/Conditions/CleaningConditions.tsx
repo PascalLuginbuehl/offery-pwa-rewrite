@@ -81,21 +81,21 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
           cleaningService.CleaningCarpetService ||
           cleaningService.CleaningWindowsService ||
           cleaningService.CleaningWindowsWithShuttersService ? (
-            <FormikGroups label="CLEANING_PRICES" xs={12} md={6}>
-              {cleaningService.CleaningFireplaceService ? (
-                <Field label="FIREPLACE" name="CleaningFireplacePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-              ) : null}
-              {cleaningService.CleaningCarpetService ? (
-                <Field label="CLEANING_CARPET" name="CleaningCarpetPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-              ) : null}
-              {cleaningService.CleaningWindowsService ? (
-                <Field label="WINDOWS" name="CleaningWindowsPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-              ) : null}
-              {cleaningService.CleaningWindowsWithShuttersService ? (
-                <Field label="WINDOWS_WITH_SHUTTERS" name="CleaningWindowsWithShuttersPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
-              ) : null}
-            </FormikGroups>
-          ) : null}
+              <FormikGroups label="CLEANING_PRICES" xs={12} md={6}>
+                {cleaningService.CleaningFireplaceService ? (
+                  <Field label="FIREPLACE" name="CleaningFireplacePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                ) : null}
+                {cleaningService.CleaningCarpetService ? (
+                  <Field label="CLEANING_CARPET" name="CleaningCarpetPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                ) : null}
+                {cleaningService.CleaningWindowsService ? (
+                  <Field label="WINDOWS" name="CleaningWindowsPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                ) : null}
+                {cleaningService.CleaningWindowsWithShuttersService ? (
+                  <Field label="WINDOWS_WITH_SHUTTERS" name="CleaningWindowsWithShuttersPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                ) : null}
+              </FormikGroups>
+            ) : null}
 
           {cleaningService.CleaningSpecialService ? (
             <FormikGroups label="SPECIAL_CLEANING" xs={6} md={3}>

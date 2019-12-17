@@ -5,12 +5,12 @@ import FormikTextField from "../FormikTextField"
 import { IResource } from "../../../interfaces/IResource"
 import Switch from "../Switch"
 import Address from "./Address"
-import FormikGroups from "./Groups";
-import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText";
-import BuildingCopy, { CombinedBuildings, IBuildingCopy } from "./BuildingCopy";
-import { emptyCleaningBuilding } from "../../../interfaces/IBuilding";
+import FormikGroups from "./Groups"
+import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText"
+import BuildingCopy, { CombinedBuildings, IBuildingCopy } from "./BuildingCopy"
+import { emptyCleaningBuilding } from "../../../interfaces/IBuilding"
 
-export default ({ prefix, resource, buildingOptions }: { prefix: string; resource: IResource; buildingOptions: IBuildingCopy }) => {
+export default function CleaningBuilding({ prefix, resource, buildingOptions }: { prefix: string; resource: IResource; buildingOptions: IBuildingCopy }) {
   return (
     <>
       <BuildingCopy getKeysFromBuilding={emptyCleaningBuilding} prefix={prefix} buildings={buildingOptions} />
@@ -43,7 +43,7 @@ export default ({ prefix, resource, buildingOptions }: { prefix: string; resourc
           options={resource.Balconies.map(e => ({ label: e.NameTextKey, value: e.BalconyId }))}
         />
         <Field
-          label="FLOOR"
+          label="FLOOR_TYPE"
           name={`${prefix}.FloorTypeId`}
           component={FormikSimpleSelect}
           options={resource.FloorTypes.map(e => ({ label: e.NameTextKey, value: e.FloorTypeId }))}

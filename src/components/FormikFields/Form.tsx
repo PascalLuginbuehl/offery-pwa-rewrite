@@ -3,11 +3,12 @@ import { Form as FormikForm, FormikFormProps, useFormikContext } from "formik"
 import Grid from "@material-ui/core/Grid"
 import withWidth, { WithWidthProps } from "@material-ui/core/withWidth"
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
-import { Theme } from "@material-ui/core"
+import { Theme, Typography } from "@material-ui/core"
 import { Prompt } from "react-router"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
 import HttpErrorHandler from "../HttpErrorHandler"
 import Submit from "./Submit"
+import IntlTypography from "../Intl/IntlTypography"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -31,10 +32,39 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { err
   }
 
   render() {
+    const googleForm = "https://docs.google.com/forms/d/e/1FAIpQLSeSAFYYuETOeifVAEZJMAOejCXyNZXlBzlvdbdVjKoOMQRRsQ/viewform?usp=pp_url&"
+
     if (this.state.errorInfo) {
+      const errorMessage = this.state.error
+      // @ts-ignore
+      const stackTrace = this.state.errorInfo.componentStack
+
+      const preFilledFormValues = {
+        "entry.124345133": errorMessage,
+        "entry.330568924": stackTrace,
+        "entry.1233024141": window.location.href,
+        // "entry.533978395": JSON.stringify(data),
+      }
+
+      const queryString = Object.keys(preFilledFormValues)
+        .map(key => {
+          // @ts-ignore
+          return encodeURIComponent(key) + "=" + encodeURIComponent(preFilledFormValues[key])
+        })
+        .join("&")
+
       return (
-        <div>
-          <h2>Something went wrong.</h2>
+        <Grid item xs={12}>
+          <IntlTypography color="error">Something went wrong.</IntlTypography>
+
+          <Typography>
+            <IntlTypography component="span">FILL_FOLLOWING_FORM</IntlTypography>
+            &nbsp;
+            <a target="_blank" href={googleForm + queryString}>
+              <FormattedMessage id="FORM" />
+            </a>
+          </Typography>
+
           <details style={{ whiteSpace: "pre-wrap" }}>
             {/*
             //@ts-ignore */}
@@ -44,7 +74,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { err
             //@ts-ignore */}
             {this.state.errorInfo.componentStack}
           </details>
-        </div>
+        </Grid>
       )
     }
 
