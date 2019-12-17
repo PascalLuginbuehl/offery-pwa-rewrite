@@ -1,32 +1,53 @@
+import {
+  createStyles,
+  Grid,
+  Theme,
+  WithStyles,
+  withStyles,
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+  IconButton,
+  Typography,
+  Tabs,
+  Tab,
+  ListItem,
+  List,
+  Avatar,
+  ListItemText,
+  ListItemSecondaryAction,
+  Collapse,
+  ListItemAvatar,
+} from "@material-ui/core"
+import * as React from "react"
+import { ILead } from "../../interfaces/ILead"
+import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
+import ContactsIcon from "@material-ui/icons/Contacts"
+import Fab from "@material-ui/core/Fab"
+import AddIcon from "@material-ui/icons/Add"
+import { green } from "@material-ui/core/colors"
+import ExpandLess from "@material-ui/icons/ExpandLess"
+import ExpandMore from "@material-ui/icons/ExpandMore"
+import { injectIntl, InjectedIntlProps } from "react-intl"
+import { IOfflineLead } from "../../routes/Dashboard"
+import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
+import HomeIcon from "@material-ui/icons/Home"
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn"
+import CheckCircleIcon from "@material-ui/icons/CheckCircle"
+import ArchiveIcon from "@material-ui/icons/Archive"
+import ControlPointDuplicateIcon from "@material-ui/icons/ControlPointDuplicate"
 
-import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, ListItemAvatar } from '@material-ui/core'
-import * as React from 'react'
-import { ILead } from '../../interfaces/ILead';
-import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye'
-import ContactsIcon from '@material-ui/icons/Contacts'
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add'
-import { green } from '@material-ui/core/colors';
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { IOfflineLead } from '../../routes/Dashboard';
-import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver'
-import HomeIcon from '@material-ui/icons/Home'
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import ArchiveIcon from '@material-ui/icons/Archive'
-import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
-
-import PlainLink from '../PlainLink';
-import StatusButton from './StatusButton';
-import IntlTooltip from '../Intl/IntlTooltip';
+import PlainLink from "../PlainLink"
+import StatusButton from "./StatusButton"
+import IntlTooltip from "../Intl/IntlTooltip"
 
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      padding: 0
+      padding: 0,
     },
     nested: {
       paddingTop: 0,
@@ -34,7 +55,7 @@ const styles = (theme: Theme) =>
     },
 
     fab: {
-      position: 'fixed',
+      position: "fixed",
       bottom: theme.spacing(2),
       right: theme.spacing(2),
     },
@@ -62,43 +83,18 @@ class MobileDashboard extends React.Component<Props, State> {
         <List className={classes.root}>
           {leads.map(({ isCached, Lead: lead }) => (
             <div key={lead.LeadId}>
-              <ListItem disableGutters>
-                <ListItemAvatar>
-                  <StatusButton lead={{ isCached, Lead: lead }} />
-                </ListItemAvatar>
+              <PlainLink to={`/lead/${lead.LeadId}/building`}>
+                <ListItem disableGutters>
+                  <ListItemAvatar>
+                    <StatusButton lead={{ isCached, Lead: lead }} />
+                  </ListItemAvatar>
 
-                <ListItemText
-                  primary={lead.Customer.Firstname + " " + lead.Customer.Lastname}
-                  secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate, { year: "numeric", month: "long", day: "2-digit" }) : null}
-                />
-
-                <ListItemSecondaryAction>
-                  <IconButton onClick={() => this.setState({ openListActions: openListActions === lead.LeadId ? null : lead.LeadId })}>
-                    {openListActions === lead.LeadId ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
-                <List disablePadding>
-                  <ListItem className={classes.nested} selected>
-                    <PlainLink to={`/lead/${lead.LeadId}/building`}>
-                      <IconButton>
-                        <RemoveRedEyeIcon fontSize="small" />
-                      </IconButton>
-                    </PlainLink>
-                    <Collapse in={openListActions === lead.LeadId} timeout="auto" unmountOnExit>
-                      {/* <IconButton><RecordVoiceOverIcon fontSize="small" /></IconButton>
-                      <IconButton><HomeIcon fontSize="small" /></IconButton>
-                      <IconButton><MonetizationOnIcon fontSize="small" /></IconButton>
-                      <IconButton><CheckCircleIcon fontSize="small" /></IconButton>
-                      <IconButton><ArchiveIcon fontSize="small" /></IconButton> */}
-                      {/* <IntlTooltip title="DUPLICATE">
-                        <IconButton><ControlPointDuplicateIcon fontSize="small" /></IconButton>
-                      </IntlTooltip> */}
-                    </Collapse>
-                  </ListItem>
-                </List>
-              </Collapse>
+                  <ListItemText
+                    primary={lead.Customer.Firstname + " " + lead.Customer.Lastname}
+                    secondary={lead.VisitDate ? intl.formatDate(lead.VisitDate, { year: "numeric", month: "long", day: "2-digit" }) : null}
+                  />
+                </ListItem>
+              </PlainLink>
             </div>
           ))}
         </List>
