@@ -86,6 +86,7 @@ const BuildingCopy: React.ComponentType<Props> = ({ buildings, intl, prefix, get
         <Select
           value={selectedCopy ? selectedCopy : ""}
           onChange={e => setCopy(e.target.value as keyof IBuildingCopy)}
+          disabled={(Object.keys(buildings) as Array<keyof IBuildingCopy>).filter(buildingKey => buildings[buildingKey] !== null).length <= 0}
           renderValue={(value: unknown) => {
             if (value) {
               const key = value as keyof typeof nameMap
