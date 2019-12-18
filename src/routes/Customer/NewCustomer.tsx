@@ -33,6 +33,21 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     const { values, isSubmitting, status, resource, selectedCompany } = this.props
     const { VisitDate, MoveDate } = values
 
+    const initialDate = new Date()
+    initialDate.setHours(8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
+
+    const VisitDatePlus7: Date = VisitDate ? new Date(VisitDate.toString()) : new Date(initialDate.toString())
+
+    VisitDatePlus7.setDate(VisitDatePlus7.getDate() + 7)
+
+    const VisitDatePlus1 = VisitDate ? new Date(VisitDate.toString()) : new Date(initialDate)
+    VisitDatePlus1.setDate(VisitDatePlus1.getDate() + 7)
+
+    const MoveDatePlus1 = MoveDate ? new Date(MoveDate.toString()) : new Date(VisitDatePlus7.toString())
+    MoveDatePlus1.setDate(MoveDatePlus1.getDate() + 1)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -74,44 +89,14 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <FormikGroups label="DATES" xs={12}>
-            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
-            <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null} />
-            <Field
-              name="PackServiceDate"
-              label="PACKINGSERVICE"
-              component={FormikDateTimePicker}
-              initialFocusedDate={MoveDate ? MoveDate : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null}
-            />
-            <Field
-              name="DeliveryDate"
-              label="CARDBOARDBOX_DELIVERY"
-              component={FormikDateTimePicker}
-              initialFocusedDate={VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 1) : null}
-            />
-            <Field
-              name="StorageDate"
-              label="STORAGE"
-              component={FormikDateTimePicker}
-              initialFocusedDate={MoveDate ? MoveDate : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null}
-            />
-            <Field
-              name="DisposalDate"
-              label="DISPOSAL"
-              component={FormikDateTimePicker}
-              initialFocusedDate={MoveDate ? MoveDate : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 7) : null}
-            />
-            <Field
-              name="CleaningDate"
-              label="CLEANING"
-              component={FormikDateTimePicker}
-              initialFocusedDate={MoveDate ? new Date(MoveDate).setDate(MoveDate.getDate() + 1) : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 8) : null}
-            />
-            <Field
-              name="HandOverDate"
-              label="HANDIN"
-              component={FormikDateTimePicker}
-              initialFocusedDate={MoveDate ? new Date(MoveDate).setDate(MoveDate.getDate() + 1) : VisitDate ? new Date(VisitDate).setDate(VisitDate.getDate() + 8) : null}
-            />
+            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required initialFocusedDate={initialDate} />
+            <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />
+            <Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
+            <Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />
+            <Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
+            <Field name="DisposalDate" label="DISPOSAL" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
+            <Field name="CleaningDate" label="CLEANING" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />
+            <Field name="HandOverDate" label="HANDIN" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />
           </FormikGroups>
 
           <FormikGroups label="BUILDINGS" xs={12}>
