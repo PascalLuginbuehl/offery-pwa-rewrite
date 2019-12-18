@@ -245,17 +245,29 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
                       </TableRow>
                     )}
 
-                    <TableRow>
-                      <TableCell colSpan={5}>
-                        {[...values.MoveServicePositions, ...values.PackServicePositions, ...values.StorageServicePositions]
-                          .map(item => {
-                            const product = this.getCorrespondingProduct(item)
+                    {values.MoveServicePositions.length > 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} padding="none">
+                          <FormattedMessage id="MOVE_SERVICE" />: {this.displayOtherShopValues(values.MoveServicePositions)}
+                        </TableCell>
+                      </TableRow>
+                    ) : null}
 
-                            return item.Amount + "x " + intl.formatMessage({ id: product.NameTextKey })
-                          })
-                          .join(", ")}
-                      </TableCell>
-                    </TableRow>
+                    {values.PackServicePositions.length > 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} padding="none">
+                          <FormattedMessage id="PACK_SERVICE" />: {this.displayOtherShopValues(values.PackServicePositions)}
+                        </TableCell>
+                      </TableRow>
+                    ) : null}
+
+                    {values.StorageServicePositions.length > 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} padding="none">
+                          <FormattedMessage id="STORAGE_SERVICE" />: {this.displayOtherShopValues(values.StorageServicePositions)}
+                        </TableCell>
+                      </TableRow>
+                    ) : null}
                   </TableBody>
                 </Table>
               )}
@@ -264,6 +276,30 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
         </Form>
       </Grid>
     )
+  }
+
+  displayOtherShopValues = (itemOrders: IOrderPosition[]) => {
+    const { intl } = this.props
+
+    const rentItems = itemOrders.filter(item => item.IsRent)
+    const freeItems = itemOrders.filter(item => item.IsForFree)
+    const buyItems = itemOrders.filter(item => !item.IsRent && !item.IsForFree)
+
+    const mapItems = (items: IOrderPosition[]): string => {
+      return items
+        .map(item => {
+          const product = this.getCorrespondingProduct(item)
+          return item.Amount + "x " + intl.formatMessage({ id: product.NameTextKey })
+        })
+        .join(", ")
+    }
+    return [
+      buyItems.length > 0 ? intl.formatMessage({ id: "BUY" }) + ": " + mapItems(buyItems) : undefined,
+      rentItems.length > 0 ? intl.formatMessage({ id: "RENT" }) + ": " + mapItems(rentItems) : undefined,
+      freeItems.length > 0 ? intl.formatMessage({ id: "INCLUSIVE" }) + ": " + mapItems(freeItems) : undefined,
+    ]
+      .filter(e => !!e)
+      .join(" ")
   }
 }
 
