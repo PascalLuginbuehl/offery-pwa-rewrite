@@ -16,17 +16,19 @@ import IntlTypography from "../../components/Intl/IntlTypography"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   storageService: IPutStorageService
   storage: IPostStorageBuilding
+  lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding) => Promise<any>
+  onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding, lead: ILead) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -47,7 +49,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="storageService.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
+            <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
           </FormikGroups>
 
           <FormikDivider />
@@ -65,17 +67,11 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      validationSchema: Yup.object().shape({
-        // email: Yup.string()
-        //   .email()
-        //   .required(),
-      }),
-
-      mapPropsToValues: props => ({ storageService: props.storageService, storage: props.storage }),
+      mapPropsToValues: props => ({ storageService: props.storageService, storage: props.storage, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.storageService, values.storage)
+          await actions.props.onChangeAndSave(values.storageService, values.storage, values.lead)
 
           actions.setSubmitting(false)
 

@@ -16,17 +16,19 @@ import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 import { handleChangeFunction } from "../../components/Validator/HandleChangeFunction"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   packService: IPutPackService
   moveOut: IPostMoveOutBuilding
+  lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding) => Promise<any>
+  onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding, lead: ILead) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -42,7 +44,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="packService.HasOutService" label="WITH_UNPACK" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="packService.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
           <FormikDivider />
@@ -61,11 +63,11 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ packService: props.packService, moveOut: props.moveOut }),
+      mapPropsToValues: props => ({ packService: props.packService, moveOut: props.moveOut, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.packService, values.moveOut)
+          await actions.props.onChangeAndSave(values.packService, values.moveOut, values.lead)
 
           actions.setSubmitting(false)
 

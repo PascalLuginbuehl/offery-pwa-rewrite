@@ -14,17 +14,19 @@ import Disposal from "../../components/FormikFields/Bundled/Disposal"
 import IntlTypography from "../../components/Intl/IntlTypography"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   disposalService: IPutDisposalSerivce
   disposal: IPostDisposalOutBuilding
+  lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding) => Promise<any>
+  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding, lead: ILead) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -42,7 +44,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="disposalService.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
           <FormikDivider />
@@ -59,11 +61,11 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ disposalService: props.disposalService, disposal: props.disposal }),
+      mapPropsToValues: props => ({ disposalService: props.disposalService, disposal: props.disposal, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.disposalService, values.disposal)
+          await actions.props.onChangeAndSave(values.disposalService, values.disposal, values.lead)
 
           actions.setSubmitting(false)
 

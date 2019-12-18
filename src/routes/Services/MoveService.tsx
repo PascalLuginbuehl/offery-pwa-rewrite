@@ -15,6 +15,7 @@ import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePi
 import { IPutMoveService } from "../../interfaces/IService"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -22,11 +23,12 @@ interface Values {
   moveService: IPutMoveService
   moveIn: IPostMoveInBuilding
   moveOut: IPostMoveOutBuilding
+  lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding, moveOut: IPostMoveOutBuilding) => void
+  onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding, moveOut: IPostMoveOutBuilding, lead: ILead) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -55,7 +57,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="moveService.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
           <FormikDivider />
@@ -78,11 +80,11 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService }),
+      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.moveService, values.moveIn, values.moveOut)
+          await actions.props.onChangeAndSave(values.moveService, values.moveIn, values.moveOut, values.lead)
 
           actions.setSubmitting(false)
 

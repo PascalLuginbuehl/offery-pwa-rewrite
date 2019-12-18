@@ -34,13 +34,17 @@ import SelectGridItem from "../../components/ShopElements/SelectGridItem"
 import PageHeader from "../../components/PageHeader"
 import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
 import FormikPrice from "../../components/FormikFields/Numbers/FormikPrice"
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
+type Values = IMaterialOrder & { lead: ILead }
+
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
-  onChangeAndSave: (data: IMaterialOrder) => Promise<void>
+  onChangeAndSave: (data: IMaterialOrder, lead: ILead) => Promise<any>
   shopTypeKey: ShopTypeEnum
   materialOrder: IMaterialOrder
+  lead: ILead
   nextPage: () => void
 }
 
@@ -48,7 +52,8 @@ interface State {
   currentlyOpen: CurrentlyOpenStateEnum
 }
 
-class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, State> {
+// Ugly fix so i don't have to rewrite this whole component
+class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
   }
@@ -164,7 +169,7 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
           </Grid>
 
           <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST" component={FormikPrice} />
-          <Field name="DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} />
+          <Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} />
 
           <Grid item xs={12}>
             <Tabs value={currentlyOpen} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
@@ -265,12 +270,13 @@ class MaterialShop extends React.Component<Props & FormikProps<IMaterialOrder>, 
 export default injectIntl(
   withStyles(styles, { name: "MoveShop" })(
     withResource(
-      withFormik<Props, IMaterialOrder>({
-        mapPropsToValues: props => props.materialOrder,
+      withFormik<Props, Values>({
+        mapPropsToValues: props => ({ ...props.materialOrder, lead: props.lead }),
 
         handleSubmit: async (values, actions) => {
           try {
-            await actions.props.onChangeAndSave(values)
+            const { lead, ...material } = values
+            await actions.props.onChangeAndSave(material, lead)
 
             actions.setSubmitting(false)
 

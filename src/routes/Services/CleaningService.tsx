@@ -19,17 +19,19 @@ import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePi
 import IntlTypography from "../../components/Intl/IntlTypography"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
+import { ILead } from "../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   cleaningService: IPutCleaningService
   cleaning: IPostCleaningBuilding
+  lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding) => Promise<any>
+  onChangeAndSave: (cleaningSerivce: IPutCleaningService, cleaning: IPostCleaningBuilding, lead: ILead) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -52,8 +54,8 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="cleaningService.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
-            <Field name="cleaningService.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
@@ -73,11 +75,11 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ cleaningService: props.cleaningService, cleaning: props.cleaning }),
+      mapPropsToValues: props => ({ cleaningService: props.cleaningService, cleaning: props.cleaning, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.cleaningService, values.cleaning)
+          await actions.props.onChangeAndSave(values.cleaningService, values.cleaning, values.lead)
 
           actions.resetForm()
           actions.setSubmitting(false)
