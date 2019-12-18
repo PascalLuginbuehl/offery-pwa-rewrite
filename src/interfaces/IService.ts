@@ -28,12 +28,10 @@ export interface IPutCleaningService {
 }
 
 export interface ICleaningService extends IPutCleaningService {
-  CleaningServiceId: number,
+  CleaningServiceId: number
 }
 
-export interface IMaterialOrder {
-
-}
+export interface IMaterialOrder {}
 
 export interface IPutDisposalSerivce {
   DisposalDate: Date | null
@@ -47,7 +45,7 @@ export interface IDisposalSerivce extends IPutDisposalSerivce {
 }
 
 export interface IPutPackService {
-  PackServiceDate: Date | null,
+  PackServiceDate: Date | null
   HasOutService: boolean
 }
 export interface IPackSerivce extends IPutPackService {
@@ -98,23 +96,20 @@ export const emptyMoveService: IPutMoveService = {
   MoveDate: null,
 }
 
-
 export const emptyPackService: IPutPackService = {
   HasOutService: false,
-  PackServiceDate: null
+  PackServiceDate: null,
 }
-
 
 export const emptyStorageService: IPutStorageService = {
   BoreService: false,
   DeMontageService: false,
-  FurnitureLiftService:false,
+  FurnitureLiftService: false,
   LampDemontageService: false,
   MontageService: false,
   PianoService: false,
   StorageDate: null,
 }
-
 
 export const emptyDisposalService: IPutDisposalSerivce = {
   DeMontage: false,
@@ -130,7 +125,7 @@ export const emptyCleaningService: IPutCleaningService = {
   CleaningWindowsService: false,
   CleaningWindowsWithShuttersService: false,
   DovelholeService: false,
-  HandoutGaranty: false,
+  HandoutGaranty: true,
   HighPressureGarageCleaningService: false,
   HighPressureTerraceCleaningService: false,
   CleaningDate: null,

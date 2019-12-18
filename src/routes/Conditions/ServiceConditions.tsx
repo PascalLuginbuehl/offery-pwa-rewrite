@@ -128,7 +128,14 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
             <Field label="MAX" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
-            <Field label="DRIVE_HOURS" name={`ServiceConditions.DriveHours`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 7, md: undefined }} />
+            <Field
+              label="DRIVE_HOURS"
+              name={`ServiceConditions.DriveHours`}
+              component={FormikNumberEndAdornmentText}
+              inputProps={{ step: 0.25, min: 0 }}
+              adornmentText="h"
+              overrideGrid={{ xs: 7, md: undefined }}
+            />
           </FormikGroups>
         ) : null}
 

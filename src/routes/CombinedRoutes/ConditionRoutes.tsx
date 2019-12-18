@@ -167,11 +167,14 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
             {...routeProps}
             cleaningConditions={CleaningServiceConditions}
             cleaningService={cleaningService}
-            onChangeAndSave={cleaningConditions => {
+            onChangeAndSave={(cleaningConditions, cleaningServiceData) => {
               const lead = Lead
               const newLead = { ...lead, CleaningServiceConditions: cleaningConditions }
 
-              return handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
+              return Promise.all([
+                handleChangeAndSave(cleaningServiceData, "cleaningService", LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData)),
+                handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead)),
+              ])
             }}
             nextPage={redirectToNextPage("/conditions/cleaning")}
           />
