@@ -51,8 +51,8 @@ const styles = (theme: Theme) =>
     },
     topRight: {
       position: "absolute",
-      right: 7,
-      top: -7,
+      right: -8,
+      top: -15,
       backgroundColor: "white",
       borderRadius: "50%",
     },
@@ -93,7 +93,7 @@ class TableDashboard extends React.Component<Props> {
     const { color, icon, link } = this.getBeloningStatusIconAndLink(Lead.Status)
 
     return (
-      <div className={classes.relative}>
+      <PlainLink to={`/lead/${Lead.LeadId}${link}`} className={classes.relative}>
         <ButtonBase className={classes.round}>
           <Avatar style={{ backgroundColor: color }}>{icon}</Avatar>
         </ButtonBase>
@@ -103,7 +103,7 @@ class TableDashboard extends React.Component<Props> {
             <OfflinePinIcon color="primary" fontSize="small" className={classes.topRight} />
           </IntlTooltip>
         ) : null}
-      </div>
+      </PlainLink>
     )
   }
 }

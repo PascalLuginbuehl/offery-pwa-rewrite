@@ -52,9 +52,8 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
         okLabel={intl.formatMessage({ id: "OK" })}
         cancelLabel={intl.formatMessage({ id: "CANCEL" })}
         // views={["year", "month", "date"]}
-        format={"dd.MM.yyyy hh:mm"}
+        format={"dd.MM.yyyy HH:mm"}
         minutesStep={5}
-
         ampm={false}
         fullWidth
         required={required}
