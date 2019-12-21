@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import { Grid, InputAdornment } from "@material-ui/core"
 import IntlTypography from "../../Intl/IntlTypography"
 import { Field } from "formik"
@@ -6,13 +6,13 @@ import FormikSimpleSelect from "../FormikSimpleSelect"
 import FormikTextField from "../FormikTextField"
 import { IResource } from "../../../interfaces/IResource"
 import Switch from "../Switch"
-import Address from './Address';
-import FormikGroups from './Groups';
-import FormikNumberEndAdornmentText from '../Numbers/FormikNumberEndAdornmentText';
-import BuildingCopy, { IBuildingCopy } from './BuildingCopy';
-import { emptyMoveInBuilding } from '../../../interfaces/IBuilding';
+import Address from "./Address"
+import FormikGroups from "./Groups"
+import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText"
+import BuildingCopy, { IBuildingCopy } from "./BuildingCopy"
+import { emptyMoveInBuilding } from "../../../interfaces/IBuilding"
 
-export default ({ prefix, resource, buildingOptions }: { prefix: string, resource: IResource; buildingOptions: IBuildingCopy}) => {
+export default function MoveInBuilding({ prefix, resource, buildingOptions }: { prefix: string; resource: IResource; buildingOptions: IBuildingCopy}) {
   return (
     <>
       <BuildingCopy getKeysFromBuilding={emptyMoveInBuilding} prefix={prefix} buildings={buildingOptions} />
@@ -76,7 +76,7 @@ export default ({ prefix, resource, buildingOptions }: { prefix: string, resourc
       />
 
       <FormikGroups label="AREAS" xs={12}>
-        <Field label="BASEMENT" name={`${prefix}.HasBasement`} component={Switch} />
+        <Field label="CELLAR" name={`${prefix}.HasBasement`} component={Switch} />
 
         <Field label="ATTIC" name={`${prefix}.HasAttic`} component={Switch} />
 

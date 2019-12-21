@@ -13,23 +13,16 @@ import CleaningConditions from "../Conditions/CleaningConditions"
 import GenerateOffer from "../Offer/GenerateOffer"
 import PreviewOffer from "../Offer/PreviewOffer"
 import { ILead } from "../../interfaces/ILead"
-import {
-  emptyMoveServiceConditions,
-  emptyPackServiceConditions,
-  emptyStorageServiceConditions,
-  emptyCleaningServiceConditions,
-  emptyDisposalServiceConditions,
-} from "../../interfaces/IConditions"
 import SendOffer from "../Offer/SendOffer"
 import Done from "../Offer/Done"
 
 interface Props {
-  leadContainer: ILeadContainer;
-  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>;
-  redirectToNextPage: (currentUrl: string) => () => void;
-  getNextPage: (originalPath: string) => string;
-  handleChange: (value: any, name: keyof ILeadContainer) => void;
-  matchUrl: string;
+  leadContainer: ILeadContainer
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>
+  redirectToNextPage: (currentUrl: string) => () => void
+  getNextPage: (originalPath: string) => string
+  handleChange: (value: any, name: keyof ILeadContainer) => void
+  matchUrl: string
 }
 
 export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) {
@@ -64,11 +57,7 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
   const storageService = storageServiceNull ? storageServiceNull : emptyStorageService
   const cleaningService = cleaningServiceNull ? cleaningServiceNull : emptyCleaningService
 
-  const MoveServiceConditions = Lead.MoveServiceConditions ? Lead.MoveServiceConditions : emptyMoveServiceConditions
-  const PackServiceConditions = Lead.PackServiceConditions ? Lead.PackServiceConditions : emptyPackServiceConditions
-  const StorageServiceConditions = Lead.StorageServiceConditions ? Lead.StorageServiceConditions : emptyStorageServiceConditions
-  const DisposalServiceConditions = Lead.DisposalServiceConditions ? Lead.DisposalServiceConditions : emptyDisposalServiceConditions
-  const CleaningServiceConditions = Lead.CleaningServiceConditions ? Lead.CleaningServiceConditions : emptyCleaningServiceConditions
+  const { MoveServiceConditions, PackServiceConditions, StorageServiceConditions, DisposalServiceConditions, CleaningServiceConditions } = Lead
 
   return (
     <>

@@ -1,6 +1,6 @@
-import { IPostAddress, IAddress } from "./IAddress";
-import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions } from "./IConditions";
-import { IOffer } from "./IOffer";
+import { IPostAddress, IAddress } from "./IAddress"
+import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions, emptyMoveServiceConditions, emptyPackServiceConditions, emptyDisposalServiceConditions, emptyCleaningServiceConditions, emptyStorageServiceConditions } from "./IConditions"
+import { IOffer } from "./IOffer"
 
 export interface IPostCustomer {
   Firstname: string
@@ -43,11 +43,11 @@ export interface IPostLead {
   HasCleaningBuilding: boolean
   HasDisposalOutBuilding: boolean
 
-  MoveServiceConditions: IMoveServiceConditions | null
-  PackServiceConditions: IPackServiceConditions | null
-  DisposalServiceConditions: IDisposalServiceConditions | null
-  StorageServiceConditions: IStorageServiceConditions | null
-  CleaningServiceConditions: ICleaningServiceConditions | null
+  MoveServiceConditions: IMoveServiceConditions
+  PackServiceConditions: IPackServiceConditions
+  DisposalServiceConditions: IDisposalServiceConditions
+  StorageServiceConditions: IStorageServiceConditions
+  CleaningServiceConditions: ICleaningServiceConditions
 
   Comment: string
 }
@@ -114,9 +114,9 @@ export const emptyLead: IPostLead = {
   HasMoveOutBuilding: true,
   HasStorageInBuilding: false,
 
-  MoveServiceConditions: null,
-  PackServiceConditions: null,
-  DisposalServiceConditions: null,
-  StorageServiceConditions: null,
-  CleaningServiceConditions: null,
+  MoveServiceConditions: emptyMoveServiceConditions,
+  PackServiceConditions: emptyPackServiceConditions,
+  DisposalServiceConditions: emptyDisposalServiceConditions,
+  StorageServiceConditions: emptyStorageServiceConditions,
+  CleaningServiceConditions: emptyCleaningServiceConditions,
 }

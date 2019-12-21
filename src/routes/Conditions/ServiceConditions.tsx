@@ -13,11 +13,11 @@ import { withResource, WithResourceProps } from "../../providers/withResource"
 import RemoveIcon from "@material-ui/icons/Remove"
 
 interface Props<Values extends { ServiceConditions: IServiceConditions }> extends InjectedIntlProps, WithResourceProps {
-  setFieldValue: (field: keyof Values | any, value: any) => void;
-  values: Values;
-  additionalCost: number;
-  personalCostAddon?: React.ReactNode;
-  disabledVehicles?: boolean;
+  setFieldValue: (field: keyof Values | any, value: any) => void
+  values: Values
+  additionalCost: number
+  personalCostAddon?: React.ReactNode
+  disabledVehicles?: boolean
 }
 
 class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceConditions }> extends React.Component<Props<Values>, {}> {
@@ -193,12 +193,15 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   getAdditionalCost = (): number => {
     const {
       values: {
-        ServiceConditions: { Expenses },
+        ServiceConditions: { Expenses: NullExpenses },
       },
       additionalCost,
     } = this.props
 
-    return (Expenses ? Expenses : 0) + additionalCost
+    const Expenses = NullExpenses ? NullExpenses : 0
+
+
+    return Expenses + additionalCost
   }
 
   getPricePerHour = (hours: number): number | undefined => {
@@ -225,11 +228,15 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   getFixPrice = () => {
     const {
       values: {
-        ServiceConditions: { FixPrice, DiscountInPercent },
+        ServiceConditions: { FixPrice: NullFixPrice, DiscountInPercent: NullDiscountInPercent },
       },
     } = this.props
 
-    return ((FixPrice ? FixPrice : 0) + this.getAdditionalCost()) * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
+    const FixPrice = NullFixPrice ? NullFixPrice : 0
+    const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
+    const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
+
+    return FixPrice * DiscountMultiplier
   }
 
   getMaxPrice = (): number | undefined => {

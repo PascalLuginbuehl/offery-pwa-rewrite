@@ -96,7 +96,7 @@ export default function CleaningBuilding({ prefix, resource, buildingOptions }: 
       </FormikGroups>
 
       <FormikGroups label="AREAS" xs={12}>
-        <Field label="BASEMENT" name={`${prefix}.HasBasement`} component={Switch} />
+        <Field label="CELLAR" name={`${prefix}.HasBasement`} component={Switch} />
         <Field label="ATTIC" name={`${prefix}.HasAttic`} component={Switch} />
         <Field label="GARDEN" name={`${prefix}.HasGarden`} component={Switch} />
         <Field label="WINTERGARDEN" name={`${prefix}.HasWinterGarden`} component={Switch} />

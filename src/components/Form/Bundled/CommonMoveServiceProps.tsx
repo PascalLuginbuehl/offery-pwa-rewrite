@@ -37,133 +37,133 @@ class CommonMoveServiceProps extends React.Component<Props, State> {
           <IntlTypography variant="h5">MOVE_OUT_BUILDING</IntlTypography>
         </Grid>
 
-          <AddressField
-            value={Address}
-            name="Address"
-            onChange={this.handleChange}
-          />
+        <AddressField
+          value={Address}
+          name="Address"
+          onChange={this.handleChange}
+        />
 
-          <ValidatedSelect
-            label="BUILDING_TYPE"
-            value={BuildingTypeId}
-            name="BuildingTypeId"
-            onChange={this.handleChange}
-            required
-            options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
-          />
+        <ValidatedSelect
+          label="BUILDING_TYPE"
+          value={BuildingTypeId}
+          name="BuildingTypeId"
+          onChange={this.handleChange}
+          required
+          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
+        />
 
-          <ValidatedTextField
-            label="ROOMS"
-            value={RoomAmount}
-            name="RoomAmount"
-            type="number"
-            onChange={this.handleChange}
-          />
+        <ValidatedTextField
+          label="ROOMS"
+          value={RoomAmount}
+          name="RoomAmount"
+          type="number"
+          onChange={this.handleChange}
+        />
 
-          <ValidatedTextField
-            label="TOTAL_AREA"
-            value={TotalArea}
-            name="TotalArea"
-            type="number"
-            onChange={this.handleChange}
+        <ValidatedTextField
+          label="TOTAL_AREA"
+          value={TotalArea}
+          name="TotalArea"
+          type="number"
+          onChange={this.handleChange}
 
-            // Small start thingy
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  m&sup2;
-                      </InputAdornment>
-              ),
-            }}
-          />
+          // Small start thingy
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                m&sup2;
+              </InputAdornment>
+            ),
+          }}
+        />
 
-          <ValidatedSelect
-            label="ETAGE"
-            value={EtageId}
-            name="EtageId"
-            onChange={this.handleChange}
-            required
+        <ValidatedSelect
+          label="ETAGE"
+          value={EtageId}
+          name="EtageId"
+          onChange={this.handleChange}
+          required
 
-            options={resource.Etages.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
-          />
+          options={resource.Etages.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
+        />
 
-          <ValidatedSelect
-            label="ELEVATOR"
-            value={ElevatorId}
-            name="ElevatorId"
-            onChange={this.handleChange}
-            required
-            options={resource.Elevators.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
-          />
+        <ValidatedSelect
+          label="ELEVATOR"
+          value={ElevatorId}
+          name="ElevatorId"
+          onChange={this.handleChange}
+          required
+          options={resource.Elevators.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
+        />
 
-          <ValidatedTextField
-            label="AMOUNT_PEOPLE_IN_HOUSEHOLD"
-            value={PeopleLivingAmount}
-            name="PeopleLivingAmount"
-            type="number"
-            onChange={this.handleChange}
-          />
+        <ValidatedTextField
+          label="AMOUNT_PEOPLE_IN_HOUSEHOLD"
+          value={PeopleLivingAmount}
+          name="PeopleLivingAmount"
+          type="number"
+          onChange={this.handleChange}
+        />
 
-          <ValidatedTextField
-            label="AMOUNT_STAIRS_TO_ENTRY"
-            value={StairsToEntryAmount}
-            name="StairsToEntryAmount"
-            type="number"
-            onChange={this.handleChange}
-          />
+        <ValidatedTextField
+          label="AMOUNT_STAIRS_TO_ENTRY"
+          value={StairsToEntryAmount}
+          name="StairsToEntryAmount"
+          type="number"
+          onChange={this.handleChange}
+        />
 
-          <ValidatedTextField
-            label="METER_TO_PARKING"
-            value={MetersToParking}
-            name="MetersToParking"
-            type="number"
-            onChange={this.handleChange}
-          />
+        <ValidatedTextField
+          label="METER_TO_PARKING"
+          value={MetersToParking}
+          name="MetersToParking"
+          type="number"
+          onChange={this.handleChange}
+        />
 
-          <ValidatedSelect
-            label="BUILDING_AGE"
-            value={BuildingAgeId}
-            name="BuildingAgeId"
-            onChange={this.handleChange}
-            required
+        <ValidatedSelect
+          label="BUILDING_AGE"
+          value={BuildingAgeId}
+          name="BuildingAgeId"
+          onChange={this.handleChange}
+          required
 
-            options={resource.BuildingAges.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
-          />
+          options={resource.BuildingAges.sort(sortMasterThing).map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
+        />
 
-          <Switch
-            label="BASEMENT"
-            value={HasBasement}
-            name="HasBasement"
-            onChange={this.handleChange}
-          />
+        <Switch
+          label="CELLAR"
+          value={HasBasement}
+          name="HasBasement"
+          onChange={this.handleChange}
+        />
 
-          <Switch
-            label="ATTIC"
-            value={HasAttic}
-            name="HasAttic"
-            onChange={this.handleChange}
-          />
+        <Switch
+          label="ATTIC"
+          value={HasAttic}
+          name="HasAttic"
+          onChange={this.handleChange}
+        />
 
-          <Switch
-            label="GARAGE"
-            value={HasGarage}
-            name="HasGarage"
-            onChange={this.handleChange}
-          />
+        <Switch
+          label="GARAGE"
+          value={HasGarage}
+          name="HasGarage"
+          onChange={this.handleChange}
+        />
 
-          <Switch
-            label="GARDEN"
-            value={HasGarden}
-            name="HasGarden"
-            onChange={this.handleChange}
-          />
+        <Switch
+          label="GARDEN"
+          value={HasGarden}
+          name="HasGarden"
+          onChange={this.handleChange}
+        />
 
-          <Switch
-            label="WINTERGARDEN"
-            value={HasWinterGarden}
-            name="HasWinterGarden"
-            onChange={this.handleChange}
-          />
+        <Switch
+          label="WINTERGARDEN"
+          value={HasWinterGarden}
+          name="HasWinterGarden"
+          onChange={this.handleChange}
+        />
       </>
     )
   }
