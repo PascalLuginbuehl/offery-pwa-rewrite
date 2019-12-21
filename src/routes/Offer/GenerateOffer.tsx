@@ -43,6 +43,8 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
       values,
     } = this.props
 
+    console.log(templateCategoryId)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -53,7 +55,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
             name="templateCategoryId"
             component={FormikSimpleSelect}
             // Fixme, there is no 2 possible
-            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: 2 }))}
+            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
           />
 
           <Field component={SelectAddress} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
@@ -68,7 +70,17 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ templateCategoryId: null, outAddressId: null, inAddressId: null }),
+      mapPropsToValues: props => {
+        // Default values asignment
+        const { buildingOptions: { moveOutBuilding, moveInBuilding }, selectedCompany: { OfferTemplateCategories } } = props
+
+        const outAddressId = moveOutBuilding ? moveOutBuilding.Address.AddressId : null
+        const inAddressId = moveInBuilding ? moveInBuilding.Address.AddressId : null
+
+        const templateCategoryId = OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null
+
+        return { templateCategoryId, outAddressId, inAddressId }
+      },
 
       handleSubmit: async (values, actions) => {
         try {

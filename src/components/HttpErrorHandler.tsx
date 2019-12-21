@@ -19,7 +19,6 @@ class HttpErrorHandler extends React.Component<Props> {
     // const data = {}
 
     // const status = { "statusText": "Bad Request", "json": { "Message": "The request is invalid.", "ModelState": { "newLead.VisitDate": [`The VisitDate field is required.`] } } }
-    console.log(status)
 
     const googleForm = "https://docs.google.com/forms/d/e/1FAIpQLSeSAFYYuETOeifVAEZJMAOejCXyNZXlBzlvdbdVjKoOMQRRsQ/viewform?usp=pp_url&"
 
