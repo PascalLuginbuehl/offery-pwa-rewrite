@@ -13,11 +13,11 @@ import { withResource, WithResourceProps } from "../../providers/withResource"
 import RemoveIcon from "@material-ui/icons/Remove"
 
 interface Props<Values extends { ServiceConditions: IServiceConditions }> extends InjectedIntlProps, WithResourceProps {
-  setFieldValue: (field: keyof Values | any, value: any) => void
-  values: Values
-  additionalCost: number
-  personalCostAddon?: React.ReactNode
-  disabledVehicles?: boolean
+  setFieldValue: (field: keyof Values | any, value: any) => void;
+  values: Values;
+  additionalCost: number;
+  personalCostAddon?: React.ReactNode;
+  disabledVehicles?: boolean;
 }
 
 class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceConditions }> extends React.Component<Props<Values>, {}> {
@@ -204,12 +204,21 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   getPricePerHour = (hours: number): number | undefined => {
     const {
       values: {
-        ServiceConditions: { DriveHours, PricePerHour, MinHoursOfWork, DiscountInPercent },
+        ServiceConditions: { DriveHours: NullDriveHours, PricePerHour: NullPricePerHour, DiscountInPercent: NullDiscountInPercent },
       },
     } = this.props
 
+    const DriveHours = NullDriveHours ? NullDriveHours : 0
+    const PricePerHour = NullPricePerHour ? NullPricePerHour : 0
+    const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
+    const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
+
     if (PricePerHour) {
-      return ((DriveHours ? DriveHours : 0) * PricePerHour + hours * PricePerHour + this.getAdditionalCost()) * ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
+      return (
+        (
+          (DriveHours + hours) * PricePerHour
+        ) + this.getAdditionalCost()
+      ) * DiscountMultiplier
     }
   }
 

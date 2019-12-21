@@ -24,12 +24,12 @@ import SendOffer from "../Offer/SendOffer"
 import Done from "../Offer/Done"
 
 interface Props {
-  leadContainer: ILeadContainer
-  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>
-  redirectToNextPage: (currentUrl: string) => () => void
-  getNextPage: (originalPath: string) => string
-  handleChange: (value: any, name: keyof ILeadContainer) => void
-  matchUrl: string
+  leadContainer: ILeadContainer;
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>;
+  redirectToNextPage: (currentUrl: string) => () => void;
+  getNextPage: (originalPath: string) => string;
+  handleChange: (value: any, name: keyof ILeadContainer) => void;
+  matchUrl: string;
 }
 
 export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) {

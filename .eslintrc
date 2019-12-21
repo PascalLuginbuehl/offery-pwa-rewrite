@@ -7,23 +7,16 @@
     "@typescript-eslint",
     "react",
     "import",
-    "jsx-a11y",
-    "prettier"
+    "jsx-a11y"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
-    "prettier"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "rules": {
-    "prettier/prettier": [
-      "error"
-    ],
     "indent": [
       "error",
       2,

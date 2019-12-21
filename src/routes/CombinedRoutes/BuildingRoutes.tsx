@@ -10,7 +10,7 @@ import StorageBuilding from "../Customer/StorageBuilding"
 import MoveInBuilding from "../Customer/MoveInBuilding"
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../interfaces/IBuilding"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
-import { ICustomer } from "../../interfaces/ILead"
+import { ICustomer, ILead } from "../../interfaces/ILead"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -48,22 +48,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
             lead={Lead}
             onChangeAndSave={lead => {
               // Fixing PostLead to Lead back together
-              return handleChangeAndSave(
-                lead,
-                "Lead",
-                LeadAPI.SaveLead({
-                  ...lead,
-                  Customer: lead.Customer as ICustomer,
-                  VisitDate: lead.VisitDate ? lead.VisitDate : Lead.VisitDate,
-                  LeadId: Lead.LeadId,
-                  StatusHistories: Lead.StatusHistories,
-                  Created: Lead.Created,
-                  Offers: Lead.Offers,
-                  Status: Lead.Status,
-                  FromAddress: Lead.FromAddress,
-                  ToAddress: Lead.ToAddress,
-                })
-              )
+              return handleChangeAndSave(lead, "Lead", LeadAPI.SaveLead(lead as ILead))
             }}
             nextPage={redirectToNextPage("/building")}
           />
