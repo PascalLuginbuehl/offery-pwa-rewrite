@@ -230,13 +230,14 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       values: {
         ServiceConditions: { FixPrice: NullFixPrice, DiscountInPercent: NullDiscountInPercent },
       },
+      additionalCost
     } = this.props
 
     const FixPrice = NullFixPrice ? NullFixPrice : 0
     const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
     const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
 
-    return FixPrice * DiscountMultiplier
+    return (FixPrice + additionalCost)* DiscountMultiplier
   }
 
   getMaxPrice = (): number | undefined => {
