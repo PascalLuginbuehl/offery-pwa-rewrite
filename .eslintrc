@@ -45,7 +45,7 @@
       "never"
     ],
     "@typescript-eslint/interface-name-prefix": [
-      "error",
+      "warn",
       {
         "prefixWithI": "always",
         "allowUnderscorePrefix": true

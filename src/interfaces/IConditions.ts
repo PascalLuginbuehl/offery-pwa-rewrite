@@ -8,8 +8,6 @@ export interface IServiceConditions {
   WorkersAmount: number | null
   DriveHours: number | null
 
-  Comment: string
-
   CostCeiling: number | null
   FixPrice: number | null
   Expenses: number | null
@@ -76,8 +74,6 @@ export interface ICleaningServiceConditions {
   EstimatedHoursOfWorkWhenFixPrice: number | null
   DiscountInPercent: number | null
 
-  Comment: string
-
   HighPressureTerraceCleaningFixPrice: number | null
   HighPressureGarageCleaningFixPrice: number | null
 
@@ -105,8 +101,6 @@ export const emptyServiceConditions: IServiceConditions = {
   EstimatedHoursOfWorkWhenFixPrice: null,
   WorkersAmount: null,
   DriveHours: null,
-
-  Comment: "",
 
   CostCeiling: null,
   FixPrice: null,
@@ -163,8 +157,6 @@ export const emptyCleaningServiceConditions: ICleaningServiceConditions = {
   FixPrice: null,
   EstimatedHoursOfWorkWhenFixPrice: null,
   DiscountInPercent: null,
-
-  Comment: "",
 
   HighPressureTerraceCleaningFixPrice: null,
   HighPressureGarageCleaningFixPrice: null,

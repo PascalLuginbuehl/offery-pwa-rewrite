@@ -17,6 +17,7 @@ import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import FormikDateTimePicker from "../../components/FormikFields/FormikDateTimePicker"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 import { ILead } from "../../interfaces/ILead"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -52,11 +53,12 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
           </FormikGroups>
 
+          <Field name="storageService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+
           <FormikDivider />
           <Grid item xs={12}>
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
-
           <Storage buildingOptions={buildingOptions} prefix={"storage"} resource={resource} />
         </Form>
       </Grid>

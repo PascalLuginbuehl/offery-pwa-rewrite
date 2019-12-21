@@ -17,6 +17,7 @@ import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCop
 import { handleChangeFunction } from "../../components/Validator/HandleChangeFunction"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
 import { ILead } from "../../interfaces/ILead"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -47,8 +48,9 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="lead.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
-          <FormikDivider />
+          <Field name="packService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
 
+          <FormikDivider />
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>

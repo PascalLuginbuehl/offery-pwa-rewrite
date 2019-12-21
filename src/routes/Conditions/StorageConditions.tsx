@@ -17,18 +17,21 @@ import { IPutStorageService } from "../../interfaces/IService"
 
 const styles = (theme: Theme) => createStyles({})
 
-interface Values extends IStorageServiceConditions {}
+interface Values {
+  storageConditions: IStorageServiceConditions
+  storageService: IPutStorageService
+}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (storageConditions: IStorageServiceConditions) => Promise<void>
+  onChangeAndSave: (storageConditions: IStorageServiceConditions, storageService: IPutStorageService) => Promise<any>
   storageConditions: IStorageServiceConditions
   storageService: IPutStorageService
 }
 
 class StorageConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, intl, resource, setFieldValue, selectedCompany, storageService } = this.props
+    const { values, intl, resource, setFieldValue, selectedCompany, storageService } = this.props
 
     console.log(selectedCompany.CarTypes)
 
@@ -37,11 +40,17 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
         <Form>
           <PageHeader title="STORAGE_CONDITIONS" />
 
-          <ServiceConditions additionalCost={this.getAdditionalCost()} setFieldValue={setFieldValue} values={values}>
+          <ServiceConditions
+            prefix={"storageConditions"}
+            commentPrefix={"storageService"}
+            additionalCost={this.getAdditionalCost()}
+            setFieldValue={setFieldValue}
+            values={values.storageConditions}
+          >
             {storageService.BoreService ? (
               <FormikGroups label="BORE" xs={6} md={3}>
-                <Field label="AMOUNT" name="BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
-                <Field label="PRICE" name="BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                <Field label="AMOUNT" name="storageConditions.BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
+                <Field label="PRICE" name="storageConditions.BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
               </FormikGroups>
             ) : null}
 
@@ -49,34 +58,34 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
               <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
                 <Field
                   label="AMOUNT"
-                  name="LampDemontageAmount"
+                  name="storageConditions.LampDemontageAmount"
                   type="number"
                   component={FormikTextField}
                   inputProps={{ step: 1, min: 0 }}
                   overrideGrid={{ xs: 6, md: undefined }}
                 />
-                <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                <Field label="PRICE" name="storageConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
               </FormikGroups>
             ) : null}
 
             {storageService.FurnitureLiftService || storageService.PianoService || storageService.MontageService || storageService.DeMontageService ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {storageService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="FurnitureLiftPrice" component={FormikPrice} /> : null}
+                {storageService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
 
-                {storageService.PianoService ? <Field label="PIANO" name="PianoPrice" component={FormikPrice} /> : null}
+                {storageService.PianoService ? <Field label="PIANO" name="storageConditions.PianoPrice" component={FormikPrice} /> : null}
 
-                {storageService.MontageService ? <Field label="MONTAGE_SERVICE" name="MontageServicePrice" component={FormikPrice} /> : null}
+                {storageService.MontageService ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
 
-                {storageService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="DeMontageServicePrice" component={FormikPrice} /> : null}
+                {storageService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
               </FormikGroups>
             ) : null}
           </ServiceConditions>
 
           <FormikGroups label="STORAGE_PRICE_PER_MONTH" xs={12}>
-            <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
+            <Field label="VOLUME" name="storageConditions.Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
             <Field
               label="CHF_PER_M"
-              name="CostPerCubicMonthInMoney"
+              name="storageConditions.CostPerCubicMonthInMoney"
               component={FormikNumberEndAdornmentText}
               position="start"
               adornmentText="CHF/m³"
@@ -86,7 +95,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
             <Grid item xs={5} md={6}>
               <MuiTextField
                 label={intl.formatMessage({ id: "STORAGE_PRICE_PER_MONTH" })}
-                value={(values.Volume ? values.Volume : 0) * (values.CostPerCubicMonthInMoney ? values.CostPerCubicMonthInMoney : 0)}
+                value={(values.storageConditions.Volume ? values.storageConditions.Volume : 0) * (values.storageConditions.CostPerCubicMonthInMoney ? values.storageConditions.CostPerCubicMonthInMoney : 0)}
                 disabled={true}
                 type="number"
                 InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
@@ -100,7 +109,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
 
   getAdditionalCost = (): number => {
     const {
-      values: { PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice },
+      values: { storageConditions: {PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice} },
     } = this.props
 
     return (
@@ -118,11 +127,11 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({ ...props.storageConditions }),
+        mapPropsToValues: props => ({ storageConditions: props.storageConditions, storageService: props.storageService }),
 
         handleSubmit: async (values, actions) => {
           try {
-            await actions.props.onChangeAndSave(values)
+            await actions.props.onChangeAndSave(values.storageConditions, values.storageService)
 
             actions.setSubmitting(false)
 

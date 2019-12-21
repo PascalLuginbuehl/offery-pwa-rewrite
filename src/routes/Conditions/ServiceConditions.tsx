@@ -18,6 +18,9 @@ interface Props<Values extends { ServiceConditions: IServiceConditions }> extend
   additionalCost: number
   personalCostAddon?: React.ReactNode
   disabledVehicles?: boolean
+
+  prefix: string
+  commentPrefix: string
 }
 
 class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceConditions }> extends React.Component<Props<Values>, {}> {
@@ -32,16 +35,18 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   }
 
   handleSetRateProfile = (e: React.ChangeEvent<{}>, position: number) => {
-    this.props.setFieldValue("ServiceConditions.IsHourlyRate", false)
-    this.props.setFieldValue("ServiceConditions.HasCostCeiling", false)
+    const {prefix} = this.props
+
+    this.props.setFieldValue(`${prefix}.ServiceConditions.IsHourlyRate`, false)
+    this.props.setFieldValue(`${prefix}.ServiceConditions.HasCostCeiling`, false)
 
     if (position === 0) {
-      this.props.setFieldValue("ServiceConditions.IsHourlyRate", true)
+      this.props.setFieldValue(`${prefix}.ServiceConditions.IsHourlyRate`, true)
     } else if (position === 1) {
       return
     } else if (position === 2) {
-      this.props.setFieldValue("ServiceConditions.IsHourlyRate", true)
-      this.props.setFieldValue("ServiceConditions.HasCostCeiling", true)
+      this.props.setFieldValue(`${prefix}.ServiceConditions.IsHourlyRate`, true)
+      this.props.setFieldValue(`${prefix}.ServiceConditions.HasCostCeiling`, true)
     }
   }
 
@@ -49,6 +54,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     const {
       values,
       children,
+
+      prefix,
+      commentPrefix,
 
       intl,
       selectedCompany,
@@ -76,7 +84,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
         <FormikGroups label="PERSONAL_COST" xs={12} {...(disabledVehicles ? {} : { md: 6 })}>
           <Field
             label="WORKERS_AMOUNT"
-            name={`ServiceConditions.WorkersAmount`}
+            name={`${prefix}.ServiceConditions.WorkersAmount`}
             type="number"
             component={FormikTextField}
             inputProps={{ step: 1, min: 0 }}
@@ -86,7 +94,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
             <Field
               label="PRICE_PER_HOUR"
-              name={`ServiceConditions.PricePerHour`}
+              name={`${prefix}.ServiceConditions.PricePerHour`}
               component={FormikNumberEndAdornmentText}
               adornmentText="CHF/h"
               overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }}
@@ -94,13 +102,13 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           ) : null}
 
           {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
-            <Field label="EXPENSES" name={`ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
+            <Field label="EXPENSES" name={`${prefix}.ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
           ) : null}
 
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
             <Field
               label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
-              name={`ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`}
+              name={`${prefix}.ServiceConditions.EstimatedHoursOfWorkWhenFixPrice`}
               component={FormikNumberEndAdornmentText}
               adornmentText="h"
               overrideGrid={{ xs: 6 }}
@@ -112,7 +120,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
         {disabledVehicles ? null : (
           <FormikGroups label="VEHICLES" xs={12} md={6}>
-            <Field component={CarSelection} name="CarAmounts" carTypes={selectedCompany.CarTypes} />
+            <Field component={CarSelection} name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
           </FormikGroups>
         )}
 
@@ -120,17 +128,17 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
         {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
           <FormikGroups label="HOURS_OF_WORK" xs={12} md={6}>
-            <Field label="MIN" name={`ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
+            <Field label="MIN" name={`${prefix}.ServiceConditions.MinHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
             <Grid item xs={1} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <RemoveIcon style={{ marginTop: 16 }} />
             </Grid>
 
-            <Field label="MAX" name={`ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
+            <Field label="MAX" name={`${prefix}.ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
             <Field
               label="DRIVE_HOURS"
-              name={`ServiceConditions.DriveHours`}
+              name={`${prefix}.ServiceConditions.DriveHours`}
               component={FormikNumberEndAdornmentText}
               inputProps={{ step: 0.25, min: 0 }}
               adornmentText="h"
@@ -142,10 +150,10 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
         <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.IsHourlyRate && !values.ServiceConditions.HasCostCeiling ? 12 : 6}>
           {/* Calculations */}
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-            <Field label="FIX_PRICE" name={`ServiceConditions.FixPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }} />
+            <Field label="FIX_PRICE" name={`${prefix}.ServiceConditions.FixPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }} />
           ) : null}
 
-          <Field label="DISCOUNT_IN_PERCENT" name={`ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
+          <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
 
           {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
             <>
@@ -181,11 +189,11 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           )}
 
           {values.ServiceConditions.HasCostCeiling ? (
-            <Field label="COST_CEILING" name={`ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
+            <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
           ) : null}
         </FormikGroups>
 
-        <Field name={`ServiceConditions.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
+        <Field name={`${commentPrefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
       </>
     )
   }

@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval'
+import { get, set } from "idb-keyval"
 import {
   IMoveOutBuilding,
   IMoveInBuilding,
@@ -15,14 +15,14 @@ import {
   emptyCleaningBuilding,
   emptyDisposalOutBuilding,
   emptyStorageBuilding,
-} from '../interfaces/IBuilding';
-import { IPostLead, emptyLead, ILead } from '../interfaces/ILead';
-import BuildingService from '../services/BuildingService';
-import LeadService from '../services/LeadService';
-import ServicesService from '../services/ServicesService';
-import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalSerivce, IDisposalSerivce, IPutCleaningService, ICleaningService } from '../interfaces/IService';
-import { IMaterialOrder } from '../interfaces/IShop';
-import { IInventars } from '../interfaces/IInventars';
+} from "../interfaces/IBuilding"
+import { IPostLead, emptyLead, ILead } from "../interfaces/ILead"
+import BuildingService from "../services/BuildingService"
+import LeadService from "../services/LeadService"
+import ServicesService from "../services/ServicesService"
+import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalService, IDisposalSerivce, IPutCleaningService, ICleaningService } from "../interfaces/IService"
+import { IMaterialOrder } from "../interfaces/IShop"
+import { IInventars } from "../interfaces/IInventars"
 
 
 interface LeadEditableValues {
@@ -153,23 +153,23 @@ class LeadAPI {
   }
 
   SaveMoveOut = (moveOut: IMoveOutBuilding | IPostMoveOutBuilding, leadId: number): Promise<IMoveOutBuilding> => {
-    return checkIs<IMoveOutBuilding>(moveOut, 'MoveOutBuildingId') ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId)
+    return checkIs<IMoveOutBuilding>(moveOut, "MoveOutBuildingId") ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId)
   }
 
   SaveMoveIn = (moveIn: IMoveInBuilding | IPostMoveInBuilding, leadId: number): Promise<IMoveInBuilding> => {
-    return checkIs<IMoveInBuilding>(moveIn, 'MoveInBuildingId') ? BuildingService.saveMoveInBuilding(moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId)
+    return checkIs<IMoveInBuilding>(moveIn, "MoveInBuildingId") ? BuildingService.saveMoveInBuilding(moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId)
   }
 
   SaveDisposal = (disposal: IDisposalOutBuilding | IPostDisposalOutBuilding, leadId: number): Promise<IDisposalOutBuilding> => {
-    return checkIs<IDisposalOutBuilding>(disposal, 'DisposalOutBuildingId') ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId)
+    return checkIs<IDisposalOutBuilding>(disposal, "DisposalOutBuildingId") ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId)
   }
 
   SaveStorage = (storage: IStorageBuilding | IPostStorageBuilding, leadId: number): Promise<IStorageBuilding> => {
-    return checkIs<IStorageBuilding>(storage, 'StorageBuildingId') ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId)
+    return checkIs<IStorageBuilding>(storage, "StorageBuildingId") ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId)
   }
 
   SaveCleaning = (cleaning: ICleaningBuilding | IPostCleaningBuilding, leadId: number): Promise<ICleaningBuilding> => {
-    return checkIs<ICleaningBuilding>(cleaning, 'CleaningBuildingId') ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId)
+    return checkIs<ICleaningBuilding>(cleaning, "CleaningBuildingId") ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId)
   }
 
   SaveServices = (leadId: number, services: IPutServices) => {
@@ -196,7 +196,7 @@ class LeadAPI {
     return storageService ? ServicesService.saveStorageService(leadId, storageService) : Promise.resolve(null)
   }
 
-  SaveDisposalService = (leadId: number, disposalService: IPutDisposalSerivce | null) => {
+  SaveDisposalService = (leadId: number, disposalService: IPutDisposalService | null) => {
     return disposalService ? ServicesService.saveDisposalService(leadId, disposalService) : Promise.resolve(null)
   }
 
@@ -222,7 +222,7 @@ class LeadAPI {
 
   isCompleteLead = (lead: IPostLead | ILead | null): lead is ILead => {
     if(lead) {
-      return lead.hasOwnProperty('LeadId')
+      return lead.hasOwnProperty("LeadId")
     }
     return false
   }

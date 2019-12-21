@@ -14,17 +14,20 @@ import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
 import FormikNumberEndAdornmentText from "../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
 import FormikDivider from "../../components/FormikFields/FormikDivider"
-import { IPutDisposalSerivce } from "../../interfaces/IService"
+import { IPutDisposalService } from "../../interfaces/IService"
 
 const styles = (theme: Theme) => createStyles({})
 
-interface Values extends IDisposalServiceConditions {}
+interface Values {
+  disposalConditions: IDisposalServiceConditions
+  disposalService: IPutDisposalService
+}
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
-  onChangeAndSave: (disposalConditions: IDisposalServiceConditions) => Promise<void>
+  onChangeAndSave: (disposalConditions: IDisposalServiceConditions, disposalService: IPutDisposalService) => Promise<any>
   disposalConditions: IDisposalServiceConditions
-  disposalService: IPutDisposalSerivce
+  disposalService: IPutDisposalService
 }
 
 class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}> {
@@ -41,34 +44,36 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
           <ServiceConditions
             additionalCost={this.getAdditionalCost()}
             setFieldValue={setFieldValue}
-            values={values}
-            personalCostAddon={<Field label="ENTRY_COST" name="CostEntry" component={FormikPrice} overrideGrid={{ xs: 3 }} />}
+            values={values.disposalConditions}
+            prefix={"disposalConditions"}
+            commentPrefix={"disposalService"}
+            personalCostAddon={<Field label="ENTRY_COST" name="disposalConditions.CostEntry" component={FormikPrice} overrideGrid={{ xs: 3 }} />}
           >
             {disposalService.LampDemontageService ? (
               <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
                 <Field
                   label="AMOUNT"
-                  name="LampDemontageAmount"
+                  name="disposalConditions.LampDemontageAmount"
                   type="number"
                   component={FormikTextField}
                   inputProps={{ step: 1, min: 0 }}
                   overrideGrid={{ xs: 6, md: undefined }}
                 />
-                <Field label="PRICE" name="LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                <Field label="PRICE" name="disposalService.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
               </FormikGroups>
             ) : null}
 
             {disposalService.FurnitureLiftService ? (
               <FormikGroups label="PRICES" xs={6} md={3}>
-                <Field label="FURNITURE_LIFT" name="FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 12 }} />
+                <Field label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 12 }} />
               </FormikGroups>
             ) : null}
 
             <FormikGroups label="DISPOSAL_FEES_PER_CUBIC_METER" xs={12}>
-              <Field label="VOLUME" name="Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
+              <Field label="VOLUME" name="disposalConditions.Volume" component={FormikNumberEndAdornmentText} adornmentText="m³" overrideGrid={{ xs: 4, md: 3 }} />
               <Field
                 label="CHF_PER_M"
-                name="CostPerCubicInMoney"
+                name="disposalConditions.CostPerCubicInMoney"
                 component={FormikNumberEndAdornmentText}
                 position="start"
                 adornmentText="CHF/m³"
@@ -78,7 +83,7 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
               <Grid item xs={5} md={6}>
                 <MuiTextField
                   label={intl.formatMessage({ id: "DISPOSAL_FEES" })}
-                  value={(values.Volume ? values.Volume : 0) * (values.CostPerCubicInMoney ? values.CostPerCubicInMoney : 0)}
+                  value={(values.disposalConditions.Volume ? values.disposalConditions.Volume : 0) * (values.disposalConditions.CostPerCubicInMoney ? values.disposalConditions.CostPerCubicInMoney : 0)}
                   disabled={true}
                   type="number"
                   InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
@@ -93,7 +98,7 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
 
   getAdditionalCost = (): number => {
     const {
-      values: { LampDemontagePrice, FurnitureLiftPrice, CostEntry, Volume, CostPerCubicInMoney },
+      values: { disposalConditions: {LampDemontagePrice, FurnitureLiftPrice, CostEntry, Volume, CostPerCubicInMoney} },
     } = this.props
 
     return (
@@ -109,11 +114,11 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({ ...props.disposalConditions }),
+        mapPropsToValues: props => ({ disposalConditions: props.disposalConditions, disposalService: props.disposalService }),
 
         handleSubmit: async (values, actions) => {
           try {
-            await actions.props.onChangeAndSave(values)
+            await actions.props.onChangeAndSave(values.disposalConditions, values.disposalService)
 
             actions.setSubmitting(false)
             actions.resetForm()

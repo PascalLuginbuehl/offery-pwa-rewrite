@@ -16,6 +16,7 @@ import { IPutMoveService } from "../../interfaces/IService"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 import { ILead } from "../../interfaces/ILead"
+import FormikTextField from "../../components/FormikFields/FormikTextField";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -60,11 +61,12 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
 
+          <Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+
           <FormikDivider />
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
-
           <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
 
           <Grid item xs={12}>

@@ -5,7 +5,7 @@ import { IPostDisposalOutBuilding } from "../../interfaces/IBuilding"
 import { FormikProps, Field, withFormik } from "formik"
 import Form from "../../components/FormikFields/Form"
 import Submit from "../../components/FormikFields/Submit"
-import { IPutDisposalSerivce } from "../../interfaces/IService"
+import { IPutDisposalService } from "../../interfaces/IService"
 import PageHeader from "../../components/PageHeader"
 import FormikButtonCheckbox from "../../components/FormikFields/FormikButtonCheckbox"
 import FormikDivider from "../../components/FormikFields/FormikDivider"
@@ -15,18 +15,19 @@ import IntlTypography from "../../components/Intl/IntlTypography"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../components/FormikFields/Bundled/BuildingCopy"
 import { ILead } from "../../interfaces/ILead"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
-  disposalService: IPutDisposalSerivce
+  disposalService: IPutDisposalService
   disposal: IPostDisposalOutBuilding
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (disposalService: IPutDisposalSerivce, disposal: IPostDisposalOutBuilding, lead: ILead) => Promise<any>
+  onChangeAndSave: (disposalService: IPutDisposalService, disposal: IPostDisposalOutBuilding, lead: ILead) => Promise<any>
   buildingOptions: IBuildingCopy
 }
 
@@ -46,6 +47,8 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
           </FormikGroups>
+
+          <Field name="disposalService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
 
           <FormikDivider />
           <Grid item xs={12}>

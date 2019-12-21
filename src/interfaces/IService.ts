@@ -6,6 +6,7 @@ export interface IPutMoveService {
   DeMontageService: boolean
   LampDemontageService: boolean
   BoreService: boolean
+  Comment: string
 }
 
 export interface IMoveService extends IPutMoveService {
@@ -15,7 +16,6 @@ export interface IMoveService extends IPutMoveService {
 export interface IPutCleaningService {
   CleaningDate: Date | null
   HandOverDate: Date | null
-  Comment: string
   HighPressureTerraceCleaningService: boolean
   HighPressureGarageCleaningService: boolean
   DovelholeService: boolean
@@ -25,28 +25,28 @@ export interface IPutCleaningService {
   CleaningWindowsWithShuttersService: boolean
   CleaningSpecialService: boolean
   HandoutGaranty: boolean
+  Comment: string
 }
 
 export interface ICleaningService extends IPutCleaningService {
   CleaningServiceId: number
 }
 
-export interface IMaterialOrder {}
-
-export interface IPutDisposalSerivce {
+export interface IPutDisposalService {
   DisposalDate: Date | null
   FurnitureLiftService: boolean
   DeMontage: boolean
   LampDemontageService: boolean
+  Comment: string
 }
-
-export interface IDisposalSerivce extends IPutDisposalSerivce {
+export interface IDisposalSerivce extends IPutDisposalService {
   DisposalServiceId: number
 }
 
 export interface IPutPackService {
   PackServiceDate: Date | null
   HasOutService: boolean
+  Comment: string
 }
 export interface IPackSerivce extends IPutPackService {
   PackServiceId: number
@@ -60,6 +60,7 @@ export interface IPutStorageService {
   DeMontageService: boolean
   LampDemontageService: boolean
   BoreService: boolean
+  Comment: string
 }
 
 export interface IStorageSerivce extends IPutStorageService {
@@ -72,6 +73,7 @@ export interface IPutServices {
   HasStorageServiceEnabled: boolean
   HasDisposalServiceEnabled: boolean
   HasCleaningServiceEnabled: boolean
+  Comment: string
 }
 
 export interface IServices extends IPutServices {
@@ -84,6 +86,7 @@ export const emptyServices: IPutServices = {
   HasStorageServiceEnabled: false,
   HasDisposalServiceEnabled: false,
   HasCleaningServiceEnabled: false,
+  Comment: ""
 }
 
 export const emptyMoveService: IPutMoveService = {
@@ -94,11 +97,13 @@ export const emptyMoveService: IPutMoveService = {
   MontageService: false,
   PianoService: false,
   MoveDate: null,
+  Comment: ""
 }
 
 export const emptyPackService: IPutPackService = {
   HasOutService: false,
   PackServiceDate: null,
+  Comment: ""
 }
 
 export const emptyStorageService: IPutStorageService = {
@@ -109,13 +114,15 @@ export const emptyStorageService: IPutStorageService = {
   MontageService: false,
   PianoService: false,
   StorageDate: null,
+  Comment: ""
 }
 
-export const emptyDisposalService: IPutDisposalSerivce = {
+export const emptyDisposalService: IPutDisposalService = {
   DeMontage: false,
   FurnitureLiftService: false,
   LampDemontageService: false,
   DisposalDate: null,
+  Comment: ""
 }
 
 export const emptyCleaningService: IPutCleaningService = {
