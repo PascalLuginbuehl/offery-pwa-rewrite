@@ -20,7 +20,7 @@ const styles = (theme: Theme) =>
     },
   })
 
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: any; errorInfo: any }> {
+class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {[key: string]: any} }, { error: any; errorInfo: any }> {
   state = { error: null, errorInfo: null }
 
   componentDidCatch(error: any, errorInfo: any) {
@@ -33,6 +33,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { err
 
   render() {
     const googleForm = "https://docs.google.com/forms/d/e/1FAIpQLSeSAFYYuETOeifVAEZJMAOejCXyNZXlBzlvdbdVjKoOMQRRsQ/viewform?usp=pp_url&"
+    const { data } = this.props
 
     if (this.state.errorInfo) {
       const errorMessage = this.state.error
@@ -43,7 +44,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { err
         "entry.124345133": errorMessage,
         "entry.330568924": stackTrace,
         "entry.1233024141": window.location.href,
-        // "entry.533978395": JSON.stringify(data),
+        "entry.533978395": JSON.stringify(data),
       }
 
       const queryString = Object.keys(preFilledFormValues)
@@ -60,7 +61,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { err
           <Typography>
             <IntlTypography component="span">FILL_FOLLOWING_FORM</IntlTypography>
             &nbsp;
-            <a target="_blank" href={googleForm + queryString}>
+            <a target="_blank" rel="noopener noreferrer" href={googleForm + queryString}>
               <FormattedMessage id="FORM" />
             </a>
           </Typography>
@@ -106,7 +107,7 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Pr
   const { values, status, isSubmitting } = useFormikContext()
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary data={values}>
       <FormikForm>
         <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
 
