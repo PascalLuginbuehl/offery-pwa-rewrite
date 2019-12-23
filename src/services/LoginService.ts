@@ -31,7 +31,7 @@ class LoginService {
       // if (!email) return reject("lol")
       // options.headers.set("EMAIL", email)
 
-      options.headers.set("Accept", 'application/json')
+      options.headers.set("Accept", "application/json")
       options.headers.set("Content-Type", "application/json")
 
     } catch (e) {
@@ -68,59 +68,56 @@ class LoginService {
     })
   }
 
-  public authorizeRequest(options ?: RequestInit): Promise<RequestInit> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // Empty thing correction
-        if (!options) {
-          options = {}
-        }
+  public async authorizeRequest(options?: RequestInit): Promise<RequestInit> {
 
-        options.headers = new Headers(options.headers)
-
-        options.headers.set("Accept", 'application/json')
-        options.headers.set("Authorization", "Bearer " + (await this.validateAndRefreshToken(this.token)))
-
-        resolve(options)
-      } catch (e) {
-        // TODO Redirect to login
-        reject("Authentication failed")
+    try {
+      // Empty thing correction
+      if (!options) {
+        options = {}
       }
-    })
+
+      options.headers = new Headers(options.headers)
+
+      options.headers.set("Accept", "application/json")
+      options.headers.set("Authorization", "Bearer " + (await this.validateAndRefreshToken(this.token)))
+
+      return options
+    } catch (e) {
+      // TODO Redirect to login
+      throw new Error("Authentication failed")
+    }
   }
 
 
-  public login(login: LoginInformation) {
-    return new Promise<void>(async (resolve, reject) => {
-      // if (this.token) {
-      //   return resolve()
-      // }
-      try {
-        const user = new URLSearchParams()
-        user.append('username', login.Email)
-        user.append('password', login.Password)
-        user.append('grant_type', 'password')
+  public async login(login: LoginInformation) {
+    // if (this.token) {
+    //   return resolve()
+    // }
+    try {
+      const user = new URLSearchParams()
+      user.append("username", login.Email)
+      user.append("password", login.Password)
+      user.append("grant_type", "password")
 
 
-        const token = await fetch(API_URL + '/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          },
-          body: user.toString(),
-        })
-          .then(errorFunction)
-          .then((response) => response.json())
-          // .then(json => this.toLead(json))
+      const token = await fetch(API_URL + "/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        body: user.toString(),
+      })
+        .then(errorFunction)
+        .then((response) => response.json())
+        // .then(json => this.toLead(json))
 
-        this.token = token
+      this.token = token
 
-        resolve()
-      } catch (e) {
-        throw new Error("loginFailed")
-        console.error(e)
-      }
-    })
+      return
+    } catch (e) {
+      console.error(e)
+      throw new Error("loginFailed")
+    }
   }
 }
 

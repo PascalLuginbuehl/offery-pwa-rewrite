@@ -109,7 +109,7 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Pr
   return (
     <ErrorBoundary data={values}>
       <FormikForm>
-        <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
+        {/* <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} /> */}
 
         <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
           {children}

@@ -1,43 +1,43 @@
-import { createStyles, Theme } from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Paper from '@material-ui/core/Paper'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import Typography from '@material-ui/core/Typography'
-import LockIcon from '@material-ui/icons/LockOutlined'
-import React, { MouseEvent } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { createStyles, Theme } from "@material-ui/core"
+import Avatar from "@material-ui/core/Avatar"
+import Button from "@material-ui/core/Button"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Paper from "@material-ui/core/Paper"
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
+import Typography from "@material-ui/core/Typography"
+import LockIcon from "@material-ui/icons/LockOutlined"
+import React, { MouseEvent } from "react"
+import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl"
 
-import LoginService, { LoginInformation } from '../services/LoginService'
-import IntlTypography from './Intl/IntlTypography';
-import Validator from './Validator';
-import Submit from './Validator/Submit';
-import ValidatedTextField from './Validator/ValidatedTextField';
-import { handleChangeFunction } from './Validator/HandleChangeFunction';
-
-interface State extends LoginInformation {
-
-}
+import LoginService, { LoginInformation } from "../services/LoginService"
+import IntlTypography from "./Intl/IntlTypography"
+import Validator from "./Validator"
+import Submit from "./Validator/Submit"
+import ValidatedTextField from "./Validator/ValidatedTextField"
+import { handleChangeFunction } from "./Validator/HandleChangeFunction"
+import { WithResourceProps, withResource } from "../providers/withResource"
+import { FormikProps, Field, withFormik } from "formik"
+import Form from "./FormikFields/Form"
+import FormikTextField from "./FormikFields/FormikTextField"
 
 const styles = (theme: Theme) =>
   createStyles({
     layout: {
-      width: 'auto',
-      display: 'block', // Fix IE 11 issue.
+      width: "auto",
+      display: "block", // Fix IE 11 issue.
       marginLeft: theme.spacing(3),
       marginRight: theme.spacing(3),
       [theme.breakpoints.up(400 + theme.spacing(3) * 2)]: {
         width: 400,
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        marginLeft: "auto",
+        marginRight: "auto",
       },
     },
     paper: {
       marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
       padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`,
     },
     avatar: {
@@ -45,7 +45,7 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: '100%', // Fix IE 11 issue.
+      width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
     submit: {
@@ -53,35 +53,20 @@ const styles = (theme: Theme) =>
     },
   })
 
+interface Values  {
+  Email: string
+  Password: string
+}
 
-interface Props extends WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles>, InjectedIntlProps, WithResourceProps {
   onLoginSuccess: () => void
 }
 
-class Login extends React.Component<Props, State> {
-  public state = {
-    Email: "",
-    Password: "",
-  }
-
-  private handleSubmit = async (): Promise<void> => {
-
-    const promise = LoginService.login(this.state)
-    promise.then(e => this.props.onLoginSuccess())
-   // this.props.history.push("/")
-
-    return promise
-  }
-
-  private handleChange = handleChangeFunction<State>(this)
-
+class Login extends React.Component<Props & FormikProps<Values>> {
   public render() {
     const { classes } = this.props
-    const { Email, Password } = this.state
-
     return (
-      <React.Fragment>
-        <CssBaseline />
+      <>
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -90,54 +75,58 @@ class Login extends React.Component<Props, State> {
             <IntlTypography component="h1" variant="h5">
               SIGN_IN
             </IntlTypography>
-            <Validator>
-              <ValidatedTextField
-                required
-                fullWidth
-                noGrid
-                autoFocus
 
+            <Form>
+              <Field
+                label="EMAIL"
+                name="Email"
+                required
+
+                autoFocus
                 autoComplete="username"
 
-                value={Email}
-                name="Email"
-                label="EMAIL"
-                onChange={this.handleChange}
+                component={FormikTextField}
+                overrideGrid={{ xs: 12, md: undefined }}
               />
-
-              <ValidatedTextField
-                required
-                fullWidth
-                noGrid
-                type="password"
-                margin="normal"
-                autoComplete="current-password"
-                value={Password}
-                name="Password"
+              <Field
                 label="PASSWORD"
-                onChange={this.handleChange}
-              />
+                name="Password"
 
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
-              {/*
-              //@ts-ignore */}
-              <Submit
-                // fullWidth
-                // variant="contained"
-                // color="primary"
-                // className={classes.submit}
-                onSubmit={this.handleSubmit}
-              />
+                type="password"
+                autoComplete="current-password"
 
-            </Validator>
+                required
+                component={FormikTextField}
+                overrideGrid={{ xs: 12, md: undefined }}
+              />
+            </Form>
           </Paper>
         </main>
-      </React.Fragment>
+      </>
     )
   }
 }
 
-export default withStyles(styles)(Login)
+export default injectIntl(
+  withStyles(styles)(
+    withResource(
+      withFormik<Props, Values>({
+        mapPropsToValues: props => ({ Password: "", Email: "" }),
+
+        handleSubmit: async (values, actions) => {
+          try {
+            await LoginService.login(values)
+
+            actions.setSubmitting(false)
+
+            actions.resetForm()
+            actions.props.onLoginSuccess()
+          } catch (e) {
+            actions.setStatus(e)
+            console.log("asd")
+          }
+        },
+      })(Login)
+    )
+  )
+)
