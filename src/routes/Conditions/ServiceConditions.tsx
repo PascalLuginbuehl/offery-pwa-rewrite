@@ -155,6 +155,8 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
           <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
 
+          <Field label="HEAVY_LIFT_PRICE" name={`${prefix}.ServiceConditions.HeavyLiftPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }} />
+
           {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
             <>
               <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
