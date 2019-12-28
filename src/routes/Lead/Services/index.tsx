@@ -5,21 +5,21 @@ import { FormikProps, Field, withFormik } from "formik"
 import * as Yup from "yup"
 import Form from "../../../components/FormikFields/Form"
 import Submit from "../../../components/FormikFields/Submit"
-import { IPutServices } from "../../../interfaces/IService"
+import { IServices } from "../../../interfaces/IService"
 import PageHeader from "../../../components/PageHeader"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
-  data: IPutServices
-  onChangeAndSave: (data: IPutServices) => Promise<void>
+  data: IServices
+  onChangeAndSave: (data: IServices) => Promise<void>
   nextPage: () => void
 }
 
-class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
+class Index extends React.Component<Props & FormikProps<IServices>, {}> {
   public render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status } = this.props
+    // const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status } = this.props
 
     const { data } = this.props
 
@@ -45,7 +45,7 @@ class Index extends React.Component<Props & FormikProps<IPutServices>, {}> {
 
 export default withStyles(styles)(
   withResource(
-    withFormik<Props, IPutServices>({
+    withFormik<Props, IServices>({
       mapPropsToValues: props => props.data,
 
       handleSubmit: async (values, actions) => {

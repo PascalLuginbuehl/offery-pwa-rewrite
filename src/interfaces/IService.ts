@@ -71,26 +71,12 @@ export interface IStorageSerivce extends IPutStorageService {
   StorageServiceId: number
 }
 
-export interface IPutServices {
+export interface IServices {
   HasMoveServiceEnabled: boolean
   HasPackServiceEnabled: boolean
   HasStorageServiceEnabled: boolean
   HasDisposalServiceEnabled: boolean
   HasCleaningServiceEnabled: boolean
-  Comment: string
-}
-
-export interface IServices extends IPutServices {
-  LeadId: number
-}
-
-export const emptyServices: IPutServices = {
-  HasMoveServiceEnabled: false,
-  HasPackServiceEnabled: false,
-  HasStorageServiceEnabled: false,
-  HasDisposalServiceEnabled: false,
-  HasCleaningServiceEnabled: false,
-  Comment: ""
 }
 
 export const emptyMoveService: IPutMoveService = {

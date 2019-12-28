@@ -5,7 +5,6 @@ import LeadService from "../../services/LeadService"
 import LeadAPI, { ILeadContainer } from "./LeadAPI"
 import { emptyLead, ILead, IPutLead, IPostLead } from "../../interfaces/ILead"
 import { withResource, WithResourceProps } from "../../providers/withResource"
-import { emptyServices } from "../../interfaces/IService"
 import NewCustomer from "./Customer"
 import LeadPageOrder from "./CombinedRoutes/LeadPageOrder"
 import BuildingRoutes from "./CombinedRoutes/BuildingRoutes"
@@ -160,7 +159,7 @@ class Lead extends Component<Props, State> {
 
     // Check if lead is even defined
     if (container) {
-      const order = LeadPageOrder(container.Lead, container.services)
+      const order = LeadPageOrder(container.Lead, container.Lead.Services)
 
       let lastPage = { name: "" }
       for (let index = 0; index < order.length; index++) {
@@ -197,8 +196,6 @@ class Lead extends Component<Props, State> {
         cleaning: null,
         disposal: null,
         storage: null,
-
-        services: { LeadId: lead.LeadId, ...emptyServices },
 
         moveService: null,
         packService: null,

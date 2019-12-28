@@ -4,7 +4,7 @@ import { IPutLead, ILead } from "../../interfaces/ILead"
 import BuildingService from "../../services/BuildingService"
 import LeadService from "../../services/LeadService"
 import ServicesService from "../../services/ServicesService"
-import { IPutServices, IServices, IPutMoveService, IMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalService, IDisposalSerivce, IPutCleaningService, ICleaningService } from "../../interfaces/IService"
+import { IPutMoveService, IMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalService, IDisposalSerivce, IPutCleaningService, ICleaningService } from "../../interfaces/IService"
 import { IMaterialOrder } from "../../interfaces/IShop"
 import { IInventars } from "../../interfaces/IInventars"
 
@@ -17,7 +17,6 @@ interface LeadEditableValues {
   disposal: IDisposalOutBuilding | null
   storage: IStorageBuilding | null
 
-  services: IServices
   moveService: IMoveService | null
   materialOrder: IMaterialOrder | null
   inventory: IInventars | null
@@ -56,7 +55,6 @@ class LeadAPI {
       BuildingService.fetchCleaningBuilding(leadId),
       BuildingService.fetchStorageBuilding(leadId),
       BuildingService.fetchDisposalOutBuilding(leadId),
-      ServicesService.fetchServices(leadId),
       ServicesService.fetchMoveService(leadId),
       ServicesService.fetchMaterialOrder(leadId),
       ServicesService.fetchInventars(leadId),
@@ -65,7 +63,7 @@ class LeadAPI {
       ServicesService.fetchDisposalService(leadId),
       ServicesService.fetchCleaningService(leadId),
       // @ts-ignore
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, services, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
       lastUpdated: new Date(),
       onlySavedOffline: false,
       cachedInVersion: "",
@@ -81,8 +79,6 @@ class LeadAPI {
       disposal: disposal,
 
       storage: storage,
-
-      services: services,
 
       moveService: moveService,
 
@@ -154,10 +150,6 @@ class LeadAPI {
 
   SaveCleaning = (cleaning: ICleaningBuilding | IPostCleaningBuilding, leadId: number): Promise<ICleaningBuilding> => {
     return checkIs<ICleaningBuilding>(cleaning, "CleaningBuildingId") ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId)
-  }
-
-  SaveServices = (leadId: number, services: IPutServices) => {
-    return ServicesService.saveServices(leadId, services)
   }
 
   SaveMoveService = (leadId: number, moveService: IPutMoveService | null) => {

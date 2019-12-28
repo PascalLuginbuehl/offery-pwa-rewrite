@@ -28,7 +28,6 @@ interface Props {
 export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) {
   const {
     Lead,
-    services,
     moveOut,
     moveIn,
     storage,

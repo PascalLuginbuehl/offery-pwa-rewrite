@@ -25,7 +25,6 @@ interface Props {
 export default function ServiceRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) {
   const {
     Lead,
-    services,
     moveOut,
     moveIn,
     storage,
@@ -71,9 +70,10 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         render={routeProps => (
           <Services
             {...routeProps}
-            data={services}
+            data={Lead.Services}
             onChangeAndSave={serviceData => {
-              return handleChangeAndSave(serviceData, "services", LeadAPI.SaveServices(Lead.LeadId, serviceData))
+              const lead = { ...Lead, Services: serviceData }
+              return handleChangeAndSave(lead, "Lead", LeadAPI.SaveLead(lead))
             }}
             nextPage={redirectToNextPage("/services")}
           />

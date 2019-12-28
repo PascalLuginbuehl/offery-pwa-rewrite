@@ -1,6 +1,8 @@
 import { IPostAddress, IAddress } from "./IAddress"
 import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions } from "./IConditions"
 import { IOffer } from "./IOffer"
+import { IServices } from "./IService"
+import { FastField } from "formik"
 
 export interface IPostCustomer {
   Firstname: string
@@ -50,6 +52,8 @@ export interface IPutLead extends IPostLead {
   DisposalServiceConditions: IDisposalServiceConditions
   StorageServiceConditions: IStorageServiceConditions
   CleaningServiceConditions: ICleaningServiceConditions
+
+  Services: IServices
 
 }
 
