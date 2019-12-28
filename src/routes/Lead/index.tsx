@@ -13,6 +13,7 @@ import ServiceRoutes from "./CombinedRoutes/ServiceRoutes"
 import ConditionRoutes from "./CombinedRoutes/ConditionRoutes"
 import Navigation from "./CombinedRoutes/Navigation"
 import ReactDOM from "react-dom"
+import LeadOverview from "./LeadOverview"
 
 interface State {
   container: ILeadContainer | null
@@ -271,6 +272,18 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
+          {/* Move-Out */}
+          <Route
+            exact
+            path={`${match.url}/`}
+            render={routeProps => (
+              <LeadOverview
+                {...routeProps}
+                lead={container.Lead}
+              />
+            )}
+          />
+
           <BuildingRoutes
             handleChange={this.handleChange}
             leadContainer={container}
