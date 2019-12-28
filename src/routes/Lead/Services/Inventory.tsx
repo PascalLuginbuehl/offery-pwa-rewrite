@@ -1,50 +1,27 @@
-import {
-  createStyles,
-  Tab,
-  Tabs,
-  Theme,
-  WithStyles,
-  withStyles,
-  Grid,
-  Button,
-  InputAdornment,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  ButtonBase,
-  Paper,
-  IconButton,
-  TextField as MuiTextfield,
-  Toolbar,
-  Divider,
-  Chip,
-} from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip } from "@material-ui/core"
 import * as React from "react"
-import { withResource, WithResourceProps } from "../../../providers/withResource";
-import IntlTypography from "../../../components/Intl/IntlTypography";
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, ArrayHelpers, FieldArray } from "formik";
+import { withResource, WithResourceProps } from "../../../providers/withResource"
+import IntlTypography from "../../../components/Intl/IntlTypography"
+import { FormikProps, withFormik, ArrayHelpers, FieldArray } from "formik"
 import * as Yup from "yup"
-import Form from "../../../components/FormikFields/Form";
-import Submit from "../../../components/FormikFields/Submit";
+import Form from "../../../components/FormikFields/Form"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
-import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl";
-import InventoryCategoryFolder from "../../../components/Inventory/InventoryCategoryFolder";
-import { IFurnitureCategory, IFurniture } from "../../../interfaces/IResource";
-import InventoryItems from "../../../components/Inventory/InventoryItems";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import InventoryCategoryFolder from "../../../components/Inventory/InventoryCategoryFolder"
+import { IFurnitureCategory, IFurniture } from "../../../interfaces/IResource"
+import InventoryItems from "../../../components/Inventory/InventoryItems"
+import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import chunk from "chunk"
-import SwipeableViews from "react-swipeable-views";
-import withWidth, { WithWidthProps, isWidthUp, isWidthDown } from "@material-ui/core/withWidth"
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
-import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
+import SwipeableViews from "react-swipeable-views"
+import withWidth, { WithWidthProps, isWidthDown } from "@material-ui/core/withWidth"
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
+import ChevronRightIcon from "@material-ui/icons/ChevronRight"
+import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked"
+import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked"
 import { IInventars, InventoryKeysEnum, IInventar } from "../../../interfaces/IInventars"
-import clsx from "clsx";
-import PageHeader from "../../../components/PageHeader";
+import clsx from "clsx"
+import PageHeader from "../../../components/PageHeader"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -67,27 +44,27 @@ const styles = (theme: Theme) =>
     },
   })
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
+interface _IProps extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
   onChangeAndSave: (data: IInventars) => Promise<void>
   initalInventoryTypeKey: InventoryKeysEnum
   inventory: IInventars
   nextPage: () => void
 }
 
-interface State {
+interface _IState {
   currentlyOpenInventory: InventoryKeysEnum
   selectedFurnitureCategory: IFurnitureCategory | null
   index: number
 }
 
-class Inventory extends React.Component<Props & FormikProps<IInventars>, State> {
-  state: State = {
+class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _IState> {
+  state: _IState = {
     currentlyOpenInventory: InventoryKeysEnum.Move,
     selectedFurnitureCategory: null,
     index: 0,
   }
 
-  constructor(props: Props & FormikProps<IInventars>) {
+  constructor(props: _IProps & FormikProps<IInventars>) {
     super(props)
 
     this.state.currentlyOpenInventory = props.initalInventoryTypeKey
@@ -203,7 +180,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
   }
 
   public render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, selectedCompany, intl, width, classes } = this.props
+    const { resource, selectedCompany, intl, width, classes } = this.props
 
     const selectedItemList = this.getSelectedList()
 
@@ -218,14 +195,14 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
           <Grid item xs={12}>
             <Toolbar disableGutters variant="dense">
               {selectedFurnitureCategory ? (
-                    <IconButton
-                      onClick={() => this.openCatergory(null)}
-                      classes={{ root: classes.buttonSmallPadding }}
-                    >
+                <IconButton
+                  onClick={() => this.openCatergory(null)}
+                  classes={{ root: classes.buttonSmallPadding }}
+                >
                   <ArrowBackIcon />
-                    </IconButton>
-                  )
-                  : null
+                </IconButton>
+              )
+                : null
               }
               &nbsp;
               <IntlTypography variant="h6">{selectedFurnitureCategory ? selectedFurnitureCategory.NameTextKey : "SELECT_CATEGORY"}</IntlTypography>
@@ -244,7 +221,7 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
               <FieldArray
                 name={currentlyOpenInventory}
                 render={(arrayHelpers: ArrayHelpers) => (
-                    <>
+                  <>
                     <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                       {chunk(
                         selectedFurnitureCategory.Furnitures.map((furniture, index) => (
@@ -257,8 +234,9 @@ class Inventory extends React.Component<Props & FormikProps<IInventars>, State> 
                           />
                         )),
                         this.getBreakpointWith() * 3)
-                          .map((chunkedItems, index) => (<div key={index}><Grid style={{ margin: 0, width: "100%" }} container spacing={1}>{chunkedItems}</Grid></div>)
-                      )}
+                        .map((chunkedItems, index) => (<div key={index}><Grid style={{ margin: 0, width: "100%" }} container spacing={1}>{chunkedItems}</Grid></div>)
+                        )
+                      }
                     </SwipeableViews>
 
                     <div className={classes.centeredNavigationContainer}>
@@ -362,7 +340,7 @@ export default withWidth()(
   injectIntl(
     withStyles(styles, { name: "MoveShop" })(
       withResource(
-        withFormik<Props, IInventars>({
+        withFormik<_IProps, IInventars>({
           mapPropsToValues: props => props.inventory,
           handleSubmit: async (values, actions) => {
             try {

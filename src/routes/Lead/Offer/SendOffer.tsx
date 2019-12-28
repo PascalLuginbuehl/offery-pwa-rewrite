@@ -1,41 +1,13 @@
 import * as React from "react"
-import {
-  createStyles,
-  Theme,
-  WithStyles,
-  withStyles,
-  Grid,
-  TextField as MuiTextField,
-  Divider,
-  Typography,
-  Button,
-  ListItem,
-  List,
-  IconButton,
-  ListItemText,
-  ListItemSecondaryAction,
-  TextField,
-  ListSubheader,
-} from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
-import { IPostMoveInBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
-import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
-import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-
-import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import { IPostLead, ILead } from "../../../interfaces/ILead"
-import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
-import IntlTypography from "../../../components/Intl/IntlTypography"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
-import { IAddress } from "../../../interfaces/IAddress"
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../../services/LeadService"
 import SelectAddress from "../../../components/FormikFields/Bundled/SelectAddress"

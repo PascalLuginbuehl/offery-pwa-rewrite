@@ -51,6 +51,12 @@
         "allowUnderscorePrefix": true
       }
     ],
+    "@typescript-eslint/class-name-casing": [
+      "warn",
+      {
+        "allowUnderscorePrefix": true
+      }
+    ],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {

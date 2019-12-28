@@ -13,6 +13,8 @@ export interface IServiceConditions {
   Expenses: number | null
   DiscountInPercent: number | null
 
+  PaymentMethodId: number | null
+
   HeavyLiftPrice: number | null
 }
 
@@ -103,6 +105,8 @@ export const emptyServiceConditions: IServiceConditions = {
   EstimatedHoursOfWorkWhenFixPrice: null,
   WorkersAmount: null,
   DriveHours: null,
+
+  PaymentMethodId: null,
 
   CostCeilingHoursOfWork: null,
   FixPrice: null,

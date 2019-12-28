@@ -267,3 +267,4 @@ FLOOR_TYPE,Floor type,Bodenbelag
 CELLAR,Cellar,Keller
 HEAVY_LIFT_PRICE,Heavy lift price,Schwergüter-Zuschlag
 HEAVY_LIFT_SERVICE,Heavy liuft service,Schwergüter-Zuschlag
+PAYMENT_METHOD,Payment method,Zahlungsmethode

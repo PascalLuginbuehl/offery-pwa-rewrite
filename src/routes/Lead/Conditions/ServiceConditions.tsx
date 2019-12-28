@@ -11,6 +11,7 @@ import { Field } from "formik"
 import CarSelection from "./CarSelection"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import RemoveIcon from "@material-ui/icons/Remove"
+import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 
 interface Props<Values extends { ServiceConditions: IServiceConditions }> extends InjectedIntlProps, WithResourceProps {
   setFieldValue: (field: keyof Values | any, value: any) => void
@@ -55,6 +56,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       values,
       children,
 
+      resource,
       prefix,
       commentPrefix,
 
@@ -193,6 +195,13 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             </Grid>
           )}
         </FormikGroups>
+
+        <Field
+          label="PAYMENT_METHOD"
+          name={`${prefix}.ServiceConditions.PaymentMethodId`}
+          component={FormikSimpleSelect}
+          options={resource.PaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
+        />
 
         <Field name={`${commentPrefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
       </>

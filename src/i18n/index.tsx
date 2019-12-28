@@ -1,8 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import translations from '-!csv-loader!./translations.csv' // eslint-disable-line import/no-webpack-loader-syntax
-import { addLocaleData } from 'react-intl'
-import * as de from 'react-intl/locale-data/de'
-import * as en from 'react-intl/locale-data/en'
+import translations from "-!csv-loader!./translations.csv" // eslint-disable-line import/no-webpack-loader-syntax
+import { addLocaleData } from "react-intl"
+import * as de from "react-intl/locale-data/de"
+import * as en from "react-intl/locale-data/en"
 
 // Get all language Keys
 const langs = translations[0]

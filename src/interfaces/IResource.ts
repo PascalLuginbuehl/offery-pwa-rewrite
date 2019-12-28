@@ -1,7 +1,8 @@
 import { ICompany } from "./ICompany"
 import { IText } from "./IText"
 import { IUser } from "./IUser"
-import { IFSize, IFMaterial } from "./IInventars";
+import { IFSize, IFMaterial } from "./IInventars"
+import { number } from "prop-types"
 
 export interface IBuildingAge {
   BuildingAgeId: number
@@ -51,6 +52,11 @@ export interface IBuildingTypeDetail extends IMasterThing {
   BuildingTypeDetailId: number
 }
 
+export interface IPaymentMethod {
+  PaymentMethodId: number
+  NameTextKey: string
+}
+
 export interface IFurniture {
   FurnitureId: number
   NameTextKey: string
@@ -81,4 +87,5 @@ export interface IResource {
   BuiltInWardrobeRanges: IBuiltInWardrobeRange[]
   BuildingTypeDetails: IBuildingTypeDetail[]
   FurnitureCategories: IFurnitureCategory[]
+  PaymentMethods: IPaymentMethod[]
 }
