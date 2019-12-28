@@ -1,6 +1,6 @@
 import { IVisitConfirmation } from "../interfaces/IVisitConfirmation"
 import { errorFunction } from "./errorFunction"
-import { ILead, IPostLead, IUpdateLead, ICompressedLead } from "../interfaces/ILead"
+import { ILead, IPutLead, IUpdateLead, ICompressedLead, IPostLead } from "../interfaces/ILead"
 import LoginService from "./LoginService"
 import { format } from "date-fns/esm"
 
@@ -47,7 +47,7 @@ class LeadService {
     return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss") : null
   }
 
-  private sendData(lead: IPostLead) {
+  private sendData(lead: IPostLead | IPutLead) {
     const returnObject: any = { ...lead }
 
     returnObject.DeliveryDate = this.formatDate(lead.DeliveryDate)

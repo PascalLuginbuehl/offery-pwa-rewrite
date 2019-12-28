@@ -7,7 +7,7 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import { IPostLead, ILead } from "../../../interfaces/ILead"
+import { IPutLead, ILead } from "../../../interfaces/ILead"
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../../services/LeadService"
 import SelectAddress from "../../../components/FormikFields/Bundled/SelectAddress"

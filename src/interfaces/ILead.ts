@@ -1,5 +1,5 @@
 import { IPostAddress, IAddress } from "./IAddress"
-import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions, emptyMoveServiceConditions, emptyPackServiceConditions, emptyDisposalServiceConditions, emptyCleaningServiceConditions, emptyStorageServiceConditions } from "./IConditions"
+import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions } from "./IConditions"
 import { IOffer } from "./IOffer"
 
 export interface IPostCustomer {
@@ -24,10 +24,8 @@ export interface IStatus {
 export interface ICustomer extends IUpdateCustomer {
   CustomerId: number
 }
-
 export interface IPostLead {
   Customer: IPostCustomer
-
   VisitDate: Date | null
   MoveDate: Date | null
   PackServiceDate: Date | null
@@ -43,16 +41,19 @@ export interface IPostLead {
   HasCleaningBuilding: boolean
   HasDisposalOutBuilding: boolean
 
+  Comment: string
+}
+
+export interface IPutLead extends IPostLead {
   MoveServiceConditions: IMoveServiceConditions
   PackServiceConditions: IPackServiceConditions
   DisposalServiceConditions: IDisposalServiceConditions
   StorageServiceConditions: IStorageServiceConditions
   CleaningServiceConditions: ICleaningServiceConditions
 
-  Comment: string
 }
 
-export interface IUpdateLead extends IPostLead {
+export interface IUpdateLead extends IPutLead {
   LeadId: number
   Customer: IUpdateCustomer
 }
@@ -86,6 +87,15 @@ export interface ILead extends ICompressedLead {
   Offers: IOffer[]
 }
 
+export const emptyCustomer: IPostCustomer = {
+  Firstname: "",
+  Lastname: "",
+  IsMale: true,
+  CompanyName: "",
+  TelephoneNumber: "",
+  Email: "",
+  PrefferedLanguage: "DE"
+}
 
 export const emptyLead: IPostLead = {
   VisitDate: null,
@@ -96,27 +106,14 @@ export const emptyLead: IPostLead = {
   CleaningDate: null,
   HandOverDate: null,
   DeliveryDate: null,
+
   Comment: "",
 
-  Customer: {
-    Firstname: "",
-    Lastname: "",
-    IsMale: true,
-    CompanyName: "",
-    TelephoneNumber: "",
-    Email: "",
-    PrefferedLanguage: "DE"
-  },
+  Customer: emptyCustomer,
 
   HasCleaningBuilding: false,
   HasDisposalOutBuilding: false,
   HasMoveInBuilding: true,
   HasMoveOutBuilding: true,
   HasStorageInBuilding: false,
-
-  MoveServiceConditions: emptyMoveServiceConditions,
-  PackServiceConditions: emptyPackServiceConditions,
-  DisposalServiceConditions: emptyDisposalServiceConditions,
-  StorageServiceConditions: emptyStorageServiceConditions,
-  CleaningServiceConditions: emptyCleaningServiceConditions,
 }

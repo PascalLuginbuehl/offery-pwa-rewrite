@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Route } from "react-router"
-import NewCustomer from "../Customer/NewCustomer"
+import NewCustomer from "../Customer"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import MoveOutBuilding from "../Customer/MoveOutBuilding"
 import EmailConfirmation from "../Customer/EmailConfirmation"

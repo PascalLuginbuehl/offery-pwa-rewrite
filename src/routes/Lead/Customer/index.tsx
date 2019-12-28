@@ -13,10 +13,8 @@ import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
-import { IPostLead } from "../../../interfaces/ILead"
+import { IPutLead, IPostLead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
-import { continueStatement } from "@babel/types"
-import HttpErrorHandler from "../../../components/HttpErrorHandler"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -121,6 +119,7 @@ export default injectIntl(
         handleSubmit: async (values, actions) => {
           try {
             await actions.props.onChangeAndSave(values)
+
             actions.setSubmitting(false)
             actions.resetForm()
             actions.props.nextPage()

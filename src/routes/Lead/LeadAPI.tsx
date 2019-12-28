@@ -1,26 +1,10 @@
 import { get, set } from "idb-keyval"
-import {
-  IMoveOutBuilding,
-  IMoveInBuilding,
-  ICleaningBuilding,
-  IDisposalOutBuilding,
-  IStorageBuilding,
-  emptyMoveOutBuilding,
-  IPostStorageBuilding,
-  IPostDisposalOutBuilding,
-  IPostCleaningBuilding,
-  IPostMoveInBuilding,
-  IPostMoveOutBuilding,
-  emptyMoveInBuilding,
-  emptyCleaningBuilding,
-  emptyDisposalOutBuilding,
-  emptyStorageBuilding,
-} from "../../interfaces/IBuilding"
-import { IPostLead, emptyLead, ILead } from "../../interfaces/ILead"
+import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding, IPostStorageBuilding, IPostDisposalOutBuilding, IPostCleaningBuilding, IPostMoveInBuilding, IPostMoveOutBuilding } from "../../interfaces/IBuilding"
+import { IPutLead, ILead } from "../../interfaces/ILead"
 import BuildingService from "../../services/BuildingService"
 import LeadService from "../../services/LeadService"
 import ServicesService from "../../services/ServicesService"
-import { emptyServices, IPutServices, IServices, IPutMoveService, IMoveService, emptyMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalService, IDisposalSerivce, IPutCleaningService, ICleaningService } from "../../interfaces/IService"
+import { IPutServices, IServices, IPutMoveService, IMoveService, IPackSerivce, IPutPackService, IPutStorageService, IStorageSerivce, IPutDisposalService, IDisposalSerivce, IPutCleaningService, ICleaningService } from "../../interfaces/IService"
 import { IMaterialOrder } from "../../interfaces/IShop"
 import { IInventars } from "../../interfaces/IInventars"
 
@@ -220,7 +204,7 @@ class LeadAPI {
 
   }
 
-  isCompleteLead = (lead: IPostLead | ILead | null): lead is ILead => {
+  isCompleteLead = (lead: IPutLead | ILead | null): lead is ILead => {
     if(lead) {
       return lead.hasOwnProperty("LeadId")
     }

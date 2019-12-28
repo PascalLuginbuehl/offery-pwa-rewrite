@@ -14,7 +14,7 @@ import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSel
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
-import { IPostLead, ILead } from "../../../interfaces/ILead"
+import { IPutLead, ILead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
@@ -44,7 +44,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, selectedCompany, values, lead, buildingOptions } = this.props
+    const { selectedCompany, values, lead, buildingOptions } = this.props
     const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
     console.log(buildingOptions)
     return (
