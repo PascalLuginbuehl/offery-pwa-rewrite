@@ -83,9 +83,11 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
   }
 }
 
-interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, InjectedIntlProps {}
+interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, InjectedIntlProps {
+  routerDisabled?: boolean
+}
 
-const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Props) => {
+const Form: React.ComponentType<Props> = ({ classes, intl, width, children, routerDisabled }: Props) => {
   const { dirty } = useFormikContext()
 
   const handleUnload = (e: BeforeUnloadEvent) => {
@@ -109,7 +111,11 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children }: Pr
   return (
     <ErrorBoundary data={values}>
       <FormikForm>
-        <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
+        {routerDisabled ?
+          null
+          :
+          <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
+        }
 
         <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
           {children}

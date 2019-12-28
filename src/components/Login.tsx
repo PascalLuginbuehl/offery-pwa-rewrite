@@ -76,7 +76,7 @@ class Login extends React.Component<Props & FormikProps<Values>> {
               SIGN_IN
             </IntlTypography>
 
-            <Form>
+            <Form routerDisabled>
               <Field
                 label="EMAIL"
                 name="Email"

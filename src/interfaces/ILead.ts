@@ -54,7 +54,6 @@ export interface IPutLead extends IPostLead {
   CleaningServiceConditions: ICleaningServiceConditions
 
   Services: IServices
-
 }
 
 export interface IUpdateLead extends IPutLead {
