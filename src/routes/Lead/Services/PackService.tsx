@@ -43,6 +43,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="PACK_SERVICE" />
 
           <Field name="packService.HasOutService" label="WITH_UNPACK" component={FormikButtonCheckbox} />
+          <Field name="packService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.PackServiceDate" label="PACK_DATE" component={FormikDateTimePicker} />

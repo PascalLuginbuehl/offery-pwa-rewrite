@@ -63,9 +63,12 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
               </FormikGroups>
             ) : null}
 
-            {disposalService.FurnitureLiftService ? (
+            {disposalService.FurnitureLiftService || disposalService.HeavyLiftService ? (
               <FormikGroups label="PRICES" xs={6} md={3}>
-                <Field label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 12 }} />
+                {disposalService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 12 }} /> : null }
+
+                {disposalService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="disposalService.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+
               </FormikGroups>
             ) : null}
 

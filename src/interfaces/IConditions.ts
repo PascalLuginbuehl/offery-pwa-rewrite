@@ -1,17 +1,17 @@
 export interface IServiceConditions {
-  IsHourlyRate: boolean;
-  HasCostCeiling: boolean;
-  PricePerHour: number | null;
-  MinHoursOfWork: number | null;
-  MaxHoursOfWork: number | null;
-  EstimatedHoursOfWorkWhenFixPrice: number | null;
-  WorkersAmount: number | null;
-  DriveHours: number | null;
+  IsHourlyRate: boolean
+  HasCostCeiling: boolean
+  PricePerHour: number | null
+  MinHoursOfWork: number | null
+  MaxHoursOfWork: number | null
+  EstimatedHoursOfWorkWhenFixPrice: number | null
+  WorkersAmount: number | null
+  DriveHours: number | null
 
-  CostCeiling: number | null;
-  FixPrice: number | null;
-  Expenses: number | null;
-  DiscountInPercent: number | null;
+  CostCeilingHoursOfWork: number | null
+  FixPrice: number | null
+  Expenses: number | null
+  DiscountInPercent: number | null
 
   HeavyLiftPrice: number | null
 }
@@ -104,13 +104,13 @@ export const emptyServiceConditions: IServiceConditions = {
   WorkersAmount: null,
   DriveHours: null,
 
-  CostCeiling: null,
+  CostCeilingHoursOfWork: null,
   FixPrice: null,
   Expenses: null,
   DiscountInPercent: null,
 
   HeavyLiftPrice: null,
-};
+}
 
 export const emptyMoveServiceConditions: IMoveServiceConditions = {
   ServiceConditions: emptyServiceConditions,

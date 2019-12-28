@@ -2,13 +2,16 @@ import * as React from "react"
 import Form from "../../../components/FormikFields/Form"
 import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { FormikProps, withFormik } from "formik"
+import { FormikProps, withFormik, Field } from "formik"
 import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
 import { IPackServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, InjectedIntlProps } from "react-intl"
 import ServiceConditions from "./ServiceConditions"
 import { IPutPackService } from "../../../interfaces/IService"
+import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
+import PackService from "../Services/PackService"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -26,7 +29,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values, isSubmitting, status, setFieldValue, selectedCompany } = this.props
+    const { values, isSubmitting, status, setFieldValue, selectedCompany, packService } = this.props
 
     return (
       <Grid item xs={12}>
@@ -41,7 +44,11 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
             setFieldValue={setFieldValue}
             values={values.packConditions}
           >
-            {/**/}
+            {packService.HeavyLiftService ?
+              <FormikGroups label="PRICES" xs={12} md={6}>
+                {packService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="packService.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+              </FormikGroups>
+              : null }
           </ServiceConditions>
         </Form>
       </Grid>

@@ -35,7 +35,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, storageService, buildingOptions } = this.props
+    const { resource, storageService, buildingOptions } = this.props
 
     return (
       <Grid item xs={12}>
@@ -48,6 +48,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="storageService.PianoService" label="PIANO" component={FormikButtonCheckbox} />
           <Field name="storageService.MontageService" label="MONTAGE" component={FormikButtonCheckbox} />
           <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
+          <Field name="storageService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />

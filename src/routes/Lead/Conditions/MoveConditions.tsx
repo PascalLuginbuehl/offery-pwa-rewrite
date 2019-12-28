@@ -64,7 +64,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
               </FormikGroups>
             ) : null}
 
-            {moveService.FurnitureLiftService || moveService.PianoService || moveService.MontageService || moveService.DeMontageService ? (
+            {moveService.FurnitureLiftService || moveService.PianoService || moveService.MontageService || moveService.DeMontageService || moveService.HeavyLiftService ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
                 {moveService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="moveConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
 
@@ -73,6 +73,9 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                 {moveService.MontageService ? <Field label="MONTAGE_SERVICE" name="moveConditions.MontageServicePrice" component={FormikPrice} /> : null}
 
                 {moveService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="moveConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
+
+                {moveService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="moveConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+
               </FormikGroups>
             ) : null}
           </ServiceConditions>

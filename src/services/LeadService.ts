@@ -1,4 +1,4 @@
-import { IVisitConfirmation } from '../interfaces/IVisitConfirmation';
+import { IVisitConfirmation } from "../interfaces/IVisitConfirmation"
 import { errorFunction } from "./errorFunction"
 import { ILead, IPostLead, IUpdateLead, ICompressedLead } from "../interfaces/ILead"
 import LoginService from "./LoginService"
@@ -48,7 +48,7 @@ class LeadService {
   }
 
   private sendData(lead: IPostLead) {
-    let returnObject: any = { ...lead }
+    const returnObject: any = { ...lead }
 
     returnObject.DeliveryDate = this.formatDate(lead.DeliveryDate)
     returnObject.CleaningDate = this.formatDate(lead.CleaningDate)

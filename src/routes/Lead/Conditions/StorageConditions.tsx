@@ -68,7 +68,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
               </FormikGroups>
             ) : null}
 
-            {storageService.FurnitureLiftService || storageService.PianoService || storageService.MontageService || storageService.DeMontageService ? (
+            {storageService.FurnitureLiftService || storageService.PianoService || storageService.MontageService || storageService.DeMontageService || storageService.HeavyLiftService ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
                 {storageService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
 
@@ -77,6 +77,9 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
                 {storageService.MontageService ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
 
                 {storageService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
+
+                {storageService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="storageService.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+
               </FormikGroups>
             ) : null}
           </ServiceConditions>

@@ -5,6 +5,7 @@ export interface IPutMoveService {
   MontageService: boolean
   DeMontageService: boolean
   LampDemontageService: boolean
+  HeavyLiftService: boolean
   BoreService: boolean
   Comment: string
 }
@@ -34,6 +35,7 @@ export interface ICleaningService extends IPutCleaningService {
 
 export interface IPutDisposalService {
   DisposalDate: Date | null
+  HeavyLiftService: boolean
   FurnitureLiftService: boolean
   DeMontage: boolean
   LampDemontageService: boolean
@@ -44,6 +46,7 @@ export interface IDisposalSerivce extends IPutDisposalService {
 }
 
 export interface IPutPackService {
+  HeavyLiftService: boolean
   PackServiceDate: Date | null
   HasOutService: boolean
   Comment: string
@@ -53,6 +56,7 @@ export interface IPackSerivce extends IPutPackService {
 }
 
 export interface IPutStorageService {
+  HeavyLiftService: boolean
   StorageDate: string | null
   FurnitureLiftService: boolean
   PianoService: boolean
@@ -90,6 +94,7 @@ export const emptyServices: IPutServices = {
 }
 
 export const emptyMoveService: IPutMoveService = {
+  HeavyLiftService: false,
   BoreService: false,
   DeMontageService: false,
   FurnitureLiftService: false,
@@ -101,12 +106,14 @@ export const emptyMoveService: IPutMoveService = {
 }
 
 export const emptyPackService: IPutPackService = {
+  HeavyLiftService: false,
   HasOutService: false,
   PackServiceDate: null,
   Comment: ""
 }
 
 export const emptyStorageService: IPutStorageService = {
+  HeavyLiftService: false,
   BoreService: false,
   DeMontageService: false,
   FurnitureLiftService: false,
@@ -118,6 +125,7 @@ export const emptyStorageService: IPutStorageService = {
 }
 
 export const emptyDisposalService: IPutDisposalService = {
+  HeavyLiftService: false,
   DeMontage: false,
   FurnitureLiftService: false,
   LampDemontageService: false,

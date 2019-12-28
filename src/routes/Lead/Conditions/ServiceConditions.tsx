@@ -144,6 +144,11 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
               adornmentText="h"
               overrideGrid={{ xs: 7, md: undefined }}
             />
+
+            {values.ServiceConditions.HasCostCeiling ? (
+              <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeilingHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 4, md: undefined }} />
+            ) : null}
+
           </FormikGroups>
         ) : null}
 
@@ -154,8 +159,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           ) : null}
 
           <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
-
-          <Field label="HEAVY_LIFT_PRICE" name={`${prefix}.ServiceConditions.HeavyLiftPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }} />
 
           {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
             <>
@@ -189,10 +192,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
               />
             </Grid>
           )}
-
-          {values.ServiceConditions.HasCostCeiling ? (
-            <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeiling`} component={FormikPrice} overrideGrid={{ xs: 4, md: undefined }} />
-          ) : null}
         </FormikGroups>
 
         <Field name={`${commentPrefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />

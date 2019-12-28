@@ -46,16 +46,12 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="MOVE_SERVICE" />
 
           <Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />
-
           <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={FormikButtonCheckbox} />
-
           <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={FormikButtonCheckbox} />
-
           <Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />
-
           <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />
-
           <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />
+          <Field name="moveService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />

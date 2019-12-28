@@ -43,6 +43,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
           <Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
           <Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />
+          <Field name="disposalService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
