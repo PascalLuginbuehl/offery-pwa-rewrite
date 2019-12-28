@@ -7,6 +7,7 @@ import PageHeader from "../../components/PageHeader"
 import IntlTypography from "../../components/Intl/IntlTypography"
 import { ILead } from "../../interfaces/ILead"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
+import ServiceIcons from "../../components/Dashboard/ServiceIcons"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -43,7 +44,7 @@ class LeadOverview extends React.Component<Props> {
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">SERVICES</TableCell>
-                  <TableCell>{lead.Customer.Firstname}</TableCell>
+                  <TableCell><ServiceIcons test={1} /></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">STATUS</TableCell>
@@ -58,6 +59,22 @@ class LeadOverview extends React.Component<Props> {
           </FormikGroups>
 
           <FormikGroups label="STATE_HISTORY" xs={12} md={6}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>STATUS</TableCell>
+                  <TableCell>DATE</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {lead.StatusHistories.map(e => (
+                  <TableRow key={e.StatusHistoryId}>
+                    <TableCell>{e.Status.NameTextKey}</TableCell>
+                    <TableCell><FormattedDate value={e.Created} /></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </FormikGroups>
 
         </Grid>
