@@ -30,6 +30,7 @@
     "formik": "^2.0.3",
     "formik-material-ui": "1.0.0",
     "idb-keyval": "^3.2.0",
+    "lottie-react-web": "^2.1.4",
     "papaparse": "^5.1.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",

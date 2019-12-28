@@ -9,6 +9,8 @@ import { ILead } from "../../interfaces/ILead"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import ServiceIcons from "../../components/Dashboard/ServiceIcons"
 import IntlTableCell from "../../components/Intl/IntlTableCell"
+import animation from "../../components/lottie/433-checked-done.json"
+import Lottie from "lottie-react-web"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -61,8 +63,8 @@ class LeadOverview extends React.Component<Props> {
             </Grid>
           </FormikGroups>
 
-          <FormikGroups label="STATE_HISTORY" xs={12} md={6}>
-            <Table size="small" aria-label="a dense table">
+          <FormikGroups label="STATE_HISTORY" xs={12}>
+            <Table size="small">
               <TableHead>
                 <TableRow>
                   <IntlTableCell>STATUS</IntlTableCell>
@@ -79,6 +81,15 @@ class LeadOverview extends React.Component<Props> {
               </TableBody>
             </Table>
           </FormikGroups>
+
+          <Lottie
+            height={128}
+            width={128}
+            options={{
+              animationData: animation,
+              loop: false,
+            }}
+          />
 
         </Grid>
       </Grid>
