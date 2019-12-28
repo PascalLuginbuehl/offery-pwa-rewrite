@@ -12,7 +12,7 @@ import MobileDashboard from "../components/Dashboard/MobileDashboard"
 import { keys, get } from "idb-keyval"
 import CloudOffIcon from "@material-ui/icons/CloudOff"
 import ArchiveIcon from "@material-ui/icons/Archive"
-import LeadAPI, { ILeadContainer } from "./LeadAPI"
+import LeadAPI, { ILeadContainer } from "./Lead/LeadAPI"
 
 const styles = (theme: Theme) =>
   createStyles({
