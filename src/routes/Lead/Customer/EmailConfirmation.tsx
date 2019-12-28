@@ -102,7 +102,10 @@ export default injectIntl(
   withStyles(styles)(
     withResource(
       withFormik<Props, Values>({
-        mapPropsToValues: props => ({ AddressId: null, Comment: "" }),
+        mapPropsToValues: props => {
+          const { lead: { FromAddress } } = props
+          return { AddressId: FromAddress ? FromAddress.AddressId : null, Comment: "" }
+        },
 
         handleSubmit: (values, actions) => {
           try {
