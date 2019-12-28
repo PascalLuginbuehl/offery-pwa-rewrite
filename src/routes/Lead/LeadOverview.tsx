@@ -8,6 +8,7 @@ import IntlTypography from "../../components/Intl/IntlTypography"
 import { ILead } from "../../interfaces/ILead"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import ServiceIcons from "../../components/Dashboard/ServiceIcons"
+import IntlTableCell from "../../components/Intl/IntlTableCell"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -31,45 +32,47 @@ class LeadOverview extends React.Component<Props> {
 
               <TableBody>
                 <TableRow>
-                  <TableCell component="th" scope="row">FIRST_LASTNAME</TableCell>
+                  <IntlTableCell component="th" scope="row">FIRST_LASTNAME</IntlTableCell>
                   <TableCell>{lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th" scope="row">FROM_TO</TableCell>
+                  <IntlTableCell component="th" scope="row">FROM_TO</IntlTableCell>
                   <TableCell>{lead.FromAddress ? lead.FromAddress.Street : "Not set"} {lead.ToAddress ? lead.ToAddress.Street : "Not set"}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th" scope="row">VISITING_DATE</TableCell>
+                  <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
                   <TableCell><FormattedDate value={lead.VisitDate} /></TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th" scope="row">SERVICES</TableCell>
+                  <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
                   <TableCell><ServiceIcons test={1} /></TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th" scope="row">STATUS</TableCell>
-                  <TableCell>{lead.Status.NameTextKey}</TableCell>
+                  <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
+                  <IntlTableCell>{lead.Status.NameTextKey}</IntlTableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </FormikGroups>
 
-          <FormikGroups label="LEAD_STATUS" xs={12} md={6}>
-
+          <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
+            <Grid item xs={12}>
+              <IntlTypography>TEST</IntlTypography>
+            </Grid>
           </FormikGroups>
 
           <FormikGroups label="STATE_HISTORY" xs={12} md={6}>
             <Table size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell>STATUS</TableCell>
-                  <TableCell>DATE</TableCell>
+                  <IntlTableCell>STATUS</IntlTableCell>
+                  <IntlTableCell>DATE</IntlTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {lead.StatusHistories.map(e => (
                   <TableRow key={e.StatusHistoryId}>
-                    <TableCell>{e.Status.NameTextKey}</TableCell>
+                    <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
                     <TableCell><FormattedDate value={e.Created} /></TableCell>
                   </TableRow>
                 ))}
