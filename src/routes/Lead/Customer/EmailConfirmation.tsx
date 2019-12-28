@@ -53,10 +53,11 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="EMAIL_CONFIRMATION" />
           <Grid item xs={12}>
             <Typography>
-              <FormattedMessage id={VisitConfirmEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
+              <b><FormattedMessage id={VisitConfirmEmailSubjectTextKey} values={{ br: <br /> }} /></b>
             </Typography>
+
             <Typography>
-              <FormattedMessage id={VisitConfirmEmailSubjectTextKey} values={{ br: <br /> }} />
+              <FormattedMessage id={VisitConfirmEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
             </Typography>
 
             <IntlTypography>VISITING_DATE</IntlTypography>

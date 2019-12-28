@@ -59,12 +59,13 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
         <Form>
           <PageHeader title="SEND_OFFER" />
           <Grid item xs={12}>
+
             <Typography>
-              <FormattedMessage id={OfferEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
+              <b><FormattedMessage id={OfferEmailSubjectTextKey} values={{ br: <br /> }} /></b>
             </Typography>
 
             <Typography>
-              <FormattedMessage id={OfferEmailSubjectTextKey} values={{ br: <br /> }} />
+              <FormattedMessage id={OfferEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
             </Typography>
 
             <Typography>
