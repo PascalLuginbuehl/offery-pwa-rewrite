@@ -46,7 +46,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
           >
             {packService.HeavyLiftService ?
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {packService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="packService.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {packService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="packConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
               </FormikGroups>
               : null }
           </ServiceConditions>

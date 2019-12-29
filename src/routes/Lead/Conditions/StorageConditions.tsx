@@ -78,7 +78,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
 
                 {storageService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
 
-                {storageService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="storageService.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {storageService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
 
               </FormikGroups>
             ) : null}
