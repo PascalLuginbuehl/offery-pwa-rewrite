@@ -1,4 +1,4 @@
-import { createStyles, Theme } from "@material-ui/core"
+import { createStyles, Theme, Grid } from "@material-ui/core"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import CssBaseline from "@material-ui/core/CssBaseline"
@@ -16,9 +16,10 @@ import Submit from "./Validator/Submit"
 import ValidatedTextField from "./Validator/ValidatedTextField"
 import { handleChangeFunction } from "./Validator/HandleChangeFunction"
 import { WithResourceProps, withResource } from "../providers/withResource"
-import { FormikProps, Field, withFormik } from "formik"
+import { Form as FormikForm, FormikProps, Field, withFormik } from "formik"
 import Form from "./FormikFields/Form"
 import FormikTextField from "./FormikFields/FormikTextField"
+import HttpErrorHandler from "./HttpErrorHandler"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -64,7 +65,7 @@ interface Props extends WithStyles<typeof styles>, InjectedIntlProps, WithResour
 
 class Login extends React.Component<Props & FormikProps<Values>> {
   public render() {
-    const { classes } = this.props
+    const { classes, isSubmitting, status, values } = this.props
     return (
       <>
         <main className={classes.layout}>
@@ -76,30 +77,49 @@ class Login extends React.Component<Props & FormikProps<Values>> {
               SIGN_IN
             </IntlTypography>
 
-            <Form routerDisabled>
-              <Field
-                label="EMAIL"
-                name="Email"
-                required
+            <FormikForm>
+              <Grid container spacing={2}>
+                <Field
+                  label="EMAIL"
+                  name="Email"
+                  required
+                  type="email"
 
-                autoFocus
-                autoComplete="username"
+                  autoFocus
+                  autoComplete="username"
 
-                component={FormikTextField}
-                overrideGrid={{ xs: 12, md: undefined }}
-              />
-              <Field
-                label="PASSWORD"
-                name="Password"
+                  component={FormikTextField}
+                  overrideGrid={{ xs: 12, md: undefined }}
+                />
+                <Field
+                  label="PASSWORD"
+                  name="Password"
 
-                type="password"
-                autoComplete="current-password"
+                  type="password"
+                  autoComplete="current-password"
 
-                required
-                component={FormikTextField}
-                overrideGrid={{ xs: 12, md: undefined }}
-              />
-            </Form>
+                  required
+                  component={FormikTextField}
+                  overrideGrid={{ xs: 12, md: undefined }}
+                />
+              </Grid>
+
+              {status && status.message === "Invalid credentials" ?
+                <Grid item xs={12}>
+                  <IntlTypography color="error" variant="subtitle2">EMAIL_OR_PASSWORD_INVALID</IntlTypography>
+                </Grid>
+                :
+                <HttpErrorHandler status={status} data={values} />
+              }
+
+              <br/>
+
+              <Grid item xs={12}>
+                <Button disabled={isSubmitting} type="submit" fullWidth variant="contained" color="primary">
+                  <FormattedMessage id="SIGN_IN" />
+                </Button>
+              </Grid>
+            </FormikForm>
           </Paper>
         </main>
       </>
@@ -123,7 +143,6 @@ export default injectIntl(
             actions.props.onLoginSuccess()
           } catch (e) {
             actions.setStatus(e)
-            console.log("asd")
           }
         },
       })(Login)

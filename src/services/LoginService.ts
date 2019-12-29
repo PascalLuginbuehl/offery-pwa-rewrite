@@ -139,8 +139,11 @@ class LoginService {
 
       return
     } catch (e) {
-      console.error(e)
-      throw new Error("loginFailed")
+      if(e.statusText === "Bad Request" && e.json && e.json.error ==="invalid_grant") {
+        throw new Error("Invalid credentials")
+      } else {
+        throw e
+      }
     }
   }
 }

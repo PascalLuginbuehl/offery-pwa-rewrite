@@ -268,3 +268,4 @@ CELLAR,Cellar,Keller
 HEAVY_LIFT_PRICE,Heavy lift price,Schwergüter-Zuschlag
 HEAVY_LIFT_SERVICE,Heavy liuft service,Schwergüter-Zuschlag
 PAYMENT_METHOD,Payment method,Zahlungsmethode
+EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder Passwort nicht korrekt
