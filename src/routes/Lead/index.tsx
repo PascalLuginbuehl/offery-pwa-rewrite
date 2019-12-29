@@ -32,13 +32,6 @@ class Lead extends Component<Props, State> {
     initialAwait: null,
   }
 
-  componentDidUpdate(prevProps: Props) {
-    // Close Navigation on Navigate
-    if (this.props.location !== prevProps.location) {
-      this.props.closeNavigation()
-    }
-  }
-
   public handleChange = (value: any, target: keyof ILeadContainer) => {
     const { container } = this.state
     if (container) {
@@ -77,6 +70,18 @@ class Lead extends Component<Props, State> {
           throw e
         }
       }
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    // Close Navigation on Navigate
+
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.componentDidMount()
+    }
+
+    if (this.props.location !== prevProps.location) {
+      this.props.closeNavigation()
     }
   }
 
