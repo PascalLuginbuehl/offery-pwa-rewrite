@@ -1,9 +1,7 @@
-import { createStyles, Grid, Theme, WithStyles, withStyles } from '@material-ui/core'
-import Loading from '../Loading'
-import ResponsiveContainer from '../ResponsiveContainer'
-import * as React from 'react'
-import Validator from '../Validator';
-// import { Form } from '';
+import { createStyles, Grid, Theme, WithStyles, withStyles } from "@material-ui/core"
+import Loading from "../Loading"
+import ResponsiveContainer from "../ResponsiveContainer"
+import * as React from "react"
 
 const styles = (theme: Theme) =>
   createStyles({

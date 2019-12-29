@@ -14,9 +14,6 @@ import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTim
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
-import { handleChangeFunction } from "../../../components/Validator/HandleChangeFunction"
-import HttpErrorHandler from "../../../components/HttpErrorHandler"
-import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
 const styles = (theme: Theme) => createStyles({})
