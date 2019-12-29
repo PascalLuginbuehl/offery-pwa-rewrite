@@ -138,18 +138,20 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
             <Field label="MAX" name={`${prefix}.ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
+
+            {values.ServiceConditions.HasCostCeiling ? (
+              <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeilingHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 3, md: undefined }} />
+            ) : null}
+
             <Field
               label="DRIVE_HOURS"
               name={`${prefix}.ServiceConditions.DriveHours`}
               component={FormikNumberEndAdornmentText}
+              InputLabelProps={{ shrink: values.ServiceConditions.HasCostCeiling }}
               inputProps={{ step: 0.25, min: 0 }}
               adornmentText="h"
-              overrideGrid={{ xs: 7, md: undefined }}
+              overrideGrid={{ xs: values.ServiceConditions.HasCostCeiling ? 4 : 7, md: undefined }}
             />
-
-            {values.ServiceConditions.HasCostCeiling ? (
-              <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeilingHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 4, md: undefined }} />
-            ) : null}
 
           </FormikGroups>
         ) : null}
@@ -184,7 +186,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
               </Grid>
             </>
           ) : (
-            <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
+            <Grid item xs={5}>
               <MuiTextField
                 label={intl.formatMessage({ id: "PRICE" })}
                 value={this.getFixPrice()}
@@ -194,6 +196,18 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
               />
             </Grid>
           )}
+
+          {values.ServiceConditions.HasCostCeiling ?
+            <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
+              <MuiTextField
+                label={intl.formatMessage({ id: "COST_CEILING" })}
+                value={this.getMaxPrice()}
+                disabled={true}
+                type="number"
+                InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
+              />
+            </Grid> : null
+          }
         </FormikGroups>
 
         <Field

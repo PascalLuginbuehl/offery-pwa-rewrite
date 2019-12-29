@@ -185,7 +185,7 @@ MIN,Min.,Min
 MAX,Max.,Max
 PRICE,Price,Kosten
 HOURS_OF_WORK,Hours of work,Arbeitsstunden
-COST_CEILING,Price Cost Ceiling,Preis Kostendach
+COST_CEILING,Cost Ceiling,Kostendach
 PRICES,Prices,Preise
 AMOUNT,Amount,Anzahl
 PACK_CONDITIONS,Pack conditions,Einpack-Konditionen
