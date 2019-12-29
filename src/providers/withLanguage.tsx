@@ -1,10 +1,10 @@
-import * as React from 'react'
-import { IMessages, translations as baseTranslations, ITranslationAssortment } from '../i18n'
-import { IntlProvider } from 'react-intl'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
-import deLocale from 'date-fns/locale/de'
-import { IText } from '../interfaces/IText';
+import * as React from "react"
+import { IMessages, translations as baseTranslations, ITranslationAssortment } from "../i18n"
+import { IntlProvider } from "react-intl"
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"
+import DateFnsUtils from "@date-io/date-fns"
+import deLocale from "date-fns/locale/de"
+import { IText } from "../interfaces/IText"
 
 export type ChangeLanguage = (language: string) => void
 
@@ -14,12 +14,12 @@ interface Props {
 
 interface State {
   finalMessages: IMessages
-  locale: string,
+  locale: string
 }
 
 interface ContextData {
-  changeLanguage: ChangeLanguage,
-  locale: string,
+  changeLanguage: ChangeLanguage
+  locale: string
   messages: IMessages
 }
 
@@ -62,13 +62,13 @@ class LanguageProvider extends React.Component<Props, State> {
     // Get only from one language, with many fallbacks
     const messages = baseTranslations[localeKey] || baseTranslations.de
 
-    let extraMessages: IMessages = {}
+    const extraMessages: IMessages = {}
 
 
     if (additionalTranlations) {
       // Transforms array to object by settings keys and fixing translation objects
       //@ts-ignore Copy translations over to extraMessages
-      additionalTranlations.map(e => extraMessages[e.TextKey] = e[localeKey.toUpperCase()].replace(/(?:\r\n|\r|\n)/g, '{br}'))
+      additionalTranlations.map(e => extraMessages[e.TextKey] = e[localeKey.toUpperCase()].replace(/(?:\r\n|\r|\n)/g, "{br}"))
     }
     // Merge translations
     this.setState({ finalMessages: { ...messages, ...extraMessages } })

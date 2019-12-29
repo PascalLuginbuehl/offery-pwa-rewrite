@@ -76,7 +76,6 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
 
   openCatergory = (category: IFurnitureCategory | null) => {
     if (category === null) {
-      console.log("HI")
       this.setState({ selectedFurnitureCategory: null, pageIndex: 0 })
     } else {
       this.setState({ selectedFurnitureCategory: category })
