@@ -94,4 +94,6 @@ export interface ICleaningServiceConditions {
 
   WorkersAmount: number | null
   HandoutGaranty: boolean
+
+  PaymentMethodId: number | null
 }

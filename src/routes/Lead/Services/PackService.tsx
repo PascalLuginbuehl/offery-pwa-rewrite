@@ -15,6 +15,7 @@ import IntlTypography from "../../../components/Intl/IntlTypography"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import { ILead } from "../../../interfaces/ILead"
 
 const styles = (theme: Theme) => createStyles({})
 

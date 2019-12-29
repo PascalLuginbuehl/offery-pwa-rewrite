@@ -14,6 +14,7 @@ import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonC
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
 import FormikPercent from "../../../components/FormikFields/Numbers/FormikPercent"
 import { IPutCleaningService } from "../../../interfaces/IService"
+import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -31,7 +32,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, intl, selectedCompany, cleaningService } = this.props
+    const { isSubmitting, status, intl, selectedCompany, cleaningService, resource} = this.props
 
     console.log(selectedCompany.CarTypes)
 
@@ -130,6 +131,13 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
               />
             </Grid>
           </FormikGroups>
+
+          <Field
+            label="PAYMENT_METHOD"
+            name={`cleaningConditions.PaymentMethodId`}
+            component={FormikSimpleSelect}
+            options={resource.PaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
+          />
 
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
         </Form>
