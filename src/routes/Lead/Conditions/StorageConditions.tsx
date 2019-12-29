@@ -112,16 +112,26 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
 
   getAdditionalCost = (): number => {
     const {
-      values: { storageConditions: {PianoPrice, LampDemontagePrice, FurnitureLiftPrice, BorePrice, MontageServicePrice, DeMontageServicePrice} },
+      storageService: { PianoService, LampDemontageService, FurnitureLiftService, BoreService, MontageService, HeavyLiftService, DeMontageService},
+      values: { storageConditions: { PianoPrice: NullPianoPrice, LampDemontagePrice: NullLampDemontagePrice, FurnitureLiftPrice: NullFurnitureLiftPrice, BorePrice: NullBorePrice, MontageServicePrice: NullMontageServicePrice, DeMontageServicePrice: NullDeMontageServicePrice, ServiceConditions: { HeavyLiftPrice: NullHeavyLiftPrice }} },
     } = this.props
 
+    const PianoPrice = NullPianoPrice && PianoService ? NullPianoPrice : 0
+    const LampDemontagePrice = NullLampDemontagePrice && LampDemontageService ? NullLampDemontagePrice : 0
+    const FurnitureLiftPrice = NullFurnitureLiftPrice && FurnitureLiftService ? NullFurnitureLiftPrice : 0
+    const BorePrice = NullBorePrice && BoreService ? NullBorePrice : 0
+    const MontageServicePrice = NullMontageServicePrice && MontageService ? NullMontageServicePrice : 0
+    const DeMontageServicePrice = NullDeMontageServicePrice && DeMontageService  ? NullDeMontageServicePrice : 0
+    const HeavyLiftPrice = NullHeavyLiftPrice && HeavyLiftService ? NullHeavyLiftPrice : 0
+
     return (
-      (PianoPrice ? PianoPrice : 0) +
-      (LampDemontagePrice ? LampDemontagePrice : 0) +
-      (FurnitureLiftPrice ? FurnitureLiftPrice : 0) +
-      (BorePrice ? BorePrice : 0) +
-      (MontageServicePrice ? MontageServicePrice : 0) +
-      (DeMontageServicePrice ? DeMontageServicePrice : 0)
+      PianoPrice +
+      LampDemontagePrice +
+      FurnitureLiftPrice +
+      BorePrice +
+      MontageServicePrice +
+      DeMontageServicePrice +
+      HeavyLiftPrice
     )
   }
 }

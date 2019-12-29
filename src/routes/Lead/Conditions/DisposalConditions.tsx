@@ -99,16 +99,26 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
     )
   }
 
+
   getAdditionalCost = (): number => {
     const {
-      values: { disposalConditions: {LampDemontagePrice, FurnitureLiftPrice, CostEntry, Volume, CostPerCubicInMoney} },
+      disposalService: { LampDemontageService, FurnitureLiftService, HeavyLiftService },
+      values: { disposalConditions: { LampDemontagePrice: NullLampDemontagePrice, FurnitureLiftPrice: NullFurnitureLiftPrice, CostEntry: NullCostEntry, Volume: NullVolume, CostPerCubicInMoney: NullCostPerCubicInMoney, ServiceConditions: { HeavyLiftPrice: NullHeavyLiftPrice } } },
     } = this.props
 
+    const LampDemontagePrice = NullLampDemontagePrice && LampDemontageService ? NullLampDemontagePrice : 0
+    const FurnitureLiftPrice = NullFurnitureLiftPrice && FurnitureLiftService ? NullFurnitureLiftPrice : 0
+    const HeavyLiftPrice = NullHeavyLiftPrice && HeavyLiftService ? NullHeavyLiftPrice : 0
+    const CostEntry = NullCostEntry ? NullCostEntry : 0
+    const Volume = NullVolume ? NullVolume : 0
+    const CostPerCubicInMoney = NullCostPerCubicInMoney ? NullCostPerCubicInMoney : 0
+
     return (
-      (CostEntry ? CostEntry : 0) +
-      (LampDemontagePrice ? LampDemontagePrice : 0) +
-      (FurnitureLiftPrice ? FurnitureLiftPrice : 0) +
-      (Volume ? Volume : 0) * (CostPerCubicInMoney ? CostPerCubicInMoney : 0)
+      LampDemontagePrice +
+      FurnitureLiftPrice +
+      CostEntry +
+      HeavyLiftPrice +
+      (Volume * CostPerCubicInMoney)
     )
   }
 }

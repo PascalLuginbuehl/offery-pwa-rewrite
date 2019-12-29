@@ -40,7 +40,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
             prefix={"packConditions"}
             commentPrefix={"packService"}
             disabledVehicles
-            additionalCost={0}
+            additionalCost={this.getAdditionalCost()}
             setFieldValue={setFieldValue}
             values={values.packConditions}
           >
@@ -52,6 +52,19 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
           </ServiceConditions>
         </Form>
       </Grid>
+    )
+  }
+
+  getAdditionalCost = (): number => {
+    const {
+      packService: { HeavyLiftService },
+      values: { packConditions: { ServiceConditions: { HeavyLiftPrice: NullHeavyLiftPrice } } },
+    } = this.props
+
+    const HeavyLiftPrice = NullHeavyLiftPrice && HeavyLiftService ? NullHeavyLiftPrice : 0
+
+    return (
+      HeavyLiftPrice
     )
   }
 }

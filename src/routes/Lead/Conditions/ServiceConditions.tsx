@@ -201,7 +201,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             <Grid item xs={values.ServiceConditions.HasCostCeiling ? 3 : 5}>
               <MuiTextField
                 label={intl.formatMessage({ id: "COST_CEILING" })}
-                value={this.getMaxPrice()}
+                value={this.getCostCeilingPrice()}
                 disabled={true}
                 type="number"
                 InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
@@ -222,54 +222,40 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     )
   }
 
-  getAdditionalCost = (): number => {
+
+  getPricePerHour = (HoursOfWork: number): number | undefined => {
     const {
       values: {
-        ServiceConditions: { Expenses: NullExpenses },
+        ServiceConditions: { DriveHours: NullDriveHours, PricePerHour: NullPricePerHour, DiscountInPercent: NullDiscountInPercent, Expenses: NullExpenses },
       },
-      additionalCost,
-    } = this.props
 
-    const Expenses = NullExpenses ? NullExpenses : 0
-
-
-    return Expenses + additionalCost
-  }
-
-  getPricePerHour = (hours: number): number | undefined => {
-    const {
-      values: {
-        ServiceConditions: { DriveHours: NullDriveHours, PricePerHour: NullPricePerHour, DiscountInPercent: NullDiscountInPercent },
-      },
-    } = this.props
-
-    const DriveHours = NullDriveHours ? NullDriveHours : 0
-    const PricePerHour = NullPricePerHour ? NullPricePerHour : 0
-    const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
-    const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
-
-    if (PricePerHour) {
-      return (
-        (
-          (DriveHours + hours) * PricePerHour
-        ) + this.getAdditionalCost()
-      ) * DiscountMultiplier
-    }
-  }
-
-  getFixPrice = () => {
-    const {
-      values: {
-        ServiceConditions: { FixPrice: NullFixPrice, DiscountInPercent: NullDiscountInPercent },
-      },
       additionalCost
     } = this.props
 
-    const FixPrice = NullFixPrice ? NullFixPrice : 0
+    // Fixing null Values
+    const Expenses = NullExpenses ? NullExpenses : 0
+    const DriveHours = NullDriveHours ? NullDriveHours : 0
+    const PricePerHour = NullPricePerHour ? NullPricePerHour : 0
     const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
+
     const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
 
-    return (FixPrice + additionalCost)* DiscountMultiplier
+    const HoursPrice = (DriveHours + HoursOfWork) * PricePerHour
+
+    return (HoursPrice + Expenses + additionalCost) * DiscountMultiplier
+
+  }
+
+  getFixPrice = () => {
+    const { values: { ServiceConditions: { FixPrice: NullFixPrice, DiscountInPercent: NullDiscountInPercent }, } } = this.props
+
+    // Fixing Nulls
+    const FixPrice = NullFixPrice ? NullFixPrice : 0
+    const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
+
+    const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
+
+    return FixPrice * DiscountMultiplier
   }
 
   getMaxPrice = (): number | undefined => {
@@ -284,6 +270,20 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     }
 
     return undefined
+  }
+
+  getCostCeilingPrice = (): number | undefined => {
+    const {
+      values: {
+        ServiceConditions: { CostCeilingHoursOfWork },
+      },
+    } = this.props
+
+    if (CostCeilingHoursOfWork) {
+      return this.getPricePerHour(CostCeilingHoursOfWork)
+    } else {
+      return this.getMaxPrice()
+    }
   }
 
   getMinPrice = (): number | undefined => {

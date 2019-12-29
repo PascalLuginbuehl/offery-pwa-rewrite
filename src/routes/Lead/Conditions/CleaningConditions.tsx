@@ -139,30 +139,37 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
 
   getCost = (): number => {
     const {
-      HighPressureGarageCleaningFixPrice,
-      DovelholePrice,
-      HighPressureTerraceCleaningFixPrice,
-      CleaningFireplacePrice,
-      CleaningCarpetPrice,
-      CleaningWindowsPrice,
-      CleaningWindowsWithShuttersPrice,
-      CleaningSpecialPrice,
-      FixPrice,
-      DiscountInPercent,
-    } = this.props.values.cleaningConditions
+      values: {
+        cleaningConditions: {HighPressureGarageCleaningFixPrice: NullHighPressureGarageCleaningFixPrice, DovelholePrice: NullDovelholePrice,HighPressureTerraceCleaningFixPrice: NullHighPressureTerraceCleaningFixPrice, CleaningFireplacePrice: NullCleaningFireplacePrice, CleaningCarpetPrice: NullCleaningCarpetPrice, CleaningWindowsPrice: NullCleaningWindowsPrice, CleaningWindowsWithShuttersPrice: NullCleaningWindowsWithShuttersPrice, CleaningSpecialPrice: NullCleaningSpecialPrice, FixPrice: NullFixPrice, DiscountInPercent: NullDiscountInPercent },
+        cleaningService: { HighPressureGarageCleaningService, DovelholeService, HighPressureTerraceCleaningService, CleaningFireplaceService, CleaningCarpetService, CleaningWindowsService, CleaningWindowsWithShuttersService, CleaningSpecialService },
+      },
+    } = this.props
+
+    const HighPressureGarageCleaningFixPrice = NullHighPressureGarageCleaningFixPrice && HighPressureGarageCleaningService? NullHighPressureGarageCleaningFixPrice : 0
+    const DovelholePrice = NullDovelholePrice && DovelholeService ? NullDovelholePrice : 0
+    const HighPressureTerraceCleaningFixPrice = NullHighPressureTerraceCleaningFixPrice && HighPressureTerraceCleaningService? NullHighPressureTerraceCleaningFixPrice : 0
+    const CleaningFireplacePrice = NullCleaningFireplacePrice && CleaningFireplaceService ? NullCleaningFireplacePrice : 0
+    const CleaningCarpetPrice = NullCleaningCarpetPrice && CleaningCarpetService ? NullCleaningCarpetPrice : 0
+    const CleaningWindowsPrice = NullCleaningWindowsPrice && CleaningWindowsService ? NullCleaningWindowsPrice : 0
+    const CleaningWindowsWithShuttersPrice = NullCleaningWindowsWithShuttersPrice && CleaningWindowsWithShuttersService ? NullCleaningWindowsWithShuttersPrice : 0
+    const CleaningSpecialPrice = NullCleaningSpecialPrice && CleaningSpecialService ? NullCleaningSpecialPrice : 0
+
+    const FixPrice = NullFixPrice ? NullFixPrice : 0
+    const DiscountInPercent = NullDiscountInPercent ? NullDiscountInPercent : 0
+    const DiscountMultiplier = ((100 - DiscountInPercent) / 100)
+
 
     return (
-      ((HighPressureGarageCleaningFixPrice ? HighPressureGarageCleaningFixPrice : 0) +
-      (HighPressureTerraceCleaningFixPrice ? HighPressureTerraceCleaningFixPrice : 0) +
-        (DovelholePrice ? DovelholePrice : 0)+
-        (CleaningFireplacePrice ? CleaningFireplacePrice : 0) +
-        (CleaningCarpetPrice ? CleaningCarpetPrice : 0) +
-        (CleaningWindowsPrice ? CleaningWindowsPrice : 0) +
-        (CleaningWindowsWithShuttersPrice ? CleaningWindowsWithShuttersPrice : 0) +
-        (CleaningSpecialPrice ? CleaningSpecialPrice : 0) +
-        (FixPrice ? FixPrice : 0)) *
-      ((100 - (DiscountInPercent ? DiscountInPercent : 0)) / 100)
-    )
+      HighPressureGarageCleaningFixPrice +
+      DovelholePrice +
+      HighPressureTerraceCleaningFixPrice +
+      CleaningFireplacePrice +
+      CleaningCarpetPrice +
+      CleaningWindowsPrice +
+      CleaningWindowsWithShuttersPrice +
+      CleaningSpecialPrice +
+      FixPrice
+    ) * DiscountMultiplier
   }
 }
 
