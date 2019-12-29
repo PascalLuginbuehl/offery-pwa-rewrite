@@ -54,14 +54,14 @@ interface _IProps extends WithResourceProps, WithStyles<typeof styles>, Injected
 interface _IState {
   currentlyOpenInventory: InventoryKeysEnum
   selectedFurnitureCategory: IFurnitureCategory | null
-  index: number
+  pageIndex: number
 }
 
 class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _IState> {
   state: _IState = {
     currentlyOpenInventory: InventoryKeysEnum.Move,
     selectedFurnitureCategory: null,
-    index: 0,
+    pageIndex: 0,
   }
 
   constructor(props: _IProps & FormikProps<IInventars>) {
@@ -75,7 +75,12 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
   }
 
   openCatergory = (category: IFurnitureCategory | null) => {
-    this.setState({ selectedFurnitureCategory: category })
+    if (category === null) {
+      console.log("HI")
+      this.setState({ selectedFurnitureCategory: null, pageIndex: 0 })
+    } else {
+      this.setState({ selectedFurnitureCategory: category })
+    }
   }
 
   addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers, selectedSizeId: number | null, selectedMaterialId: number | null) => {
@@ -123,7 +128,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
       const pages = Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))
       if (index >= 0 && index < pages) {
         this.setState({
-          index,
+          pageIndex: index,
         })
       }
     }
@@ -184,7 +189,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
 
     const selectedItemList = this.getSelectedList()
 
-    const { currentlyOpenInventory, selectedFurnitureCategory, index } = this.state
+    const { currentlyOpenInventory, selectedFurnitureCategory, pageIndex } = this.state
     const FurnitureCategories = resource.FurnitureCategories
 
     return (
@@ -212,7 +217,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
 
           <Grid item xs={12} style={{ width: "calc(7vw - 5px)" }}>
             {!selectedFurnitureCategory ?
-              <Grid container spacing={1} key={index}>
+              <Grid container spacing={1}>
                 {FurnitureCategories.map((category, index) => (
                   <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
                 ))}
@@ -222,7 +227,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                 name={currentlyOpenInventory}
                 render={(arrayHelpers: ArrayHelpers) => (
                   <>
-                    <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
+                    <SwipeableViews index={pageIndex} onChangeIndex={this.handleChangeIndex}>
                       {chunk(
                         selectedFurnitureCategory.Furnitures.map((furniture, index) => (
                           <InventoryItems
@@ -240,17 +245,17 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                     </SwipeableViews>
 
                     <div className={classes.centeredNavigationContainer}>
-                      <IconButton onClick={this.handleChangeIndexPrepared(index - 1)} size="small" className={clsx(classes.next, classes.nextLeft)}>
+                      <IconButton onClick={this.handleChangeIndexPrepared(pageIndex - 1)} size="small" className={clsx(classes.next, classes.nextLeft)}>
                         <ChevronLeftIcon />
                       </IconButton>
                       {new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
-                        if (index == i) {
+                        if (pageIndex == i) {
                           return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)} />
                         } else {
                           return <RadioButtonUncheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)} />
                         }
                       })}
-                      <IconButton onClick={this.handleChangeIndexPrepared(index + 1)} size="small" className={clsx(classes.next, classes.nextRight)}>
+                      <IconButton onClick={this.handleChangeIndexPrepared(pageIndex + 1)} size="small" className={clsx(classes.next, classes.nextRight)}>
                         <ChevronRightIcon />
                       </IconButton>
                     </div>
