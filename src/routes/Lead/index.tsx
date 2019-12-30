@@ -252,11 +252,11 @@ class Lead extends Component<Props, State> {
     this.heartbeat()
 
 
-    const offlineString = localStorage.getItem("offline")
-    let offline = false
-    if (offlineString) {
-      offline = JSON.parse(offlineString)
-    }
+    // const offlineString = localStorage.getItem("offline")
+    // let offline = false
+    // if (offlineString) {
+      // offline = JSON.parse(offlineString)
+    // }
 
     const idString = this.props.match.params.id
     const potentialLeadId = parseInt(idString ? idString : "")
@@ -291,7 +291,7 @@ class Lead extends Component<Props, State> {
       <>
         <Wrapper initialLoading={initialAwait}>
           <Switch checked={offline} onChange={() => {
-            localStorage.setItem("offline", JSON.stringify(!offline))
+            // localStorage.setItem("offline", JSON.stringify(!offline))
             this.setState({ offline: !offline })
 
             if(!offline && container)
