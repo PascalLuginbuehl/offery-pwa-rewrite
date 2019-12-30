@@ -19,6 +19,15 @@ import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import { diff } from "deep-object-diff"
 import { Switch } from "@material-ui/core"
 
+function timeout(ms: number, promise: Promise<any>) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      reject(new Error("timeout"))
+    }, ms)
+    promise.then(resolve, reject)
+  })
+}
+
 interface State {
   container: ILeadContainer | null
 
@@ -217,7 +226,26 @@ class Lead extends Component<Props, State> {
     }
   }
 
+  heartbeat = () => {
+    const timeoutAfter = 10000
+    const requestEvery = 10000
+    console.log("Beat")
+    timeout(timeoutAfter, fetch("/favicon.ico?t=" + Math.random()))
+      .then(() => {
+        this.setState({ offline: false })
+        setTimeout(this.heartbeat, requestEvery)
+      })
+      .catch(e => {
+        this.setState({ offline: true })
+        console.log("Timeout/Server down", e)
+        setTimeout(this.heartbeat, requestEvery)
+      })
+
+  }
   componentDidMount() {
+    this.heartbeat()
+
+
     const offlineString = localStorage.getItem("offline")
     let offline = false
     if (offlineString) {
