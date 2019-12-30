@@ -31,6 +31,29 @@ interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps 
   closeNavigation: () => void
 }
 
+function getContainerDiffKeys(originContainer: ILeadContainer, changesContainer: ILeadContainer): Array<keyof ILeadContainer> {
+  return (Object.keys(originContainer) as Array<keyof ILeadContainer>).filter((key) => {
+    const field = originContainer[key]
+
+    const test = changesContainer[key]
+
+    if (field === null && test === null) {
+      return false
+    }
+
+    if (test === null) {
+      return true
+    }
+
+    if (field === null) {
+      return true
+    }
+
+    const difference = diff(field, test)
+    return Object.keys(difference).length !== 0
+  })
+}
+
 class Lead extends Component<Props, State> {
   state: State = {
     container: null,
@@ -107,77 +130,81 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  componentDidMount() {
-    const fetch = async () => {
-      const idString = this.props.match.params.id
-      const potentialLeadId = parseInt(idString ? idString : "")
+  saveDifferences = async (leadId: number, onlineState: ILeadContainer, offlineChanges: ILeadContainer) => {
+    const origin = await LeadAPI.FetchFromOfflineOrigin(leadId)
 
-      if (idString === "new") {
-        // Do nothing if sting new
-        return
-      } else if (!isNaN(potentialLeadId)) {
-        // const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
-
-        // if (offline && offline.onlySavedOffline) {
-        // Save to online and then fetch
-
-        // await this.saveOfflineToOnline(potentialLeadId, offline)
-        // } else {
-
-        const possbileChanges = await LeadAPI.FetchFromOfflineChanges(potentialLeadId)
-        const container = await this.fetchLeadOnline(potentialLeadId)
-
-        // Data got changed while was offline
-        if (possbileChanges) {
-          // Chech for differences and save
-
-          console.log("I am here :O")
-          console.log(possbileChanges)
-
-          const origin = await LeadAPI.FetchFromOfflineOrigin(potentialLeadId)
-
-          if(!origin) {
-            throw new Error("No Origin was ever defined. Fatal Error")
-          }
-
-          // Get differences origin and changes
-          // Primitive comparison. extend l8er
-          const changes = (Object.keys(origin) as Array<keyof ILeadContainer>).filter((key) => {
-            const field = origin[key]
-
-            const test = possbileChanges[key]
-            if (field === null && test === null) {
-              return false
-            }
-
-            if (test === null) {
-              return true
-            }
-
-            if (field === null) {
-              return true
-            }
-
-            const difference = diff(field, test)
-            console.log(difference)
-            return Object.keys(difference).length !== 0
-          })
-
-          console.log(changes)
-          // Get differnces (changes - origin) and API
-        } else {
-          // No changes, override
-          this.saveLeadToOfflineOrigin(container)
-        }
-
-
-        this.setState({container})
-      } else {
-        console.log("Is not a leadId", potentialLeadId)
-      }
+    if (!origin) {
+      throw new Error("No Origin was ever defined. Fatal Error")
     }
 
-    this.setState({ initialAwait: fetch() })
+    // Get differences origin and changes
+    // Primitive comparison. extend l8er
+    const changes = getContainerDiffKeys(origin, offlineChanges)
+    console.log(changes)
+
+
+    // Get differnces origin and API
+    const whileOfflineAPIChanges = getContainerDiffKeys(origin, onlineState)
+    console.log(whileOfflineAPIChanges)
+
+    // Send this to API Here
+    console.log("sending to API!!! (not implemented)")
+  }
+
+  loadLead = async (leadId: number) => {
+    let { offline } = this.state
+    // const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
+
+    // if (offline && offline.onlySavedOffline) {
+    // Save to online and then fetch
+
+    // await this.saveOfflineToOnline(potentialLeadId, offline)
+    // } else {
+
+    const possbileChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
+    let liveApiContainer = null
+    try {
+      liveApiContainer = await this.fetchLeadOnline(leadId)
+
+    } catch (e) {
+      offline = true
+    }
+
+    // Data got changed while was offline
+    if (possbileChanges) {
+
+      // Try to save. when still online  load from offline origin
+      if (!offline && liveApiContainer) {
+        this.saveDifferences(leadId, liveApiContainer, possbileChanges)
+      }
+
+
+      this.setState({ container: possbileChanges })
+
+    } else {
+      // No changes, override
+      if (liveApiContainer) {
+        this.saveLeadToOfflineOrigin(liveApiContainer)
+        this.setState({ container: liveApiContainer })
+      }
+    }
+  }
+
+  componentDidMount() {
+    const idString = this.props.match.params.id
+    const potentialLeadId = parseInt(idString ? idString : "")
+
+    if (idString === "new") {
+      // Do nothing if sting new
+      return
+
+    } else if (!isNaN(potentialLeadId)) {
+
+      this.setState({ initialAwait: this.loadLead(potentialLeadId)})
+    } else {
+      console.log("Is not a leadId", potentialLeadId)
+    }
+
   }
 
   // This saves to Offline and Changes
@@ -238,8 +265,6 @@ class Lead extends Component<Props, State> {
   renderLead = () => {
     const { match, portal } = this.props
     const { container } = this.state
-
-    console.log(portal)
 
     // Create New Lead
     if (match.params.id === "new" && container === null) {
