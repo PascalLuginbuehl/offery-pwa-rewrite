@@ -18,7 +18,7 @@ import Done from "../Offer/Done"
 
 interface Props {
   leadContainer: ILeadContainer
-  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => Promise<void>
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: () => Promise<any>) => Promise<void>
   redirectToNextPage: (currentUrl: string) => () => void
   getNextPage: (originalPath: string) => string
   handleChange: (value: any, name: keyof ILeadContainer) => void
@@ -81,8 +81,8 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
               const newLead = { ...lead, MoveServiceConditions: moveConditions }
 
               return Promise.all([
-                handleChangeAndSave(moveServiceData, "moveService", LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData)),
-                handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
+                handleChangeAndSave(moveServiceData, "moveService", () => LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData)),
+                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
               ])
             }}
             nextPage={redirectToNextPage("/conditions/move")}
@@ -104,8 +104,8 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
               const newLead = { ...lead, PackServiceConditions: packConditions }
 
               return Promise.all([
-                handleChangeAndSave(packServiceData, "packService", LeadAPI.SavePackService(Lead.LeadId, packServiceData)),
-                handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
+                handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData)),
+                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
               ])
             }}
             nextPage={redirectToNextPage("/conditions/pack")}
@@ -127,8 +127,8 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
               const newLead = { ...lead, StorageServiceConditions: storageConditions }
 
               return Promise.all([
-                handleChangeAndSave(storageServiceData, "storageService", LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData)),
-                handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead))
+                handleChangeAndSave(storageServiceData, "storageService", () => LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData)),
+                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
               ])
             }}
             nextPage={redirectToNextPage("/conditions/storage")}
@@ -150,8 +150,8 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
               const newLead = { ...lead, DisposalServiceConditions: disposalConditions }
 
               return Promise.all([
-                handleChangeAndSave(disposalServiceData, "disposalService", LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData)),
-                handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead)),
+                handleChangeAndSave(disposalServiceData, "disposalService", () => LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData)),
+                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead)),
               ])
             }}
             nextPage={redirectToNextPage("/conditions/disposal")}
@@ -173,8 +173,8 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
               const newLead = { ...lead, CleaningServiceConditions: cleaningConditions }
 
               return Promise.all([
-                handleChangeAndSave(cleaningServiceData, "cleaningService", LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData)),
-                handleChangeAndSave(newLead, "Lead", LeadAPI.SaveLead(newLead)),
+                handleChangeAndSave(cleaningServiceData, "cleaningService", () => LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData)),
+                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead)),
               ])
             }}
             nextPage={redirectToNextPage("/conditions/cleaning")}

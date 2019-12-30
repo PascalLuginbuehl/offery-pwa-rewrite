@@ -95,7 +95,7 @@ class Dashboard extends React.Component<Props, State> {
 
   getOfflineLead = async (): Promise<ILeadContainer[]> => {
     const offlineKeys = await keys()
-    const offlineSaved = await Promise.all(offlineKeys.map(key => LeadAPI.FetchFromOffline(parseInt(key.toString()))))
+    const offlineSaved = await Promise.all(offlineKeys.map(key => LeadAPI.FetchFromOfflineOrigin(parseInt(key.toString()))))
 
     // Tyescript compiler fix for undefined elements
     return offlineSaved.filter(e => !!e) as ILeadContainer[]

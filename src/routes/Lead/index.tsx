@@ -16,6 +16,7 @@ import LeadOverview from "./LeadOverview"
 import IntlTooltip from "../../components/Intl/IntlTooltip"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
+import { diff } from "deep-object-diff"
 
 interface State {
   container: ILeadContainer | null
@@ -46,14 +47,28 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  public handleChangeAndSave = async (value: any, name: keyof ILeadContainer, savePromise: Promise<any>) => {
-    const { container } = this.state
+  public handleChangeAndSave = async (value: any, name: keyof ILeadContainer, savePromise: () => Promise<any>) => {
+    const { container, offline } = this.state
 
     if (container) {
       const { Lead } = container
 
+      if (offline) {
+        this.handleChange(value, name)
+
+        const newContainer = {
+          ...container,
+          [name]: value
+        }
+
+        LeadAPI.SaveToChangesToOffline(newContainer)
+
+        return
+      }
+
+
       try {
-        await savePromise
+        await savePromise()
         this.handleChange(value, name)
         // saveWasSuccessFull, update offlineOrigin and offline
       } catch (e) {
@@ -63,7 +78,7 @@ class Lead extends Component<Props, State> {
           try {
             console.log("Saved to offline storage")
 
-            LeadAPI.SaveToOffline(Lead.LeadId, { ...container, onlySavedOffline: true })
+            // LeadAPI.SaveToOffline(Lead.LeadId, { ...container, onlySavedOffline: true })
 
             // this.setState({ onlySavedOffline: true })
 
@@ -101,17 +116,62 @@ class Lead extends Component<Props, State> {
         // Do nothing if sting new
         return
       } else if (!isNaN(potentialLeadId)) {
-        const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
+        // const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
 
-        if (offline && offline.onlySavedOffline) {
-          // Save to online and then fetch
+        // if (offline && offline.onlySavedOffline) {
+        // Save to online and then fetch
 
-          await this.saveOfflineToOnline(potentialLeadId, offline)
+        // await this.saveOfflineToOnline(potentialLeadId, offline)
+        // } else {
+
+        const possbileChanges = await LeadAPI.FetchFromOfflineChanges(potentialLeadId)
+        const container = await this.fetchLeadOnline(potentialLeadId)
+
+        // Data got changed while was offline
+        if (possbileChanges) {
+          // Chech for differences and save
+
+          console.log("I am here :O")
+          console.log(possbileChanges)
+
+          const origin = await LeadAPI.FetchFromOfflineOrigin(potentialLeadId)
+
+          if(!origin) {
+            throw new Error("No Origin was ever defined. Fatal Error")
+          }
+
+          // Get differences origin and changes
+          // Primitive comparison. extend l8er
+          const changes = (Object.keys(origin) as Array<keyof ILeadContainer>).filter((key) => {
+            const field = origin[key]
+
+            const test = possbileChanges[key]
+            if (field === null && test === null) {
+              return false
+            }
+
+            if (test === null) {
+              return true
+            }
+
+            if (field === null) {
+              return true
+            }
+
+            const difference = diff(field, test)
+            console.log(difference)
+            return Object.keys(difference).length !== 0
+          })
+
+          console.log(changes)
+          // Get differnces (changes - origin) and API
         } else {
-          await this.loadFromOnline(potentialLeadId)
-
-          this.setState({})
+          // No changes, override
+          this.saveLeadToOfflineOrigin(container)
         }
+
+
+        this.setState({container})
       } else {
         console.log("Is not a leadId", potentialLeadId)
       }
@@ -120,90 +180,36 @@ class Lead extends Component<Props, State> {
     this.setState({ initialAwait: fetch() })
   }
 
-  saveOfflineToOnline = async (potentialLeadId: number, offlineLead: ILeadContainer) => {
-    try {
-      // await LeadAPI.SaveToApi(potentialLeadId, offlineLead)
-
-      try {
-        await this.loadFromOnline(potentialLeadId)
-      } catch (e) {
-        console.log("Saving success but loading failed")
-        console.dir(e)
-
-        this.setState({ container: offlineLead })
-      }
-    } catch (e) {
-      if (e.message == "Failed to fetch") {
-        console.log("Still not online to reupload")
-
-        this.setState({ container: offlineLead })
-      }
-    }
+  // This saves to Offline and Changes
+  saveLeadToOfflineOrigin = (container: ILeadContainer) => {
+    LeadAPI.SaveOriginToOffline(container)
   }
 
-  loadFromOnline = async (potentialLeadId: number) => {
-    const promiseOnline = LeadAPI.FetchFromOnline(potentialLeadId)
+  // saveOfflineToOnline = async (potentialLeadId: number, offlineLead: ILeadContainer) => {
+  //   try {
+  //     // await LeadAPI.SaveToApi(potentialLeadId, offlineLead)
 
-    const lead = await promiseOnline
+  //     try {
+  //       await this.loadFromOnline(potentialLeadId)
+  //     } catch (e) {
+  //       console.log("Saving success but loading failed")
+  //       console.dir(e)
 
-    this.setState({ container: lead })
+  //       this.setState({ container: offlineLead })
+  //     }
+  //   } catch (e) {
+  //     if (e.message == "Failed to fetch") {
+  //       console.log("Still not online to reupload")
 
-    await LeadAPI.SaveToOffline(potentialLeadId, lead)
-    return
-  }
+  //       this.setState({ container: offlineLead })
+  //     }
+  //   }
+  // }
 
-  redirectToNextPage = (currentPage: string) => (stringAddition = "") => {
-    const { container } = this.state
-    if (container) {
-      const { Lead } = container
+  fetchLeadOnline = async (potentialLeadId: number): Promise<ILeadContainer> => {
+    const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
 
-      const { history } = this.props
-
-      const nextPage = this.getNextPage(currentPage)
-
-      // Quickfix due to TS Lint error
-      history.push("/lead/" + Lead.LeadId + nextPage + stringAddition)
-    }
-  }
-
-  getNextPage = (current: string): string => {
-    const { container } = this.state
-
-    // Check if lead is even defined
-    if (container) {
-      const order = LeadPageOrder(container.Lead, container.Lead.Services)
-
-      let lastPage = { name: "" }
-      for (let index = 0; index < order.length; index++) {
-        const potentialNextPage = order[index]
-
-        if (lastPage.name === current) {
-          if (potentialNextPage.active) {
-            return potentialNextPage.name
-          }
-        } else {
-          lastPage = potentialNextPage
-        }
-      }
-    }
-
-    return ""
-  }
-
-  createLead = async (createLead: IPostLead) => {
-    try {
-      // Save new Lead
-      const lead = await LeadService.createCustomer(createLead, this.props.selectedCompany.CompanyId)
-
-      // Navigate to page
-      // Get Next page not correctyl implemented. Temporary. Needs to set leadId data First.
-      this.props.history.replace("/lead/" + lead.LeadId + this.getNextPage("/building"))
-
-      return
-    } catch (e) {
-      console.dir(e)
-      throw e
-    }
+    return lead
   }
 
   public render() {
@@ -284,6 +290,62 @@ class Lead extends Component<Props, State> {
     } else {
       return "No Lead found"
     }
+  }
+
+  // Not offline relevant functions
+  createLead = async (createLead: IPostLead) => {
+    try {
+      // Save new Lead
+      const lead = await LeadService.createCustomer(createLead, this.props.selectedCompany.CompanyId)
+
+      // Navigate to page
+      // Get Next page not correctyl implemented. Temporary. Needs to set leadId data First.
+      this.props.history.replace("/lead/" + lead.LeadId + this.getNextPage("/building"))
+
+      return
+    } catch (e) {
+      console.dir(e)
+      throw e
+    }
+  }
+
+
+  redirectToNextPage = (currentPage: string) => (stringAddition = "") => {
+    const { container } = this.state
+    if (container) {
+      const { Lead } = container
+
+      const { history } = this.props
+
+      const nextPage = this.getNextPage(currentPage)
+
+      // Quickfix due to TS Lint error
+      history.push("/lead/" + Lead.LeadId + nextPage + stringAddition)
+    }
+  }
+
+  getNextPage = (current: string): string => {
+    const { container } = this.state
+
+    // Check if lead is even defined
+    if (container) {
+      const order = LeadPageOrder(container.Lead, container.Lead.Services)
+
+      let lastPage = { name: "" }
+      for (let index = 0; index < order.length; index++) {
+        const potentialNextPage = order[index]
+
+        if (lastPage.name === current) {
+          if (potentialNextPage.active) {
+            return potentialNextPage.name
+          }
+        } else {
+          lastPage = potentialNextPage
+        }
+      }
+    }
+
+    return ""
   }
 }
 

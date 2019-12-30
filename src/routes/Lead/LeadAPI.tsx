@@ -9,7 +9,7 @@ import { IMaterialOrder } from "../../interfaces/IShop"
 import { IInventars } from "../../interfaces/IInventars"
 
 
-interface LeadEditableValues {
+interface ILeadEditableValues {
   Lead: ILead
   moveOut: IMoveOutBuilding | null
   moveIn: IMoveInBuilding | null
@@ -27,13 +27,10 @@ interface LeadEditableValues {
   cleaningService: ICleaningService | null
 }
 
-export interface ILeadContainer extends LeadEditableValues {
-  lastUpdated: Date
-  onlySavedOffline: boolean
-  cachedInVersion: string
-
-  // unsavedChanges:
-  offlineOrigin?: LeadEditableValues
+export interface ILeadContainer extends ILeadEditableValues {
+  // lastUpdated: Date
+  // onlySavedOffline: boolean
+  // cachedInVersion: string
 }
 
 export function checkIs<Type>(object: any | null, key: keyof Type): object is Type {
@@ -64,34 +61,22 @@ class LeadAPI {
       ServicesService.fetchCleaningService(leadId),
       // @ts-ignore
     ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
-      lastUpdated: new Date(),
-      onlySavedOffline: false,
-      cachedInVersion: "",
+      // lastUpdated: new Date(),
+      // onlySavedOffline: false,
+      // cachedInVersion: "",
 
       Lead: Lead,
-
       moveOut: moveOut,
-
       moveIn: moveIn,
-
       cleaning: cleaning,
-
       disposal: disposal,
-
       storage: storage,
-
       moveService: moveService,
-
       materialOrder: materialOrder,
-
       inventory: inventory,
-
       packService: packService,
-
       storageService: storageService,
-
       disposalService: disposalService,
-
       cleaningService: cleaningService,
     }))
   }
@@ -181,20 +166,25 @@ class LeadAPI {
   }
 
   // Gets Called to Get Data From Offline
-  FetchFromOffline = (leadId: number): Promise<ILeadContainer | undefined> => {
+  FetchFromOfflineOrigin = (leadId: number): Promise<ILeadContainer | undefined> => {
     return get(leadId)
   }
 
+  // Gets Called to Get Data From Offline
+  FetchFromOfflineChanges = (leadId: number): Promise<ILeadContainer | undefined> => {
+    return get(leadId + "_changes")
+  }
 
   // Saves it in Offline Storage
-  SaveToOffline = (leadId: number, lead: ILeadContainer) => {
-    return set(leadId, lead)
+  SaveOriginToOffline = (container: ILeadContainer) => {
+    return set(container.Lead.LeadId, container)
   }
 
-  // Checks if data changed on the API side from first Fetch
-  CheckAgainstAPI() {
-
+  // Saves it in Offline Storage
+  SaveToChangesToOffline = (container: ILeadContainer) => {
+    return set(container.Lead.LeadId + "_changes", container)
   }
+
 
   isCompleteLead = (lead: IPutLead | ILead | null): lead is ILead => {
     if(lead) {
