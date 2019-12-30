@@ -145,26 +145,15 @@ class Lead extends Component<Props, State> {
     // Get differnces origin and API
     const whileOfflineAPIChanges = getContainerDiffKeys(origin, onlineState)
 
+    // FInd instances in which offline also deffered from last cache
     const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changes.findIndex(e => apiOffline === e) !== -1)
 
     if (bothChangedSameAPI.length > 0) {
       console.log("Offline Changed :(")
-      throw "Offline Change"
+      throw "Offline Changed"
     }
+
     // Send this to API Here
-
-    console.log("sending to API!!! (not implemented)")
-
-    if(changes.findIndex(e => "Lead" == e) !== -1) {
-
-    }
-    // LeadAPI.SaveMoveOut(moveOut, leadId),
-    // LeadAPI.SaveMoveIn(moveIn, leadId),
-    // LeadAPI.SaveDisposal(disposal, leadId),
-    // LeadAPI.SaveStorage(storage, leadId),
-    // LeadAPI.SaveCleaning(cleaning, leadId),
-    // LeadAPI.SaveMoveService(leadId, moveService),
-
     const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder } = offlineChanges
     const changeArray: {[key in keyof ILeadContainer]: () => Promise<any>} = {
       Lead: () => LeadAPI.SaveLead(offlineChanges.Lead),
@@ -247,7 +236,6 @@ class Lead extends Component<Props, State> {
     } else {
       console.log("Is not a leadId", potentialLeadId)
     }
-
   }
 
   // This saves to Offline and Changes
