@@ -198,12 +198,13 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  loadLead = async (leadId: number, offline: boolean) => {
+  loadLead = async (leadId: number) => {
     const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
     let onlineAPIContainer = null
+    let offline = false
+
     try {
       onlineAPIContainer = await this.fetchLeadOnline(leadId)
-
     } catch (e) {
       offline = true
     }
@@ -235,7 +236,7 @@ class Lead extends Component<Props, State> {
 
         if (this.state.offline && this.state.container) {
           this.setState({ offline: false })
-          this.loadLead(this.state.container.Lead.LeadId, false)
+          this.loadLead(this.state.container.Lead.LeadId)
         }
         setTimeout(this.heartbeat, requestEvery)
       })
@@ -255,7 +256,7 @@ class Lead extends Component<Props, State> {
     // const offlineString = localStorage.getItem("offline")
     // let offline = false
     // if (offlineString) {
-      // offline = JSON.parse(offlineString)
+    // offline = JSON.parse(offlineString)
     // }
 
     const idString = this.props.match.params.id
@@ -266,7 +267,7 @@ class Lead extends Component<Props, State> {
       return
 
     } else if (!isNaN(potentialLeadId)) {
-      this.setState({ initialAwait: this.loadLead(potentialLeadId, offline), offline})
+      this.setState({ initialAwait: this.loadLead(potentialLeadId)})
     } else {
       console.log("Is not a leadId", potentialLeadId)
     }
@@ -295,7 +296,7 @@ class Lead extends Component<Props, State> {
             this.setState({ offline: !offline })
 
             if(!offline && container)
-              this.loadLead(container.Lead.LeadId, !offline)
+              this.loadLead(container.Lead.LeadId)
           }}/>
           {/* {
             offline ?
