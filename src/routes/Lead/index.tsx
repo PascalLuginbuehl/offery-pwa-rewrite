@@ -227,21 +227,27 @@ class Lead extends Component<Props, State> {
   }
 
   heartbeat = () => {
-    const timeoutAfter = 10000
-    const requestEvery = 10000
+    const timeoutAfter = 3000
+    const requestEvery = 3000
     console.log("Beat")
     timeout(timeoutAfter, fetch("/favicon.ico?t=" + Math.random()))
       .then(() => {
-        this.setState({ offline: false })
+
+        if (this.state.offline && this.state.container) {
+          this.setState({ offline: false })
+          this.loadLead(this.state.container.Lead.LeadId, false)
+        }
         setTimeout(this.heartbeat, requestEvery)
       })
       .catch(e => {
-        this.setState({ offline: true })
+        if(!this.state.offline) {
+          this.setState({ offline: true })
+        }
         console.log("Timeout/Server down", e)
         setTimeout(this.heartbeat, requestEvery)
       })
-
   }
+
   componentDidMount() {
     this.heartbeat()
 
@@ -284,7 +290,13 @@ class Lead extends Component<Props, State> {
     return (
       <>
         <Wrapper initialLoading={initialAwait}>
-          <Switch checked={offline} onChange={() => {localStorage.setItem("offline", JSON.stringify(!offline)); this.setState({ offline: !offline })}}/>
+          <Switch checked={offline} onChange={() => {
+            localStorage.setItem("offline", JSON.stringify(!offline))
+            this.setState({ offline: !offline })
+
+            if(!offline && container)
+              this.loadLead(container.Lead.LeadId, !offline)
+          }}/>
           {/* {
             offline ?
               <CloudUploadIcon color="error" onClick= />
