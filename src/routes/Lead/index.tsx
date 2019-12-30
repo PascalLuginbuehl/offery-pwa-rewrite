@@ -131,7 +131,7 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  saveDifferences = async (leadId: number, onlineState: ILeadContainer, offlineChanges: ILeadContainer) => {
+  saveDifferencesToOnline = async (leadId: number, onlineState: ILeadContainer, offlineChanges: ILeadContainer) => {
     const origin = await LeadAPI.FetchFromOfflineOrigin(leadId)
 
     if (!origin) {
@@ -147,8 +147,6 @@ class Lead extends Component<Props, State> {
 
     const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changes.findIndex(e => apiOffline === e) !== -1)
 
-    console.log(bothChangedSameAPI)
-
     if (bothChangedSameAPI.length > 0) {
       console.log("Offline Changed :(")
       throw "Offline Change"
@@ -158,67 +156,74 @@ class Lead extends Component<Props, State> {
     console.log("sending to API!!! (not implemented)")
 
     if(changes.findIndex(e => "Lead" == e) !== -1) {
-      LeadAPI.SaveLead(offlineChanges.Lead)
+
     }
     // LeadAPI.SaveMoveOut(moveOut, leadId),
     // LeadAPI.SaveMoveIn(moveIn, leadId),
     // LeadAPI.SaveDisposal(disposal, leadId),
     // LeadAPI.SaveStorage(storage, leadId),
     // LeadAPI.SaveCleaning(cleaning, leadId),
-    // LeadAPI.SaveServices(leadId, services),
     // LeadAPI.SaveMoveService(leadId, moveService),
 
-    console.log(changes)
-    console.log(whileOfflineAPIChanges)
-    if(true) {
-      LeadAPI.RemoveChangesFromOffline(leadId)
-      // Updating
-      LeadAPI.SaveOriginToOffline(offlineChanges)
+    const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder } = offlineChanges
+    const changeArray: {[key in keyof ILeadContainer]: () => Promise<any>} = {
+      Lead: () => LeadAPI.SaveLead(offlineChanges.Lead),
+      moveOut: () => moveOut ? LeadAPI.SaveMoveOut(moveOut, leadId) : Promise.reject("Unable to remove Building"),
+      moveIn: () => moveIn ? LeadAPI.SaveMoveIn(moveIn, leadId) : Promise.reject("Unable to remove Building"),
+      cleaning: () => disposal ? LeadAPI.SaveDisposal(disposal, leadId) : Promise.reject("Unable to remove Building"),
+      disposal: () => storage ? LeadAPI.SaveStorage(storage, leadId) : Promise.reject("Unable to remove Building"),
+      storage: () => cleaning ? LeadAPI.SaveCleaning(cleaning, leadId) : Promise.reject("Unable to remove Building"),
+      materialOrder: () => LeadAPI.SaveMaterialOrderService(leadId, materialOrder),
+      inventory: () => LeadAPI.SaveInventoryService(leadId, inventory),
+      moveService: () => LeadAPI.SaveMoveService(leadId, moveService),
+      packService: () => LeadAPI.SavePackService(leadId, packService),
+      storageService: () => LeadAPI.SaveStorageService(leadId, storageService),
+      disposalService: () => LeadAPI.SaveDisposalService(leadId, disposalService),
+      cleaningService: () => LeadAPI.SaveCleaningService(leadId, cleaningService),
     }
 
+    try {
+      await Promise.all(changes.map(key => changeArray[key]()))
 
+      console.log(changes)
+      console.log(whileOfflineAPIChanges)
 
+      // CLear changes
+      LeadAPI.RemoveChangesFromOffline(leadId)
+      // Updating
+      // Update origin
+      LeadAPI.SaveOriginToOffline(offlineChanges)
 
-    // CLear changes
-    // Update origin
+    } catch(e) {
+      console.log(e)
+      throw new Error("Could not save")
+    }
   }
 
   loadLead = async (leadId: number, offline: boolean) => {
-    // const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
-
-    // if (offline && offline.onlySavedOffline) {
-    // Save to online and then fetch
-
-    // await this.saveOfflineToOnline(potentialLeadId, offline)
-    // } else {
-
-    const possbileChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
-    let liveApiContainer = null
+    const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
+    let onlineAPIContainer = null
     try {
-      liveApiContainer = await this.fetchLeadOnline(leadId)
+      onlineAPIContainer = await this.fetchLeadOnline(leadId)
 
     } catch (e) {
       offline = true
     }
 
     // Data got changed while was offline
-    if (possbileChanges) {
+    if (offlineChanges) {
 
       // Try to save. when still online  load from offline origin
-      if (!offline && liveApiContainer) {
-        this.saveDifferences(leadId, liveApiContainer, possbileChanges)
-
-        //
+      if (!offline && onlineAPIContainer) {
+        this.saveDifferencesToOnline(leadId, onlineAPIContainer, offlineChanges)
       }
 
-
-      this.setState({ container: possbileChanges })
-
+      this.setState({ container: offlineChanges })
     } else {
       // No changes, override
-      if (liveApiContainer) {
-        this.saveLeadToOfflineOrigin(liveApiContainer)
-        this.setState({ container: liveApiContainer })
+      if (onlineAPIContainer) {
+        this.saveLeadToOfflineOrigin(onlineAPIContainer)
+        this.setState({ container: onlineAPIContainer })
       }
     }
   }
@@ -249,27 +254,6 @@ class Lead extends Component<Props, State> {
   saveLeadToOfflineOrigin = (container: ILeadContainer) => {
     LeadAPI.SaveOriginToOffline(container)
   }
-
-  // saveOfflineToOnline = async (potentialLeadId: number, offlineLead: ILeadContainer) => {
-  //   try {
-  //     // await LeadAPI.SaveToApi(potentialLeadId, offlineLead)
-
-  //     try {
-  //       await this.loadFromOnline(potentialLeadId)
-  //     } catch (e) {
-  //       console.log("Saving success but loading failed")
-  //       console.dir(e)
-
-  //       this.setState({ container: offlineLead })
-  //     }
-  //   } catch (e) {
-  //     if (e.message == "Failed to fetch") {
-  //       console.log("Still not online to reupload")
-
-  //       this.setState({ container: offlineLead })
-  //     }
-  //   }
-  // }
 
   fetchLeadOnline = async (potentialLeadId: number): Promise<ILeadContainer> => {
     const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
