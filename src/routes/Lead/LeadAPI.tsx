@@ -1,4 +1,4 @@
-import { get, set } from "idb-keyval"
+import { get, set, del} from "idb-keyval"
 import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding, IPostStorageBuilding, IPostDisposalOutBuilding, IPostCleaningBuilding, IPostMoveInBuilding, IPostMoveOutBuilding } from "../../interfaces/IBuilding"
 import { IPutLead, ILead } from "../../interfaces/ILead"
 import BuildingService from "../../services/BuildingService"
@@ -185,6 +185,11 @@ class LeadAPI {
     return set(container.Lead.LeadId + "_changes", container)
   }
 
+
+  // Saves it in Offline Storage
+  RemoveChangesFromOffline = (leadId: number) => {
+    return del(leadId + "_changes")
+  }
 
   isCompleteLead = (lead: IPutLead | ILead | null): lead is ILead => {
     if(lead) {

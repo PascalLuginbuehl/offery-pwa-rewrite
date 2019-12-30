@@ -17,6 +17,7 @@ import IntlTooltip from "../../components/Intl/IntlTooltip"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import { diff } from "deep-object-diff"
+import { Switch } from "@material-ui/core"
 
 interface State {
   container: ILeadContainer | null
@@ -140,19 +141,49 @@ class Lead extends Component<Props, State> {
     // Get differences origin and changes
     // Primitive comparison. extend l8er
     const changes = getContainerDiffKeys(origin, offlineChanges)
-    console.log(changes)
-
 
     // Get differnces origin and API
     const whileOfflineAPIChanges = getContainerDiffKeys(origin, onlineState)
-    console.log(whileOfflineAPIChanges)
 
+    const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changes.findIndex(e => apiOffline === e) !== -1)
+
+    console.log(bothChangedSameAPI)
+
+    if (bothChangedSameAPI.length > 0) {
+      console.log("Offline Changed :(")
+      throw "Offline Change"
+    }
     // Send this to API Here
+
     console.log("sending to API!!! (not implemented)")
+
+    if(changes.findIndex(e => "Lead" == e) !== -1) {
+      LeadAPI.SaveLead(offlineChanges.Lead)
+    }
+    // LeadAPI.SaveMoveOut(moveOut, leadId),
+    // LeadAPI.SaveMoveIn(moveIn, leadId),
+    // LeadAPI.SaveDisposal(disposal, leadId),
+    // LeadAPI.SaveStorage(storage, leadId),
+    // LeadAPI.SaveCleaning(cleaning, leadId),
+    // LeadAPI.SaveServices(leadId, services),
+    // LeadAPI.SaveMoveService(leadId, moveService),
+
+    console.log(changes)
+    console.log(whileOfflineAPIChanges)
+    if(true) {
+      LeadAPI.RemoveChangesFromOffline(leadId)
+      // Updating
+      LeadAPI.SaveOriginToOffline(offlineChanges)
+    }
+
+
+
+
+    // CLear changes
+    // Update origin
   }
 
-  loadLead = async (leadId: number) => {
-    let { offline } = this.state
+  loadLead = async (leadId: number, offline: boolean) => {
     // const offline = await LeadAPI.FetchFromOffline(potentialLeadId)
 
     // if (offline && offline.onlySavedOffline) {
@@ -176,6 +207,8 @@ class Lead extends Component<Props, State> {
       // Try to save. when still online  load from offline origin
       if (!offline && liveApiContainer) {
         this.saveDifferences(leadId, liveApiContainer, possbileChanges)
+
+        //
       }
 
 
@@ -191,6 +224,12 @@ class Lead extends Component<Props, State> {
   }
 
   componentDidMount() {
+    const offlineString = localStorage.getItem("offline")
+    let offline = false
+    if (offlineString) {
+      offline = JSON.parse(offlineString)
+    }
+
     const idString = this.props.match.params.id
     const potentialLeadId = parseInt(idString ? idString : "")
 
@@ -199,8 +238,7 @@ class Lead extends Component<Props, State> {
       return
 
     } else if (!isNaN(potentialLeadId)) {
-
-      this.setState({ initialAwait: this.loadLead(potentialLeadId)})
+      this.setState({ initialAwait: this.loadLead(potentialLeadId, offline), offline})
     } else {
       console.log("Is not a leadId", potentialLeadId)
     }
@@ -246,13 +284,13 @@ class Lead extends Component<Props, State> {
     return (
       <>
         <Wrapper initialLoading={initialAwait}>
-
-          {
+          <Switch checked={offline} onChange={() => {localStorage.setItem("offline", JSON.stringify(!offline)); this.setState({ offline: !offline })}}/>
+          {/* {
             offline ?
-              <CloudUploadIcon color="error" onClick={() => this.setState({ offline: !offline })} />
+              <CloudUploadIcon color="error" onClick= />
               :
               <OfflinePinIcon color="primary" onClick={() => this.setState({ offline: !offline })}/>
-          }
+          } */}
 
 
           {this.renderLead()}
