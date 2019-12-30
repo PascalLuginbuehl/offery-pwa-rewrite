@@ -13,11 +13,16 @@ import ConditionRoutes from "./CombinedRoutes/ConditionRoutes"
 import Navigation from "./CombinedRoutes/Navigation"
 import ReactDOM from "react-dom"
 import LeadOverview from "./LeadOverview"
+import IntlTooltip from "../../components/Intl/IntlTooltip"
+import CloudUploadIcon from "@material-ui/icons/CloudUpload"
+import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 
 interface State {
   container: ILeadContainer | null
 
   initialAwait: Promise<any> | null
+
+  offline: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
@@ -30,6 +35,8 @@ class Lead extends Component<Props, State> {
     container: null,
 
     initialAwait: null,
+
+    offline: false,
   }
 
   public handleChange = (value: any, target: keyof ILeadContainer) => {
@@ -170,7 +177,7 @@ class Lead extends Component<Props, State> {
       for (let index = 0; index < order.length; index++) {
         const potentialNextPage = order[index]
 
-        if (lastPage.name == current) {
+        if (lastPage.name === current) {
           if (potentialNextPage.active) {
             return potentialNextPage.name
           }
@@ -184,68 +191,36 @@ class Lead extends Component<Props, State> {
   }
 
   createLead = async (createLead: IPostLead) => {
-    const promise = LeadService.createCustomer(createLead, this.props.selectedCompany.CompanyId)
-
     try {
-      const lead = await promise
+      // Save new Lead
+      const lead = await LeadService.createCustomer(createLead, this.props.selectedCompany.CompanyId)
 
-      const container: ILeadContainer = {
-        lastUpdated: new Date(),
-        onlySavedOffline: false,
-        cachedInVersion: "",
-
-        Lead: lead,
-
-        moveOut: null,
-        moveIn: null,
-        cleaning: null,
-        disposal: null,
-        storage: null,
-
-        moveService: null,
-        packService: null,
-        storageService: null,
-        disposalService: null,
-        cleaningService: null,
-
-        materialOrder: null,
-        inventory: null,
-      }
-
-      this.setState({ container: container })
-
+      // Navigate to page
+      // Get Next page not correctyl implemented. Temporary. Needs to set leadId data First.
       this.props.history.replace("/lead/" + lead.LeadId + this.getNextPage("/building"))
 
       return
     } catch (e) {
-      if (e.message == "Failed to fetch") {
-        console.log("Cannot create from offline")
-      } else {
-        console.log("Couldn't create")
-        console.dir(e)
-        throw e
-      }
+      console.dir(e)
+      throw e
     }
   }
 
   public render() {
-    const { initialAwait, container } = this.state
+    const { initialAwait, container, offline } = this.state
     const { match, portal } = this.props
 
     return (
       <>
         <Wrapper initialLoading={initialAwait}>
-          {/* {onlySavedOffline ? (
-            <IntlTooltip title="NOT_SAVED_ONLINE">
-              <CloudUploadIcon color="error" />
-            </IntlTooltip>
-          ) : null}
 
-          {loadedFromOffline ? (
-            <IntlTooltip title="LOADED_FROM_CACHE">
-              <OfflinePinIcon color="primary" />
-            </IntlTooltip>
-          ) : null} */}
+          {
+            offline ?
+              <CloudUploadIcon color="error" onClick={() => this.setState({ offline: !offline })} />
+              :
+              <OfflinePinIcon color="primary" onClick={() => this.setState({ offline: !offline })}/>
+          }
+
 
           {this.renderLead()}
         </Wrapper>
