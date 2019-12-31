@@ -106,8 +106,6 @@ EMAIL_CONFIRMATION,E-Mail confirmation,E-Mail Bestätigung
 FRENCH,French,Französisch
 ITALIAN,Italian,Italienisch
 NEXT,Next,Weiter
-LOADED_FROM_CACHE,Loaded from cache,Von Cache geladen
-NOT_SAVED_ONLINE, Saved in cache, not saved Online!, Warten auf Server
 NO_ADDRESS,Not specified,Nicht angegeben
 NO_COMPANIES_FOUND,No Companies found,Keine Firmen gefunden
 SELECT,Select...,Auswählen...
@@ -269,3 +267,6 @@ HEAVY_LIFT_PRICE,Heavy lift price,Schwergüter-Zuschlag
 HEAVY_LIFT_SERVICE,Heavy liuft service,Schwergüter-Zuschlag
 PAYMENT_METHOD,Payment method,Zahlungsmethode
 EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder Passwort nicht korrekt
+
+EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeited
+WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechter verbindung erkannt, wechsle zu offline"

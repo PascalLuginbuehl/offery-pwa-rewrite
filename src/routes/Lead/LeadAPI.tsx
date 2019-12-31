@@ -81,38 +81,6 @@ class LeadAPI {
     }))
   }
 
-
-  // Catch400Errors(e: Error) {
-  //   if(e.message == "Bad Request") {
-  //     throw new Error("Could not save lead properly")
-  //   } else if(e.message == "Failed to fetch") {
-  //     throw new Error("Failed to fetch")
-  //   }
-  //   return null
-  // }
-
-  // Sends all new Data to the API
-  // SaveToApi = (leadId: number, container: ILeadContainer): Promise<void> => {
-  //   const { Lead, moveOut, moveIn, storage, disposal, cleaning, services, moveService} = container
-  //   if (Lead) {
-  //     return Promise.all([
-  //       // convert to lead
-  //       LeadService.saveCustomer({ LeadId: leadId, ...Lead }),
-
-  //       this.SaveMoveOut(moveOut, leadId),
-  //       this.SaveMoveIn(moveIn, leadId),
-  //       this.SaveDisposal(disposal, leadId),
-  //       this.SaveStorage(storage, leadId),
-  //       this.SaveCleaning(cleaning, leadId),
-  //       this.SaveServices(leadId, services),
-  //       this.SaveMoveService(leadId, moveService),
-  //     ])
-  //     .then(() => {})
-  //   }
-
-  //   return Promise.reject()
-  // }
-
   SaveLead = (lead: ILead): Promise<unknown> => {
     return LeadService.saveCustomer(lead)
   }

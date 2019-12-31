@@ -1,18 +1,18 @@
-import { AppBar, createStyles, Drawer, Hidden, IconButton, Theme, Toolbar, Typography, WithStyles, withStyles, SwipeableDrawer, } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
-import * as React from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
-import { Link, Route, Switch } from 'react-router-dom'
-import withRoot from '../components/WithRoot'
+import { AppBar, createStyles, Drawer, Hidden, IconButton, Theme, Toolbar, Typography, WithStyles, withStyles, SwipeableDrawer, Snackbar, Button, } from "@material-ui/core"
+import MenuIcon from "@material-ui/icons/Menu"
+import * as React from "react"
+import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl"
+import { Link, Route, Switch } from "react-router-dom"
+import withRoot from "../components/WithRoot"
 
 
-import { withLanguage, WithLanguageProps } from '../providers/withLanguage'
-import Navigation from '../components/Navigation';
-import IntlTypography from '../components/Intl/IntlTypography';
-import UserDisplay from '../components/Navigation/UserDisplay';
-import Lead from './Lead';
-import Dashboard from './Dashboard';
-import logo from './../logo_white.svg';
+import { withLanguage, WithLanguageProps } from "../providers/withLanguage"
+import Navigation from "../components/Navigation"
+import IntlTypography from "../components/Intl/IntlTypography"
+import UserDisplay from "../components/Navigation/UserDisplay"
+import Lead from "./Lead"
+import Dashboard from "./Dashboard"
+import logo from "./../logo_white.svg"
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
 // import UserDisplay from 'components/Navigation/UserDisplay';
@@ -21,23 +21,32 @@ import logo from './../logo_white.svg';
 const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 const drawerWidth = 240
 
+function timeout(ms: number, promise: Promise<any>) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      reject(new Error("timeout"))
+    }, ms)
+    promise.then(resolve, reject)
+  })
+}
+
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      display: 'flex',
+      display: "flex",
       flexGrow: 1,
-      minHeight: '100vh',
-      overflow: 'hidden',
-      position: 'relative',
-      width: '100%',
+      minHeight: "100vh",
+      overflow: "hidden",
+      position: "relative",
+      width: "100%",
       zIndex: 1,
     },
 
     appBar: {
       boxShadow: theme.shadows["1"],
       marginLeft: drawerWidth,
-      position: 'absolute',
-      [theme.breakpoints.up('md')]: {
+      position: "absolute",
+      [theme.breakpoints.up("md")]: {
         width: `calc(100% - ${drawerWidth}px)`,
       },
     },
@@ -51,7 +60,7 @@ const styles = (theme: Theme) =>
     toolbarTitle: {
       // flexGrow: 1,
       padding: theme.spacing(2),
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         paddingLeft: theme.spacing(3),
       },
 
@@ -62,8 +71,8 @@ const styles = (theme: Theme) =>
 
     content: {
       backgroundColor: theme.palette.background.default,
-      display: 'flex',
-      flexFlow: 'column',
+      display: "flex",
+      flexFlow: "column",
       flexGrow: 1,
       // padding: theme.spacing.unit * 2,
       [theme.breakpoints.down("sm")]: {
@@ -79,16 +88,23 @@ const styles = (theme: Theme) =>
     },
 
     navIconHide: {
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
+      [theme.breakpoints.up("md")]: {
+        display: "none",
       },
     },
 
     drawerPaper: {
       minHeight: "100vh",
       width: drawerWidth,
-      [theme.breakpoints.up('md')]: {
-        position: 'relative',
+      [theme.breakpoints.up("md")]: {
+        position: "relative",
+      },
+    },
+
+    // For mobile move button more to top
+    snackbar: {
+      [theme.breakpoints.down("xs")]: {
+        bottom: 90,
       },
     },
   })
@@ -96,6 +112,7 @@ const styles = (theme: Theme) =>
 interface State {
   mobileOpen: boolean
   navPortal: HTMLDivElement | null
+  offline: boolean
 }
 
 interface Props extends WithStyles<typeof styles>, WithLanguageProps {
@@ -105,20 +122,52 @@ interface Props extends WithStyles<typeof styles>, WithLanguageProps {
 class Index extends React.Component<Props, State> {
   public state = {
     mobileOpen: false,
-    navPortal: null
+    navPortal: null,
+    offline: false
+  }
+
+  handleOfflineChange = (offline: boolean) => {
+
   }
 
   public handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }))
   }
 
+  componentDidMount() {
+    this.heartbeat()
+  }
+
   closeNavigation = () => {
     this.setState(state => ({ mobileOpen: false }))
   }
 
+  heartbeat = () => {
+    const timeoutAfter = 3000
+    const requestEvery = 3000
+    console.log("Beat")
+    timeout(timeoutAfter, fetch("/favicon.ico?t=" + Math.random()))
+      .then(() => {
+
+        if (this.state.offline) {
+          this.setState({ offline: false })
+        }
+        setTimeout(this.heartbeat, requestEvery)
+      })
+      .catch(e => {
+        if (!this.state.offline) {
+          this.setState({ offline: true })
+        }
+        console.log("Timeout/Server down", e)
+        setTimeout(this.heartbeat, requestEvery)
+      })
+  }
+
+
   public render() {
     const { classes } = this.props
-    const { mobileOpen, navPortal } = this.state
+    const { mobileOpen, navPortal, offline } = this.state
+
 
     return (
       <div className={classes.root}>
@@ -174,10 +223,25 @@ class Index extends React.Component<Props, State> {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
+          {
+            offline ?
+              <Toolbar variant="dense">
+                <IntlTypography variant="caption">EDITING_OFFLINE</IntlTypography>
+              </Toolbar>
+              : null
+          }
+
           <Switch>
-            <Route path="/lead/:id" render={(match) => <Lead {...match} portal={navPortal} closeNavigation={this.closeNavigation} />} />
+            <Route path="/lead/:id" render={(match) => <Lead offline={offline} onOfflineChange={this.handleOfflineChange} {...match} portal={navPortal} closeNavigation={this.closeNavigation} />} />
             <Route path="/" component={Dashboard} />
           </Switch>
+
+          <Snackbar
+            open
+            autoHideDuration={4000}
+            message={<FormattedMessage id="WEAK_CONNECTION_DETECTED" />}
+            className={classes.snackbar}
+          />
         </main>
       </div>
     )

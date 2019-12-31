@@ -17,28 +17,21 @@ import IntlTooltip from "../../components/Intl/IntlTooltip"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import { diff } from "deep-object-diff"
-import { Switch } from "@material-ui/core"
-
-function timeout(ms: number, promise: Promise<any>) {
-  return new Promise(function (resolve, reject) {
-    setTimeout(function () {
-      reject(new Error("timeout"))
-    }, ms)
-    promise.then(resolve, reject)
-  })
-}
+import { Switch, Toolbar } from "@material-ui/core"
+import IntlTypography from "../../components/Intl/IntlTypography"
 
 interface State {
   container: ILeadContainer | null
 
   initialAwait: Promise<any> | null
-
-  offline: boolean
 }
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
   portal: HTMLDivElement | null
   closeNavigation: () => void
+
+  offline: boolean
+  onOfflineChange: (offline: boolean) => void
 }
 
 function getContainerDiffKeys(originContainer: ILeadContainer, changesContainer: ILeadContainer): Array<keyof ILeadContainer> {
@@ -69,8 +62,6 @@ class Lead extends Component<Props, State> {
     container: null,
 
     initialAwait: null,
-
-    offline: false,
   }
 
   public handleChange = (value: any, target: keyof ILeadContainer) => {
@@ -81,7 +72,8 @@ class Lead extends Component<Props, State> {
   }
 
   public handleChangeAndSave = async (value: any, name: keyof ILeadContainer, savePromise: () => Promise<any>) => {
-    const { container, offline } = this.state
+    const { container } = this.state
+    const { offline } = this.props
 
     if (container) {
       const { Lead } = container
@@ -138,6 +130,12 @@ class Lead extends Component<Props, State> {
     if (this.props.location !== prevProps.location) {
       this.props.closeNavigation()
     }
+
+    if(this.props.offline !== prevProps.offline) {
+      if (this.props.offline && this.state.container) {
+        this.loadLead(this.state.container.Lead.LeadId)
+      }
+    }
   }
 
   saveDifferencesToOnline = async (leadId: number, onlineState: ILeadContainer, offlineChanges: ILeadContainer) => {
@@ -149,13 +147,13 @@ class Lead extends Component<Props, State> {
 
     // Get differences origin and changes
     // Primitive comparison. extend l8er
-    const changes = getContainerDiffKeys(origin, offlineChanges)
+    const changesWhileOffline = getContainerDiffKeys(origin, offlineChanges)
 
     // Get differnces origin and API
     const whileOfflineAPIChanges = getContainerDiffKeys(origin, onlineState)
 
     // FInd instances in which offline also deffered from last cache
-    const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changes.findIndex(e => apiOffline === e) !== -1)
+    const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changesWhileOffline.findIndex(e => apiOffline === e) !== -1)
 
     if (bothChangedSameAPI.length > 0) {
       console.log("Offline Changed :(")
@@ -181,9 +179,9 @@ class Lead extends Component<Props, State> {
     }
 
     try {
-      await Promise.all(changes.map(key => changeArray[key]()))
+      await Promise.all(changesWhileOffline.map(key => changeArray[key]()))
 
-      console.log(changes)
+      console.log(changesWhileOffline)
       console.log(whileOfflineAPIChanges)
 
       // CLear changes
@@ -201,12 +199,14 @@ class Lead extends Component<Props, State> {
   loadLead = async (leadId: number) => {
     const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
     let onlineAPIContainer = null
-    let offline = false
+
+    let { offline } = this.props
 
     try {
       onlineAPIContainer = await this.fetchLeadOnline(leadId)
     } catch (e) {
       offline = true
+      this.props.onOfflineChange(true)
     }
 
     // Data got changed while was offline
@@ -217,6 +217,7 @@ class Lead extends Component<Props, State> {
         this.saveDifferencesToOnline(leadId, onlineAPIContainer, offlineChanges)
       }
 
+      // #FIXME include onliune state
       this.setState({ container: offlineChanges })
     } else {
       // No changes, override
@@ -227,31 +228,7 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  heartbeat = () => {
-    const timeoutAfter = 3000
-    const requestEvery = 3000
-    console.log("Beat")
-    timeout(timeoutAfter, fetch("/favicon.ico?t=" + Math.random()))
-      .then(() => {
-
-        if (this.state.offline && this.state.container) {
-          this.setState({ offline: false })
-          this.loadLead(this.state.container.Lead.LeadId)
-        }
-        setTimeout(this.heartbeat, requestEvery)
-      })
-      .catch(e => {
-        if(!this.state.offline) {
-          this.setState({ offline: true })
-        }
-        console.log("Timeout/Server down", e)
-        setTimeout(this.heartbeat, requestEvery)
-      })
-  }
-
   componentDidMount() {
-    this.heartbeat()
-
 
     // const offlineString = localStorage.getItem("offline")
     // let offline = false
@@ -285,27 +262,12 @@ class Lead extends Component<Props, State> {
   }
 
   public render() {
-    const { initialAwait, container, offline } = this.state
+    const { initialAwait, container } = this.state
     const { match, portal } = this.props
 
     return (
       <>
         <Wrapper initialLoading={initialAwait}>
-          <Switch checked={offline} onChange={() => {
-            // localStorage.setItem("offline", JSON.stringify(!offline))
-            this.setState({ offline: !offline })
-
-            if(!offline && container)
-              this.loadLead(container.Lead.LeadId)
-          }}/>
-          {/* {
-            offline ?
-              <CloudUploadIcon color="error" onClick= />
-              :
-              <OfflinePinIcon color="primary" onClick={() => this.setState({ offline: !offline })}/>
-          } */}
-
-
           {this.renderLead()}
         </Wrapper>
         {portal && container ? ReactDOM.createPortal(<Navigation leadContainer={container} matchUrl={match.url} portal={portal} />, portal) : null}
