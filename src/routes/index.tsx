@@ -113,6 +113,7 @@ interface State {
   mobileOpen: boolean
   navPortal: HTMLDivElement | null
   offline: boolean
+  offlineSnackbarOpen: boolean
 }
 
 interface Props extends WithStyles<typeof styles>, WithLanguageProps {
@@ -123,11 +124,21 @@ class Index extends React.Component<Props, State> {
   public state = {
     mobileOpen: false,
     navPortal: null,
-    offline: false
+    offline: false,
+    offlineSnackbarOpen: false,
   }
 
   handleOfflineChange = (offline: boolean) => {
-
+    if (offline) {
+      if (!this.state.offline) {
+        this.setState({ offline: true })
+        this.setState({ offlineSnackbarOpen: true })
+      }
+    } else {
+      if (this.state.offline) {
+        this.setState({ offline: false })
+      }
+    }
   }
 
   public handleDrawerToggle = () => {
@@ -142,22 +153,23 @@ class Index extends React.Component<Props, State> {
     this.setState(state => ({ mobileOpen: false }))
   }
 
+  closeSnackbar = () => {
+    this.setState({offlineSnackbarOpen: false})
+  }
+
   heartbeat = () => {
     const timeoutAfter = 3000
     const requestEvery = 3000
-    console.log("Beat")
+
     timeout(timeoutAfter, fetch("/favicon.ico?t=" + Math.random()))
       .then(() => {
 
-        if (this.state.offline) {
-          this.setState({ offline: false })
-        }
+        this.handleOfflineChange(false)
         setTimeout(this.heartbeat, requestEvery)
       })
       .catch(e => {
-        if (!this.state.offline) {
-          this.setState({ offline: true })
-        }
+        this.handleOfflineChange(true)
+
         console.log("Timeout/Server down", e)
         setTimeout(this.heartbeat, requestEvery)
       })
@@ -166,7 +178,7 @@ class Index extends React.Component<Props, State> {
 
   public render() {
     const { classes } = this.props
-    const { mobileOpen, navPortal, offline } = this.state
+    const { mobileOpen, navPortal, offline, offlineSnackbarOpen } = this.state
 
 
     return (
@@ -236,12 +248,15 @@ class Index extends React.Component<Props, State> {
             <Route path="/" component={Dashboard} />
           </Switch>
 
+
           <Snackbar
-            open
+            open={offlineSnackbarOpen}
+            onClose={this.closeSnackbar}
             autoHideDuration={4000}
-            message={<FormattedMessage id="WEAK_CONNECTION_DETECTED" />}
+            message={offline ? <FormattedMessage id="WEAK_CONNECTION_DETECTED" /> : <FormattedMessage id="BACK_ONLINE" /> }
             className={classes.snackbar}
           />
+
         </main>
       </div>
     )

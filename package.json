@@ -41,6 +41,7 @@
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
     "react-swipeable-views": "^0.13.3",
+    "ts-transformer-keys": "^0.4.1",
     "typescript": "3.5.2",
     "yup": "^0.27.0"
   },

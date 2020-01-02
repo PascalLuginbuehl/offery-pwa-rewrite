@@ -145,6 +145,10 @@ class Lead extends Component<Props, State> {
       throw new Error("No Origin was ever defined. Fatal Error")
     }
 
+    // only compare keys that are relevant. No Server keys
+    // var IMyTable: Array<keyof IMyTable> = ["id", "title", "createdAt", "isDeleted"];
+
+
     // Get differences origin and changes
     // Primitive comparison. extend l8er
     const changesWhileOffline = getContainerDiffKeys(origin, offlineChanges)

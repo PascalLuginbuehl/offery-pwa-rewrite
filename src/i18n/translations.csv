@@ -270,3 +270,4 @@ EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder
 
 EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeited
 WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechter verbindung erkannt, wechsle zu offline"
+BACK_ONLINE,Back online,Wieder online
