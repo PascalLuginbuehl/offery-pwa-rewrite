@@ -13,6 +13,7 @@ import UserDisplay from "../components/Navigation/UserDisplay"
 import Lead from "./Lead"
 import Dashboard from "./Dashboard"
 import logo from "./../logo_white.svg"
+import newDashboard from "./newDashboard"
 // import Lead from './Lead'
 // import Dashboard from './Dashboard'
 // import UserDisplay from 'components/Navigation/UserDisplay';
@@ -245,6 +246,7 @@ class Index extends React.Component<Props, State> {
 
           <Switch>
             <Route path="/lead/:id" render={(match) => <Lead offline={offline} onOfflineChange={this.handleOfflineChange} {...match} portal={navPortal} closeNavigation={this.closeNavigation} />} />
+            <Route path="/new" component={newDashboard} />
             <Route path="/" component={Dashboard} />
           </Switch>
 
