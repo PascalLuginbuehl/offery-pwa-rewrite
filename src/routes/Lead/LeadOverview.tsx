@@ -47,7 +47,7 @@ class LeadOverview extends React.Component<Props> {
                 </TableRow>
                 <TableRow>
                   <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
-                  <TableCell><ServiceIcons test={1} /></TableCell>
+                  <TableCell><ServiceIcons services={lead.Services} /></TableCell>
                 </TableRow>
                 <TableRow>
                   <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>

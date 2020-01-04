@@ -106,7 +106,7 @@ EMAIL_CONFIRMATION,E-Mail confirmation,E-Mail Bestätigung
 FRENCH,French,Französisch
 ITALIAN,Italian,Italienisch
 NEXT,Next,Weiter
-NO_ADDRESS,Not specified,Nicht angegeben
+NO_ADDRESS,Adress not specified,Address nicht angegeben
 NO_COMPANIES_FOUND,No Companies found,Keine Firmen gefunden
 SELECT,Select...,Auswählen...
 REQUIRED,Required,Pflichtfeld
