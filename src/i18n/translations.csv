@@ -281,3 +281,7 @@ LEAD_OVERVIEW,Lead overview,Lead Übersicht
 INFORMATION,Informations,Informationen
 STATUS_HISTORY,Status History,Status verlauf
 DATE,Date,Datum
+OFFER_STATUS,Offer Status,Offerten Status
+OFFER_NOT_SENT,Offer was not sent jet, Offerte wurde noch nicht versandt
+OFFER_SENT_EMAIL,Offer was sent through E-Mail,Offerte wurde per E-Mail versandt
+MANUAL_OVERRIDE,Manual override,Manuell Überschreiben

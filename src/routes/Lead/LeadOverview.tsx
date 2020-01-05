@@ -1,6 +1,6 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, Table, TableHead, TableRow, TableBody, TableCell } from "@material-ui/core"
-import { Formik, FormikProps, withFormik, Field, FieldArray } from "formik"
+import { Formik, FormikProps, withFormik, Field, FieldArray, Form } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
 import { withResource, WithResourceProps } from "../../providers/withResource"
 import PageHeader from "../../components/PageHeader"
@@ -11,16 +11,27 @@ import ServiceIcons from "../../components/Dashboard/ServiceIcons"
 import IntlTableCell from "../../components/Intl/IntlTableCell"
 import animation from "../../components/lottie/433-checked-done.json"
 import Lottie from "lottie-react-web"
+import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
 
 const styles = (theme: Theme) => createStyles({})
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+function desc<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1
+  }
+  return 0
+}
+
+interface _Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   lead: ILead
 }
 
-class LeadOverview extends React.Component<Props> {
+class LeadOverview extends React.Component<_Props> {
   public render() {
-    const { selectedCompany, lead } = this.props
+    const { selectedCompany, lead, intl } = this.props
 
     return (
       <Grid item xs={12}>
@@ -73,9 +84,48 @@ class LeadOverview extends React.Component<Props> {
           </FormikGroups>
 
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
-            <Grid item xs={12}>
-              <IntlTypography>TEST</IntlTypography>
-            </Grid>
+            {
+              lead.Offers.length > 0 ? (
+                <Formik
+                  initialValues={() => ({
+                    search: "",
+                    status: ""
+                  })}
+                  onSubmit={() => {
+
+                  }}
+                >
+                  {() => (
+                    <Form>
+                      <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                          <IntlTypography>OFFER_SENT_EMAIL</IntlTypography>
+                        </Grid>
+                        <FormikGroups label="MANUAL_OVERRIDE" xs={12}>
+                          <Field
+                            label="OFFER"
+                            name="selectedOfferId"
+                            component={FormikSimpleSelect}
+                            notTranslated
+                            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
+                              label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+                              value: offer.OfferId,
+                            }))}
+                          />
+                        </FormikGroups>
+                      </Grid>
+                    </Form>
+                  )}
+                </Formik>
+              ) : (
+                <Grid item xs={12}>
+                  <IntlTypography>OFFER_NOT_SENT</IntlTypography>
+                </Grid>
+              )
+            }
+
+
+
           </FormikGroups>
 
           <FormikGroups label="STATUS_HISTORY" xs={12}>
@@ -87,7 +137,7 @@ class LeadOverview extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lead.StatusHistories.map(e => (
+                {lead.StatusHistories.sort((a, b) => desc(a, b, "Created")).map(e => (
                   <TableRow key={e.StatusHistoryId}>
                     <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
                     <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric"/></TableCell>
