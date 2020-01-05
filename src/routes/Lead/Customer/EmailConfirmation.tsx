@@ -62,7 +62,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
             <IntlTypography>VISITING_DATE</IntlTypography>
             <Typography>
-              <FormattedDate value={lead.VisitDate} />
+              <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
             </Typography>
 
             <Typography>

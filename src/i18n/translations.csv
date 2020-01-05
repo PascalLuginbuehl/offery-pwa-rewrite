@@ -64,6 +64,7 @@ SIGN_IN,Sign In,Einloggen
 HOME,Home,Home
 COMPANY_LEAD_OVERVIEW,Lead Overview,Lead Übersicht
 START_DESTINATION_ADDRESSES,Start / Destination,Von / Nach
+TO,To,Nach
 PROJECT_START,Project start,Projektstart
 NO_COMPANY_FOUND,No Company found,Keine Firma gefunden
 ARCHIVED,Archied,Archiviert
@@ -271,3 +272,12 @@ EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder
 EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeited
 WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechter verbindung erkannt, wechsle zu offline"
 BACK_ONLINE,Back online,Wieder online
+
+STATUS,Status,Status
+CREATED,Created,Erstellt
+SEARCH,Search,Suche
+
+LEAD_OVERVIEW,Lead overview,Lead Übersicht
+INFORMATION,Informations,Informationen
+STATUS_HISTORY,Status History,Status verlauf
+DATE,Date,Datum

@@ -5,9 +5,6 @@ import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
-import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
-import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
-import ContactsIcon from "@material-ui/icons/Contacts"
 import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter, TablePagination, Button } from "@material-ui/core"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import PlainLink from "../components/PlainLink"
@@ -20,6 +17,7 @@ import { Formik, Form, Field } from "formik"
 import FormikSimpleSelect from "../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../components/FormikFields/FormikTextField"
 import ServicesComponent from "../components/Dashboard/ServiceIcons"
+import LeadTable from "../components/LeadTable"
 
 
 const styles = (theme: Theme) =>
@@ -92,7 +90,7 @@ class TableDashboard extends React.Component<Props, _State> {
                       name="status"
                       component={FormikSimpleSelect}
                       overrideGrid={{xs: 3, md: 2}}
-                      options={resource.Balconies.map(e => ({ label: e.NameTextKey, value: e.BalconyId }))}
+                      options={resource.Statuses.map(e => ({ label: e.NameTextKey, value: e.StatusId }))}
                     />
                     <Field component={FormikTextField} name="search" label="SEARCH" overrideGrid={{xs: 6, md: 8}}/>
                     <Grid item xs={3} md={2}>
@@ -107,68 +105,7 @@ class TableDashboard extends React.Component<Props, _State> {
           </Grid>
 
           <Grid item xs={12}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell variant="head"><FormattedMessage id="STATUS" /></TableCell>
-                  <TableCell variant="head"><FormattedMessage id="CUSTOMER" /></TableCell>
-                  <TableCell variant="head"><FormattedMessage id="START_DESTINATION_ADDRESSES" /></TableCell>
-                  <TableCell variant="head"><FormattedMessage id="VISITING_DATE" /></TableCell>
-                  <TableCell variant="head"><FormattedMessage id="SERVICES" /></TableCell>
-                  <TableCell variant="head"><FormattedMessage id="PROCESS_OVERVIEW" /></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {leads.map((lead) =>
-                  <TableRow key={lead.LeadId}>
-                    <TableCell>
-                      <Typography noWrap variant="body2">
-                        <FormattedMessage id={lead.Status.NameTextKey} />
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography noWrap variant="body2">
-                        {lead.Customer.Firstname + " " + lead.Customer.Lastname}
-                      </Typography>
-                    </TableCell>
-                    <TableCell style={{ padding: "6px 16px"}}>
-                      <Typography variant="caption" component="span" noWrap>
-                        {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}, ${lead.FromAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
-                      </Typography>
-                      <br />
-                      <Typography variant="caption" component="span" noWrap>
-                        {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell>
-                      <Typography noWrap variant="body2">
-                        {lead.VisitDate ? <FormattedDate year="numeric" month="long" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell style={{ padding: "6px 16px" }}>
-                      <ServicesComponent services={lead.Services} />
-                    </TableCell>
-                    <TableCell>
-                      <IconButton>
-                        <RemoveRedEyeIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                )}
-
-              </TableBody>
-            </Table>
-            {/* <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={leads.length}
-              rowsPerPage={25}
-              page={1}
-              onChangePage={() => console.log("HI")}
-              onChangeRowsPerPage={() => console.log("HI")}
-            /> */}
+            <LeadTable leads={leads} />
 
             <div className={classes.positionAddRight}>
               <PlainLink to="/lead/new/building">

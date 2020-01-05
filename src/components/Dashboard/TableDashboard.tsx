@@ -1,19 +1,19 @@
-import * as React from 'react'
-import { green } from '@material-ui/core/colors';
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add'
-import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye'
-import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import ContactsIcon from '@material-ui/icons/Contacts'
-import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter } from '@material-ui/core'
-import IntlTooltip from '../Intl/IntlTooltip';
-import { ILead } from '../../interfaces/ILead';
-import { IOfflineLead } from '../../routes/Dashboard';
-import OfflinePinIcon from '@material-ui/icons/OfflinePin'
-import PlainLink from '../PlainLink';
-import StatusButton from './StatusButton';
+import * as React from "react"
+import { green } from "@material-ui/core/colors";
+import ExpandLess from "@material-ui/icons/ExpandLess"
+import ExpandMore from "@material-ui/icons/ExpandMore"
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add"
+import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
+import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl";
+import ContactsIcon from "@material-ui/icons/Contacts"
+import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter } from "@material-ui/core"
+import IntlTooltip from "../Intl/IntlTooltip";
+import { ILead } from "../../interfaces/ILead";
+import { IOfflineLead } from "../../routes/Dashboard";
+import OfflinePinIcon from "@material-ui/icons/OfflinePin"
+import PlainLink from "../PlainLink";
+import StatusButton from "./StatusButton";
 
 
 const styles = (theme: Theme) =>
@@ -24,15 +24,12 @@ const styles = (theme: Theme) =>
     }
   })
 
-interface State {
-
-}
 
 interface Props extends WithStyles<typeof styles> {
   leads: IOfflineLead[]
 }
 
-class TableDashboard extends React.Component<Props, State> {
+class TableDashboard extends React.Component<Props> {
 
   public render() {
     const { classes, leads } = this.props

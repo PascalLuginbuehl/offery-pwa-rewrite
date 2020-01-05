@@ -34,20 +34,35 @@ class LeadOverview extends React.Component<Props> {
 
               <TableBody>
                 <TableRow>
-                  <IntlTableCell component="th" scope="row">FIRST_LASTNAME</IntlTableCell>
+                  <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
                   <TableCell>{lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
                 </TableRow>
+
                 <TableRow>
-                  <IntlTableCell component="th" scope="row">FROM_TO</IntlTableCell>
-                  <TableCell>{lead.FromAddress ? lead.FromAddress.Street : "Not set"} {lead.ToAddress ? lead.ToAddress.Street : "Not set"}</TableCell>
+                  <IntlTableCell component="th" scope="row">FROM</IntlTableCell>
+                  <TableCell>
+                    {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}, ${lead.FromAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
+                  </TableCell>
                 </TableRow>
+
+                <TableRow>
+                  <IntlTableCell component="th" scope="row">TO</IntlTableCell>
+                  <TableCell>
+                    {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
+                  </TableCell>
+                </TableRow>
+
                 <TableRow>
                   <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-                  <TableCell><FormattedDate value={lead.VisitDate} /></TableCell>
+                  <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                </TableRow>
+                <TableRow>
+                  <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
+                  <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                 </TableRow>
                 <TableRow>
                   <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
-                  <TableCell><ServiceIcons services={lead.Services} /></TableCell>
+                  <TableCell><ServiceIcons lead={lead} services={lead.Services} /></TableCell>
                 </TableRow>
                 <TableRow>
                   <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
@@ -63,7 +78,7 @@ class LeadOverview extends React.Component<Props> {
             </Grid>
           </FormikGroups>
 
-          <FormikGroups label="STATE_HISTORY" xs={12}>
+          <FormikGroups label="STATUS_HISTORY" xs={12}>
             <Table size="small">
               <TableHead>
                 <TableRow>
@@ -75,7 +90,7 @@ class LeadOverview extends React.Component<Props> {
                 {lead.StatusHistories.map(e => (
                   <TableRow key={e.StatusHistoryId}>
                     <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
-                    <TableCell><FormattedDate value={e.Created} /></TableCell>
+                    <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric"/></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

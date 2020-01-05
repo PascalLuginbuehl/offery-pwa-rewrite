@@ -71,6 +71,11 @@ export interface IFurnitureCategory {
   Furnitures:  IFurniture[]
 }
 
+export interface IStatus {
+  StatusId: number
+  NameTextKey: string
+}
+
 export interface IResource {
   CurrentUser: IUser
   CurrentCompanies: ICompany[]
@@ -88,4 +93,5 @@ export interface IResource {
   BuildingTypeDetails: IBuildingTypeDetail[]
   FurnitureCategories: IFurnitureCategory[]
   PaymentMethods: IPaymentMethod[]
+  Statuses: IStatus[]
 }
