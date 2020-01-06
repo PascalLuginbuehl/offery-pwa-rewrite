@@ -24,6 +24,7 @@ interface Values {
 
 interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: (stringAddition?: string) => void
+  offline: boolean
   lead: ILead
 }
 

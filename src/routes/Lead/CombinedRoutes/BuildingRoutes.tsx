@@ -18,9 +18,10 @@ interface Props {
   redirectToNextPage: (currentUrl: string) => () => void
   matchUrl: string
   handleChange: (value: any, name: keyof ILeadContainer) => void
+  offline: boolean
 }
 
-export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, handleChange }: Props) {
+export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, handleChange, offline}: Props) {
   const { Lead, moveOut, moveIn, storage, disposal, cleaning } = leadContainer
 
   const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
@@ -144,7 +145,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
       <Route
         exact
         path={`${matchUrl}/building/email-confirmation`}
-        render={routeProps => <EmailConfirmation {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />}
+        render={routeProps => <EmailConfirmation offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />}
       />
     </>
   )

@@ -280,7 +280,7 @@ class Lead extends Component<Props, State> {
   }
 
   renderLead = () => {
-    const { match, portal } = this.props
+    const { match, portal, offline } = this.props
     const { container } = this.state
 
     // Create New Lead
@@ -304,12 +304,14 @@ class Lead extends Component<Props, State> {
             render={routeProps => (
               <LeadOverview
                 {...routeProps}
+                offline={offline}
                 lead={container.Lead}
               />
             )}
           />
 
           <BuildingRoutes
+            offline={offline}
             handleChange={this.handleChange}
             leadContainer={container}
             matchUrl={match.url}
@@ -320,6 +322,7 @@ class Lead extends Component<Props, State> {
           <ServiceRoutes leadContainer={container} matchUrl={match.url} handleChangeAndSave={this.handleChangeAndSave} redirectToNextPage={this.redirectToNextPage} />
 
           <ConditionRoutes
+            offline={offline}
             handleChange={this.handleChange}
             getNextPage={this.getNextPage}
             leadContainer={container}

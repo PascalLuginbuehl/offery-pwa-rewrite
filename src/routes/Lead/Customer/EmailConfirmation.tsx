@@ -33,11 +33,13 @@ const styles = (theme: Theme) => createStyles({})
 interface Values {
   AddressId: number | null
   Comment: string
+  VisitDate: Date | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
   lead: ILead
+  offline: boolean
   // onChangeAndSave: (lead: ILead) => void
   buildingOptions: IBuildingCopy
 }
@@ -65,6 +67,8 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
               <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
             </Typography>
 
+            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
+
             <Typography>
               <FormattedMessage id={VisitConfirmEmailBodyContentOutroTextKey} values={{ br: <br /> }} />
             </Typography>
@@ -87,13 +91,14 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
   sendAndSubmit = async () => {
     const { lead, submitForm, values, setSubmitting } = this.props
-    const { AddressId, Comment } = values
+    const { AddressId, Comment, VisitDate } = values
 
     setSubmitting(true)
 
-    if (LeadAPI.isCompleteLead(lead) && AddressId) {
-      await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, AddressId: AddressId })
+    if (!LeadAPI.isCompleteLead(lead) || !AddressId || !VisitDate) {
+      throw new Error("Not defined")
     }
+    await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, AddressId: AddressId, VisitDate: VisitDate })
 
     submitForm()
   }
@@ -104,8 +109,8 @@ export default injectIntl(
     withResource(
       withFormik<Props, Values>({
         mapPropsToValues: props => {
-          const { lead: { FromAddress } } = props
-          return { AddressId: FromAddress ? FromAddress.AddressId : null, Comment: "" }
+          const { lead: { FromAddress, VisitDate } } = props
+          return { AddressId: FromAddress ? FromAddress.AddressId : null, Comment: "", VisitDate }
         },
 
         handleSubmit: (values, actions) => {

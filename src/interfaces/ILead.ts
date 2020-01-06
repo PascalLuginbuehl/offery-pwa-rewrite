@@ -85,6 +85,7 @@ export interface ILead extends ICompressedLead {
     StatusHistoryId: number
     Created: Date
     Status: IStatus
+    Comment: string
   }>
 
   Offers: IOffer[]

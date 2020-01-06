@@ -28,6 +28,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
   // onSaveAndNextPage: (templateCategoryId: number, type: number, outAddressId: number, inAddressId: number) => Promise<any>
   buildingOptions: IBuildingCopy
   lead: ILead
+  offline: boolean
   onChange: (value: any, name: keyof ILeadContainer) => void
 }
 

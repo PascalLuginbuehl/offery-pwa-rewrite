@@ -29,9 +29,11 @@ interface Values {
   Comment: string
 }
 
+
 interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   nextPage: () => void
   lead: ILead
+  offline: boolean
 }
 
 interface State {

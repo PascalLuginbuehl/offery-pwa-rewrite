@@ -1,6 +1,7 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
-import { IOffer } from "../interfaces/IOffer";
+import { IOffer, IConfirmOffer } from "../interfaces/IOffer"
+import { ILead } from "../interfaces/ILead"
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -20,7 +21,7 @@ class ServicesService {
         .then(response => response.json())
         // .then(middleWare)
         .then(json => this.toSpecificType<IOffer>(json))
-      // .catch(e => console.log(e))
+    // .catch(e => console.log(e))
     )
   }
 

@@ -14,3 +14,13 @@ export interface IOffer {
   Language: string
   Files: IOFile[]
 }
+
+export interface IConfirmOffer {
+  LeadId: number
+  OfferId: number
+
+  ConfirmedOrderVerbal: boolean
+  ConfirmedOrder: boolean
+
+  Comment: string
+}

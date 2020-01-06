@@ -23,9 +23,10 @@ interface Props {
   getNextPage: (originalPath: string) => string
   handleChange: (value: any, name: keyof ILeadContainer) => void
   matchUrl: string
+  offline: boolean
 }
 
-export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange }: Props) {
+export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange, offline }: Props) {
   const {
     Lead,
     moveOut,
@@ -191,19 +192,19 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
         exact
         path={`${matchUrl}/offer/generate`}
         render={routeProps => (
-          <GenerateOffer {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+          <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
         )}
       />
 
-      <Route exact path={`${matchUrl}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
+      <Route exact path={`${matchUrl}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
       <Route
         exact
         path={`${matchUrl}/offer/preview/:offerId`}
-        render={routeProps => <PreviewOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />}
+        render={routeProps => <PreviewOffer offline={ offline } {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />}
       />
 
-      <Route exact path={`${matchUrl}/offer/send`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
-      <Route exact path={`${matchUrl}/offer/send/:offerId`} render={routeProps => <SendOffer {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
+      <Route exact path={`${matchUrl}/offer/send`} render={routeProps => <SendOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
+      <Route exact path={`${matchUrl}/offer/send/:offerId`} render={routeProps => <SendOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
 
       <Route exact path={`${matchUrl}/offer/done`} render={routeProps => <Done {...routeProps} lead={Lead} />} />
     </>

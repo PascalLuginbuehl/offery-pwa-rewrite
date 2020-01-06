@@ -3,6 +3,7 @@ import { errorFunction } from "./errorFunction"
 import { ILead, IPutLead, IUpdateLead, ICompressedLead, IPostLead } from "../interfaces/ILead"
 import LoginService from "./LoginService"
 import { format } from "date-fns/esm"
+import { IConfirmOffer } from "../interfaces/IOffer"
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -69,108 +70,84 @@ class LeadService {
 
   //   return json
   // }
-  public fetchCustomer(id: number) {
-    return new Promise<ILead>(async (resolve, reject) => {
-      try {
-        const data = await fetch(API_URL + "/lead/" + id, await LoginService.authorizeRequest())
-          .then(errorFunction)
-          .then(response => response.json())
-          .then(json => this.toCustomer(json))
+  public async fetchCustomer(id: number): Promise<ILead> {
+    const data = await fetch(API_URL + "/lead/" + id, await LoginService.authorizeRequest())
+      .then(errorFunction)
+      .then(response => response.json())
+      .then(json => this.toCustomer(json))
 
-        resolve(data)
-      } catch (e) {
-        reject(e)
-        console.error(e)
-      }
-    })
+    return data
   }
 
-  public saveCustomer(customer: IUpdateLead) {
-    return new Promise<ILead>(async (resolve, reject) => {
-      try {
-        const data = await fetch(
-          API_URL + "/lead",
-          await LoginService.authorizeRequest({
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.sendData(customer)),
-          })
-        )
-          .then(errorFunction)
-          .then(response => response.json())
-          .then(json => this.toCustomer(json))
+  public async saveCustomer(customer: IUpdateLead): Promise<ILead> {
+    const data = await fetch(
+      API_URL + "/lead",
+      await LoginService.authorizeRequest({
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.sendData(customer)),
+      })
+    )
+      .then(errorFunction)
+      .then(response => response.json())
+      .then(json => this.toCustomer(json))
 
-        resolve(data)
-      } catch (e) {
-        reject(e)
-        console.error(e)
-      }
-    })
+    return data
   }
 
-  public createCustomer(customer: IPostLead, companyId: number) {
-    return new Promise<ILead>(async (resolve, reject) => {
-      try {
-        const data = await fetch(
-          API_URL + "/lead",
-          await LoginService.authorizeRequest({
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ...this.sendData(customer), CompanyId: companyId }),
-          })
-        )
-          .then(errorFunction)
-          .then(response => response.json())
-          .then(json => this.toCustomer(json))
+  public async createCustomer(customer: IPostLead, companyId: number) {
+    const data = await fetch(
+      API_URL + "/lead",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...this.sendData(customer), CompanyId: companyId }),
+      })
+    )
+      .then(errorFunction)
+      .then(response => response.json())
+      .then(json => this.toCustomer(json))
 
-        resolve(data)
-      } catch (e) {
-        reject(e)
-        console.error(e)
-      }
-    })
+    return data
   }
 
-  public fetchCompanyLeads(companyId: number): Promise<ICompressedLead[]> {
-    return new Promise<ICompressedLead[]>(async (resolve, reject) => {
-      try {
-        const data = await fetch(API_URL + "/lead/company/" + companyId, await LoginService.authorizeRequest())
-          .then(errorFunction)
-          .then(response => response.json())
-          .then(json => json.map(this.toComporessedCustomer))
-
-        resolve(data)
-      } catch (e) {
-        reject(e)
-        console.error(e)
-      }
-    })
+  public async fetchCompanyLeads(companyId: number): Promise<ICompressedLead[]> {
+    return await fetch(API_URL + "/lead/company/" + companyId, await LoginService.authorizeRequest())
+      .then(errorFunction)
+      .then(response => response.json())
+      .then(json => json.map(this.toComporessedCustomer))
   }
 
-  public sendVisitConfirmation(visit: IVisitConfirmation) {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        await fetch(
-          API_URL + "/lead/sendvisitconfirm",
-          await LoginService.authorizeRequest({
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(visit),
-          })
-        ).then(errorFunction)
+  public async sendVisitConfirmation(visit: IVisitConfirmation) {
+    return fetch(
+      API_URL + "/lead/sendvisitconfirm",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(visit),
+      })
+    ).then(errorFunction)
+  }
 
-        resolve()
-      } catch (e) {
-        reject(e)
-        console.error(e)
-      }
-    })
+  async confirmOffer(confirmOffer: IConfirmOffer): Promise<ILead> {
+    return fetch(
+      API_URL + "/status/confirmorder",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(confirmOffer),
+      })
+    )
+      .then(errorFunction)
+      .then(json => this.toCustomer(json))
   }
 }
 

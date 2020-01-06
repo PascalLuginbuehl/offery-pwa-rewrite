@@ -12,6 +12,9 @@ import IntlTableCell from "../../components/Intl/IntlTableCell"
 import animation from "../../components/lottie/433-checked-done.json"
 import Lottie from "lottie-react-web"
 import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
+import { IConfirmOffer } from "../../interfaces/IOffer"
+import LeadAPI from "./LeadAPI"
+import LeadService from "../../services/LeadService"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -27,6 +30,7 @@ function desc<T>(a: T, b: T, orderBy: keyof T) {
 
 interface _Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   lead: ILead
+  offline: boolean
 }
 
 class LeadOverview extends React.Component<_Props> {
@@ -64,13 +68,105 @@ class LeadOverview extends React.Component<_Props> {
                 </TableRow>
 
                 <TableRow>
-                  <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-                  <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                </TableRow>
-                <TableRow>
                   <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
                   <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                 </TableRow>
+
+                <TableRow>
+                  <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
+                  <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                </TableRow>
+
+                {
+                  lead.MoveDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+                {
+                  lead.PackServiceDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+
+                {
+                  lead.DeliveryDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+
+                {
+                  lead.StorageDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+                {
+                  lead.DisposalDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+                {
+                  lead.CleaningDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+                {
+                  lead.HandOverDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">HANDIN</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
+
+
+                <TableRow>
+                  <IntlTableCell component="th" scope="row">herr / frau, Termine</IntlTableCell>
+                  <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
+                  <TableCell><a href={"mailto:" + lead.Customer.Email}>{lead.Customer.Email}</a></TableCell>
+                </TableRow>
+                <TableRow>
+                  <IntlTableCell component="th" scope="row">PHONE</IntlTableCell>
+
+                  <TableCell><a href={"tel:" + lead.Customer.TelephoneNumber}>{lead.Customer.TelephoneNumber}</a></TableCell>
+                </TableRow>
+
+                {
+                  lead.Customer.CompanyName.length > 0 ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">COMPANY</IntlTableCell>
+                      <TableCell>{lead.Customer.CompanyName}</TableCell>
+                    </TableRow>
+                    : null
+                }
+
                 <TableRow>
                   <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
                   <TableCell><ServiceIcons lead={lead} services={lead.Services} /></TableCell>
@@ -86,12 +182,36 @@ class LeadOverview extends React.Component<_Props> {
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
             {
               lead.Offers.length > 0 ? (
-                <Formik
-                  initialValues={() => ({
-                    search: "",
-                    status: ""
-                  })}
-                  onSubmit={() => {
+                <Formik<{
+                    OfferId: number | null
+                    ConfirmedOrderVerbal: boolean
+                    ConfirmedOrder: boolean
+                    Comment: string
+                  }>
+                  initialValues={{
+                    OfferId: null,
+                    ConfirmedOrderVerbal: false,
+                    ConfirmedOrder: false,
+                    Comment: "",
+                  }}
+                  onSubmit={(values, actions) => {
+                    const { OfferId,
+                      ConfirmedOrderVerbal,
+                      ConfirmedOrder,
+                      Comment,
+                    } = values
+                    if(OfferId) {
+                      const order: IConfirmOffer = {
+                        LeadId: lead.LeadId,
+                        OfferId,
+                        ConfirmedOrderVerbal,
+                        ConfirmedOrder,
+                        Comment,
+                      }
+
+                      LeadService.confirmOffer(order)
+                      actions.setSubmitting(false)
+                    }
 
                   }}
                 >
@@ -134,13 +254,15 @@ class LeadOverview extends React.Component<_Props> {
                 <TableRow>
                   <IntlTableCell>STATUS</IntlTableCell>
                   <IntlTableCell>DATE</IntlTableCell>
+                  <IntlTableCell>COMMENT</IntlTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {lead.StatusHistories.sort((a, b) => desc(a, b, "Created")).map(e => (
                   <TableRow key={e.StatusHistoryId}>
                     <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
-                    <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric"/></TableCell>
+                    <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    <TableCell>{e.Comment}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
