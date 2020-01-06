@@ -123,6 +123,7 @@ class LeadService {
   }
 
   public async sendVisitConfirmation(visit: IVisitConfirmation) {
+
     return fetch(
       API_URL + "/lead/sendvisitconfirm",
       await LoginService.authorizeRequest({
@@ -130,7 +131,7 @@ class LeadService {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(visit),
+        body: JSON.stringify({ ...visit, VisitDate: this.formatDate(visit.VisitDate)}),
       })
     ).then(errorFunction)
   }

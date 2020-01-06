@@ -85,7 +85,7 @@ ATTIC,Attic,Dachboden
 GARAGE,Garage,Garage
 GARDEN,Garden,Garten
 WINTERGARDEN,Wintergarden,Wintergarten
-FULL_NAME,Full name,Kompletter name
+FULL_NAME,Full name,Vollständiger Name
 CONTACT_PERSON,Contactperson,Kontaktperson
 CONTACTPERSON_EMAIL,Contactperson E-Mail,Kontaktperson E-Mail
 CONTACT_PERSON_TEL,Contactperson Phone,Kontaktperson Telefon
@@ -285,3 +285,6 @@ OFFER_STATUS,Offer Status,Offerten Status
 OFFER_NOT_SENT,Offer was not sent jet, Offerte wurde noch nicht versandt
 OFFER_SENT_EMAIL,Offer was sent through E-Mail,Offerte wurde per E-Mail versandt
 MANUAL_OVERRIDE,Manual override,Manuell Überschreiben
+
+MR,Mr.,Herr
+MRS,Mrs.,Frau

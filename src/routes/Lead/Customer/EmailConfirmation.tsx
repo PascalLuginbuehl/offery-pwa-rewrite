@@ -62,10 +62,17 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
               <FormattedMessage id={VisitConfirmEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
             </Typography>
 
-            <IntlTypography>VISITING_DATE</IntlTypography>
-            <Typography>
-              <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
-            </Typography>
+            {
+              lead.VisitDate ? (
+                <>
+                  <IntlTypography>VISITING_DATE</IntlTypography>
+                  <Typography>
+                    <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
+                  </Typography>
+                </>
+              )
+                : null
+            }
 
             <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
 

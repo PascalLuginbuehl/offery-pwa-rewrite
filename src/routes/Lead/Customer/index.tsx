@@ -87,7 +87,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <FormikGroups label="DATES" xs={12}>
-            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required initialFocusedDate={initialDate} />
+            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} />
             <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />
             <Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
             <Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />

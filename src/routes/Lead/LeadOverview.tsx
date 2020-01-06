@@ -50,7 +50,7 @@ class LeadOverview extends React.Component<_Props> {
               <TableBody>
                 <TableRow>
                   <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
-                  <TableCell>{lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
+                  <TableCell>{intl.formatMessage({ id: lead.Customer.IsMale ? "MR" : "MRS"})}. {lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
                 </TableRow>
 
                 <TableRow>
@@ -72,10 +72,14 @@ class LeadOverview extends React.Component<_Props> {
                   <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                 </TableRow>
 
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-                  <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                </TableRow>
+                {
+                  lead.VisitDate ?
+                    <TableRow>
+                      <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
+                      <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    </TableRow>
+                    : null
+                }
 
                 {
                   lead.MoveDate ?
@@ -141,12 +145,6 @@ class LeadOverview extends React.Component<_Props> {
                     </TableRow>
                     : null
                 }
-
-
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">herr / frau, Termine</IntlTableCell>
-                  <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                </TableRow>
 
                 <TableRow>
                   <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
