@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, Table, TableHead, TableRow, TableBody, TableCell } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, Table, TableHead, TableRow, TableBody, TableCell, RadioGroup, FormControlLabel, Radio } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray, Form } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
 import { withResource, WithResourceProps } from "../../providers/withResource"
@@ -226,11 +226,33 @@ class LeadOverview extends React.Component<_Props> {
                             component={FormikSimpleSelect}
                             notTranslated
                             options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
-                              label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+                              label: intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
                               value: offer.OfferId,
                             }))}
                           />
                         </FormikGroups>
+                        <Grid>
+                          <RadioGroup name="gender2" value={value} onChange={handleChange}>
+                            <FormControlLabel
+                              value=""
+                              control={<Radio color="primary" />}
+                              label="VERBAL_CONFIRMATIN"
+                              labelPlacement="start"
+                            />
+                            <FormControlLabel
+                              value="male"
+                              control={<Radio color="primary" />}
+                              label="CONFIRMED"
+                              labelPlacement="start"
+                            />
+                            <FormControlLabel
+                              value="other"
+                              control={<Radio color="primary" />}
+                              label="DECLINED"
+                              labelPlacement="start"
+                            />
+                          </RadioGroup>
+                        </Grid>
                       </Grid>
                     </Form>
                   )}
