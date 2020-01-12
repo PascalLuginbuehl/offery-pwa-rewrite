@@ -9,12 +9,14 @@ import { ILead } from "../../interfaces/ILead"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import ServiceIcons from "../../components/Dashboard/ServiceIcons"
 import IntlTableCell from "../../components/Intl/IntlTableCell"
-import animation from "../../components/lottie/433-checked-done.json"
-import Lottie from "lottie-react-web"
+
 import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
 import { IConfirmOffer } from "../../interfaces/IOffer"
 import LeadAPI from "./LeadAPI"
 import LeadService from "../../services/LeadService"
+import { Link } from "react-router-dom"
+import FormikTextField from "../../components/FormikFields/FormikTextField"
+import HttpErrorHandler from "../../components/HttpErrorHandler"
 
 const styles = (theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -22,6 +24,11 @@ const styles = (theme: Theme) => createStyles({
   },
   buttonRootText: {
     textTransform: "none"
+  },
+  rightAlign: {
+    padding: theme.spacing(2),
+    width: "100%",
+    textAlign: "right",
   },
 })
 
@@ -194,55 +201,93 @@ class LeadOverview extends React.Component<_Props> {
                     Comment: string
                   }>
                   initialValues={{
-                    OfferId: null,
-                    ConfirmedOrderVerbal: false,
-                    ConfirmedOrder: null,
+                    OfferId: lead.ConfirmedOffer,
+                    ConfirmedOrderVerbal: lead.ConfirmedOrderVerbal,
+                    ConfirmedOrder: lead.ConfirmedOrder,
                     Comment: "",
                   }}
                   onSubmit={(values, actions) => {
-                    const { OfferId,
-                      ConfirmedOrderVerbal,
-                      ConfirmedOrder,
-                      Comment,
-                    } = values
-                    if(OfferId) {
-                      const order: IConfirmOffer = {
-                        LeadId: lead.LeadId,
+                    try {
+                      const {
                         OfferId,
                         ConfirmedOrderVerbal,
-                        ConfirmedOrder: ConfirmedOrder === null ? false : ConfirmedOrder,
+                        ConfirmedOrder,
                         Comment,
+                      } = values
+                      console.log(values)
+
+                      if(OfferId) {
+                        const order: IConfirmOffer = {
+                          LeadId: lead.LeadId,
+                          OfferId,
+                          ConfirmedOrderVerbal,
+                          ConfirmedOrder: ConfirmedOrder === null ? false : ConfirmedOrder,
+                          Comment,
+                        }
+
+                        LeadService.confirmOffer(order)
+                        actions.setSubmitting(false)
                       }
-
-                      LeadService.confirmOffer(order)
-                      actions.setSubmitting(false)
+                    } catch (e) {
+                      actions.setStatus(e)
                     }
-
                   }}
                 >
-                  {({setFieldValue, values: {ConfirmedOrder, ConfirmedOrderVerbal}}) => (
+                  {({ setFieldValue, values: { OfferId, ConfirmedOrder, ConfirmedOrderVerbal }, isSubmitting, status}) => (
                     <Form>
                       <Grid container spacing={1}>
                         <Grid item xs={12}>
                           <IntlTypography>OFFER_SENT_EMAIL</IntlTypography>
+                          {
+                            (() => {
+                              const offer = lead.Offers.find(offer => offer.OfferId === OfferId)
+                              if (offer && lead.ConfirmedOrderVerbal ) {
+                                return <>
+                                  <IntlTypography>{intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate}</IntlTypography>
+                                  <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
+                                </>
+                              }
+                            })()
+                          }
+
                         </Grid>
-                        <FormikGroups label="MANUAL_OVERRIDE" xs={12}>
-                          <Field
-                            label="OFFER"
-                            name="selectedOfferId"
-                            component={FormikSimpleSelect}
-                            notTranslated
-                            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
-                              label: intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
-                              value: offer.OfferId,
-                            }))}
-                          />
-                        </FormikGroups>
-                        <Grid>
+
+                        <Grid item xs={12}>
+                          <IntlTypography variant="subtitle1" style={{fontWeight: "bold"}}>
+                            MANUAL_OVERRIDE
+                          </IntlTypography>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <Grid container>
+                            <Grid item style={{flexGrow: 1}}>
+                              <Field
+                                label="OFFER"
+                                name="OfferId"
+                                component={FormikSimpleSelect}
+                                notTranslated
+                                required
+                                options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
+                                  label: intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
+                                  value: offer.OfferId,
+                                }))}
+                                overrideGrid={{}}
+                                disableGrid
+                              />
+                            </Grid>
+                            <Grid item>
+                              <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${OfferId}`}>LINK</Link>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+
+                        <Grid item xs={12}>
                           <ButtonGroup className={classes.buttonGroupPadding}>
-                            <Button onClick={() => {setFieldValue("ConfirmedOrderVerbal", true); setFieldValue("ConfirmedOrder", null)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrderVerbal ? "primary" : "inherit"} variant={ConfirmedOrderVerbal ? "contained" : "outlined"} >
-                              <FormattedMessage id="VERBAL_CONFIRMATION" />
-                            </Button>
+                            {!lead.ConfirmedOrderVerbal ?
+                              <Button onClick={() => {setFieldValue("ConfirmedOrderVerbal", true); setFieldValue("ConfirmedOrder", null)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrderVerbal ? "primary" : "inherit"} variant={ConfirmedOrderVerbal ? "contained" : "outlined"} >
+                                <FormattedMessage id="VERBAL_CONFIRMATION" />
+                              </Button> : null
+                            }
                             <Button onClick={() => { setFieldValue("ConfirmedOrder", true); setFieldValue("ConfirmedOrderVerbal", false)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder ? "primary" : "inherit"} variant={ConfirmedOrder ? "contained" : "outlined"}>
                               <FormattedMessage id="CONFIRMED" />
                             </Button>
@@ -251,6 +296,16 @@ class LeadOverview extends React.Component<_Props> {
                             </Button>
                           </ButtonGroup>
                         </Grid>
+                      </Grid>
+
+                      <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
+
+                      <HttpErrorHandler status={status} data={{ OfferId, ConfirmedOrder, ConfirmedOrderVerbal}} />
+
+                      <Grid item xs={12} className={classes.rightAlign}>
+                        <Button variant="contained" color="primary" type="submit" disabled={isSubmitting || !OfferId}>
+                          <FormattedMessage id="SAVE" />
+                        </Button>
                       </Grid>
                     </Form>
                   )}
@@ -286,16 +341,6 @@ class LeadOverview extends React.Component<_Props> {
               </TableBody>
             </Table>
           </FormikGroups>
-
-          <Lottie
-            height={128}
-            width={128}
-            options={{
-              animationData: animation,
-              loop: false,
-            }}
-          />
-
         </Grid>
       </Grid>
     )

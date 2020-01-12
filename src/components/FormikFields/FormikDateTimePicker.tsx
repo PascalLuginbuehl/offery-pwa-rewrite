@@ -64,19 +64,20 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
         InputProps={
           value && !required
             ? {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => {
-                        this.handleChange(null)
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }
-            : {}
+              required,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => {
+                      this.handleChange(null)
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
+            : {required}
         }
         {...props}
         {...field}

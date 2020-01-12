@@ -1,16 +1,16 @@
-import * as React from 'react';
+import * as React from "react"
 import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
-} from '@material-ui/core/TextField';
-import { FieldProps, getIn } from 'formik';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import Grid, { GridSize } from '@material-ui/core/Grid';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+} from "@material-ui/core/TextField"
+import { FieldProps, getIn } from "formik"
+import { injectIntl, InjectedIntlProps, InjectedIntl } from "react-intl"
+import Grid, { GridSize } from "@material-ui/core/Grid"
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import { DatePicker as DatePickerOriginal, DatePickerProps as MuiDatePickerProps } from "@material-ui/pickers"
 import CloseIcon from "@material-ui/icons/Close"
 import { InputAdornment, IconButton } from "@material-ui/core"
 
-export interface FormikDatePickerProps extends InjectedIntlProps, FieldProps, Omit<MuiDatePickerProps, 'form' | 'error' | 'name' | 'onChange' | 'value' | 'defaultChecked'> {
+export interface FormikDatePickerProps extends InjectedIntlProps, FieldProps, Omit<MuiDatePickerProps, "form" | "error" | "name" | "onChange" | "value" | "defaultChecked"> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
@@ -27,7 +27,7 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
   render() {
     const { children, intl, field,
       form,
-      variant = 'standard',
+      variant = "standard",
       disabled,
       helperText,
 
@@ -39,11 +39,11 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
     } = this.props
 
 
-    const { name, value } = field;
-    const { touched, errors, isSubmitting } = form;
+    const { name, value } = field
+    const { touched, errors, isSubmitting } = form
 
-    const fieldError = getIn(errors, name);
-    const showError = getIn(touched, name) && !!fieldError;
+    const fieldError = getIn(errors, name)
+    const showError = getIn(touched, name) && !!fieldError
 
     const DatePickerElement = (<DatePickerOriginal
 
@@ -61,16 +61,17 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
       label={intl.formatMessage({ id: label })}
 
       InputProps = { value && !required ? {
-      endAdornment: (
-        <InputAdornment position="end">
-          <IconButton
-            onClick={() => { this.handleChange(null) }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </InputAdornment>
-      ),
-      } : { }}
+        required,
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton
+              onClick={() => { this.handleChange(null) }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+      } : { required }}
 
       {...props}
       {...field}
@@ -82,7 +83,7 @@ class FormikDatePicker extends React.Component<FormikDatePickerProps> {
     if (disableGrid) {
       return DatePickerElement
     } else {
-      const defaultGrid: FormikDatePickerProps['overrideGrid'] = { xs: 6, md: 3 }
+      const defaultGrid: FormikDatePickerProps["overrideGrid"] = { xs: 6, md: 3 }
       // SetDefaultValues
       const newGrid = { ...defaultGrid, ...overrideGrid }
       return (

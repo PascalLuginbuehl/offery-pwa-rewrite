@@ -14,6 +14,8 @@ import OfferService from "../../../services/OfferService"
 import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
 import HttpErrorHandler from "../../../components/HttpErrorHandler"
+import animation from "../../../components/lottie/12818-file-recover.json"
+import Lottie from "lottie-react-web"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -62,6 +64,20 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
           <Field component={SelectAddress} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
 
           <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
+
+          {
+            isSubmitting ? <Lottie
+              height={128}
+              width={128}
+              options={{
+                animationData: animation,
+                loop: false,
+              }}
+            />
+              :
+              null
+          }
+
         </Form>
       </Grid>
     )

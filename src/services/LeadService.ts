@@ -148,6 +148,7 @@ class LeadService {
       })
     )
       .then(errorFunction)
+      .then(response => response.json())
       .then(json => this.toCustomer(json))
   }
 }
