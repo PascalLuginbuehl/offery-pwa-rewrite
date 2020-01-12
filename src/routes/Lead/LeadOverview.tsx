@@ -12,11 +12,12 @@ import IntlTableCell from "../../components/Intl/IntlTableCell"
 
 import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
 import { IConfirmOffer } from "../../interfaces/IOffer"
-import LeadAPI from "./LeadAPI"
+import LeadAPI, { ILeadContainer } from "./LeadAPI"
 import LeadService from "../../services/LeadService"
 import { Link } from "react-router-dom"
 import FormikTextField from "../../components/FormikFields/FormikTextField"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
 const styles = (theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -45,9 +46,14 @@ function desc<T>(a: T, b: T, orderBy: keyof T) {
 interface _Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   lead: ILead
   offline: boolean
+  handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: () => Promise<any>) => Promise<void>
 }
 
-class LeadOverview extends React.Component<_Props> {
+class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolean}> {
+  state = {
+    OverrideConfirmation: false
+  }
+
   public render() {
     const { selectedCompany, lead, intl, classes } = this.props
 
@@ -193,7 +199,7 @@ class LeadOverview extends React.Component<_Props> {
 
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
             {
-              lead.Offers.length > 0 ? (
+              this.state.OverrideConfirmation || (lead.Offers.length > 0 && lead.ConfirmedOrder === null) ? (
                 <Formik<{
                     OfferId: number | null
                     ConfirmedOrderVerbal: boolean
@@ -201,12 +207,12 @@ class LeadOverview extends React.Component<_Props> {
                     Comment: string
                   }>
                   initialValues={{
-                    OfferId: lead.ConfirmedOffer,
+                    OfferId: lead.ConfirmedOffer ? lead.ConfirmedOffer.OfferId : null,
                     ConfirmedOrderVerbal: lead.ConfirmedOrderVerbal,
                     ConfirmedOrder: lead.ConfirmedOrder,
                     Comment: "",
                   }}
-                  onSubmit={(values, actions) => {
+                  onSubmit={async (values, actions) => {
                     try {
                       const {
                         OfferId,
@@ -221,11 +227,15 @@ class LeadOverview extends React.Component<_Props> {
                           LeadId: lead.LeadId,
                           OfferId,
                           ConfirmedOrderVerbal,
-                          ConfirmedOrder: ConfirmedOrder === null ? false : ConfirmedOrder,
+                          ConfirmedOrder: ConfirmedOrder,
                           Comment,
                         }
 
-                        LeadService.confirmOffer(order)
+                        const offer = lead.Offers.find(offer => offer.OfferId === OfferId)
+
+
+                        await this.props.handleChangeAndSave({...lead, ConfirmedOffer: offer, ConfirmedOrderVerbal, ConfirmedOrder}, "Lead", () => LeadService.confirmOffer(order))
+                        this.setState({OverrideConfirmation: false})
                         actions.setSubmitting(false)
                       }
                     } catch (e) {
@@ -240,10 +250,9 @@ class LeadOverview extends React.Component<_Props> {
                           <IntlTypography>OFFER_SENT_EMAIL</IntlTypography>
                           {
                             (() => {
-                              const offer = lead.Offers.find(offer => offer.OfferId === OfferId)
-                              if (offer && lead.ConfirmedOrderVerbal ) {
+                              if (lead.ConfirmedOrderVerbal && lead.ConfirmedOffer ) {
                                 return <>
-                                  <IntlTypography>{intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate}</IntlTypography>
+                                  <IntlTypography>{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
                                   <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
                                 </>
                               }
@@ -276,7 +285,7 @@ class LeadOverview extends React.Component<_Props> {
                               />
                             </Grid>
                             <Grid item>
-                              <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${OfferId}`}>LINK</Link>
+                              <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${OfferId}`}><OpenInNewIcon /></Link>
                             </Grid>
                           </Grid>
                         </Grid>
@@ -310,6 +319,17 @@ class LeadOverview extends React.Component<_Props> {
                     </Form>
                   )}
                 </Formik>
+              ) : lead.ConfirmedOffer ? (
+                <Grid item xs={12}>
+                  <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
+                  <Typography>
+                    <IntlTypography component="span">{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
+                    <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
+                  </Typography>
+                  <Button onClick={() => this.setState({ OverrideConfirmation: true })} variant="contained" color="primary">
+                      <FormattedMessage id="OVERRIDE"  />
+                  </Button>
+                </Grid>
               ) : (
                 <Grid item xs={12}>
                   <IntlTypography>OFFER_NOT_SENT</IntlTypography>

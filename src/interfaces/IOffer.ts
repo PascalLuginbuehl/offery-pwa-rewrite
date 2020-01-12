@@ -20,7 +20,7 @@ export interface IConfirmOffer {
   OfferId: number
 
   ConfirmedOrderVerbal: boolean
-  ConfirmedOrder: boolean
+  ConfirmedOrder: boolean | null
 
   Comment: string
 }

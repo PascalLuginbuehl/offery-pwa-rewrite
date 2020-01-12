@@ -284,7 +284,15 @@ DATE,Date,Datum
 OFFER_STATUS,Offer Status,Offerten Status
 OFFER_NOT_SENT,Offer was not sent jet, Offerte wurde noch nicht versandt
 OFFER_SENT_EMAIL,Offer was sent through E-Mail,Offerte wurde per E-Mail versandt
-MANUAL_OVERRIDE,Manual override,Manuell Überschreiben
 
 MR,Mr.,Herr
 MRS,Mrs.,Frau
+VERBAL_CONFIRMATION,TRANSLATEME,Mündliche Zusage erhalten
+CONFIRMED,TRANSLATEME,Angenommen
+DECLINED,TRANSLATEME,Abgelehnt
+OFFER_CONFIRMED,TRANSLATEME,Die Offerte wurde bestätigt
+OFFER_DECLINED,TRANSLATEME,DIe Offerte wurde abgelehnt
+CUSTOMER_VERBAL_CONFIRMATION,TRANSLATEME,Mündlich zugesagt
+MANUAL_OVERRIDE,TRANSLATEME,Manuell Überschreiben
+OVERRIDE,Override,Überschreiben
+SAVE,Save,Speichern

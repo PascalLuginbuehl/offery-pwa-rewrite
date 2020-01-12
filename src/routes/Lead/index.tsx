@@ -306,6 +306,7 @@ class Lead extends Component<Props, State> {
                 {...routeProps}
                 offline={offline}
                 lead={container.Lead}
+                handleChangeAndSave={this.handleChangeAndSave}
               />
             )}
           />

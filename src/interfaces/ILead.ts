@@ -92,7 +92,7 @@ export interface ILead extends ICompressedLead {
 
   ConfirmedOrderVerbal: boolean
   ConfirmedOrder: boolean | null
-  ConfirmedOffer: number | null
+  ConfirmedOffer: IOffer | null
 }
 
 export const emptyCustomer: IPostCustomer = {
