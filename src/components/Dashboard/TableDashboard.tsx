@@ -1,19 +1,19 @@
 import * as React from "react"
-import { green } from "@material-ui/core/colors";
+import { green } from "@material-ui/core/colors"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
-import Fab from "@material-ui/core/Fab";
+import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
-import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl";
+import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
 import ContactsIcon from "@material-ui/icons/Contacts"
 import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter } from "@material-ui/core"
-import IntlTooltip from "../Intl/IntlTooltip";
-import { ILead } from "../../interfaces/ILead";
-import { IOfflineLead } from "../../routes/Dashboard";
+import IntlTooltip from "../Intl/IntlTooltip"
+import { ILead } from "../../interfaces/ILead"
+import { IOfflineLead } from "../../routes/Dashboard2"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
-import PlainLink from "../PlainLink";
-import StatusButton from "./StatusButton";
+import PlainLink from "../PlainLink"
+import StatusButton from "./StatusButton"
 
 
 const styles = (theme: Theme) =>
@@ -50,7 +50,7 @@ class TableDashboard extends React.Component<Props> {
             {leads.map(({isCached, Lead}) =>
               <TableRow key={Lead.LeadId}>
                 <TableCell padding="none" align="center">
-                  <StatusButton lead={{isCached, Lead: Lead}} />
+                  <StatusButton lead={Lead} />
                 </TableCell>
 
                 <TableCell>

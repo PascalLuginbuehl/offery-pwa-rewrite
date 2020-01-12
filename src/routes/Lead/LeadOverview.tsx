@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, Table, TableHead, TableRow, TableBody, TableCell, RadioGroup, FormControlLabel, Radio } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, Table, TableHead, TableRow, TableBody, TableCell, RadioGroup, FormControlLabel, Radio, ButtonGroup } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray, Form } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
 import { withResource, WithResourceProps } from "../../providers/withResource"
@@ -16,7 +16,14 @@ import { IConfirmOffer } from "../../interfaces/IOffer"
 import LeadAPI from "./LeadAPI"
 import LeadService from "../../services/LeadService"
 
-const styles = (theme: Theme) => createStyles({})
+const styles = (theme: Theme) => createStyles({
+  buttonGroupPadding: {
+    padding: 4,
+  },
+  buttonRootText: {
+    textTransform: "none"
+  },
+})
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -35,7 +42,7 @@ interface _Props extends WithResourceProps, WithStyles<typeof styles>, InjectedI
 
 class LeadOverview extends React.Component<_Props> {
   public render() {
-    const { selectedCompany, lead, intl } = this.props
+    const { selectedCompany, lead, intl, classes } = this.props
 
     return (
       <Grid item xs={12}>
@@ -183,13 +190,13 @@ class LeadOverview extends React.Component<_Props> {
                 <Formik<{
                     OfferId: number | null
                     ConfirmedOrderVerbal: boolean
-                    ConfirmedOrder: boolean
+                    ConfirmedOrder: boolean | null
                     Comment: string
                   }>
                   initialValues={{
                     OfferId: null,
                     ConfirmedOrderVerbal: false,
-                    ConfirmedOrder: false,
+                    ConfirmedOrder: null,
                     Comment: "",
                   }}
                   onSubmit={(values, actions) => {
@@ -203,7 +210,7 @@ class LeadOverview extends React.Component<_Props> {
                         LeadId: lead.LeadId,
                         OfferId,
                         ConfirmedOrderVerbal,
-                        ConfirmedOrder,
+                        ConfirmedOrder: ConfirmedOrder === null ? false : ConfirmedOrder,
                         Comment,
                       }
 
@@ -213,7 +220,7 @@ class LeadOverview extends React.Component<_Props> {
 
                   }}
                 >
-                  {() => (
+                  {({setFieldValue, values: {ConfirmedOrder, ConfirmedOrderVerbal}}) => (
                     <Form>
                       <Grid container spacing={1}>
                         <Grid item xs={12}>
@@ -232,26 +239,17 @@ class LeadOverview extends React.Component<_Props> {
                           />
                         </FormikGroups>
                         <Grid>
-                          <RadioGroup name="gender2" value={value} onChange={handleChange}>
-                            <FormControlLabel
-                              value=""
-                              control={<Radio color="primary" />}
-                              label="VERBAL_CONFIRMATIN"
-                              labelPlacement="start"
-                            />
-                            <FormControlLabel
-                              value="male"
-                              control={<Radio color="primary" />}
-                              label="CONFIRMED"
-                              labelPlacement="start"
-                            />
-                            <FormControlLabel
-                              value="other"
-                              control={<Radio color="primary" />}
-                              label="DECLINED"
-                              labelPlacement="start"
-                            />
-                          </RadioGroup>
+                          <ButtonGroup className={classes.buttonGroupPadding}>
+                            <Button onClick={() => {setFieldValue("ConfirmedOrderVerbal", true); setFieldValue("ConfirmedOrder", null)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrderVerbal ? "primary" : "inherit"} variant={ConfirmedOrderVerbal ? "contained" : "outlined"} >
+                              <FormattedMessage id="VERBAL_CONFIRMATION" />
+                            </Button>
+                            <Button onClick={() => { setFieldValue("ConfirmedOrder", true); setFieldValue("ConfirmedOrderVerbal", false)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder ? "primary" : "inherit"} variant={ConfirmedOrder ? "contained" : "outlined"}>
+                              <FormattedMessage id="CONFIRMED" />
+                            </Button>
+                            <Button onClick={() => {setFieldValue("ConfirmedOrder", false); setFieldValue("ConfirmedOrderVerbal", false)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder === false ? "primary" : "inherit"} variant={ConfirmedOrder === false ? "contained" : "outlined"}>
+                              <FormattedMessage id="DECLINED" />
+                            </Button>
+                          </ButtonGroup>
                         </Grid>
                       </Grid>
                     </Form>

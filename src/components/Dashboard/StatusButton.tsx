@@ -22,7 +22,7 @@ import {
   ButtonBase,
 } from "@material-ui/core"
 import * as React from "react"
-import { ILead, IStatus } from "../../interfaces/ILead"
+import { ILead, IStatus, ICompressedLead } from "../../interfaces/ILead"
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
 import ContactsIcon from "@material-ui/icons/Contacts"
 import Fab from "@material-ui/core/Fab"
@@ -31,7 +31,7 @@ import { green, red } from "@material-ui/core/colors"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import { IOfflineLead } from "../../routes/Dashboard"
+import { IOfflineLead } from "../../routes/Dashboard2"
 import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
 import HomeIcon from "@material-ui/icons/Home"
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn"
@@ -59,7 +59,7 @@ const styles = (theme: Theme) =>
   })
 
 interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
-  lead: IOfflineLead
+  lead: ICompressedLead
 }
 
 class TableDashboard extends React.Component<Props> {
@@ -87,22 +87,21 @@ class TableDashboard extends React.Component<Props> {
   }
 
   public render() {
-    const { classes, intl } = this.props
-    const { isCached, Lead } = this.props.lead
+    const { classes, intl, lead } = this.props
 
-    const { color, icon, link } = this.getBeloningStatusIconAndLink(Lead.Status)
+    const { color, icon, link } = this.getBeloningStatusIconAndLink(lead.Status)
 
     return (
-      <PlainLink to={`/lead/${Lead.LeadId}${link}`} className={classes.relative}>
+      <PlainLink to={`/lead/${lead.LeadId}${link}`} className={classes.relative}>
         <ButtonBase className={classes.round}>
           <Avatar style={{ backgroundColor: color }}>{icon}</Avatar>
         </ButtonBase>
 
-        {isCached ? (
+        {/* {isCached ? (
           <IntlTooltip title="LOADED_FROM_CACHE">
             <OfflinePinIcon color="primary" fontSize="small" className={classes.topRight} />
           </IntlTooltip>
-        ) : null}
+        ) : null} */}
       </PlainLink>
     )
   }

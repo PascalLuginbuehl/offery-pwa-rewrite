@@ -12,7 +12,7 @@ import {
   ListItemAvatar,
 } from "@material-ui/core"
 import * as React from "react"
-import { ILead } from "../../interfaces/ILead"
+import { ILead, ICompressedLead } from "../../interfaces/ILead"
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
 import ContactsIcon from "@material-ui/icons/Contacts"
 import Fab from "@material-ui/core/Fab"
@@ -21,7 +21,6 @@ import { green } from "@material-ui/core/colors"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
 import { injectIntl, InjectedIntlProps } from "react-intl"
-import { IOfflineLead } from "../../routes/Dashboard"
 import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
 import HomeIcon from "@material-ui/icons/Home"
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn"
@@ -56,7 +55,7 @@ interface State {
 }
 
 interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
-  leads: IOfflineLead[]
+  leads: ICompressedLead[]
 }
 
 class MobileDashboard extends React.Component<Props, State> {
@@ -71,12 +70,12 @@ class MobileDashboard extends React.Component<Props, State> {
     return (
       <>
         <List className={classes.root}>
-          {leads.map(({ isCached, Lead: lead }) => (
+          {leads.map((lead) => (
             <div key={lead.LeadId}>
               <PlainLink to={`/lead/${lead.LeadId}/building`}>
                 <ListItem disableGutters>
                   <ListItemAvatar>
-                    <StatusButton lead={{ isCached, Lead: lead }} />
+                    <StatusButton lead={lead} />
                   </ListItemAvatar>
 
                   <ListItemText
