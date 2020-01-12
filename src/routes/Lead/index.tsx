@@ -17,13 +17,15 @@ import IntlTooltip from "../../components/Intl/IntlTooltip"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import { diff } from "deep-object-diff"
-import { Switch, Toolbar } from "@material-ui/core"
+import { Switch, Toolbar, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, Button } from "@material-ui/core"
 import IntlTypography from "../../components/Intl/IntlTypography"
+import { FormattedMessage } from "react-intl";
 
 interface State {
   container: ILeadContainer | null
 
   initialAwait: Promise<any> | null
+  OfflineConflict: {[key: string]: any} | null
 }
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
@@ -60,7 +62,7 @@ function getContainerDiffKeys(originContainer: ILeadContainer, changesContainer:
 class Lead extends Component<Props, State> {
   state: State = {
     container: null,
-
+    OfflineConflict: null,
     initialAwait: null,
   }
 
@@ -160,6 +162,7 @@ class Lead extends Component<Props, State> {
     const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changesWhileOffline.findIndex(e => apiOffline === e) !== -1)
 
     if (bothChangedSameAPI.length > 0) {
+      this.setState({OfflineConflict: changesWhileOffline})
       console.log("Offline Changed :(")
       throw "Offline Changed"
     }
@@ -331,6 +334,28 @@ class Lead extends Component<Props, State> {
             handleChangeAndSave={this.handleChangeAndSave}
             redirectToNextPage={this.redirectToNextPage}
           />
+
+
+          <Dialog
+            open={!!this.state.OfflineConflict}
+            onClose={() => this.setState({OfflineConflict: null})}
+          >
+            <DialogTitle>
+              <FormattedMessage id="CONFLICTS_WHILE_SAVING" />
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                <FormattedMessage id="CONFLICTS_WHILE_SAVING" />
+                Let Google help apps determine location. This means sending anonymous location data to
+                Google, even when no apps are running.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => this.setState({ OfflineConflict: null })} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       )
     } else {

@@ -65,136 +65,138 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
           </Grid>
 
           <FormikGroups label="INFORMATION" xs={12} md={6}>
-            <Table size="small" aria-label="a dense table">
+            <Grid item xs={12}>
+              <Table size="small" aria-label="a dense table">
 
-              <TableBody>
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
-                  <TableCell>{intl.formatMessage({ id: lead.Customer.IsMale ? "MR" : "MRS"})}. {lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
-                </TableRow>
+                <TableBody>
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
+                    <TableCell>{intl.formatMessage({ id: lead.Customer.IsMale ? "MR" : "MRS"})}. {lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
+                  </TableRow>
 
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">FROM</IntlTableCell>
-                  <TableCell>
-                    {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}, ${lead.FromAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
-                  </TableCell>
-                </TableRow>
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">FROM</IntlTableCell>
+                    <TableCell>
+                      {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}, ${lead.FromAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
+                    </TableCell>
+                  </TableRow>
 
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">TO</IntlTableCell>
-                  <TableCell>
-                    {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
-                  </TableCell>
-                </TableRow>
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">TO</IntlTableCell>
+                    <TableCell>
+                      {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
+                    </TableCell>
+                  </TableRow>
 
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
-                  <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                </TableRow>
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
+                    <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                  </TableRow>
 
-                {
-                  lead.VisitDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
+                  {
+                    lead.VisitDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                {
-                  lead.MoveDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
+                  {
+                    lead.MoveDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                {
-                  lead.PackServiceDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
-
-
-                {
-                  lead.DeliveryDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
+                  {
+                    lead.PackServiceDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
 
-                {
-                  lead.StorageDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
+                  {
+                    lead.DeliveryDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                {
-                  lead.DisposalDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
 
-                {
-                  lead.CleaningDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
+                  {
+                    lead.StorageDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                {
-                  lead.HandOverDate ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">HANDIN</IntlTableCell>
-                      <TableCell><FormattedDate value={lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    </TableRow>
-                    : null
-                }
+                  {
+                    lead.DisposalDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
-                  <TableCell><a href={"mailto:" + lead.Customer.Email}>{lead.Customer.Email}</a></TableCell>
-                </TableRow>
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">PHONE</IntlTableCell>
+                  {
+                    lead.CleaningDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                  <TableCell><a href={"tel:" + lead.Customer.TelephoneNumber}>{lead.Customer.TelephoneNumber}</a></TableCell>
-                </TableRow>
+                  {
+                    lead.HandOverDate ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">HANDIN</IntlTableCell>
+                        <TableCell><FormattedDate value={lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      </TableRow>
+                      : null
+                  }
 
-                {
-                  lead.Customer.CompanyName.length > 0 ?
-                    <TableRow>
-                      <IntlTableCell component="th" scope="row">COMPANY</IntlTableCell>
-                      <TableCell>{lead.Customer.CompanyName}</TableCell>
-                    </TableRow>
-                    : null
-                }
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
+                    <TableCell><a href={"mailto:" + lead.Customer.Email}>{lead.Customer.Email}</a></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">PHONE</IntlTableCell>
 
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
-                  <TableCell><ServiceIcons lead={lead} services={lead.Services} /></TableCell>
-                </TableRow>
-                <TableRow>
-                  <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
-                  <IntlTableCell>{lead.Status.NameTextKey}</IntlTableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+                    <TableCell><a href={"tel:" + lead.Customer.TelephoneNumber}>{lead.Customer.TelephoneNumber}</a></TableCell>
+                  </TableRow>
+
+                  {
+                    lead.Customer.CompanyName.length > 0 ?
+                      <TableRow>
+                        <IntlTableCell component="th" scope="row">COMPANY</IntlTableCell>
+                        <TableCell>{lead.Customer.CompanyName}</TableCell>
+                      </TableRow>
+                      : null
+                  }
+
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
+                    <TableCell><ServiceIcons lead={lead} services={lead.Services} /></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
+                    <IntlTableCell>{lead.Status.NameTextKey}</IntlTableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Grid>
           </FormikGroups>
 
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
@@ -327,7 +329,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                     <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
                   </Typography>
                   <Button onClick={() => this.setState({ OverrideConfirmation: true })} variant="contained" color="primary">
-                      <FormattedMessage id="OVERRIDE"  />
+                    <FormattedMessage id="OVERRIDE"  />
                   </Button>
                 </Grid>
               ) : (

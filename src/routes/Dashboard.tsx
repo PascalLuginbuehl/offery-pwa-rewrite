@@ -74,7 +74,7 @@ class TableDashboard extends React.Component<Props, _State> {
             <IntlTypography variant="caption">COMPANY_LEAD_OVERVIEW</IntlTypography>
           </Grid>
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Formik
               initialValues={() => ({
                 search: "",
@@ -104,7 +104,7 @@ class TableDashboard extends React.Component<Props, _State> {
                 </Form>
               )}
             </Formik>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12}>
             {isWidthUp("sm", width) ? <LeadTable leads={leads} /> : <MobileDashboard leads={leads} />}

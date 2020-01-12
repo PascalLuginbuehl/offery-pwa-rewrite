@@ -15,6 +15,7 @@ import PreviewOffer from "../Offer/PreviewOffer"
 import { ILead } from "../../../interfaces/ILead"
 import SendOffer from "../Offer/SendOffer"
 import Done from "../Offer/Done"
+import OfflineUnavailable from "../../../components/OfflineUnavailable";
 
 interface Props {
   leadContainer: ILeadContainer
@@ -185,28 +186,55 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
 
       {/* Offer */}
       <Route exact path={`${matchUrl}/offer`}>
-        <Redirect to={`${matchUrl}/offer/generate`} />
+        <OfflineUnavailable offline={offline}>
+          <Redirect to={`${matchUrl}/offer/generate`} />
+        </OfflineUnavailable>
       </Route>
 
       <Route
         exact
         path={`${matchUrl}/offer/generate`}
         render={routeProps => (
-          <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+          <OfflineUnavailable offline={offline}>
+            <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+          </OfflineUnavailable>
         )}
       />
 
-      <Route exact path={`${matchUrl}/offer/preview`} render={routeProps => <PreviewOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />} />
+      <Route exact path={`${matchUrl}/offer/preview`} render={routeProps =>
+        <OfflineUnavailable offline={offline}>
+          <PreviewOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />
+        </OfflineUnavailable>
+      } />
+
+
       <Route
         exact
         path={`${matchUrl}/offer/preview/:offerId`}
-        render={routeProps => <PreviewOffer offline={ offline } {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />}
+        render={routeProps =>
+          <OfflineUnavailable offline={offline}>
+            <PreviewOffer offline={ offline } {...routeProps} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />
+          </OfflineUnavailable>
+        }
       />
 
-      <Route exact path={`${matchUrl}/offer/send`} render={routeProps => <SendOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
-      <Route exact path={`${matchUrl}/offer/send/:offerId`} render={routeProps => <SendOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />} />
+      <Route exact path={`${matchUrl}/offer/send`} render={routeProps =>
+        <OfflineUnavailable offline={offline}>
+          <SendOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />
+        </OfflineUnavailable>
+      } />
 
-      <Route exact path={`${matchUrl}/offer/done`} render={routeProps => <Done {...routeProps} lead={Lead} />} />
+      <Route exact path={`${matchUrl}/offer/send/:offerId`} render={routeProps =>
+        <OfflineUnavailable offline={offline}>
+          <SendOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/send")} />
+        </OfflineUnavailable>
+      } />
+
+      <Route exact path={`${matchUrl}/offer/done`} render={routeProps =>
+        <OfflineUnavailable offline={offline}>
+          <Done {...routeProps} lead={Lead} />
+        </OfflineUnavailable>
+      } />
     </>
   )
 }

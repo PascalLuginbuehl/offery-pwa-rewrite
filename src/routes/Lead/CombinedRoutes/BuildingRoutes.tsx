@@ -11,6 +11,7 @@ import MoveInBuilding from "../Customer/MoveInBuilding"
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../../interfaces/IBuilding"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { ICustomer, ILead } from "../../../interfaces/ILead"
+import OfflineUnavailable from "../../../components/OfflineUnavailable";
 
 interface Props {
   leadContainer: ILeadContainer
@@ -145,7 +146,11 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
       <Route
         exact
         path={`${matchUrl}/building/email-confirmation`}
-        render={routeProps => <EmailConfirmation offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />}
+        render={routeProps =>
+          <OfflineUnavailable offline={offline} nextPage={redirectToNextPage("/building/email-confirmation")}>
+            <EmailConfirmation offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/building/email-confirmation")} />
+          </OfflineUnavailable>
+        }
       />
     </>
   )
