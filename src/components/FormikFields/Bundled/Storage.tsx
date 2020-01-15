@@ -44,7 +44,7 @@ export default ({ prefix, resource, buildingOptions }: { prefix: string; resourc
           options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
         />
         <Field label="AMOUNT_STAIRS_TO_ENTRY" name={`${prefix}.StairsToEntryAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
-        <Field label="METER_TO_PARKING" name={`${prefix}.MetersToParking`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 1 }} />
+        <Field label="METER_TO_PARKING" name={`${prefix}.MetersToParking`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
       </FormikGroups>
     </>
   )

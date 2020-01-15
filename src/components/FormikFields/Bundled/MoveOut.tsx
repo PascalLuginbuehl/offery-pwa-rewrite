@@ -46,7 +46,7 @@ export default function MoveOutBuilding({ prefix, resource, buildingOptions }: {
           name={`${prefix}.PeopleLivingAmount`}
           type="number"
           component={FormikTextField}
-          inputProps={{ step: 1, min: 1 }}
+          inputProps={{ step: 1, min: 0 }}
           overrideGrid={{ xs: 12, sm: 6 }}
         />
 
@@ -81,7 +81,7 @@ export default function MoveOutBuilding({ prefix, resource, buildingOptions }: {
         component={FormikNumberEndAdornmentText}
         adornmentText="m"
         name={`${prefix}.MetersToParking`}
-        inputProps={{ step: 1, min: 1 }}
+        inputProps={{ step: 1, min: 0 }}
         overrideGrid={{ xs: 12, sm: 6 }}
       />
 
