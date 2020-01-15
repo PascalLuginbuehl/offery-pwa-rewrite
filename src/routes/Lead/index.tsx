@@ -369,9 +369,8 @@ class Lead extends Component<Props, State> {
       // Save new Lead
       const lead = await LeadService.createCustomer(createLead, this.props.selectedCompany.CompanyId)
 
-      // Navigate to page
-      // Get Next page not correctyl implemented. Temporary. Needs to set leadId data First.
-      this.props.history.replace("/lead/" + lead.LeadId + this.getNextPage("/building"))
+      // Set Container lead tempo
+      await this.loadLead(lead.LeadId)
 
       return
     } catch (e) {
