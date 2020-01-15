@@ -37,7 +37,7 @@ export default function DisposalBuilding({ prefix, resource, buildingOptions }: 
           name={`${prefix}.PeopleLivingAmount`}
           type="number"
           component={FormikTextField}
-          inputProps={{ step: 1, min: 1 }}
+          inputProps={{ step: 1, min: 0 }}
           overrideGrid={{ xs: 12, sm: 6 }}
         />
 
@@ -71,7 +71,7 @@ export default function DisposalBuilding({ prefix, resource, buildingOptions }: 
         name={`${prefix}.MetersToParking`}
         type="number"
         component={FormikTextField}
-        inputProps={{ step: 1, min: 1 }}
+        inputProps={{ step: 1, min: 0 }}
         overrideGrid={{ xs: 12, sm: 6 }}
       />
 

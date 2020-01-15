@@ -71,7 +71,7 @@ export default function MoveInBuilding({ prefix, resource, buildingOptions }: { 
         name={`${prefix}.MetersToParking`}
         type="number"
         component={FormikTextField}
-        inputProps={{ step: 1, min: 1 }}
+        inputProps={{ step: 1, min: 0 }}
         overrideGrid={{ xs: 12, md: 6 }}
       />
 
