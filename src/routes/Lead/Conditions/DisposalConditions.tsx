@@ -34,8 +34,6 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
   public render() {
     const { values, isSubmitting, status, intl, setFieldValue, selectedCompany, disposalService } = this.props
 
-    console.log(selectedCompany.CarTypes)
-
     return (
       <Grid item xs={12}>
         <Form>
