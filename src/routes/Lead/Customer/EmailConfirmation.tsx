@@ -46,9 +46,9 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { selectedCompany, values, lead, buildingOptions } = this.props
+    const { selectedCompany, values, lead } = this.props
     const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
-    console.log(buildingOptions)
+    console.log(this.tempBuildingOptions)
     return (
       <Grid item xs={12}>
         <Form>
@@ -81,7 +81,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             </Typography>
           </Grid>
 
-          <Field component={SelectAddress} label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />
+          <Field component={SelectAddress} label="VISIT_ADDRESS" name="AddressId" buildings={this.tempBuildingOptions} onClick={this.reloadLead}/>
           {/* <SelectAddress label="" name="AddressId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
@@ -94,6 +94,21 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
         </Form>
       </Grid>
     )
+  }
+
+  tempBuildingOptions = this.props.buildingOptions
+
+  reloadLead = async () => {
+    const { lead } = this.props
+    const leadContainer = await LeadAPI.FetchFromOnline(lead.LeadId)
+    this.tempBuildingOptions = {
+      moveOutBuilding: leadContainer.moveOut,
+      moveInBuilding: leadContainer.moveIn,
+      cleaningBuilding: leadContainer.cleaning,
+      storageBuilding: leadContainer.storage,
+      disposalBuilding: leadContainer.disposal,
+    }
+    this.forceUpdate()
   }
 
   sendAndSubmit = async () => {
