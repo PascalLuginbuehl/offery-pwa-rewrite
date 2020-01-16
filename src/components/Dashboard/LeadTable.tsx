@@ -159,7 +159,7 @@ export default function LeadTable({ leads }: _Props) {
 
               <TableCell>
                 <Typography noWrap variant="body2">
-                  {lead.VisitDate ? <FormattedDate year="2-digit" month="2-digit" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="NOT_DEFINED" />}
+                  {lead.VisitDate ? <FormattedDate year="2-digit" month="2-digit" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="OPEN" />}
                 </Typography>
               </TableCell>
 

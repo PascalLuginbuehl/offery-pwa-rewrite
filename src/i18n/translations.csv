@@ -235,6 +235,7 @@ DISPOSAL,Disposal,Entsorgung
 CLEANING,Cleaning,Reinigung
 HANDIN,Handin,Abgabetermin
 APPOINTMENTS,Appointments,Termine
+OPEN,Open,Offen
 
 STORAGE_UNSTORE,Storage/Unstorage,Ein-/Auslagerung
 FIX_DELIVERY_COST,Fixed Delivery cost,Lieferpauschale
