@@ -81,7 +81,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             </Typography>
           </Grid>
 
-          <Field component={SelectAddress} label="VISIT_ADDRESS" name="AddressId" buildings={this.tempBuildingOptions} onClick={this.reloadLead}/>
+          <Field component={SelectAddress} label="VISIT_ADDRESS" name="AddressId" buildings={this.tempBuildingOptions} />
           {/* <SelectAddress label="" name="AddressId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
@@ -97,6 +97,10 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   }
 
   tempBuildingOptions = this.props.buildingOptions
+
+  componentDidMount() {
+    this.reloadLead()
+  }
 
   reloadLead = async () => {
     const { lead } = this.props
