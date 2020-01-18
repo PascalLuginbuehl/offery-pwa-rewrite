@@ -87,7 +87,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
           <Grid item xs={12}>
-            <Button onClick={this.sendAndSubmit} disabled={!values.AddressId} variant="contained">
+            <Button onClick={this.sendAndSubmit} disabled={!values.AddressId || !values.VisitDate} variant="contained">
               <FormattedMessage id="SEND_EMAIL" />
             </Button>
           </Grid>

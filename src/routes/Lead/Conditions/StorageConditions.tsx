@@ -68,18 +68,13 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
               </FormikGroups>
             ) : null}
 
-            {storageService.FurnitureLiftService || storageService.PianoService || storageService.MontageService || storageService.DeMontageService || storageService.HeavyLiftService ? (
+            {storageService.FurnitureLiftService || storageService.PianoService || storageService.HeavyLiftService ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
                 {storageService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
 
                 {storageService.PianoService ? <Field label="PIANO" name="storageConditions.PianoPrice" component={FormikPrice} /> : null}
 
-                {storageService.MontageService ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
-
-                {storageService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
-
                 {storageService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
-
               </FormikGroups>
             ) : null}
           </ServiceConditions>
@@ -112,16 +107,14 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
 
   getAdditionalCost = (): number => {
     const {
-      storageService: { PianoService, LampDemontageService, FurnitureLiftService, BoreService, MontageService, HeavyLiftService, DeMontageService},
-      values: { storageConditions: { PianoPrice: NullPianoPrice, LampDemontagePrice: NullLampDemontagePrice, FurnitureLiftPrice: NullFurnitureLiftPrice, BorePrice: NullBorePrice, MontageServicePrice: NullMontageServicePrice, DeMontageServicePrice: NullDeMontageServicePrice, ServiceConditions: { HeavyLiftPrice: NullHeavyLiftPrice }} },
+      storageService: { PianoService, LampDemontageService, FurnitureLiftService, BoreService, HeavyLiftService },
+      values: { storageConditions: { PianoPrice: NullPianoPrice, LampDemontagePrice: NullLampDemontagePrice, FurnitureLiftPrice: NullFurnitureLiftPrice, BorePrice: NullBorePrice, ServiceConditions: { HeavyLiftPrice: NullHeavyLiftPrice }} },
     } = this.props
 
     const PianoPrice = NullPianoPrice && PianoService ? NullPianoPrice : 0
     const LampDemontagePrice = NullLampDemontagePrice && LampDemontageService ? NullLampDemontagePrice : 0
     const FurnitureLiftPrice = NullFurnitureLiftPrice && FurnitureLiftService ? NullFurnitureLiftPrice : 0
     const BorePrice = NullBorePrice && BoreService ? NullBorePrice : 0
-    const MontageServicePrice = NullMontageServicePrice && MontageService ? NullMontageServicePrice : 0
-    const DeMontageServicePrice = NullDeMontageServicePrice && DeMontageService  ? NullDeMontageServicePrice : 0
     const HeavyLiftPrice = NullHeavyLiftPrice && HeavyLiftService ? NullHeavyLiftPrice : 0
 
     return (
@@ -129,8 +122,6 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
       LampDemontagePrice +
       FurnitureLiftPrice +
       BorePrice +
-      MontageServicePrice +
-      DeMontageServicePrice +
       HeavyLiftPrice
     )
   }
