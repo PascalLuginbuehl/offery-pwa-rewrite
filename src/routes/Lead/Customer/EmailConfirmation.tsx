@@ -116,13 +116,15 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   }
 
   sendAndSubmit = async () => {
-    const { lead, submitForm, values, setSubmitting } = this.props
+    const { lead, submitForm, values, setSubmitting, intl } = this.props
     const { AddressId, Comment, VisitDate } = values
 
     setSubmitting(true)
 
     if (!LeadAPI.isCompleteLead(lead) || !AddressId || !VisitDate) {
-      throw new Error("Not defined")
+      alert(intl.formatMessage({ id: "VISIT_AND_ADDRESS_REQUIRED" }))
+      setSubmitting(false)
+      return
     }
     await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, AddressId: AddressId, VisitDate: VisitDate })
 
