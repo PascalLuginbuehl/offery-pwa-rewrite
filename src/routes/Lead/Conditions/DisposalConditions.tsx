@@ -33,7 +33,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, isSubmitting, status, intl, setFieldValue, selectedCompany, disposalService } = this.props
-
+    const showDeMontageCondition = (disposalService.DeMontage && selectedCompany.Settings.ConditionMoveServiceShowDemontageCondition)
     return (
       <Grid item xs={12}>
         <Form>
@@ -61,13 +61,13 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
               </FormikGroups>
             ) : null}
 
-            {disposalService.FurnitureLiftService || disposalService.HeavyLiftService || disposalService.DeMontage ? (
+            {disposalService.FurnitureLiftService || disposalService.HeavyLiftService || showDeMontageCondition ? (
               <FormikGroups label="PRICES" xs={6} md={3}>
                 {disposalService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} /> : null }
 
                 {disposalService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="disposalConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} /> : null}
 
-                {disposalService.DeMontage ? <Field label="DE_MONTAGE_SERVICE" name="disposalConditions.DeMontageServicePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }}/> : null}
+                {showDeMontageCondition ? <Field label="DE_MONTAGE_SERVICE" name="disposalConditions.DeMontageServicePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }}/> : null}
               </FormikGroups>
             ) : null}
 

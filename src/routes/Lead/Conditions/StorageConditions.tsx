@@ -32,8 +32,8 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 class StorageConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, intl, resource, setFieldValue, selectedCompany, storageService } = this.props
-
-    console.log(selectedCompany.CarTypes)
+    const showMontageCondition = (storageService.MontageService && selectedCompany.Settings.ConditionMoveServiceShowMontageCondition)
+    const showDeMontageCondition = (storageService.DeMontageService && selectedCompany.Settings.ConditionMoveServiceShowDemontageCondition)
 
     return (
       <Grid item xs={12}>
@@ -68,18 +68,17 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
               </FormikGroups>
             ) : null}
 
-            {storageService.FurnitureLiftService || storageService.PianoService || storageService.MontageService || storageService.DeMontageService || storageService.HeavyLiftService ? (
+            {storageService.FurnitureLiftService || storageService.PianoService || showMontageCondition || showDeMontageCondition || storageService.HeavyLiftService ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
                 {storageService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
 
                 {storageService.PianoService ? <Field label="PIANO" name="storageConditions.PianoPrice" component={FormikPrice} /> : null}
 
-                {storageService.MontageService ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
+                {showMontageCondition ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
 
-                {storageService.DeMontageService ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
+                {showDeMontageCondition ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
 
                 {storageService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
-
               </FormikGroups>
             ) : null}
           </ServiceConditions>
