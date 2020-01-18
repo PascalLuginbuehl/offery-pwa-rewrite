@@ -72,6 +72,7 @@ VISITS,Visits,Besichtigungen
 SHOW_LEAD,Show Lead,Lead anzeigen
 EDIT_LEAD,Edit lead,Lead bearbeiten
 IS_REQUIRED,Is Required,Pflichtfeld
+VISIT_AND_ADDRESS_REQUIRED,Visitdate and address is required,Besichtigungsdatum und Adresse sind Pflichtfelder
 EMAIL_NOT_VALID,Email not valid,Ungültige E-Mail Adresse
 AMOUNT_PEOPLE_IN_HOUSEHOLD,Amount People in Household,Anzahl Personen in Haushalt
 BUILDING_TYPE,Building Type,Wohnungsart
