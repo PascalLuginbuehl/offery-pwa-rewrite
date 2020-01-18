@@ -52,6 +52,7 @@ export interface IDisposalServiceConditions {
   CostPerCubicInMoney: number | null
   CostEntry: number | null
   Volume: number | null
+  DeMontageServicePrice: number | null
   LampDemontageAmount: number | null
   LampDemontagePrice: number | null
   CarAmounts: ICarAmount[]
