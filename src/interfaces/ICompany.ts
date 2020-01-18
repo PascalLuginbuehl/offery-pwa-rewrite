@@ -23,6 +23,12 @@ export interface ICompanySetting {
   ConditionEnableDefaultHourPrice: boolean
   ConditionEnableDefaultHasCostCeiling: boolean
   ConditionHourlyPriceRange: number[]
+  ConditionMoveServiceShowMontageCondition: boolean
+  ConditionMoveServiceShowDemontageCondition: boolean
+  ConditionStorageServiceShowMontageCondition: boolean
+  ConditionStorageServiceShowDemontageCondition: boolean
+  ConditionDisposalServiceShowDemontageCondition: boolean
+
 
   VisitConfirmEmailSubjectTextKey: string
   VisitConfirmEmailBodyContentIntroTextKey: string

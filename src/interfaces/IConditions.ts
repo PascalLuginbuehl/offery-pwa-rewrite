@@ -32,6 +32,8 @@ export interface IMoveServiceConditions {
   ServiceConditions: IServiceConditions
   FurnitureLiftPrice: number | null
   PianoPrice: number | null
+  MontageServicePrice: number | null
+  DeMontageServicePrice: number | null
   LampDemontageAmount: number | null
   LampDemontagePrice: number | null
   BoreAmount: number | null
@@ -50,6 +52,7 @@ export interface IDisposalServiceConditions {
   CostPerCubicInMoney: number | null
   CostEntry: number | null
   Volume: number | null
+  DeMontageServicePrice: number | null
   LampDemontageAmount: number | null
   LampDemontagePrice: number | null
   CarAmounts: ICarAmount[]
@@ -62,6 +65,8 @@ export interface IStorageServiceConditions {
   PianoPrice: number | null
   CostPerCubicMonthInMoney: number | null
   Volume: number | null
+  MontageServicePrice: number | null
+  DeMontageServicePrice: number | null
   LampDemontageAmount: number | null
   LampDemontagePrice: number | null
   BoreAmount: number | null
