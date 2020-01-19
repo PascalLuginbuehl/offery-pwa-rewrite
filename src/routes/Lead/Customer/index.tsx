@@ -70,6 +70,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field
               label="LANGUAGE"
               name="Customer.PrefferedLanguage"
+              required
               component={FormikSimpleSelect}
               options={[
                 { label: "GERMAN", value: "DE" },
