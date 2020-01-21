@@ -257,7 +257,7 @@ SEND,Send,Versenden
 SEND_OFFER,Send offer,Offerte Versenden
 CC_EMAILS,CC E-Mails,CC E-Mails
 OFFER_DONE,Offer done,Offerte versandt
-LEAD_FINISHED_TEXT,Lead finished,Die Offerte wurde nun versandt
+LEAD_FINISHED_TEXT,Lead finished,Die Offerte wurde versandt
 DOWNLOAD_WORD,Download Word,Word herunterladen
 SELECT_DOT_DOT_DOT,Select...,Auswählen...
 FILL_FOLLOWING_FORM,Fill following Form,"Bitte melden sie denn Fehler umgehend, indem sie das folgendes Formular ausfüllen"
@@ -271,9 +271,9 @@ HEAVY_LIFT_SERVICE,Heavy liuft service,Schwergüter-Zuschlag
 PAYMENT_METHOD,Payment method,Zahlungsmethode
 EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder Passwort nicht korrekt
 
-EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeited
-WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechter verbindung erkannt, wechsle zu offline"
-BACK_ONLINE,Back online,Wieder online
+EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeitet
+WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechte Verbindung erkannt, wechsle zu Offline"
+BACK_ONLINE,Back online,Wieder Online
 
 STATUS,Status,Status
 CREATED,Created,Erstellt

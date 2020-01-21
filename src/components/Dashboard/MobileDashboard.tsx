@@ -65,7 +65,8 @@ class MobileDashboard extends React.Component<Props, State> {
 
   public render() {
     const { openListActions } = this.state
-    const { classes, leads, intl } = this.props
+    const { classes, intl } = this.props
+    const leads = this.props.leads.sort((a,b)=>a.Created.getTime()-b.Created.getTime()).reverse()
 
     return (
       <>
