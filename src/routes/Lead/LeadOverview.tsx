@@ -201,7 +201,18 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
             {
-              this.state.OverrideConfirmation || (lead.Offers.length > 0 && lead.ConfirmedOrder === null) ? (
+              lead.ConfirmedOffer && !this.state.OverrideConfirmation ? (
+                <Grid item xs={12}>
+                  <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
+                  <Typography>
+                    <IntlTypography component="span">{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
+                    <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
+                  </Typography>
+                  <Button onClick={() => this.setState({ OverrideConfirmation: true })} variant="contained" color="primary">
+                    <FormattedMessage id="OVERRIDE"  />
+                  </Button>
+                </Grid>
+              ) : this.state.OverrideConfirmation || (lead.Offers.length > 0) ? (
                 <Formik<{
                     OfferId: number | null
                     ConfirmedOrderVerbal: boolean
@@ -321,26 +332,12 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                     </Form>
                   )}
                 </Formik>
-              ) : lead.ConfirmedOffer ? (
-                <Grid item xs={12}>
-                  <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
-                  <Typography>
-                    <IntlTypography component="span">{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
-                    <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
-                  </Typography>
-                  <Button onClick={() => this.setState({ OverrideConfirmation: true })} variant="contained" color="primary">
-                    <FormattedMessage id="OVERRIDE"  />
-                  </Button>
-                </Grid>
               ) : (
                 <Grid item xs={12}>
                   <IntlTypography>OFFER_NOT_SENT</IntlTypography>
                 </Grid>
               )
             }
-
-
-
           </FormikGroups>
 
           <FormikGroups label="STATUS_HISTORY" xs={12}>
