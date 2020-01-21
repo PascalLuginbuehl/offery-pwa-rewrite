@@ -135,13 +135,13 @@ export default function LeadTable({ leads }: _Props) {
           ).map((lead) =>
             <TableRow key={lead.LeadId}>
               <TableCell padding="checkbox">
-                <Typography noWrap variant="body2">
-                  <IntlTooltip title={lead.Status.NameTextKey}>
-                    <Avatar>
+                <IntlTooltip title={lead.Status.NameTextKey}>
+                  <Avatar>
+                    <Typography noWrap variant="body2">
                       <RemoveRedEyeIcon />
-                    </Avatar>
-                  </IntlTooltip>
-                </Typography>
+                    </Typography>
+                  </Avatar>
+                </IntlTooltip>
               </TableCell>
               <TableCell>
                 <Typography noWrap variant="body2">

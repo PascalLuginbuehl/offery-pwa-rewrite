@@ -92,17 +92,15 @@ class TableDashboard extends React.Component<Props> {
     const { color, icon, link } = this.getBeloningStatusIconAndLink(lead.Status)
 
     return (
-      <PlainLink to={`/lead/${lead.LeadId}${link}`} className={classes.relative}>
-        <ButtonBase className={classes.round}>
-          <Avatar style={{ backgroundColor: color }}>{icon}</Avatar>
-        </ButtonBase>
+      <ButtonBase className={classes.round}>
+        <Avatar style={{ backgroundColor: color }}>{icon}</Avatar>
+      </ButtonBase>
 
-        {/* {isCached ? (
+    /*{ {isCached ? (
           <IntlTooltip title="LOADED_FROM_CACHE">
             <OfflinePinIcon color="primary" fontSize="small" className={classes.topRight} />
           </IntlTooltip>
-        ) : null} */}
-      </PlainLink>
+        ) : null} }*/
     )
   }
 }
