@@ -111,7 +111,7 @@ class BuildingService {
   public saveStorageBuilding = (buildingId: number, storageBuilding: IPostStorageBuilding) => {
     return this.saveService<IStorageBuilding>(
       API_URL + "/building/storagein",
-      { StorageBuildingId: buildingId, ...storageBuilding },
+      { StorageInBuildingId: buildingId, ...storageBuilding },
     )
   }
 

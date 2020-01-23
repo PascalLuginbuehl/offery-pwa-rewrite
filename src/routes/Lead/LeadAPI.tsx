@@ -98,7 +98,7 @@ class LeadAPI {
   }
 
   SaveStorage = (storage: IStorageBuilding | IPostStorageBuilding, leadId: number): Promise<IStorageBuilding> => {
-    return checkIs<IStorageBuilding>(storage, "StorageBuildingId") ? BuildingService.saveStorageBuilding(storage.StorageBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId)
+    return checkIs<IStorageBuilding>(storage, "StorageInBuildingId") ? BuildingService.saveStorageBuilding(storage.StorageInBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId)
   }
 
   SaveCleaning = (cleaning: ICleaningBuilding | IPostCleaningBuilding, leadId: number): Promise<ICleaningBuilding> => {
