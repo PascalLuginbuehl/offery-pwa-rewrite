@@ -93,7 +93,7 @@ export interface IPostStorageBuilding extends BaseBuilding {
 }
 
 export interface IUpdateStorageBuilding extends IPostStorageBuilding {
-  StorageBuildingId: number
+  StorageInBuildingId: number
 }
 
 export interface IStorageBuilding extends IUpdateStorageBuilding {
