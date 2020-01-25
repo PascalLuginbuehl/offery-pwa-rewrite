@@ -138,9 +138,12 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
             <Field label="MAX" name={`${prefix}.ServiceConditions.MaxHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 2, md: undefined }} />
 
-
             {values.ServiceConditions.HasCostCeiling ? (
-              <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeilingHoursOfWork`} component={FormikNumberEndAdornmentText} adornmentText="h" overrideGrid={{ xs: 3, md: undefined }} />
+              <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeilingHoursOfWork`}
+                component={FormikNumberEndAdornmentText}
+                inputProps={{ step: 1, min: ((values.ServiceConditions.MaxHoursOfWork || 0) + (values.ServiceConditions.DriveHours || 0)) }}
+                adornmentText="h"
+                overrideGrid={{ xs: 3, md: undefined }} />
             ) : null}
 
             <Field
@@ -275,12 +278,12 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
   getCostCeilingPrice = (): number | undefined => {
     const {
       values: {
-        ServiceConditions: { CostCeilingHoursOfWork },
+        ServiceConditions: { CostCeilingHoursOfWork, DriveHours },
       },
     } = this.props
 
     if (CostCeilingHoursOfWork) {
-      return this.getPricePerHour(CostCeilingHoursOfWork)
+      return this.getPricePerHour(CostCeilingHoursOfWork - (DriveHours ? DriveHours : 0))
     } else {
       return this.getMaxPrice()
     }
