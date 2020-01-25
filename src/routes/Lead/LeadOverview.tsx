@@ -201,7 +201,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
             {
-              lead.ConfirmedOffer && !this.state.OverrideConfirmation ? (
+              lead.ConfirmedOffer && lead.ConfirmedOrder != null && !this.state.OverrideConfirmation ? (
                 <Grid item xs={12}>
                   <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
                   <Typography>
