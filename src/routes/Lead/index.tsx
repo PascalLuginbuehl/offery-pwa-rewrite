@@ -134,7 +134,7 @@ class Lead extends Component<Props, State> {
     }
 
     if(this.props.offline !== prevProps.offline) {
-      if (this.props.offline && this.state.container) {
+      if (this.state.container) {
         this.loadLead(this.state.container.Lead.LeadId)
       }
     }
@@ -345,9 +345,7 @@ class Lead extends Component<Props, State> {
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                <FormattedMessage id="CONFLICTS_WHILE_SAVING" />
-                Let Google help apps determine location. This means sending anonymous location data to
-                Google, even when no apps are running.
+                <FormattedMessage id="CONFLICTS_WHILE_SAVING_SELECTVERSION" />
               </DialogContentText>
             </DialogContent>
             <DialogActions>

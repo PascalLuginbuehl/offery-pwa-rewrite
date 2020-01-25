@@ -5,7 +5,6 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl"
 import { Link, Route, Switch } from "react-router-dom"
 import withRoot from "../components/WithRoot"
 
-
 import { withLanguage, WithLanguageProps } from "../providers/withLanguage"
 import Navigation from "../components/Navigation"
 import IntlTypography from "../components/Intl/IntlTypography"
@@ -13,11 +12,6 @@ import UserDisplay from "../components/Navigation/UserDisplay"
 import Lead from "./Lead"
 import Dashboard from "./Dashboard"
 import logo from "./../logo_white.svg"
-// import newDashboard from "./Dashboard"
-// import Lead from './Lead'
-// import Dashboard from './Dashboard'
-// import UserDisplay from 'components/Navigation/UserDisplay';
-
 
 const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 const drawerWidth = 240

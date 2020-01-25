@@ -274,6 +274,8 @@ EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder
 EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeitet
 WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechte Verbindung erkannt, wechsle zu Offline"
 BACK_ONLINE,Back online,Wieder Online
+CONFLICTS_WHILE_SAVING,Data conflicted while saving in online/offline ,Datenkonflikt zwischen On-/Offline
+CONFLICTS_WHILE_SAVING_SELECTVERSION,Offlinedata not same as online data. Which one are now correct?,Ihre lokalen offline Daten stimmen mit den Onlinedaten nicht mehr überein. Welche sind nun gültig bzw. aktueller?
 
 STATUS,Status,Status
 CREATED,Created,Erstellt
