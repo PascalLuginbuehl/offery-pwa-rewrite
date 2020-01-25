@@ -300,3 +300,4 @@ MANUAL_OVERRIDE,TRANSLATEME,Manuell Überschreiben
 OVERRIDE,Override,Überschreiben
 SAVE,Save,Speichern
 OFFLINE_NOT_AVAILABLE,TRANSLATEME,Diese Seite ist Offline nicht verfügbar
+FILE_NOT_FOUND,File not found, Datei konnte nicht geladen werden

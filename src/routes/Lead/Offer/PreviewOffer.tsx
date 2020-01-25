@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, withWidth } from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, Snackbar, InputAdornment, withWidth } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
@@ -16,7 +16,13 @@ import { PDFDocumentProxy } from "pdfjs-dist"
 import { RouteComponentProps } from "react-router"
 import { IOffer, IOFile } from "../../../interfaces/IOffer"
 import HttpErrorHandler from "../../../components/HttpErrorHandler"
-const styles = (theme: Theme) => createStyles({})
+const styles = (theme: Theme) => createStyles({
+  snackbar: {
+    [theme.breakpoints.down("xs")]: {
+      bottom: 90,
+    },
+  }
+})
 
 interface Values {
   selectedOfferId: number | null
@@ -31,12 +37,14 @@ interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceP
 interface State {
   pdfBlobBase64: string | null
   pages: number | null
+  fileNotFoundSnackbarOpen: boolean
 }
 
 class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
     pdfBlobBase64: null,
     pages: null,
+    fileNotFoundSnackbarOpen: false
   }
 
   getOfferBlob = async (offer: IOffer, file: IOFile) => {
@@ -44,7 +52,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
     return blob
   }
 
-  getOffer = (): IOffer => {
+  getOffer = (): IOffer | undefined => {
     const {
       values: { selectedOfferId },
     } = this.props
@@ -58,49 +66,61 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
       }
     }
 
-    throw new Error("Offer not found")
+    this.setState({fileNotFoundSnackbarOpen: true})
+    return undefined
   }
 
-  getFile = (offer: IOffer, extension: "pdf" | "docx") => {
-    const pdfFile = offer.Files.find(file => file.FileExtension === extension)
+  getFile = (offer: IOffer| undefined, extension: "pdf" | "docx") => {
+    const pdfFile = offer ? offer.Files.find(file => file.FileExtension === extension) : null
 
     if (pdfFile) {
       return pdfFile
     }
-    throw new Error("Offer not found")
+    this.setState({fileNotFoundSnackbarOpen: true})
+    return undefined
   }
 
   previewPDF = async () => {
     const offer = this.getOffer()
-    const file = this.getFile(offer, "pdf")
-    const blob = await this.getOfferBlob(offer, file)
-
-    const string = window.URL.createObjectURL(blob)
-    this.setState({ pdfBlobBase64: string })
+    if (offer != undefined) {
+      const file = this.getFile(offer, "pdf")
+      if (file != undefined) {
+        const blob = await this.getOfferBlob(offer, file)
+        const string = window.URL.createObjectURL(blob)
+        this.setState({ pdfBlobBase64: string })
+      }
+    }
   }
 
   downloadWord = async () => {
     const offer = this.getOffer()
     const file = this.getFile(offer, "docx")
-    const blob = await this.getOfferBlob(offer, file)
+    if (file != undefined && offer != undefined) {
+      const blob = await this.getOfferBlob(offer, file)
+      const string = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
 
-    const string = window.URL.createObjectURL(blob)
-
-    const a = document.createElement("a")
-
-    a.href = string
-    a.download = file.DocName
-    a.click()
+      a.href = string
+      a.download = file.DocName
+      a.click()
+    }
+    else {
+      this.setState({fileNotFoundSnackbarOpen: true})
+    }
   }
 
   onDocumentLoadSuccess = ({ numPages }: PDFDocumentProxy) => {
     this.setState({ pages: numPages })
   }
 
-  public render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, lead, intl } = this.props
+  closeSnackbar = () => {
+    this.setState({fileNotFoundSnackbarOpen: false})
+  }
 
-    const { pdfBlobBase64, pages } = this.state
+  public render() {
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, lead, intl, classes } = this.props
+
+    const { pdfBlobBase64, pages, fileNotFoundSnackbarOpen } = this.state
 
     return (
       <Grid item xs={12}>
@@ -137,6 +157,13 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
 
           {/* <iframe style={{ width: "100%", height: "calc(100vh - 275px)" }} /> */}
         </Form>
+        <Snackbar
+          open={fileNotFoundSnackbarOpen}
+          onClose={this.closeSnackbar}
+          autoHideDuration={4000}
+          message={<FormattedMessage id="FILE_NOT_FOUND" />}
+          className={classes.snackbar}
+        />
       </Grid>
     )
   }
