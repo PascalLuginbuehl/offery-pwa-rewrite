@@ -31,6 +31,9 @@ const styles = (theme: Theme) => createStyles({
     width: "100%",
     textAlign: "right",
   },
+  infoMessage: {
+    color: "orange"
+  }
 })
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -208,6 +211,10 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                     <IntlTypography component="span">{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
                     <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
                   </Typography>
+                  <hr/>
+                  {lead.ConfirmedOrder != null &&
+                    <IntlTypography className={classes.infoMessage}>{"OFFER_RESENT_MAIL_CANCELFIRST"}</IntlTypography>
+                  }
                   <Button onClick={() => this.setState({ OverrideConfirmation: true })} variant="contained" color="primary">
                     <FormattedMessage id="OVERRIDE"  />
                   </Button>

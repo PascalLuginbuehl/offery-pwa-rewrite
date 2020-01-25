@@ -295,6 +295,7 @@ DECLINED,TRANSLATEME,Abgelehnt
 OFFER_CONFIRMED,TRANSLATEME,Die Offerte wurde bestätigt
 OFFER_DECLINED,TRANSLATEME,DIe Offerte wurde abgelehnt
 CUSTOMER_VERBAL_CONFIRMATION,TRANSLATEME,Mündlich zugesagt
+OFFER_RESENT_MAIL_CANCELFIRST,To send an offer-email again you have to cancel the old one first,Um erneut eine Offertenmail auszulösen: Stornieren Sie zuerst die alte Offerte
 MANUAL_OVERRIDE,TRANSLATEME,Manuell Überschreiben
 OVERRIDE,Override,Überschreiben
 SAVE,Save,Speichern
