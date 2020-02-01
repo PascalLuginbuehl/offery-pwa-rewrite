@@ -65,15 +65,19 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
 
+
           {
-            isSubmitting ? <Lottie
-              height={128}
-              width={128}
-              options={{
-                animationData: animation,
-                loop: false,
-              }}
-            />
+            isSubmitting ?
+              <Grid item xs={12}>
+                <Lottie
+                  height={256}
+                  width={256}
+                  options={{
+                    animationData: animation,
+                    // loop: false,
+                  }}
+                />
+              </Grid>
               :
               null
           }
