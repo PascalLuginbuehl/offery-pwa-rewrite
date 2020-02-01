@@ -160,7 +160,7 @@ class Lead extends Component<Props, State> {
     }
 
     if(this.props.offline !== prevProps.offline) {
-      if (this.state.container) {
+      if (this.props.offline && this.state.container) {
         this.loadLead(this.state.container.Lead.LeadId)
       }
     }
@@ -261,6 +261,8 @@ class Lead extends Component<Props, State> {
   }
 
   loadLead = async (leadId: number) => {
+
+
     const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
     let onlineAPIContainer = null
 
@@ -288,6 +290,14 @@ class Lead extends Component<Props, State> {
       if (onlineAPIContainer) {
         this.saveLeadToOfflineOrigin(onlineAPIContainer)
         this.setState({ container: onlineAPIContainer })
+      } else {
+        if (offline) {
+          const offlineOrigin = await LeadAPI.FetchFromOfflineOrigin(leadId)
+          if(offlineOrigin) {
+            this.setState({ container: offlineOrigin })
+          }
+        }
+
       }
     }
   }

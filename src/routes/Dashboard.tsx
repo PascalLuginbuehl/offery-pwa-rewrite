@@ -64,7 +64,7 @@ const options: FuseOptions<ICompressedLead> = {
 
 interface _State {
   leads: ICompressedLead[]
-  filteredLeads: ICompressedLead[]
+  filteredLeads: ICompressedLead[] | null
   leadsAwait: Promise<any> | null
   fuse: Fuse<ICompressedLead, typeof options> | null
 }
@@ -104,7 +104,7 @@ class TableDashboard extends React.Component<Props, _State> {
   state: _State = {
     leads: [],
     fuse: null,
-    filteredLeads: [],
+    filteredLeads: null,
     leadsAwait: null,
   }
 
@@ -180,7 +180,7 @@ class TableDashboard extends React.Component<Props, _State> {
           </Grid>
 
           <Grid item xs={12}>
-            {isWidthUp("sm", width) ? <LeadTable leads={filteredLeads} /> : <MobileDashboard leads={filteredLeads} />}
+            {isWidthUp("sm", width) ? <LeadTable leads={filteredLeads !== null ? filteredLeads : leads} /> : <MobileDashboard leads={filteredLeads !== null ? filteredLeads : leads} />}
 
             <div className={classes.positionAddRight}>
               <PlainLink to="/lead/new/building">
