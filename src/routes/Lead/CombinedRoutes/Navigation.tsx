@@ -48,20 +48,16 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">
         <Collapse in={Services.HasMoveServiceEnabled}>
           <NavFolder to={`${matchUrl}/services/move`} title="MOVE" nested>
-            <NavItem to={`${matchUrl}/services/move/material-shop`} title="MATERIAL_SHOP" doubleNested />
             <NavItem to={`${matchUrl}/services/move/inventory`} title="INVENTORY" doubleNested />
           </NavFolder>
         </Collapse>
 
         <Collapse in={Services.HasPackServiceEnabled}>
-          <NavFolder to={`${matchUrl}/services/pack`} title="PACK" nested>
-            <NavItem to={`${matchUrl}/services/pack/material-shop`} title="MATERIAL_SHOP" doubleNested />
-          </NavFolder>
+          <NavItem to={`${matchUrl}/services/pack`} title="PACK" nested />
         </Collapse>
 
         <Collapse in={Services.HasStorageServiceEnabled}>
           <NavFolder to={`${matchUrl}/services/storage`} title="STORAGE" nested>
-            <NavItem to={`${matchUrl}/services/storage/material-shop`} title="MATERIAL_SHOP" doubleNested />
             <NavItem to={`${matchUrl}/services/storage/inventory`} title="INVENTORY" doubleNested />
           </NavFolder>
         </Collapse>
@@ -75,6 +71,9 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         <Collapse in={Services.HasCleaningServiceEnabled}>
           <NavItem to={`${matchUrl}/services/cleaning`} title="CLEANING" nested />
         </Collapse>
+
+        <NavItem to={`${matchUrl}/services/material-shop`} title="MATERIAL_SHOP" nested />
+
       </NavFolder>
 
       <NavFolder to={`${matchUrl}/conditions`} title="CONDITIONS">

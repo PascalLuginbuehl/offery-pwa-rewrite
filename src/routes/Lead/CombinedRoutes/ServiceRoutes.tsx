@@ -12,7 +12,7 @@ import PackService from "../Services/PackService"
 import StorageService from "../Services/StorageService"
 import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyCleaningBuilding, emptyDisposalOutBuilding } from "../../../interfaces/IBuilding"
 import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../../interfaces/IService"
-import { emptyMaterialOrder, ShopTypeEnum } from "../../../interfaces/IShop"
+import { emptyMaterialOrder } from "../../../interfaces/IShop"
 import { InventoryKeysEnum, emptyInventory } from "../../../interfaces/IInventars"
 
 interface Props {
@@ -105,27 +105,6 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         )}
       />
 
-      {/* MoveShop */}
-      <Route
-        exact
-        path={`${matchUrl}/services/move/material-shop`}
-        render={routeProps => (
-          <MaterialShop
-            {...routeProps}
-            lead={Lead}
-            materialOrder={materialOrder}
-            onChangeAndSave={(materialOrderData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(materialOrderData, "materialOrder", () => LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrderData)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
-            }}
-            shopTypeKey={ShopTypeEnum.Move}
-            nextPage={redirectToNextPage("/services/move/material-shop")}
-          />
-        )}
-      />
-
       {/* Move Inventory */}
       <Route
         exact
@@ -166,27 +145,6 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         )}
       />
 
-      {/* PackShop */}
-      <Route
-        exact
-        path={`${matchUrl}/services/pack/material-shop`}
-        render={routeProps => (
-          <MaterialShop
-            {...routeProps}
-            materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
-            lead={Lead}
-            onChangeAndSave={(materialOrderData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(materialOrderData, "materialOrder", () => LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrderData)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
-            }}
-            shopTypeKey={ShopTypeEnum.Pack}
-            nextPage={redirectToNextPage("/services/pack/material-shop")}
-          />
-        )}
-      />
-
       {/* StorageService */}
       <Route
         exact
@@ -206,27 +164,6 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
               ])
             }}
             nextPage={redirectToNextPage("/services/storage")}
-          />
-        )}
-      />
-
-      {/* StorageShop */}
-      <Route
-        exact
-        path={`${matchUrl}/services/storage/material-shop`}
-        render={routeProps => (
-          <MaterialShop
-            {...routeProps}
-            materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
-            lead={Lead}
-            onChangeAndSave={(materialOrderData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(materialOrderData, "materialOrder", () => LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrderData)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
-            }}
-            shopTypeKey={ShopTypeEnum.Storage}
-            nextPage={redirectToNextPage("/services/storage/material-shop")}
           />
         )}
       />
@@ -310,6 +247,29 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
           />
         )}
       />
+
+
+
+      {/* MaterialShop */}
+      <Route
+        exact
+        path={`${matchUrl}/services/material-shop`}
+        render={routeProps => (
+          <MaterialShop
+            {...routeProps}
+            materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
+            lead={Lead}
+            onChangeAndSave={(materialOrderData, lead) => {
+              return Promise.all([
+                handleChangeAndSave(materialOrderData, "materialOrder", () => LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrderData)),
+                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
+              ])
+            }}
+            nextPage={redirectToNextPage("/services/material-shop")}
+          />
+        )}
+      />
+
     </>
   )
 }

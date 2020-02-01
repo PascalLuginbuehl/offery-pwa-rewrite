@@ -22,10 +22,9 @@ import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, ArrayHelpers, FieldArray } from "formik"
-import * as Yup from "yup"
 import Form from "../../../components/FormikFields/Form"
 import Submit from "../../../components/FormikFields/Submit"
-import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder, ShopTypeEnum } from "../../../interfaces/IShop"
+import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder } from "../../../interfaces/IShop"
 import { IProduct } from "../../../interfaces/IProduct"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
@@ -42,7 +41,6 @@ type Values = IMaterialOrder & { lead: ILead }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
   onChangeAndSave: (data: IMaterialOrder, lead: ILead) => Promise<any>
-  shopTypeKey: ShopTypeEnum
   materialOrder: IMaterialOrder
   lead: ILead
   nextPage: () => void
@@ -59,10 +57,10 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
   }
 
   addItemToList = (product: IProduct) => {
-    const { handleChange, values, shopTypeKey } = this.props
+    const { handleChange, values } = this.props
     const { currentlyOpen } = this.state
 
-    let items = this.getSelectedList()
+    let items = values.OrderPositions
 
     // Merge item with new Products
     let itemNotInList = true
@@ -90,7 +88,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
       items.push(order)
     }
 
-    handleChange({ target: { value: items, name: shopTypeKey } })
+    handleChange({ target: { value: items, name: "OrderPositions" } })
   }
 
   getCorrespondingProduct = (order: IOrderPosition): IProduct => {
@@ -105,8 +103,8 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
   }
 
   removeOneItem = (index: number) => {
-    const { handleChange, values, shopTypeKey } = this.props
-    const items = this.getSelectedList()
+    const { handleChange, values } = this.props
+    const items = values.OrderPositions
 
     const newItems = [
       ...items.map((item, itemIndex) => {
@@ -123,7 +121,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
       // Filter for Amount 0
       .filter(item => item.Amount > 0)
 
-    handleChange({ target: { value: newItems, name: shopTypeKey } })
+    handleChange({ target: { value: newItems, name: "OrderPositions" } })
   }
 
   filterShowList = (currentlyOpen: CurrentlyOpenStateEnum) => (item: IOrderPosition) => {
@@ -142,16 +140,10 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
     this.setState({ currentlyOpen: value })
   }
 
-  getSelectedList = (): IOrderPosition[] => {
-    const { shopTypeKey, values } = this.props
-
-    return values[shopTypeKey]
-  }
-
   public render() {
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, selectedCompany, intl, shopTypeKey } = this.props
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status, resource, selectedCompany, intl } = this.props
 
-    const selectedItemList = this.getSelectedList()
+    const selectedItemList = values.OrderPositions
 
     const { currentlyOpen } = this.state
     const ShopProducts = selectedCompany.ShopProducts
@@ -180,7 +172,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
           </Grid>
           <Grid item xs={12}>
             <FieldArray
-              name={shopTypeKey}
+              name={"OrderPositions"}
               render={(arrayHelpers: ArrayHelpers) => (
                 <Table>
                   <TableHead>
@@ -244,30 +236,6 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
                         </TableCell>
                       </TableRow>
                     )}
-
-                    {values.MoveServicePositions.length > 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} padding="none">
-                          <FormattedMessage id="MOVE_SERVICE" />: {this.displayOtherShopValues(values.MoveServicePositions)}
-                        </TableCell>
-                      </TableRow>
-                    ) : null}
-
-                    {values.PackServicePositions.length > 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} padding="none">
-                          <FormattedMessage id="PACK_SERVICE" />: {this.displayOtherShopValues(values.PackServicePositions)}
-                        </TableCell>
-                      </TableRow>
-                    ) : null}
-
-                    {values.StorageServicePositions.length > 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} padding="none">
-                          <FormattedMessage id="STORAGE_SERVICE" />: {this.displayOtherShopValues(values.StorageServicePositions)}
-                        </TableCell>
-                      </TableRow>
-                    ) : null}
                   </TableBody>
                 </Table>
               )}

@@ -20,7 +20,8 @@ import ServicesComponent from "../components/Dashboard/ServiceIcons"
 import LeadTable from "../components/Dashboard/LeadTable"
 import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth"
 import MobileDashboard from "../components/Dashboard/MobileDashboard"
-
+import Fuse, { FuseOptions } from "fuse.js"
+import debounce from "debounce"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,18 +37,74 @@ const styles = (theme: Theme) =>
     },
   })
 
+const options: FuseOptions<ICompressedLead> = {
+  // shouldSort: true,
+  threshold: 0.1,
+  location: 0,
+  tokenize: true,
+  distance: 2,
+
+  maxPatternLength: 32,
+  minMatchCharLength: 4,
+  keys: [
+    // "LeadId",
+    {name: "Customer.Firstname", weight: 1.0},
+    {name: "Customer.Lastname", weight: 1.0},
+    {name: "Customer.CompanyName", weight: 1.0},
+    {name: "Customer.TelephoneNumber", weight: 1.0},
+    {name: "Customer.Email", weight: 1.0},
+    // "FromAddress.Street",
+    // "FromAddress.PLZ",
+    {name: "FromAddress.City", weight: 0.1},
+    // "ToAddress.Street",
+    // "ToAddress.PLZ",
+    { name: "ToAddress.City", weight: 0.1},
+  ]
+}
+
 interface _State {
   leads: ICompressedLead[]
+  filteredLeads: ICompressedLead[]
   leadsAwait: Promise<any> | null
+  fuse: Fuse<ICompressedLead, typeof options> | null
 }
 
 interface Props extends WithStyles<typeof styles>, WithResourceProps, WithWidth {
 
 }
 
+interface AutoSubmitProps {
+  values: any
+  submitForm: () => void
+}
+
+const AutoSubmit: React.FC<AutoSubmitProps> = ({ values, submitForm }) => {
+  type deboundeFunctionType = () => void
+
+  const [debounceFunction, setDebounceFunction] = React.useState<null | deboundeFunctionType>(null)
+
+  React.useEffect(() => {
+    setDebounceFunction(() => debounce(() => { console.log("asd"); submitForm() }, 200))
+    // setDeboundeFunction()
+  }, [submitForm])
+
+
+  React.useEffect(() => {
+    if (debounceFunction) {
+      debounceFunction()
+    }
+  }, [values, submitForm])
+
+
+  return null
+}
+
+
 class TableDashboard extends React.Component<Props, _State> {
   state: _State = {
     leads: [],
+    fuse: null,
+    filteredLeads: [],
     leadsAwait: null,
   }
 
@@ -58,13 +115,28 @@ class TableDashboard extends React.Component<Props, _State> {
 
     this.setState({ leadsAwait: leadsAwait })
 
-    this.setState({ leads: await leadsAwait })
+    const leads = await leadsAwait
+    this.setState({ leads: leads, fuse: new Fuse(leads, options) })
   }
 
 
+  filterFields = (searchString: string) => {
+    const { fuse } = this.state
+
+    if (!fuse) {
+      return
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const result: ICompressedLead[] = fuse.search(searchString.trim())
+
+    this.setState({ filteredLeads: result })
+  }
+
   public render() {
     const { classes, selectedCompany, resource, width } = this.props
-    const { leads, leadsAwait } = this.state
+    const { leads, leadsAwait, filteredLeads } = this.state
 
     return (
       <Wrapper initialLoading={leadsAwait} >
@@ -74,40 +146,41 @@ class TableDashboard extends React.Component<Props, _State> {
             <IntlTypography variant="caption">COMPANY_LEAD_OVERVIEW</IntlTypography>
           </Grid>
 
-          {/* <Grid item xs={12}>
+          <Grid item xs={12}>
             <Formik
-              initialValues={() => ({
+              initialValues={{
                 search: "",
-                status: ""
-              })}
-              onSubmit={() => {
+                status : "",
+              }}
 
+              onSubmit={( { search }, actions ) => {
+                this.filterFields(search)
+                actions.setSubmitting(false)
               }}
             >
-              {() => (
+              {({submitForm, values}) => (
                 <Form>
                   <Grid container spacing={1}>
                     <Field
                       label="STATUS"
                       name="status"
                       component={FormikSimpleSelect}
-                      overrideGrid={{xs: 3, md: 2}}
+                      overrideGrid={{xs: 4, md: 2}}
                       options={resource.Statuses.map(e => ({ label: e.NameTextKey, value: e.StatusId }))}
                     />
-                    <Field component={FormikTextField} name="search" label="SEARCH" overrideGrid={{xs: 6, md: 8}}/>
-                    <Grid item xs={3} md={2}>
-                      <Button type="submit" variant="contained" color="primary" fullWidth>
-                        SEARCH
-                      </Button>
-                    </Grid>
+
+                    <Field component={FormikTextField} name="search" label="SEARCH" disabled={false} overrideGrid={{xs: 8, md: 10}} />
+
+
+                    <AutoSubmit values={values} submitForm={submitForm} />
                   </Grid>
                 </Form>
               )}
             </Formik>
-          </Grid> */}
+          </Grid>
 
           <Grid item xs={12}>
-            {isWidthUp("sm", width) ? <LeadTable leads={leads} /> : <MobileDashboard leads={leads} />}
+            {isWidthUp("sm", width) ? <LeadTable leads={filteredLeads} /> : <MobileDashboard leads={filteredLeads} />}
 
             <div className={classes.positionAddRight}>
               <PlainLink to="/lead/new/building">

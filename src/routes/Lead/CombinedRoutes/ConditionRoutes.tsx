@@ -3,8 +3,6 @@ import { Route, Redirect } from "react-router"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../../interfaces/IService"
-import { emptyMaterialOrder, ShopTypeEnum } from "../../../interfaces/IShop"
-import { InventoryKeysEnum, emptyInventory } from "../../../interfaces/IInventars"
 import MoveConditions from "../Conditions/MoveConditions"
 import PackConditions from "../Conditions/PackConditions"
 import StorageConditions from "../Conditions/StorageConditions"
@@ -15,7 +13,7 @@ import PreviewOffer from "../Offer/PreviewOffer"
 import { ILead } from "../../../interfaces/ILead"
 import SendOffer from "../Offer/SendOffer"
 import Done from "../Offer/Done"
-import OfflineUnavailable from "../../../components/OfflineUnavailable";
+import OfflineUnavailable from "../../../components/OfflineUnavailable"
 
 interface Props {
   leadContainer: ILeadContainer
