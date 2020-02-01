@@ -160,7 +160,7 @@ class Lead extends Component<Props, State> {
     }
 
     if(this.props.offline !== prevProps.offline) {
-      if (this.props.offline && this.state.container) {
+      if (!this.props.offline && this.state.container) {
         this.loadLead(this.state.container.Lead.LeadId)
       }
     }
@@ -192,13 +192,15 @@ class Lead extends Component<Props, State> {
       this.setState({ OfflineConflict:
         {
           origin: bothChangedSameAPI.map(key => origin[key]),
-          offline: bothChangedSameAPI.map(key => offlineChanges[key])
+          offlineOrigin: bothChangedSameAPI.map(key => onlineState[key]),
+          offline: bothChangedSameAPI.map(key => offlineChanges[key]),
         }
       })
 
       console.log("Offline Changed :(",
         {
           origin: bothChangedSameAPI.map(key => origin[key]),
+          offlineOrigin: bothChangedSameAPI.map(key => onlineState[key]),
           offline: bothChangedSameAPI.map(key => offlineChanges[key])
         })
       throw "Offline Changed"
@@ -261,8 +263,6 @@ class Lead extends Component<Props, State> {
   }
 
   loadLead = async (leadId: number) => {
-
-
     const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
     let onlineAPIContainer = null
 
