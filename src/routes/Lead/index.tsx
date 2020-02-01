@@ -19,7 +19,7 @@ import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import { diff } from "deep-object-diff"
 import { Switch, Toolbar, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, Button } from "@material-ui/core"
 import IntlTypography from "../../components/Intl/IntlTypography"
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
 interface State {
   container: ILeadContainer | null
@@ -55,7 +55,26 @@ function getContainerDiffKeys(originContainer: ILeadContainer, changesContainer:
     }
 
     const difference = diff(field, test)
-    return Object.keys(difference).length !== 0
+
+    const ignoreLeadKeys = [
+      "Created",
+      "Status",
+      "FromAddress",
+      "ToAddress",
+      "StatusHistories",
+      "Offers",
+      "ConfirmedOrderVerbal",
+      "ConfirmedOrder",
+      "ConfirmedOffer"
+    ]
+
+    // console.log(key)
+    // console.log(Object.keys(difference))
+
+    // Special filter for keys that get change magically by the backend
+    const differenceKeys = key === "Lead" ? Object.keys(difference).filter(key => ignoreLeadKeys.find(key2 => key == key2) === undefined) : Object.keys(difference)
+
+    return differenceKeys.length !== 0
   })
 }
 
@@ -95,9 +114,16 @@ class Lead extends Component<Props, State> {
 
 
       try {
-        await savePromise()
-        this.handleChange(value, name)
+        // TODO get Repsone and save into container here
+        // else this will stay outdated : (
+
+        // Save instantly
+        const response = await savePromise()
+        this.handleChange(response, name)
+
         // saveWasSuccessFull, update offlineOrigin and offline
+        this.saveLeadToOfflineOrigin({...container, [name]: response})
+
       } catch (e) {
         // Check if it is an offline error
         if (e.message === "Failed to fetch") {
@@ -162,8 +188,19 @@ class Lead extends Component<Props, State> {
     const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changesWhileOffline.findIndex(e => apiOffline === e) !== -1)
 
     if (bothChangedSameAPI.length > 0) {
-      this.setState({OfflineConflict: changesWhileOffline})
-      console.log("Offline Changed :(")
+
+      this.setState({ OfflineConflict:
+        {
+          origin: bothChangedSameAPI.map(key => origin[key]),
+          offline: bothChangedSameAPI.map(key => offlineChanges[key])
+        }
+      })
+
+      console.log("Offline Changed :(",
+        {
+          origin: bothChangedSameAPI.map(key => origin[key]),
+          offline: bothChangedSameAPI.map(key => offlineChanges[key])
+        })
       throw "Offline Changed"
     }
 
@@ -171,11 +208,11 @@ class Lead extends Component<Props, State> {
     const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder } = offlineChanges
     const changeArray: {[key in keyof ILeadContainer]: () => Promise<any>} = {
       Lead: () => LeadAPI.SaveLead(offlineChanges.Lead),
-      moveOut: () => moveOut ? LeadAPI.SaveMoveOut(moveOut, leadId) : Promise.reject("Unable to remove Building"),
-      moveIn: () => moveIn ? LeadAPI.SaveMoveIn(moveIn, leadId) : Promise.reject("Unable to remove Building"),
-      cleaning: () => disposal ? LeadAPI.SaveDisposal(disposal, leadId) : Promise.reject("Unable to remove Building"),
-      disposal: () => storage ? LeadAPI.SaveStorage(storage, leadId) : Promise.reject("Unable to remove Building"),
-      storage: () => cleaning ? LeadAPI.SaveCleaning(cleaning, leadId) : Promise.reject("Unable to remove Building"),
+      moveOut: () => moveOut ? LeadAPI.SaveMoveOut(moveOut, leadId) : Promise.reject("Unable to remove SaveMoveOut"),
+      moveIn: () => moveIn ? LeadAPI.SaveMoveIn(moveIn, leadId) : Promise.reject("Unable to remove SaveMoveIn"),
+      disposal : () => disposal ? LeadAPI.SaveDisposal(disposal, leadId) : Promise.reject("Unable to remove SaveDisposal"),
+      storage: () => storage ? LeadAPI.SaveStorage(storage, leadId) : Promise.reject("Unable to remove SaveStorage"),
+      cleaning: () => cleaning ? LeadAPI.SaveCleaning(cleaning, leadId) : Promise.reject("Unable to remove SaveCleaning"),
       materialOrder: () => LeadAPI.SaveMaterialOrderService(leadId, materialOrder),
       inventory: () => LeadAPI.SaveInventoryService(leadId, inventory),
       moveService: () => LeadAPI.SaveMoveService(leadId, moveService),
@@ -186,18 +223,38 @@ class Lead extends Component<Props, State> {
     }
 
     try {
-      await Promise.all(changesWhileOffline.map(key => changeArray[key]()))
+      const { container } = this.state
+      if (!container) {
+        throw new Error("Container not defined yet. Quite random :(")
+      }
 
-      console.log(changesWhileOffline)
-      console.log(whileOfflineAPIChanges)
+      const containerClone = { ...container }
+
+      await Promise.all(
+        changesWhileOffline.map(key => changeArray[key]()
+          .then((e) => {
+            containerClone[key] = e
+          })
+        )
+      )
+
+      console.log("oldContainer/offlineContainer", container)
+      console.log("overriddenContainer", containerClone)
+
+      console.log("changesWhileOffline", changesWhileOffline)
+      console.log("whileOfflineAPIChanges", whileOfflineAPIChanges)
+
 
       // CLear changes
       LeadAPI.RemoveChangesFromOffline(leadId)
-      // Updating
-      // Update origin
-      LeadAPI.SaveOriginToOffline(offlineChanges)
+
+      // Updating for offline origin with current container
+      LeadAPI.SaveOriginToOffline(containerClone)
+      this.setState({container: containerClone})
 
     } catch(e) {
+
+      // TODO: add more Error handling here
       console.log(e)
       throw new Error("Could not save")
     }
@@ -347,6 +404,9 @@ class Lead extends Component<Props, State> {
               <DialogContentText>
                 <FormattedMessage id="CONFLICTS_WHILE_SAVING_SELECTVERSION" />
               </DialogContentText>
+              <details>
+                {JSON.stringify(this.state.OfflineConflict)}
+              </details>
             </DialogContent>
             <DialogActions>
               <Button onClick={() => this.setState({ OfflineConflict: null })} color="primary">
