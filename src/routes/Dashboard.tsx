@@ -161,13 +161,13 @@ class TableDashboard extends React.Component<Props, _State> {
               {({submitForm, values}) => (
                 <Form>
                   <Grid container spacing={1}>
-                    <Field
+                    {/*<Field
                       label="STATUS"
                       name="status"
                       component={FormikSimpleSelect}
                       overrideGrid={{xs: 4, md: 2}}
                       options={resource.Statuses.map(e => ({ label: e.NameTextKey, value: e.StatusId }))}
-                    />
+                    />*/}
 
                     <Field component={FormikTextField} name="search" label="SEARCH" disabled={false} overrideGrid={{xs: 8, md: 10}} />
 
