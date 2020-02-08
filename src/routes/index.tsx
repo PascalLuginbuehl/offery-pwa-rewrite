@@ -153,8 +153,8 @@ class Index extends React.Component<Props, State> {
   }
 
   heartbeat = () => {
-    const timeoutAfter = 3000
-    const requestEvery = 3000
+    const timeoutAfter = 5000
+    const requestEvery = 6000
 
     timeout(timeoutAfter, fetch("/favicon.ico?t=" + Math.random()))
       .then(() => {
