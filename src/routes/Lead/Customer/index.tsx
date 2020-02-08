@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
-import { Formik, FormikProps, withFormik, Field } from "formik"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { Formik, FormikProps, withFormik, Field, ErrorMessage } from "formik"
+import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
 import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
 import { IPostMoveInBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
@@ -15,6 +15,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import { IPutLead, IPostLead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
+import { isValidPhoneNumber } from "react-phone-number-input"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -118,14 +119,20 @@ export default injectIntl(
         mapPropsToValues: props => props.lead,
 
         handleSubmit: async (values, actions) => {
-          try {
-            await actions.props.onChangeAndSave(values)
+          if (isValidPhoneNumber(values.Customer.TelephoneNumber) === true) {
+            try {
+              await actions.props.onChangeAndSave(values)
 
-            actions.setSubmitting(false)
-            actions.resetForm()
-            actions.props.nextPage()
-          } catch (e) {
-            actions.setStatus(e)
+              actions.setSubmitting(false)
+              actions.resetForm()
+              actions.props.nextPage()
+            } catch (e) {
+              actions.setStatus(e)
+            }
+          }
+          else {
+            alert(actions.props.intl.formatMessage({ id: "PhoneNumber_Format_Error" }))
+            return
           }
         },
       })(Customer)
