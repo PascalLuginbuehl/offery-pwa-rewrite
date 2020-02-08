@@ -25,7 +25,8 @@ FEMALE,Female,female
 OTHER,Other,Andere
 COMPANY,Company,Firma
 EMAIL,Email,Email
-PHONE,Phone,Telefon
+PHONE,Phone (+41xx),Telefon (+41xx)
+PhoneNumber_Format_Error,Phone format must be like this +41785551122,Telefon-Format muss sein wie: +41785551122
 COMMENT,Comment,Bemerkung
 GENDER,Gender,Geschlecht
 MALE,Male,Männlich
