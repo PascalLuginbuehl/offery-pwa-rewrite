@@ -64,7 +64,7 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
 
       <Route exact path={`${matchUrl}/conditions`}>
         {/* Previous page is one before so next gets calculated */}
-        <Redirect to={matchUrl + getNextPage("/services/cleaning")} />
+        <Redirect to={matchUrl + getNextPage("/services/material-shop")} />
       </Route>
 
       {/* Conditions */}
