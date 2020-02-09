@@ -1,8 +1,8 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip } from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip, Button } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
-import { FormikProps, withFormik, ArrayHelpers, FieldArray } from "formik"
+import { FormikProps, withFormik, ArrayHelpers, FieldArray, Formik, Field } from "formik"
 import * as Yup from "yup"
 import Form from "../../../components/FormikFields/Form"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
@@ -19,9 +19,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked"
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked"
-import { IInventars, InventoryKeysEnum, IInventar } from "../../../interfaces/IInventars"
+import { IInventars, InventoryKeysEnum, IInventar, ICustomInventar } from "../../../interfaces/IInventars"
 import clsx from "clsx"
 import PageHeader from "../../../components/PageHeader"
+import FormikTextField from "../../../components/FormikFields/FormikTextField";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -155,6 +156,15 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     return values[currentlyOpenInventory]
   }
 
+  getCustomSelectedList = (): ICustomInventar[] => {
+    const { values } = this.props
+    const { currentlyOpenInventory } = this.state
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    //@ts-ignore
+    return values["Custom" + currentlyOpenInventory]
+  }
+
   getCorrespondingFurnitureItem = (item: IInventar): IFurniture => {
     const {
       resource: { FurnitureCategories },
@@ -187,6 +197,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     const { resource, selectedCompany, intl, width, classes } = this.props
 
     const selectedItemList = this.getSelectedList()
+    const selectedCustomItemList = this.getCustomSelectedList()
 
     const { currentlyOpenInventory, selectedFurnitureCategory, pageIndex } = this.state
     const FurnitureCategories = resource.FurnitureCategories
@@ -263,6 +274,43 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
               />
             }
           </Grid>
+          <FieldArray
+            name={"Custom" + currentlyOpenInventory}
+            render={(arrayHelpers: ArrayHelpers) => (
+              <Grid item xs={12}>
+                Custom Item
+                <Formik<ICustomInventar>
+                  initialValues={{
+                    Name: "",
+                    Description: "",
+                    Amount: 1,
+                  }}
+
+                  onSubmit={(values, actions) => {
+                    console.log("HI")
+                    arrayHelpers.push(values)
+
+                    actions.setSubmitting(false)
+                  }}
+                >
+                  {({ submitForm, values, isSubmitting, handleSubmit }) => (
+                    <Form disableSubmit>
+                      <Grid container spacing={1}>
+                        <Field component={FormikTextField} name="Name" label="NAME" overrideGrid={{ xs: 8, md: 10 }} />
+                        <Field component={FormikTextField} name="Description" label="DESCRIPTION" disabled={false} multiline overrideGrid={{ xs: 8, md: 10 }} />
+
+                        <Field component={FormikTextField} name="Amount" label="AMOUNT" disabled={false} overrideGrid={{ xs: 8, md: 10 }} />
+
+                        <Button disabled={isSubmitting} type="submit">Create</Button>
+
+                      </Grid>
+                    </Form>
+                  )}
+                </Formik>
+              </Grid>
+            )}
+          />
+
           <Grid item xs={12}>
             <Tabs value={currentlyOpenInventory} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
               <Tab label={intl.formatMessage({ id: "MOVE" })} value={InventoryKeysEnum.Move} />
@@ -329,6 +377,43 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                         </TableCell>
                       </TableRow>
                     )}
+
+                    {/* <TableRow>
+                      <TableCell rowSpan={10} colSpan={5} align="center">
+                        <IntlTypography color="textSecondary">CUSTOM_ITEMS</IntlTypography>
+                        <Divider />
+                      </TableCell>
+                    </TableRow> */}
+
+                    <FieldArray
+                      name={currentlyOpenInventory}
+                      render={(arrayHelpers: ArrayHelpers) => (
+                        selectedCustomItemList && selectedCustomItemList.length > 0 ? (
+                          selectedCustomItemList.map((item, index) => (
+                            <TableRow key={index}>
+                              <TableCell padding="checkbox">
+                                {item.Name}
+                              </TableCell>
+
+                              <TableCell align="right" padding="checkbox">
+                                {item.Amount} Stk.
+                              </TableCell>
+
+                              <TableCell padding="none" align="right" style={{ whiteSpace: "nowrap" }}>
+                                {/* Implement feature to make valid remove and  */}
+                                {/* <IconButton onClick={() => this.removeOneitem(item, index, arrayHelpers)} classes={{ root: classes.buttonSmallPadding }}>
+                                  <RemoveCircleOutlineIcon />
+                          </IconButton>*/}
+
+                                <IconButton onClick={() => arrayHelpers.remove(index)} classes={{ root: classes.buttonSmallPadding }}>
+                                  <DeleteForeverIcon />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : null
+                      )}
+                    />
                   </TableBody>
                 </Table>
               )}
@@ -348,6 +433,7 @@ export default withWidth()(
           mapPropsToValues: props => props.inventory,
           handleSubmit: async (values, actions) => {
             try {
+                    console.log("H2I")
               await actions.props.onChangeAndSave(values)
 
               actions.setSubmitting(false)
