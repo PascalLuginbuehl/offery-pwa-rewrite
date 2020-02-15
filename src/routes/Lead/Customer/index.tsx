@@ -16,6 +16,7 @@ import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonC
 import { IPutLead, IPostLead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import { isValidPhoneNumber } from "react-phone-number-input"
+import FormikPhoneNumber from "../../../components/FormikFields/FormikPhoneNumber"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -28,6 +29,16 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
 }
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
+  validatePhoneNumber = (value: string) => {
+    console.log(isValidPhoneNumber)
+    if (isValidPhoneNumber(value) !== true) {
+      return this.props.intl.formatMessage({id: "PHONE_NUMBER_INVALID"})
+    }
+
+    return
+  }
+
+
   public render() {
     const { values, isSubmitting, status, resource, selectedCompany } = this.props
     const { VisitDate, MoveDate } = values
@@ -85,7 +96,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field label="COMPANY" name="Customer.CompanyName" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
             <Field label="EMAIL" name="Customer.Email" type="email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
-            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
+            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} required validate={this.validatePhoneNumber} />
           </FormikGroups>
 
           <FormikGroups label="DATES" xs={12}>
@@ -119,20 +130,14 @@ export default injectIntl(
         mapPropsToValues: props => props.lead,
 
         handleSubmit: async (values, actions) => {
-          if (isValidPhoneNumber(values.Customer.TelephoneNumber) === true) {
-            try {
-              await actions.props.onChangeAndSave(values)
+          try {
+            await actions.props.onChangeAndSave(values)
 
-              actions.setSubmitting(false)
-              actions.resetForm()
-              actions.props.nextPage()
-            } catch (e) {
-              actions.setStatus(e)
-            }
-          }
-          else {
-            alert(actions.props.intl.formatMessage({ id: "PhoneNumber_Format_Error" }))
-            return
+            actions.setSubmitting(false)
+            actions.resetForm()
+            actions.props.nextPage()
+          } catch (e) {
+            actions.setStatus(e)
           }
         },
       })(Customer)

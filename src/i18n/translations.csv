@@ -310,3 +310,5 @@ CUSTOM_ITEMS,Custom items,Spezial Objekte
 DESCRIPTION,Description,Beschreibung
 NAME,Name,Name
 CREATE,Create,Erstellen
+
+PHONE_NUMBER_INVALID,Phone number invalid,Telefonnummer nicht gültig
