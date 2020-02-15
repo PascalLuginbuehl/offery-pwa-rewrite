@@ -169,7 +169,7 @@ class TableDashboard extends React.Component<Props, _State> {
                       options={resource.Statuses.map(e => ({ label: e.NameTextKey, value: e.StatusId }))}
                     />*/}
 
-                    <Field component={FormikTextField} name="search" label="SEARCH" disabled={false} overrideGrid={{xs: 8, md: 10}} />
+                    <Field component={FormikTextField} name="search" label="SEARCH" disabled={false} overrideGrid={{ xs: 12 }} />
 
 
                     <AutoSubmit values={values} submitForm={submitForm} />

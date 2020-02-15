@@ -28,7 +28,7 @@ interface ILeadEditableValues {
 }
 
 export interface ILeadContainer extends ILeadEditableValues {
-  // lastUpdated: Date
+  lastUpdated: Date
   // onlySavedOffline: boolean
   // cachedInVersion: string
 }
@@ -61,7 +61,7 @@ class LeadAPI {
       ServicesService.fetchCleaningService(leadId),
       // @ts-ignore
     ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
-      // lastUpdated: new Date(),
+      lastUpdated: new Date(),
       // onlySavedOffline: false,
       // cachedInVersion: "",
 

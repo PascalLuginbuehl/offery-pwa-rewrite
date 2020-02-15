@@ -31,3 +31,9 @@ if ('function' === typeof importScripts) {
     console.log('Workbox could not be loaded. No Offline support');
   }
 }
+
+addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    skipWaiting();
+  }
+});

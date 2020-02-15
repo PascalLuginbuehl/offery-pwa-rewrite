@@ -312,3 +312,4 @@ NAME,Name,Name
 CREATE,Create,Erstellen
 
 PHONE_NUMBER_INVALID,Phone number invalid,Telefonnummer nicht gültig
+OFFLINE_SYNC_IN_PROGRESS,Offline sync in progress,Daten werden synchronisiert

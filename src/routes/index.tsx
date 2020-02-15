@@ -109,10 +109,11 @@ interface State {
   navPortal: HTMLDivElement | null
   offline: boolean
   offlineSnackbarOpen: boolean
+  updateServiceWorkerFunction: (() => void) | null
 }
 
 interface Props extends WithStyles<typeof styles>, WithLanguageProps {
-
+  swUpdateEventGenerator: Promise<ServiceWorkerRegistration>
 }
 
 class Index extends React.Component<Props, State> {
@@ -121,6 +122,7 @@ class Index extends React.Component<Props, State> {
     navPortal: null,
     offline: false,
     offlineSnackbarOpen: false,
+    updateServiceWorkerFunction: null
   }
 
   handleOfflineChange = (offline: boolean) => {
@@ -142,6 +144,28 @@ class Index extends React.Component<Props, State> {
 
   componentDidMount() {
     this.heartbeat()
+
+    this.props.swUpdateEventGenerator.then((serviceWorkerRegistration) => {
+      console.log("Update available", serviceWorkerRegistration)
+
+
+      const updateServiceWorker = () => {
+        const registrationWaiting = serviceWorkerRegistration.waiting
+
+        if (registrationWaiting) {
+          registrationWaiting.postMessage({ type: "SKIP_WAITING" })
+
+          registrationWaiting.addEventListener("statechange", e => {
+            // @ts-ignore
+            if (e.target.state === "activated") {
+              window.location.reload()
+            }
+          })
+        }
+      }
+
+      this.setState({ updateServiceWorkerFunction: updateServiceWorker})
+    })
   }
 
   closeNavigation = () => {
@@ -250,6 +274,31 @@ class Index extends React.Component<Props, State> {
             onClose={this.closeSnackbar}
             autoHideDuration={4000}
             message={offline ? <FormattedMessage id="WEAK_CONNECTION_DETECTED" /> : <FormattedMessage id="BACK_ONLINE" /> }
+            className={classes.snackbar}
+          />
+
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={!!this.state.updateServiceWorkerFunction}
+            autoHideDuration={6000}
+            // onClose={handleClose}
+            message="Note archived"
+            action={
+              <React.Fragment>
+                <Button color="secondary" size="small" onClick={() => this.state.updateServiceWorkerFunction}>
+                  Update
+                </Button>
+              </React.Fragment>
+            }
+          />
+          <Snackbar
+            open={offlineSnackbarOpen}
+            onClose={this.closeSnackbar}
+            autoHideDuration={4000}
+            message={offline ? <FormattedMessage id="WEAK_CONNECTION_DETECTED" /> : <FormattedMessage id="BACK_ONLINE" />}
             className={classes.snackbar}
           />
 

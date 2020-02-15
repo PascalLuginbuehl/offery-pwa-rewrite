@@ -17,18 +17,28 @@ import IntlTooltip from "../../components/Intl/IntlTooltip"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
 import OfflinePinIcon from "@material-ui/icons/OfflinePin"
 import { diff } from "deep-object-diff"
-import { Switch, Toolbar, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, Button } from "@material-ui/core"
+import { Switch, Toolbar, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, Button, Typography, CircularProgress, Backdrop, Theme } from "@material-ui/core"
 import IntlTypography from "../../components/Intl/IntlTypography"
 import { FormattedMessage } from "react-intl"
+import differenceInDays from "date-fns/differenceInDays"
+import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
+
+const styles = (theme: Theme) => createStyles({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+})
 
 interface State {
   container: ILeadContainer | null
 
   initialAwait: Promise<any> | null
   OfflineConflict: {[key: string]: any} | null
+  offlineSyncInProgress: boolean
 }
 
-interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps {
+interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps, WithStyles<typeof styles> {
   portal: HTMLDivElement | null
   closeNavigation: () => void
 
@@ -83,6 +93,7 @@ class Lead extends Component<Props, State> {
     container: null,
     OfflineConflict: null,
     initialAwait: null,
+    offlineSyncInProgress: false
   }
 
   public handleChange = (value: any, target: keyof ILeadContainer) => {
@@ -173,6 +184,8 @@ class Lead extends Component<Props, State> {
       throw new Error("No Origin was ever defined. Fatal Error")
     }
 
+    this.setState({ offlineSyncInProgress: true })
+
     // only compare keys that are relevant. No Server keys
     // var IMyTable: Array<keyof IMyTable> = ["id", "title", "createdAt", "isDeleted"];
 
@@ -203,12 +216,16 @@ class Lead extends Component<Props, State> {
           offlineOrigin: bothChangedSameAPI.map(key => onlineState[key]),
           offline: bothChangedSameAPI.map(key => offlineChanges[key])
         })
+
+
+      this.setState({ offlineSyncInProgress: false })
       throw "Offline Changed"
     }
 
     // Send this to API Here
     const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder } = offlineChanges
     const changeArray: {[key in keyof ILeadContainer]: () => Promise<any>} = {
+      lastUpdated: () => Promise.resolve(),
       Lead: () => LeadAPI.SaveLead(offlineChanges.Lead),
       moveOut: () => moveOut ? LeadAPI.SaveMoveOut(moveOut, leadId) : Promise.reject("Unable to remove SaveMoveOut"),
       moveIn: () => moveIn ? LeadAPI.SaveMoveIn(moveIn, leadId) : Promise.reject("Unable to remove SaveMoveIn"),
@@ -232,9 +249,17 @@ class Lead extends Component<Props, State> {
 
       const containerClone = { ...container }
 
+      const sleep = (promise: any, index: number) => new Promise((resolve, reject) => {
+        const wait = setTimeout(() => {
+          //@ts-ignore
+          promise().then(e => resolve(e)).catch(e => reject(e))
+        }, 500 * index)
+      })
+
       await Promise.all(
-        changesWhileOffline.map(key => changeArray[key]()
+        changesWhileOffline.map((key, index) => sleep(changeArray[key], index)
           .then((e) => {
+            //@ts-ignore
             containerClone[key] = e
           })
         )
@@ -252,12 +277,15 @@ class Lead extends Component<Props, State> {
 
       // Updating for offline origin with current container
       LeadAPI.SaveOriginToOffline(containerClone)
-      this.setState({container: containerClone})
+      this.setState({ container: containerClone, offlineSyncInProgress: false})
+      this.setState({  })
 
     } catch(e) {
 
       // TODO: add more Error handling here
       console.log(e)
+      this.setState({ offlineSyncInProgress: false })
+
       throw new Error("Could not save")
     }
   }
@@ -293,7 +321,9 @@ class Lead extends Component<Props, State> {
       } else {
         if (offline) {
           const offlineOrigin = await LeadAPI.FetchFromOfflineOrigin(leadId)
+
           if(offlineOrigin) {
+            differenceInDays(offlineOrigin.lastUpdated, new Date())
             this.setState({ container: offlineOrigin })
           }
         }
@@ -350,8 +380,8 @@ class Lead extends Component<Props, State> {
   }
 
   renderLead = () => {
-    const { match, portal, offline } = this.props
-    const { container } = this.state
+    const { match, portal, offline, classes } = this.props
+    const { container, offlineSyncInProgress } = this.state
 
     // Create New Lead
     if (match.params.id === "new" && container === null) {
@@ -367,6 +397,15 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
+
+          <Backdrop className={classes.backdrop} open={offlineSyncInProgress}>
+            <div style={{textAlign: "center"}}>
+              <IntlTypography variant="h4" style={{color: "white"}}>OFFLINE_SYNC_IN_PROGRESS</IntlTypography>
+              <br />
+              <CircularProgress color="inherit" />
+            </div>
+          </Backdrop>
+
           {/* Move-Out */}
           <Route
             exact
@@ -487,4 +526,4 @@ class Lead extends Component<Props, State> {
   }
 }
 
-export default withResource(Lead)
+export default withStyles(styles)(withResource(Lead))
