@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip, Button } from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip, Typography,  } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
@@ -22,7 +22,8 @@ import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked"
 import { IInventars, InventoryKeysEnum, IInventar, ICustomInventar } from "../../../interfaces/IInventars"
 import clsx from "clsx"
 import PageHeader from "../../../components/PageHeader"
-import FormikTextField from "../../../components/FormikFields/FormikTextField";
+import CustomInventory from "./CustomInventory"
+import EditIcon from "@material-ui/icons/Edit"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -55,6 +56,8 @@ interface _IProps extends WithResourceProps, WithStyles<typeof styles>, Injected
 interface _IState {
   currentlyOpenInventory: InventoryKeysEnum
   selectedFurnitureCategory: IFurnitureCategory | null
+  customItemModelOpen: boolean
+  editCustomItemIndex: number | null
   pageIndex: number
 }
 
@@ -63,6 +66,8 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     currentlyOpenInventory: InventoryKeysEnum.Move,
     selectedFurnitureCategory: null,
     pageIndex: 0,
+    customItemModelOpen: false,
+    editCustomItemIndex: null
   }
 
   constructor(props: _IProps & FormikProps<IInventars>) {
@@ -193,15 +198,36 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     }
   }
 
+  openCreateCustomModal = ()=> {
+    this.setState({customItemModelOpen: true})
+  }
+
+  saveCustomItem = (index: number, arrayHelpers: ArrayHelpers) => (item: ICustomInventar) => {
+    console.log(item, index)
+    arrayHelpers.replace(index, item)
+
+    this.setState({ editCustomItemIndex: null})
+  }
+
+  closeCustomItemModal = () => {
+    this.setState({customItemModelOpen: false})
+  }
+
+  onCreateItem = (arrayHelpers: ArrayHelpers) => (customInventar: ICustomInventar) => {
+    arrayHelpers.push(customInventar)
+
+    this.setState({ customItemModelOpen: false })
+  }
+
   public render() {
-    const { resource, selectedCompany, intl, width, classes } = this.props
+    const { resource, selectedCompany, intl, width, classes, values } = this.props
 
     const selectedItemList = this.getSelectedList()
     const selectedCustomItemList = this.getCustomSelectedList()
 
-    const { currentlyOpenInventory, selectedFurnitureCategory, pageIndex } = this.state
+    const { currentlyOpenInventory, selectedFurnitureCategory, pageIndex, customItemModelOpen, editCustomItemIndex } = this.state
     const FurnitureCategories = resource.FurnitureCategories
-
+    console.log(editCustomItemIndex)
     return (
       <Grid item xs={12}>
         <Form>
@@ -231,6 +257,10 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                 {FurnitureCategories.map((category, index) => (
                   <InventoryCategoryFolder category={category} onSelect={() => this.openCatergory(category)} key={index} />
                 ))}
+
+                {/* Ugly way to display another button, this is not a furniture */}
+                <InventoryCategoryFolder category={{Furnitures: [], FurnitureCategoryId: 1, NameTextKey: "CUSTOM_ITEM"}} onSelect={() => this.openCreateCustomModal()}/>
+
               </Grid>
               :
               <FieldArray
@@ -274,42 +304,6 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
               />
             }
           </Grid>
-          <FieldArray
-            name={"Custom" + currentlyOpenInventory}
-            render={(arrayHelpers: ArrayHelpers) => (
-              <Grid item xs={12}>
-                Custom Item
-                <Formik<ICustomInventar>
-                  initialValues={{
-                    Name: "",
-                    Description: "",
-                    Amount: 1,
-                  }}
-
-                  onSubmit={(values, actions) => {
-                    console.log("HI")
-                    arrayHelpers.push(values)
-
-                    actions.setSubmitting(false)
-                  }}
-                >
-                  {({ submitForm, values, isSubmitting, handleSubmit }) => (
-                    <Form disableSubmit>
-                      <Grid container spacing={1}>
-                        <Field component={FormikTextField} name="Name" label="NAME" overrideGrid={{ xs: 8, md: 10 }} />
-                        <Field component={FormikTextField} name="Description" label="DESCRIPTION" disabled={false} multiline overrideGrid={{ xs: 8, md: 10 }} />
-
-                        <Field component={FormikTextField} name="Amount" label="AMOUNT" disabled={false} overrideGrid={{ xs: 8, md: 10 }} />
-
-                        <Button disabled={isSubmitting} type="submit">Create</Button>
-
-                      </Grid>
-                    </Form>
-                  )}
-                </Formik>
-              </Grid>
-            )}
-          />
 
           <Grid item xs={12}>
             <Tabs value={currentlyOpenInventory} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
@@ -319,27 +313,41 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
             </Tabs>
           </Grid>
 
-          <Grid item xs={12}>
-            <FieldArray
-              name={currentlyOpenInventory}
-              render={(arrayHelpers: ArrayHelpers) => (
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell padding="checkbox">
-                        <FormattedMessage id="ITEM" />
-                      </TableCell>
-                      <TableCell align="right" padding="checkbox">
-                        <FormattedMessage id="QUANTITY" />
-                      </TableCell>
-                      <TableCell align="right" padding="checkbox">
-                        <FormattedMessage id="ACTIONS" />
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
+          <FieldArray
+            name={"Custom" + currentlyOpenInventory}
+            render={(arrayHelpers: ArrayHelpers) => (
+              <>
+                <CustomInventory open={customItemModelOpen} handleClose={this.closeCustomItemModal} onSave={this.onCreateItem(arrayHelpers)} />
 
-                  <TableBody>
-                    {selectedItemList && selectedItemList.length > 0 ? (
+                {/*
+                // @ts-ignore */}
+                <CustomInventory open={editCustomItemIndex !== null} editItem={editCustomItemIndex !== null ? values["Custom" + currentlyOpenInventory][editCustomItemIndex] : undefined} handleClose={() => this.setState({ editCustomItemIndex: null })} onSave={this.saveCustomItem(editCustomItemIndex, arrayHelpers)} />
+              </>
+            )}
+          />
+
+          <Grid item xs={12}>
+
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="checkbox">
+                    <FormattedMessage id="ITEM" />
+                  </TableCell>
+                  <TableCell align="right" padding="checkbox">
+                    <FormattedMessage id="QUANTITY" />
+                  </TableCell>
+                  <TableCell align="right" padding="checkbox">
+                    <FormattedMessage id="ACTIONS" />
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                <FieldArray
+                  name={currentlyOpenInventory}
+                  render={(arrayHelpers: ArrayHelpers) => (
+                    selectedItemList && selectedItemList.length > 0 ? (
                       selectedItemList
                         .map((item, index) => ({ originalIndex: index, ...item }))
                         // .filter(this.filterShowList(currentlyOpen))
@@ -370,54 +378,64 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                             </TableRow>
                           )
                         })
-                    ) : (
-                      <TableRow>
-                        <TableCell rowSpan={10} colSpan={5} align="center">
-                          <IntlTypography>EMPTY</IntlTypography>
-                        </TableCell>
-                      </TableRow>
-                    )}
+                    ) : null
+                  )}
+                />
 
-                    {/* <TableRow>
-                      <TableCell rowSpan={10} colSpan={5} align="center">
-                        <IntlTypography color="textSecondary">CUSTOM_ITEMS</IntlTypography>
+                {(selectedItemList && selectedItemList.length > 0) || (selectedCustomItemList && selectedCustomItemList.length > 0) ? (
+                  selectedCustomItemList && selectedCustomItemList.length > 0 ? (
+                    <TableRow>
+                      <TableCell padding="none" colSpan={5} align="center">
+                        <IntlTypography style={{ paddingTop: 5, paddingBottom: 5 }} color="textSecondary">CUSTOM_ITEMS</IntlTypography>
                         <Divider />
                       </TableCell>
-                    </TableRow> */}
+                    </TableRow>
+                  ) : null
+                ) :
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      <IntlTypography>EMPTY</IntlTypography>
+                    </TableCell>
+                  </TableRow>
+                }
 
-                    <FieldArray
-                      name={currentlyOpenInventory}
-                      render={(arrayHelpers: ArrayHelpers) => (
-                        selectedCustomItemList && selectedCustomItemList.length > 0 ? (
-                          selectedCustomItemList.map((item, index) => (
-                            <TableRow key={index}>
-                              <TableCell padding="checkbox">
-                                {item.Name}
-                              </TableCell>
+                <FieldArray
+                  name={"Custom" + currentlyOpenInventory}
+                  render={(arrayHelpers: ArrayHelpers) => (
+                    selectedCustomItemList && selectedCustomItemList.length > 0 ? (
+                      selectedCustomItemList.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell padding="checkbox">
+                            {item.Name}
 
-                              <TableCell align="right" padding="checkbox">
-                                {item.Amount} Stk.
-                              </TableCell>
+                            <Typography variant="caption" color="textSecondary">{item.Description}</Typography>
+                          </TableCell>
 
-                              <TableCell padding="none" align="right" style={{ whiteSpace: "nowrap" }}>
-                                {/* Implement feature to make valid remove and  */}
-                                {/* <IconButton onClick={() => this.removeOneitem(item, index, arrayHelpers)} classes={{ root: classes.buttonSmallPadding }}>
-                                  <RemoveCircleOutlineIcon />
-                          </IconButton>*/}
+                          <TableCell align="right" padding="checkbox">
+                            {item.Amount} Stk.
+                          </TableCell>
 
-                                <IconButton onClick={() => arrayHelpers.remove(index)} classes={{ root: classes.buttonSmallPadding }}>
-                                  <DeleteForeverIcon />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        ) : null
-                      )}
-                    />
-                  </TableBody>
-                </Table>
-              )}
-            />
+                          <TableCell padding="none" align="right" style={{ whiteSpace: "nowrap" }}>
+                            {/* Implement feature to make valid remove and  */}
+                            {/* <IconButton onClick={() => this.removeOneitem(item, index, arrayHelpers)} classes={{ root: classes.buttonSmallPadding }}>
+                              <RemoveCircleOutlineIcon />
+                      </IconButton>*/}
+
+                            <IconButton onClick={() => this.setState({ editCustomItemIndex: index})} classes={{ root: classes.buttonSmallPadding }}>
+                              <EditIcon />
+                            </IconButton>
+
+                            <IconButton onClick={() => arrayHelpers.remove(index)} classes={{ root: classes.buttonSmallPadding }}>
+                              <DeleteForeverIcon />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : null
+                  )}
+                />
+              </TableBody>
+            </Table>
           </Grid>
         </Form>
       </Grid>
@@ -433,7 +451,7 @@ export default withWidth()(
           mapPropsToValues: props => props.inventory,
           handleSubmit: async (values, actions) => {
             try {
-                    console.log("H2I")
+              console.log("H2I")
               await actions.props.onChangeAndSave(values)
 
               actions.setSubmitting(false)

@@ -86,9 +86,10 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
 interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, InjectedIntlProps {
   routerDisabled?: boolean
   disableSubmit?: boolean
+  disableGridContainer?: boolean
 }
 
-const Form: React.ComponentType<Props> = ({ classes, intl, width, children, routerDisabled, disableSubmit = false }: Props) => {
+const Form: React.ComponentType<Props> = ({ classes, intl, width, children, routerDisabled, disableSubmit = false, disableGridContainer = false}: Props) => {
   const { dirty } = useFormikContext()
 
   const handleUnload = (e: BeforeUnloadEvent) => {
@@ -109,6 +110,19 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children, rout
 
   const { values, status, isSubmitting } = useFormikContext()
 
+
+  const gridChildren = (
+    <>
+      {children}
+
+      <HttpErrorHandler status={status} data={values} />
+      {disableSubmit ?
+        null :
+        <Submit isSubmitting={isSubmitting}></Submit>
+      }
+    </>
+  )
+
   return (
     <ErrorBoundary data={values}>
       <FormikForm>
@@ -118,15 +132,15 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children, rout
           <Prompt when={dirty} message={() => intl.formatMessage({ id: "UNSAVED_CHANGES_CONTINUE" })} />
         }
 
-        <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
-          {children}
+        {
+          disableGridContainer ?
+            gridChildren
+            :
+            <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
+              {gridChildren}
+            </Grid>
+        }
 
-          <HttpErrorHandler status={status} data={values} />
-          { disableSubmit ?
-            null :
-            <Submit isSubmitting={isSubmitting}></Submit>
-          }
-        </Grid>
       </FormikForm>
     </ErrorBoundary>
   )

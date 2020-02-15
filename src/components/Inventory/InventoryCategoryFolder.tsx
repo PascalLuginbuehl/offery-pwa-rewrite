@@ -1,12 +1,7 @@
 import { createStyles, Grid, Theme, WithStyles, withStyles, IconButton, ButtonBase, Paper, InputAdornment, TextField as MuiTextfield, Typography } from '@material-ui/core'
 import * as React from 'react'
-import { IProduct } from '../../interfaces/IProduct'
 import IntlTypography from '../Intl/IntlTypography';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
-import Filter9PlusIcon from '@material-ui/icons/Filter9Plus'
-import { thisExpression } from '@babel/types';
-import { TextFieldProps } from '@material-ui/core/TextField';
-import { CurrentlyOpenStateEnum } from '../../interfaces/IShop';
 import { IFurnitureCategory } from '../../interfaces/IResource';
 
 const styles = (theme: Theme) =>
