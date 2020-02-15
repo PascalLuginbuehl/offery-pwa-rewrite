@@ -80,14 +80,22 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   <TableRow>
                     <IntlTableCell component="th" scope="row">FROM</IntlTableCell>
                     <TableCell>
-                      {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}, ${lead.FromAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
+                      {
+                        lead.FromAddress ?
+                          <a href={"https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(`${lead.FromAddress.Street}, ${lead.FromAddress.PLZ} ${lead.FromAddress.City}`)} target="_blank">{lead.FromAddress.PLZ} {lead.FromAddress.City}, {lead.FromAddress.Street}</a>
+                          : <FormattedMessage id="NO_ADDRESS" />
+                      }
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <IntlTableCell component="th" scope="row">TO</IntlTableCell>
                     <TableCell>
-                      {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
+                      {
+                        lead.ToAddress ?
+                          <a href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}`)} target="_blank">{lead.ToAddress.PLZ} {lead.ToAddress.City}, {lead.ToAddress.Street}</a>
+                          : <FormattedMessage id="NO_ADDRESS" />
+                      }
                     </TableCell>
                   </TableRow>
 

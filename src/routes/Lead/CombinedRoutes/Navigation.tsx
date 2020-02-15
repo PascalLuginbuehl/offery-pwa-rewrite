@@ -22,6 +22,9 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
       <ListSubheader>
         <FormattedMessage id="EDIT_LEAD" />
       </ListSubheader>
+
+      <NavItem to={`${matchUrl}/`} title="LEAD_OVERVIEW" />
+
       <NavFolder to={`${matchUrl}/building`} title="CUSTOMER">
         {Lead ? (
           <>
