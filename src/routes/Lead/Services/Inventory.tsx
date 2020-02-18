@@ -25,6 +25,7 @@ import PageHeader from "../../../components/PageHeader"
 import CustomInventory from "./CustomInventory"
 import EditIcon from "@material-ui/icons/Edit"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import Fuse, { FuseOptions } from "fuse.js"
 import { debounce } from "debounce"
 
 const styles = (theme: Theme) =>
@@ -52,6 +53,19 @@ const styles = (theme: Theme) =>
     }
   })
 
+const fuseOptions: FuseOptions<IFurniture> = {
+  threshold: 0.1,
+  location: 0,
+  tokenize: true,
+  distance: 2,
+
+  maxPatternLength: 32,
+  minMatchCharLength: 4,
+  keys: [
+    {name: "NameTextKey", weight: 1.0},
+  ]
+}
+
 interface _IProps extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
   onChangeAndSave: (data: IInventars) => Promise<void>
   initalInventoryTypeKey: InventoryKeysEnum
@@ -66,6 +80,7 @@ interface _IState {
   customItemModelOpen: boolean
   editCustomItemIndex: number | null
   pageIndex: number
+  fuse: Fuse<IFurniture, typeof fuseOptions> | null
 }
 
 interface AutoSubmitProps {
@@ -97,6 +112,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     currentlyOpenInventory: InventoryKeysEnum.Move,
     selectedFurnitureCategory: null,
     filteredFurnitures: [],
+    fuse: null,
     pageIndex: 0,
     customItemModelOpen: false,
     editCustomItemIndex: null
@@ -112,11 +128,19 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     this.setState({ currentlyOpenInventory: value })
   }
 
+  componentDidMount() {
+    const { resource } = this.props
+    const fcatAll = resource.FurnitureCategories.find(c => c.NameTextKey === "FCATALL")
+
+    if (fcatAll)
+      this.setState({ filteredFurnitures: fcatAll.Furnitures, fuse: new Fuse(fcatAll.Furnitures, fuseOptions)})
+  }
+
   openCatergory = (category: IFurnitureCategory | null) => {
     if (category === null) {
       this.setState({ selectedFurnitureCategory: null, pageIndex: 0 })
     } else {
-      this.setState({ selectedFurnitureCategory: category, filteredFurnitures: category.Furnitures })
+      this.setState({ selectedFurnitureCategory: category, filteredFurnitures: category.Furnitures, fuse: new Fuse(category.Furnitures, fuseOptions)})
     }
   }
 
@@ -254,16 +278,21 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
   filterFurnitures = (searchString: string) => {
     console.log("filter called")
     const { resource } = this.props
-    const { selectedFurnitureCategory, filteredFurnitures } = this.state
+    const { selectedFurnitureCategory, fuse } = this.state
     const fcat = selectedFurnitureCategory || resource.FurnitureCategories.find(c => c.NameTextKey === "FCATALL")
+
+    if (!fuse) return
 
     if (fcat)
     {
       if (searchString && searchString.length > 0)
       {
         this.openCatergory(fcat)
-        const temp = fcat.Furnitures.filter(f => f.NameTextKey === "FURNITURETABLE")
-        this.setState({ filteredFurnitures: temp })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        const result: IFurniture[] = fuse.search(searchString.trim())
+        console.log(result)
+        this.setState({ filteredFurnitures: result })
         return
       }
       this.setState({ filteredFurnitures: fcat.Furnitures })
