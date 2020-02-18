@@ -65,6 +65,10 @@ export interface IFurniture {
   FMaterials: IFMaterial[]
 }
 
+export interface IFurnitureTranslated extends IFurniture {
+  DisplayName: string
+}
+
 export interface IFurnitureCategory {
   FurnitureCategoryId: number
   NameTextKey: string

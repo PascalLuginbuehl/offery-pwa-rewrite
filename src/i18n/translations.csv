@@ -281,6 +281,7 @@ CONFLICTS_WHILE_SAVING_SELECTVERSION,Offlinedata not same as online data. Which 
 STATUS,Status,Status
 CREATED,Created,Erstellt
 SEARCH,Search,Suche
+SEARCHFURNITUREDIRECT,Direct furniture search,Direkte Möbelsuche
 
 LEAD_OVERVIEW,Lead overview,Lead Übersicht
 INFORMATION,Informations,Informationen

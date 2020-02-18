@@ -9,7 +9,7 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
 import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
 import InventoryCategoryFolder from "../../../components/Inventory/InventoryCategoryFolder"
-import { IFurnitureCategory, IFurniture } from "../../../interfaces/IResource"
+import { IFurnitureCategory, IFurniture, IFurnitureTranslated } from "../../../interfaces/IResource"
 import InventoryItems from "../../../components/Inventory/InventoryItems"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import chunk from "chunk"
@@ -24,6 +24,9 @@ import clsx from "clsx"
 import PageHeader from "../../../components/PageHeader"
 import CustomInventory from "./CustomInventory"
 import EditIcon from "@material-ui/icons/Edit"
+import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import Fuse, { FuseOptions } from "fuse.js"
+import { debounce } from "debounce"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -43,8 +46,25 @@ const styles = (theme: Theme) =>
     },
     buttonSmallPadding: {
       padding: 5,
+      paddingLeft: 15,
     },
+    searchInput: {
+      paddingLeft: 15,
+    }
   })
+
+const fuseOptions: FuseOptions<IFurnitureTranslated> = {
+  threshold: 0.1,
+  location: 0,
+  tokenize: true,
+  distance: 2,
+
+  maxPatternLength: 32,
+  minMatchCharLength: 4,
+  keys: [
+    {name: "DisplayName", weight: 1.0},
+  ]
+}
 
 interface _IProps extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
   onChangeAndSave: (data: IInventars) => Promise<void>
@@ -56,15 +76,43 @@ interface _IProps extends WithResourceProps, WithStyles<typeof styles>, Injected
 interface _IState {
   currentlyOpenInventory: InventoryKeysEnum
   selectedFurnitureCategory: IFurnitureCategory | null
+  filteredFurnitures: IFurnitureTranslated[]
   customItemModelOpen: boolean
   editCustomItemIndex: number | null
   pageIndex: number
+  fuse: Fuse<IFurnitureTranslated, typeof fuseOptions> | null
+}
+
+interface AutoSubmitProps {
+  values: any
+  submitForm: () => void
+}
+
+const AutoSubmit: React.FC<AutoSubmitProps> = ({ values, submitForm }) => {
+  type deboundeFunctionType = () => void
+
+  const [debounceFunction, setDebounceFunction] = React.useState<null | deboundeFunctionType>(null)
+
+  React.useEffect(() => {
+    setDebounceFunction(() => debounce(() => { submitForm() }, 500))
+  }, [submitForm])
+
+  React.useEffect(() => {
+    if (debounceFunction) {
+      debounceFunction()
+    }
+  }, [values, submitForm])
+
+
+  return null
 }
 
 class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _IState> {
   state: _IState = {
     currentlyOpenInventory: InventoryKeysEnum.Move,
     selectedFurnitureCategory: null,
+    filteredFurnitures: [],
+    fuse: null,
     pageIndex: 0,
     customItemModelOpen: false,
     editCustomItemIndex: null
@@ -80,12 +128,34 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     this.setState({ currentlyOpenInventory: value })
   }
 
+  componentDidMount() {
+    const { resource } = this.props
+    const fcatAll = resource.FurnitureCategories.find(c => c.NameTextKey === "FCATALL")
+
+    if (fcatAll) {
+      const translatedFurnitures: IFurnitureTranslated[] = this.toTranslatedFurnitures(fcatAll.Furnitures)
+      this.setState({ filteredFurnitures: translatedFurnitures, fuse: new Fuse(translatedFurnitures, fuseOptions)})
+    }
+  }
+
   openCatergory = (category: IFurnitureCategory | null) => {
     if (category === null) {
       this.setState({ selectedFurnitureCategory: null, pageIndex: 0 })
     } else {
-      this.setState({ selectedFurnitureCategory: category })
+      const translatedFurnitures: IFurnitureTranslated[] = this.toTranslatedFurnitures(category.Furnitures)
+      this.setState({ pageIndex: 0, selectedFurnitureCategory: category, filteredFurnitures: translatedFurnitures, fuse: new Fuse(translatedFurnitures, fuseOptions)})
     }
+  }
+
+  toTranslatedFurnitures(furnitures: IFurniture[]): IFurnitureTranslated[] {
+    const { intl } = this.props
+    return furnitures.map((furniture) => {
+      const fTranslated: IFurnitureTranslated = {
+        ...furniture,
+        DisplayName: intl.formatMessage({ id: furniture.NameTextKey })
+      }
+      return fTranslated
+    })
   }
 
   addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers, selectedSizeId: number | null, selectedMaterialId: number | null) => {
@@ -127,10 +197,10 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
   }
 
   handleChangeIndex = (index: number) => {
-    const { selectedFurnitureCategory } = this.state
+    const { selectedFurnitureCategory, filteredFurnitures } = this.state
 
     if (selectedFurnitureCategory) {
-      const pages = Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))
+      const pages = Math.ceil(filteredFurnitures.length / (this.getBreakpointWith() * 3))
       if (index >= 0 && index < pages) {
         this.setState({
           pageIndex: index,
@@ -219,38 +289,79 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     this.setState({ customItemModelOpen: false })
   }
 
+  filterFurnitures = (searchString: string) => {
+    console.log("filter called")
+    const { resource } = this.props
+    const { selectedFurnitureCategory, fuse } = this.state
+    const fcat = selectedFurnitureCategory || resource.FurnitureCategories.find(c => c.NameTextKey === "FCATALL")
+
+    if (!fuse) return
+
+    if (fcat)
+    {
+      if (searchString && searchString.length > 0)
+      {
+        this.openCatergory(fcat)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        const result: IFurnitureTranslated[] = fuse.search(searchString.trim())
+        this.setState({ filteredFurnitures: result, pageIndex: 0 })
+        return
+      }
+      this.setState({ filteredFurnitures: this.toTranslatedFurnitures(fcat.Furnitures) })
+    }
+  }
+
   public render() {
     const { resource, selectedCompany, intl, width, classes, values } = this.props
 
     const selectedItemList = this.getSelectedList()
     const selectedCustomItemList = this.getCustomSelectedList()
 
-    const { currentlyOpenInventory, selectedFurnitureCategory, pageIndex, customItemModelOpen, editCustomItemIndex } = this.state
+    const { currentlyOpenInventory, selectedFurnitureCategory, filteredFurnitures, pageIndex, customItemModelOpen, editCustomItemIndex } = this.state
     const FurnitureCategories = resource.FurnitureCategories
     console.log(editCustomItemIndex)
     return (
       <Grid item xs={12}>
+        <PageHeader title="INVENTORY" />
+        <Grid item xs={12}>
+          <Toolbar disableGutters variant="dense">
+            {selectedFurnitureCategory ? (
+              <IconButton
+                onClick={() => this.openCatergory(null)}
+                classes={{ root: classes.buttonSmallPadding }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            )
+              : null
+            }
+            &nbsp;
+            <IntlTypography variant="h6">{selectedFurnitureCategory ? selectedFurnitureCategory.NameTextKey : "SELECT_CATEGORY"}</IntlTypography>
+          </Toolbar>
+          <Divider />
+
+          <Formik
+            initialValues={{
+              search: "",
+              status : "",
+            }}
+
+            onSubmit={( { search }, actions ) => {
+              this.filterFurnitures(search)
+              actions.setSubmitting(false)
+            }}
+          >
+            {({submitForm, values}) => (
+              <Grid container spacing={1} classes={{ root: classes.searchInput }}>
+                <Field component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} />
+                <AutoSubmit values={values} submitForm={submitForm} />
+              </Grid>
+            )}
+          </Formik>
+        </Grid>
+
         <Form>
-          <PageHeader title="INVENTORY" />
-
-          <Grid item xs={12}>
-            <Toolbar disableGutters variant="dense">
-              {selectedFurnitureCategory ? (
-                <IconButton
-                  onClick={() => this.openCatergory(null)}
-                  classes={{ root: classes.buttonSmallPadding }}
-                >
-                  <ArrowBackIcon />
-                </IconButton>
-              )
-                : null
-              }
-              &nbsp;
-              <IntlTypography variant="h6">{selectedFurnitureCategory ? selectedFurnitureCategory.NameTextKey : "SELECT_CATEGORY"}</IntlTypography>
-            </Toolbar>
-            <Divider />
-          </Grid>
-
           <Grid item xs={12} style={{ width: "calc(7vw - 5px)" }}>
             {!selectedFurnitureCategory ?
               <Grid container spacing={1}>
@@ -269,7 +380,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                   <>
                     <SwipeableViews index={pageIndex} onChangeIndex={this.handleChangeIndex}>
                       {chunk(
-                        selectedFurnitureCategory.Furnitures.map((furniture, index) => (
+                        filteredFurnitures.map((furniture, index) => (
                           <InventoryItems
                             furniture={furniture}
                             onSelect={(selectedSizeId: number | null, selectedMaterialId: number | null) =>
@@ -288,7 +399,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                       <IconButton onClick={this.handleChangeIndexPrepared(pageIndex - 1)} size="small" className={clsx(classes.next, classes.nextLeft)}>
                         <ChevronLeftIcon />
                       </IconButton>
-                      {new Array(Math.ceil(selectedFurnitureCategory.Furnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
+                      {new Array(Math.ceil(filteredFurnitures.length / (this.getBreakpointWith() * 3))).fill(null).map((e, i) => {
                         if (pageIndex == i) {
                           return <RadioButtonCheckedIcon key={i} onClick={this.handleChangeIndexPrepared(i)} />
                         } else {

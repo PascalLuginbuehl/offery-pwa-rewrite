@@ -84,10 +84,8 @@ const AutoSubmit: React.FC<AutoSubmitProps> = ({ values, submitForm }) => {
   const [debounceFunction, setDebounceFunction] = React.useState<null | deboundeFunctionType>(null)
 
   React.useEffect(() => {
-    setDebounceFunction(() => debounce(() => { console.log("asd"); submitForm() }, 200))
-    // setDeboundeFunction()
+    setDebounceFunction(() => debounce(() => { submitForm() }, 200))
   }, [submitForm])
-
 
   React.useEffect(() => {
     if (debounceFunction) {
