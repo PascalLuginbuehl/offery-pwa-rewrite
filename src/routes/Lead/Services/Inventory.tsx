@@ -9,7 +9,7 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
 import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
 import InventoryCategoryFolder from "../../../components/Inventory/InventoryCategoryFolder"
-import { IFurnitureCategory, IFurniture } from "../../../interfaces/IResource"
+import { IFurnitureCategory, IFurniture, IFurnitureTranslated } from "../../../interfaces/IResource"
 import InventoryItems from "../../../components/Inventory/InventoryItems"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import chunk from "chunk"
@@ -53,7 +53,7 @@ const styles = (theme: Theme) =>
     }
   })
 
-const fuseOptions: FuseOptions<IFurniture> = {
+const fuseOptions: FuseOptions<IFurnitureTranslated> = {
   threshold: 0.1,
   location: 0,
   tokenize: true,
@@ -62,7 +62,7 @@ const fuseOptions: FuseOptions<IFurniture> = {
   maxPatternLength: 32,
   minMatchCharLength: 4,
   keys: [
-    {name: "NameTextKey", weight: 1.0},
+    {name: "DisplayName", weight: 1.0},
   ]
 }
 
@@ -76,11 +76,11 @@ interface _IProps extends WithResourceProps, WithStyles<typeof styles>, Injected
 interface _IState {
   currentlyOpenInventory: InventoryKeysEnum
   selectedFurnitureCategory: IFurnitureCategory | null
-  filteredFurnitures: IFurniture[]
+  filteredFurnitures: IFurnitureTranslated[]
   customItemModelOpen: boolean
   editCustomItemIndex: number | null
   pageIndex: number
-  fuse: Fuse<IFurniture, typeof fuseOptions> | null
+  fuse: Fuse<IFurnitureTranslated, typeof fuseOptions> | null
 }
 
 interface AutoSubmitProps {
@@ -94,7 +94,7 @@ const AutoSubmit: React.FC<AutoSubmitProps> = ({ values, submitForm }) => {
   const [debounceFunction, setDebounceFunction] = React.useState<null | deboundeFunctionType>(null)
 
   React.useEffect(() => {
-    setDebounceFunction(() => debounce(() => { submitForm() }, 200))
+    setDebounceFunction(() => debounce(() => { submitForm() }, 500))
   }, [submitForm])
 
   React.useEffect(() => {
@@ -132,16 +132,30 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     const { resource } = this.props
     const fcatAll = resource.FurnitureCategories.find(c => c.NameTextKey === "FCATALL")
 
-    if (fcatAll)
-      this.setState({ filteredFurnitures: fcatAll.Furnitures, fuse: new Fuse(fcatAll.Furnitures, fuseOptions)})
+    if (fcatAll) {
+      const translatedFurnitures: IFurnitureTranslated[] = this.toTranslatedFurnitures(fcatAll.Furnitures)
+      this.setState({ filteredFurnitures: translatedFurnitures, fuse: new Fuse(translatedFurnitures, fuseOptions)})
+    }
   }
 
   openCatergory = (category: IFurnitureCategory | null) => {
     if (category === null) {
       this.setState({ selectedFurnitureCategory: null, pageIndex: 0 })
     } else {
-      this.setState({ selectedFurnitureCategory: category, filteredFurnitures: category.Furnitures, fuse: new Fuse(category.Furnitures, fuseOptions)})
+      const translatedFurnitures: IFurnitureTranslated[] = this.toTranslatedFurnitures(category.Furnitures)
+      this.setState({ pageIndex: 0, selectedFurnitureCategory: category, filteredFurnitures: translatedFurnitures, fuse: new Fuse(translatedFurnitures, fuseOptions)})
     }
+  }
+
+  toTranslatedFurnitures(furnitures: IFurniture[]): IFurnitureTranslated[] {
+    const { intl } = this.props
+    return furnitures.map((furniture) => {
+      const fTranslated: IFurnitureTranslated = {
+        ...furniture,
+        DisplayName: intl.formatMessage({ id: furniture.NameTextKey })
+      }
+      return fTranslated
+    })
   }
 
   addFurniture = (furniture: IFurniture, arrayHelpers: ArrayHelpers, selectedSizeId: number | null, selectedMaterialId: number | null) => {
@@ -290,12 +304,11 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
         this.openCatergory(fcat)
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        const result: IFurniture[] = fuse.search(searchString.trim())
-        console.log(result)
-        this.setState({ filteredFurnitures: result })
+        const result: IFurnitureTranslated[] = fuse.search(searchString.trim())
+        this.setState({ filteredFurnitures: result, pageIndex: 0 })
         return
       }
-      this.setState({ filteredFurnitures: fcat.Furnitures })
+      this.setState({ filteredFurnitures: this.toTranslatedFurnitures(fcat.Furnitures) })
     }
   }
 
