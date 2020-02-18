@@ -96,7 +96,10 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field label="COMPANY" name="Customer.CompanyName" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
             <Field label="EMAIL" name="Customer.Email" type="email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
-            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} required validate={this.validatePhoneNumber} />
+            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} required validate={this.validatePhoneNumber}
+              defaultCountry="ch"
+              preferredCountries={["ch"]}
+              onlyCountries= {["ch", "de", "it", "fr", "at"]}/>
           </FormikGroups>
 
           <FormikGroups label="DATES" xs={12}>
