@@ -354,7 +354,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
           >
             {({submitForm, values}) => (
               <Grid container spacing={1} classes={{ root: classes.searchInput }}>
-                <Field component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} />
+                <Field autoComplete="off" component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} />
                 <AutoSubmit values={values} submitForm={submitForm} />
               </Grid>
             )}
