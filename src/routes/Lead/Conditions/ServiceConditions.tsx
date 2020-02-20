@@ -141,7 +141,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             {values.ServiceConditions.HasCostCeiling ? (
               <Field label="COST_CEILING" name={`${prefix}.ServiceConditions.CostCeilingHoursOfWork`}
                 component={FormikNumberEndAdornmentText}
-                inputProps={{ step: 1, min: ((values.ServiceConditions.MaxHoursOfWork || 0) + (values.ServiceConditions.DriveHours || 0)) }}
+                inputProps={{ step: 1 }}
                 adornmentText="h"
                 overrideGrid={{ xs: 3, md: undefined }} />
             ) : null}
