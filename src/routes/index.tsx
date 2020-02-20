@@ -151,7 +151,7 @@ class Index extends React.Component<Props, State> {
 
       const updateServiceWorker = () => {
         const registrationWaiting = serviceWorkerRegistration.waiting
-
+        console.log("updateServiceWorker called")
         if (registrationWaiting) {
           registrationWaiting.postMessage({ type: "SKIP_WAITING" })
 
@@ -285,11 +285,11 @@ class Index extends React.Component<Props, State> {
             open={!!this.state.updateServiceWorkerFunction}
             autoHideDuration={6000}
             // onClose={handleClose}
-            message="Note archived"
+            message={<FormattedMessage id="NEW_FRONTEND_VERSION_DETECTED" />}
             action={
               <React.Fragment>
                 <Button color="secondary" size="small" onClick={() => this.state.updateServiceWorkerFunction}>
-                  Update
+                  <FormattedMessage id="UPDATE_CTRL_FFIVE" />
                 </Button>
               </React.Fragment>
             }

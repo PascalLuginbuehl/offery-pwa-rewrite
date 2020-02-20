@@ -273,6 +273,8 @@ PAYMENT_METHOD,Payment method,Zahlungsmethode
 EMAIL_OR_PASSWORD_INVALID,E-Mail Adress or Password invalid,E-Mail Addresse oder Passwort nicht korrekt
 
 EDITING_OFFLINE,You're currenty Edditing this Lead offline,Dieser Lead wird momentan offline bearbeitet
+NEW_FRONTEND_VERSION_DETECTED,New front end version detected,Neue Version verfügbar
+UPDATE_CTRL_FFIVE,Update (CTRL+F5),Aktualisieren (CTRL+F5)
 WEAK_CONNECTION_DETECTED,"Weak connection detected, switching to offline mode","Schlechte Verbindung erkannt, wechsle zu Offline"
 BACK_ONLINE,Back online,Wieder Online
 CONFLICTS_WHILE_SAVING,Data conflicted while saving in online/offline ,Datenkonflikt zwischen On-/Offline
