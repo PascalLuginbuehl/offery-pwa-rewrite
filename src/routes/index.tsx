@@ -284,7 +284,7 @@ class Index extends React.Component<Props, State> {
             }}
             open={!!this.state.updateServiceWorkerFunction}
             autoHideDuration={6000}
-            // onClose={handleClose}
+            onClose={() => {console.log("close snackbar clicked fixme")}}
             message={<FormattedMessage id="NEW_FRONTEND_VERSION_DETECTED" />}
             action={
               <React.Fragment>
