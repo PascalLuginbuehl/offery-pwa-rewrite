@@ -235,7 +235,7 @@ class Index extends React.Component<Props, State> {
               paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true, // Better open performance on mobile
             }}
           >
             <Navigation onDrawerRender={element => this.setState({ navPortal: element })} />
@@ -284,7 +284,7 @@ class Index extends React.Component<Props, State> {
             }}
             open={!!this.state.updateServiceWorkerFunction}
             autoHideDuration={6000}
-            onClose={() => {console.log("close snackbar clicked fixme")}}
+            onClose={() => this.state.updateServiceWorkerFunction}
             message={<FormattedMessage id="NEW_FRONTEND_VERSION_DETECTED" />}
             action={
               <React.Fragment>
