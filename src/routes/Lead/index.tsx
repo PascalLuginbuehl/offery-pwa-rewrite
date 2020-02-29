@@ -72,6 +72,7 @@ function getContainerDiffKeys(originContainer: ILeadContainer, changesContainer:
       "FromAddress",
       "ToAddress",
       "StatusHistories",
+      "AppointmentReminders",
       "Offers",
       "ConfirmedOrderVerbal",
       "ConfirmedOrder",

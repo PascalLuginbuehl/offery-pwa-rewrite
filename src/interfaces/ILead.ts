@@ -75,16 +75,24 @@ export interface ICompressedLead extends IUpdateLead {
 
 
 export interface ILead extends ICompressedLead {
-  // Created: Date
-  // Customer: ICustomer
-
-  // Status: IStatus
 
   StatusHistories: Array<{
     StatusHistoryId: number
     Created: Date
     Status: IStatus
     Comment: string
+  }>
+
+  AppointmentReminders: Array<{
+    AppointmentReminderId: number
+    Created: Date
+    From: string
+    To: string
+    AppointmentTypeTextKey: string
+    NotificationType: string
+    AppointedDate: Date
+    Succeed: boolean
+    ErrorMessage: string
   }>
 
   Offers: IOffer[]
