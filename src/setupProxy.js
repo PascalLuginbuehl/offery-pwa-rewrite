@@ -3,7 +3,7 @@ module.exports = function(app) {
   app.use(
     "/api",
     proxy({
-      target: "https://testapp.offery.ch/",
+      target: "https://devapp.offery.ch/",
       changeOrigin: true,
     })
   )

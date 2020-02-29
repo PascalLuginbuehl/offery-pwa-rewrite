@@ -29,6 +29,7 @@ class LeadService {
     json.Created = this.parseDate(json.Created)
 
     json.StatusHistories.map((e: any) => ({ ...e, Created: new Date(e.Created) }))
+    json.AppointmentReminders.map((e: any) => ({ ...e, Created: new Date(e.Created), AppointedDate: new Date(e.AppointedDate) }))
 
     return json
   }

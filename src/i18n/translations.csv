@@ -287,11 +287,16 @@ SEARCHFURNITUREDIRECT,Direct furniture search,Direkte Möbelsuche
 
 LEAD_OVERVIEW,Lead overview,Lead Übersicht
 INFORMATION,Informations,Informationen
-STATUS_HISTORY,Status History,Status verlauf
+STATUS_HISTORY,Status History,Status Verlauf
+SMS_HISTORY,SMS History,SMS Verlauf
 DATE,Date,Datum
 OFFER_STATUS,Offer Status,Offerten Status
 OFFER_NOT_SENT,Offer was not sent jet, Offerte wurde noch nicht versandt
 OFFER_SENT_EMAIL,Offer was sent through E-Mail,Offerte wurde per E-Mail versandt
+SENT,Sent,Versandt
+APPOINTMENTTYPE,Appointment type,Termin-Art
+NOTIFICATIONTYPE,Notification type,Versand-Art
+ERRORMESSAGE,Error message,Fehlermeldung
 
 MR,Mr.,Herr
 MRS,Mrs.,Frau
