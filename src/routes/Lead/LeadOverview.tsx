@@ -38,7 +38,6 @@ const styles = (theme: Theme) => createStyles({
     backgroundColor: "lightpink"
   },
   successRow: {
-    backgroundColor: "rgba(153,255,153,0.1)"
   }
 })
 
@@ -361,6 +360,35 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
             }
           </FormikGroups>
 
+          {lead.AppointmentReminders && lead.AppointmentReminders.length > 0 ? (
+            <FormikGroups label="SMS_HISTORY" xs={12}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <IntlTableCell>SENT</IntlTableCell>
+                    <IntlTableCell>APPOINTMENTTYPE</IntlTableCell>
+                    <IntlTableCell>DATE</IntlTableCell>
+                    <IntlTableCell>NOTIFICATIONTYPE</IntlTableCell>
+                    <IntlTableCell>TO</IntlTableCell>
+                    <IntlTableCell>ERRORMESSAGE</IntlTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {lead.AppointmentReminders.sort((a, b) => desc(a, b, "Created")).map(e => (
+                    <TableRow key={e.AppointmentReminderId} className={!e.Succeed ? classes.errorRow : classes.successRow}>
+                      <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      <IntlTableCell>{e.AppointmentTypeTextKey}</IntlTableCell>
+                      <TableCell><FormattedDate value={e.AppointedDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                      <TableCell>{e.NotificationType}</TableCell>
+                      <TableCell>{e.To}</TableCell>
+                      <TableCell>{e.ErrorMessage ? e.ErrorMessage : "-"}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </FormikGroups>
+          ) : null}
+
           <FormikGroups label="STATUS_HISTORY" xs={12}>
             <Table size="small">
               <TableHead>
@@ -376,33 +404,6 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                     <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
                     <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                     <TableCell>{e.Comment}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </FormikGroups>
-
-          <FormikGroups label="SMS_HISTORY" xs={12}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <IntlTableCell>SENT</IntlTableCell>
-                  <IntlTableCell>APPOINTMENTTYPE</IntlTableCell>
-                  <IntlTableCell>DATE</IntlTableCell>
-                  <IntlTableCell>NOTIFICATIONTYPE</IntlTableCell>
-                  <IntlTableCell>TO</IntlTableCell>
-                  <IntlTableCell>ERRORMESSAGE</IntlTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {lead.AppointmentReminders.sort((a, b) => desc(a, b, "Created")).map(e => (
-                  <TableRow key={e.AppointmentReminderId} className={!e.Succeed ? classes.errorRow : classes.successRow}>
-                    <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    <IntlTableCell>{e.AppointmentTypeTextKey}</IntlTableCell>
-                    <TableCell><FormattedDate value={e.AppointedDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    <TableCell>{e.NotificationType}</TableCell>
-                    <TableCell>{e.To}</TableCell>
-                    <TableCell>{e.ErrorMessage ? e.ErrorMessage : "-"}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
