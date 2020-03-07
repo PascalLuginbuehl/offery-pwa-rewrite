@@ -57,7 +57,7 @@ class GridSelect extends React.Component<Props, State> {
   }
 
   touchStart = (e: React.TouchEvent | React.MouseEvent) => {
-    this.setState({ timer: setTimeout(this.enableReadyToOpen, 500)})
+    this.setState({ timer: setTimeout(this.enableReadyToOpen, 300)})
   }
 
   touchEnd = (e: React.TouchEvent | React.MouseEvent) => {

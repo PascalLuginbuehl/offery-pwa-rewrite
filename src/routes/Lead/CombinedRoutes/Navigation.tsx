@@ -25,7 +25,7 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
 
       <NavItem to={`${matchUrl}/`} title="LEAD_OVERVIEW" />
 
-      <NavFolder to={`${matchUrl}/building`} title="CUSTOMER">
+      <NavFolder to={`${matchUrl}/customer`} title="CUSTOMER">
         {Lead ? (
           <>
             <Collapse in={Lead.HasMoveOutBuilding}>
@@ -47,6 +47,8 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
           </>
         ) : null}
       </NavFolder>
+
+      <NavItem to={`${matchUrl}/building`} title="BUILDINGS" />
 
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">
         <Collapse in={Services.HasMoveServiceEnabled}>

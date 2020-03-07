@@ -8,10 +8,12 @@ import CleaningBuilding from "../Customer/CleaningBuilding"
 import DisposalBuilding from "../Customer/DisposalBuilding"
 import StorageBuilding from "../Customer/StorageBuilding"
 import MoveInBuilding from "../Customer/MoveInBuilding"
-import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding } from "../../../interfaces/IBuilding"
+import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding, emptyBuilding2 } from "../../../interfaces/IBuilding"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { ICustomer, ILead } from "../../../interfaces/ILead"
-import OfflineUnavailable from "../../../components/OfflineUnavailable";
+import OfflineUnavailable from "../../../components/OfflineUnavailable"
+import BuildingEdit from "../../../components/FormikFields/Bundled/BuildingEdit"
+import Building from "../Customer/Building"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -43,7 +45,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
     <>
       <Route
         exact
-        path={`${matchUrl}/building`}
+        path={`${matchUrl}/customer`}
         render={routeProps => (
           <NewCustomer
             {...routeProps}
@@ -51,6 +53,24 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
             onChangeAndSave={lead => {
               // Fixing PostLead to Lead back together
               return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+            }}
+            nextPage={redirectToNextPage("/customer")}
+          />
+        )}
+      />
+
+      <Route
+        exact
+        path={`${matchUrl}/building`}
+        render={routeProps => (
+          <Building
+            building={emptyBuilding2}
+            {...routeProps}
+            // lead={Lead}
+            onChangeAndSave={lead => {
+              // Fixing PostLead to Lead back together
+              // return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+              return Promise.resolve()
             }}
             nextPage={redirectToNextPage("/building")}
           />
