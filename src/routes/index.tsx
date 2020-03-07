@@ -117,7 +117,7 @@ interface Props extends WithStyles<typeof styles>, WithLanguageProps {
 }
 
 class Index extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
     mobileOpen: false,
     navPortal: null,
     offline: false,
@@ -197,7 +197,7 @@ class Index extends React.Component<Props, State> {
 
   public render() {
     const { classes } = this.props
-    const { mobileOpen, navPortal, offline, offlineSnackbarOpen } = this.state
+    const { mobileOpen, navPortal, offline, offlineSnackbarOpen, updateServiceWorkerFunction } = this.state
 
 
     return (
@@ -277,23 +277,26 @@ class Index extends React.Component<Props, State> {
             className={classes.snackbar}
           />
 
+
           <Snackbar
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
             }}
-            open={!!this.state.updateServiceWorkerFunction}
+            open={!!updateServiceWorkerFunction}
             autoHideDuration={6000}
-            onClose={() => this.state.updateServiceWorkerFunction}
+            onClose={() => updateServiceWorkerFunction ? updateServiceWorkerFunction() : null}
             message={<FormattedMessage id="NEW_FRONTEND_VERSION_DETECTED" />}
             action={
               <React.Fragment>
-                <Button color="secondary" size="small" onClick={() => this.state.updateServiceWorkerFunction}>
+                <Button color="secondary" size="small" onClick={() => updateServiceWorkerFunction ? updateServiceWorkerFunction() : null}>
                   <FormattedMessage id="UPDATE_CTRL_FFIVE" />
                 </Button>
               </React.Fragment>
             }
           />
+
+
           <Snackbar
             open={offlineSnackbarOpen}
             onClose={this.closeSnackbar}
