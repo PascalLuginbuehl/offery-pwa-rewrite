@@ -56,7 +56,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
     currentlyOpen: CurrentlyOpenStateEnum.Buy,
   }
 
-  addItemToList = (product: IProduct) => {
+  addItemToList = (product: IProduct, amount: number) => {
     const { handleChange, values } = this.props
     const { currentlyOpen } = this.state
 
@@ -71,7 +71,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
         item.IsRent == (CurrentlyOpenStateEnum.Rent == currentlyOpen)
       ) {
         itemNotInList = false
-        return { ...item, Amount: item.Amount + 1 }
+        return { ...item, Amount: item.Amount + amount }
       } else {
         return item
       }
@@ -155,7 +155,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {ShopProducts.map((product, index) => (
-                <SelectGridItem product={product} onSelectProduct={amount => this.addItemToList(product)} key={index} currentlyOpenState={currentlyOpen} />
+                <SelectGridItem product={product} onSelectProduct={amount => this.addItemToList(product, amount)} key={index} currentlyOpenState={currentlyOpen} />
               ))}
             </Grid>
           </Grid>

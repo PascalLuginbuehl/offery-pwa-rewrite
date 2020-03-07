@@ -17,10 +17,10 @@ interface ILeadEditableValues {
   disposal: IDisposalOutBuilding | null
   storage: IStorageBuilding | null
 
-  moveService: IMoveService | null
   materialOrder: IMaterialOrder | null
   inventory: IInventars | null
 
+  moveService: IMoveService | null
   packService: IPackSerivce | null
   storageService: IStorageSerivce | null
   disposalService: IDisposalSerivce | null
