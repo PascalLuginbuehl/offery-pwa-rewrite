@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, List } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
 import { Formik, FormikProps, withFormik } from "formik"
 import { injectIntl, InjectedIntlProps } from "react-intl"
 import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
@@ -36,9 +36,7 @@ class CleaningBuilding extends React.Component<Props & FormikProps<Values>, {}> 
         <Form>
           <PageHeader title="BUILDING" />
 
-          <List>
-
-          </List>
+          <BuildingEdit prefix="building" resource={resource} />
         </Form>
       </Grid>
     )

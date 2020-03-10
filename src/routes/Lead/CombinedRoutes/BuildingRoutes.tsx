@@ -60,26 +60,6 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
         )}
       />
 
-
-      <Route
-        exact
-        path={`${matchUrl}/building`}
-        render={routeProps => (
-          <BuildingsOverview
-            building={emptyBuilding2}
-            {...routeProps}
-            // lead={Lead}
-            onChangeAndSave={async (building) => {
-              const buildings = await LeadAPI.CreateBuilding(Lead.LeadId, building)
-
-              return handleChangeAndSave(buildings, "buildings", () => Promise.resolve(buildings))
-            }}
-
-            nextPage={redirectToNextPage("/building")}
-          />
-        )}
-      />
-
       <Route
         exact
         path={`${matchUrl}/building/new`}
@@ -88,7 +68,6 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
             <Building
               building={emptyBuilding2}
               {...routeProps}
-              // lead={Lead}
               onChangeAndSave={async (building) => {
                 const buildings = await LeadAPI.CreateBuilding(Lead.LeadId, building)
 
@@ -113,7 +92,6 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
               <Building
                 building={building}
                 {...routeProps}
-                // lead={Lead}
                 onChangeAndSave={(building) => {
                   const newBuildings = [...buildings]
 
@@ -129,7 +107,18 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
         />
       ))}
 
+      <Route
+        exact
+        path={`${matchUrl}/building/`}
+        render={routeProps => (
+          <BuildingsOverview
+            {...routeProps}
+            buildings={buildings}
 
+            nextPage={redirectToNextPage("/building")}
+          />
+        )}
+      />
 
       {/* Move-Out */}
       <Route
