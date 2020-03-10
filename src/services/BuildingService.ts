@@ -1,6 +1,6 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
-import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding } from "../interfaces/IBuilding"
+import { IUpdateMoveOutBuilding, IMoveOutBuilding, IPostMoveOutBuilding, IPostMoveInBuilding, IUpdateMoveInBuilding, IMoveInBuilding, IUpdateStorageBuilding, IPostStorageBuilding, IStorageBuilding, IDisposalOutBuilding, IPostDisposalOutBuilding, IUpdateDisposalOutBuilding, IUpdateCleaningBuilding, IPostCleaningBuilding, ICleaningBuilding, IBuilding, IPostBuilding } from "../interfaces/IBuilding"
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -13,6 +13,44 @@ class BuildingService {
 
     return json
   }
+
+  async fetchBuildings(leadId: number): Promise<IBuilding[] | null> {
+    return fetch(API_URL + "/building/" + leadId, await LoginService.authorizeRequest())
+      .then(errorFunction)
+      .then((response) => response.json())
+      // .then(middleWare)
+      .then(json => this.toSpecificType<IBuilding[]>(json))
+      .catch(e => null)
+  }
+
+  async createBuilding(leadId: number, body: IPostBuilding): Promise<IBuilding[]> {
+    return fetch(API_URL + "/building/" + leadId, await LoginService.authorizeRequest({
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }))
+      .then(errorFunction)
+      .then((response) => response.json())
+      // .then(middleWare)
+      .then(json => this.toSpecificType<IBuilding[]>(json))
+  }
+
+  async saveBuildings(leadId: number, body: IPostBuilding[]): Promise<IBuilding[]> {
+    return fetch(API_URL + "/building/" + leadId, await LoginService.authorizeRequest({
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }))
+      .then(errorFunction)
+      .then((response) => response.json())
+      // .then(middleWare)
+      .then(json => this.toSpecificType<IBuilding[]>(json))
+  }
+
 
   async fetchService<Type>(url: string, middleWare?: (data: any) => any): Promise<Type | null> {
     return fetch(url, await LoginService.authorizeRequest())

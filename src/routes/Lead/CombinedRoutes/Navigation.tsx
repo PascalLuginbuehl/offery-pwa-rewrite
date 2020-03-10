@@ -14,6 +14,7 @@ interface Props {
 export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
   const {
     Lead: { Services, ...Lead},
+    buildings,
   } = leadContainer
 
 
@@ -48,7 +49,11 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         ) : null}
       </NavFolder>
 
-      <NavItem to={`${matchUrl}/building`} title="BUILDINGS" />
+      <NavFolder to={`${matchUrl}/building`} title="BUILDINGS">
+        {buildings.map(building => (
+          <NavItem to={`${matchUrl}/building/${building.BuildingId}`} key={building.BuildingId} title="MOVE_OUT_BUILDING" nested />
+        ))}
+      </NavFolder>
 
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">
         <Collapse in={Services.HasMoveServiceEnabled}>

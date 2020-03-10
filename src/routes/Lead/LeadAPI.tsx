@@ -1,5 +1,5 @@
 import { get, set, del} from "idb-keyval"
-import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding, IPostStorageBuilding, IPostDisposalOutBuilding, IPostCleaningBuilding, IPostMoveInBuilding, IPostMoveOutBuilding } from "../../interfaces/IBuilding"
+import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding, IPostStorageBuilding, IPostDisposalOutBuilding, IPostCleaningBuilding, IPostMoveInBuilding, IPostMoveOutBuilding, IBuilding, IPostBuilding } from "../../interfaces/IBuilding"
 import { IPutLead, ILead } from "../../interfaces/ILead"
 import BuildingService from "../../services/BuildingService"
 import LeadService from "../../services/LeadService"
@@ -16,6 +16,8 @@ interface ILeadEditableValues {
   cleaning: ICleaningBuilding | null
   disposal: IDisposalOutBuilding | null
   storage: IStorageBuilding | null
+
+  buildings: IBuilding[]
 
   materialOrder: IMaterialOrder | null
   inventory: IInventars | null
@@ -59,8 +61,9 @@ class LeadAPI {
       ServicesService.fetchStorageService(leadId),
       ServicesService.fetchDisposalService(leadId),
       ServicesService.fetchCleaningService(leadId),
+      BuildingService.fetchBuildings(leadId),
       // @ts-ignore
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService]): ILeadContainer => ({
+    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService, buildings]): ILeadContainer => ({
       lastUpdated: new Date(),
       // onlySavedOffline: false,
       // cachedInVersion: "",
@@ -78,6 +81,7 @@ class LeadAPI {
       storageService: storageService,
       disposalService: disposalService,
       cleaningService: cleaningService,
+      buildings: buildings,
     }))
   }
 
@@ -127,6 +131,14 @@ class LeadAPI {
 
   SaveDisposalService = (leadId: number, disposalService: IPutDisposalService | null) => {
     return disposalService ? ServicesService.saveDisposalService(leadId, disposalService) : Promise.resolve(null)
+  }
+
+  SaveBuildings = (leadId: number, buildings: IBuilding[]) => {
+    return BuildingService.saveBuildings(leadId, buildings)
+  }
+
+  CreateBuilding = (leadId: number, building: IPostBuilding) => {
+    return BuildingService.createBuilding(leadId, building)
   }
 
   SaveCleaningService = (leadId: number, cleaningService: IPutCleaningService | null) => {

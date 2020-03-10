@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Route } from "react-router"
+import { Route, RouteComponentProps } from "react-router"
 import NewCustomer from "../Customer"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import MoveOutBuilding from "../Customer/MoveOutBuilding"
@@ -8,12 +8,13 @@ import CleaningBuilding from "../Customer/CleaningBuilding"
 import DisposalBuilding from "../Customer/DisposalBuilding"
 import StorageBuilding from "../Customer/StorageBuilding"
 import MoveInBuilding from "../Customer/MoveInBuilding"
-import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding, emptyBuilding2 } from "../../../interfaces/IBuilding"
+import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyDisposalOutBuilding, emptyCleaningBuilding, emptyBuilding2, IBuilding } from "../../../interfaces/IBuilding"
 import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { ICustomer, ILead } from "../../../interfaces/ILead"
 import OfflineUnavailable from "../../../components/OfflineUnavailable"
 import BuildingEdit from "../../../components/FormikFields/Bundled/BuildingEdit"
 import Building from "../Customer/Building"
+import BuildingsOverview from "../Customer/BuildingsOverview"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -25,7 +26,7 @@ interface Props {
 }
 
 export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, handleChange, offline}: Props) {
-  const { Lead, moveOut, moveIn, storage, disposal, cleaning } = leadContainer
+  const { Lead, moveOut, moveIn, storage, disposal, cleaning, buildings } = leadContainer
 
   const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
   const moveInBuilding = moveIn !== null ? moveIn : emptyMoveInBuilding
@@ -59,23 +60,76 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
         )}
       />
 
+
       <Route
         exact
         path={`${matchUrl}/building`}
         render={routeProps => (
-          <Building
+          <BuildingsOverview
             building={emptyBuilding2}
             {...routeProps}
             // lead={Lead}
-            onChangeAndSave={lead => {
-              // Fixing PostLead to Lead back together
-              // return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
-              return Promise.resolve()
+            onChangeAndSave={async (building) => {
+              const buildings = await LeadAPI.CreateBuilding(Lead.LeadId, building)
+
+              return handleChangeAndSave(buildings, "buildings", () => Promise.resolve(buildings))
             }}
+
             nextPage={redirectToNextPage("/building")}
           />
         )}
       />
+
+      <Route
+        exact
+        path={`${matchUrl}/building/new`}
+        render={routeProps => (
+          <OfflineUnavailable offline={offline} nextPage={redirectToNextPage("/building/building")}>
+            <Building
+              building={emptyBuilding2}
+              {...routeProps}
+              // lead={Lead}
+              onChangeAndSave={async (building) => {
+                const buildings = await LeadAPI.CreateBuilding(Lead.LeadId, building)
+
+                return handleChangeAndSave(buildings, "buildings", () => Promise.resolve(buildings))
+              }}
+
+              nextPage={redirectToNextPage("/building")}
+            />
+          </OfflineUnavailable>
+        )}
+      />
+
+
+      {buildings.map((building, buildingIndex) => (
+        <Route
+          exact
+          key={buildingIndex}
+          path={`${matchUrl}/building/${building.BuildingId}`}
+          render={(routeProps) => {
+
+            return (
+              <Building
+                building={building}
+                {...routeProps}
+                // lead={Lead}
+                onChangeAndSave={(building) => {
+                  const newBuildings = [...buildings]
+
+                  newBuildings[buildingIndex] = building as IBuilding
+
+                  return handleChangeAndSave(newBuildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, newBuildings))
+                }}
+                nextPage={redirectToNextPage("/building")}
+              />
+            )
+          }
+          }
+        />
+      ))}
+
+
 
       {/* Move-Out */}
       <Route

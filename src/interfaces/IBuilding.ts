@@ -227,7 +227,7 @@ export interface IPostBuilding {
 
   HasBasement: boolean
   HasAttic: boolean
-  HasGarage: boolean
+  // HasGarage: boolean
   HasGarden: boolean
   HasWinterGarden: boolean
 
@@ -285,7 +285,8 @@ export interface IPostBuilding {
 
 // Other
 export interface IBuilding extends IPostBuilding {
-CompanyId: number
+  BuildingId: number
+  CompanyId: number
   LeadId: number
   Address: IAddress
   // StorageCompany: IStorageCompany

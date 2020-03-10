@@ -224,7 +224,7 @@ class Lead extends Component<Props, State> {
     }
 
     // Send this to API Here
-    const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder } = offlineChanges
+    const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder, buildings } = offlineChanges
     const changeArray: {[key in keyof ILeadContainer]: () => Promise<any>} = {
       lastUpdated: () => Promise.resolve(),
       Lead: () => LeadAPI.SaveLead(offlineChanges.Lead),
@@ -240,6 +240,7 @@ class Lead extends Component<Props, State> {
       storageService: () => LeadAPI.SaveStorageService(leadId, storageService),
       disposalService: () => LeadAPI.SaveDisposalService(leadId, disposalService),
       cleaningService: () => LeadAPI.SaveCleaningService(leadId, cleaningService),
+      buildings: () => LeadAPI.SaveBuildings(leadId, buildings)
     }
 
     try {
