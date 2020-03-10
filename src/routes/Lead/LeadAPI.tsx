@@ -1,5 +1,5 @@
 import { get, set, del} from "idb-keyval"
-import { IMoveOutBuilding, IMoveInBuilding, ICleaningBuilding, IDisposalOutBuilding, IStorageBuilding, IPostStorageBuilding, IPostDisposalOutBuilding, IPostCleaningBuilding, IPostMoveInBuilding, IPostMoveOutBuilding, IBuilding, IPostBuilding } from "../../interfaces/IBuilding"
+import { IBuilding, IPostBuilding } from "../../interfaces/IBuilding"
 import { IPutLead, ILead } from "../../interfaces/ILead"
 import BuildingService from "../../services/BuildingService"
 import LeadService from "../../services/LeadService"
@@ -11,11 +11,6 @@ import { IInventars } from "../../interfaces/IInventars"
 
 interface ILeadEditableValues {
   Lead: ILead
-  moveOut: IMoveOutBuilding | null
-  moveIn: IMoveInBuilding | null
-  cleaning: ICleaningBuilding | null
-  disposal: IDisposalOutBuilding | null
-  storage: IStorageBuilding | null
 
   buildings: IBuilding[]
 
@@ -49,11 +44,6 @@ class LeadAPI {
     //@ts-ignore
     return Promise.all([
       LeadService.fetchCustomer(leadId),
-      BuildingService.fetchMoveOutBuilding(leadId),
-      BuildingService.fetchMoveInBuilding(leadId),
-      BuildingService.fetchCleaningBuilding(leadId),
-      BuildingService.fetchStorageBuilding(leadId),
-      BuildingService.fetchDisposalOutBuilding(leadId),
       ServicesService.fetchMoveService(leadId),
       ServicesService.fetchMaterialOrder(leadId),
       ServicesService.fetchInventars(leadId),
@@ -63,17 +53,12 @@ class LeadAPI {
       ServicesService.fetchCleaningService(leadId),
       BuildingService.fetchBuildings(leadId),
       // @ts-ignore
-    ]).then(([Lead, moveOut, moveIn, cleaning, storage, disposal, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService, buildings]): ILeadContainer => ({
+    ]).then(([Lead, moveService, materialOrder, inventory, packService, storageService, disposalService, cleaningService, buildings]): ILeadContainer => ({
       lastUpdated: new Date(),
       // onlySavedOffline: false,
       // cachedInVersion: "",
 
       Lead: Lead,
-      moveOut: moveOut,
-      moveIn: moveIn,
-      cleaning: cleaning,
-      disposal: disposal,
-      storage: storage,
       moveService: moveService,
       materialOrder: materialOrder,
       inventory: inventory,
@@ -87,26 +72,6 @@ class LeadAPI {
 
   SaveLead = (lead: ILead): Promise<unknown> => {
     return LeadService.saveCustomer(lead)
-  }
-
-  SaveMoveOut = (moveOut: IMoveOutBuilding | IPostMoveOutBuilding, leadId: number): Promise<IMoveOutBuilding> => {
-    return checkIs<IMoveOutBuilding>(moveOut, "MoveOutBuildingId") ? BuildingService.saveMoveOutBuilding(moveOut.MoveOutBuildingId, moveOut) : BuildingService.createMoveOutBuilding(moveOut, leadId)
-  }
-
-  SaveMoveIn = (moveIn: IMoveInBuilding | IPostMoveInBuilding, leadId: number): Promise<IMoveInBuilding> => {
-    return checkIs<IMoveInBuilding>(moveIn, "MoveInBuildingId") ? BuildingService.saveMoveInBuilding(moveIn.MoveInBuildingId, moveIn) : BuildingService.createMoveInBuilding(moveIn, leadId)
-  }
-
-  SaveDisposal = (disposal: IDisposalOutBuilding | IPostDisposalOutBuilding, leadId: number): Promise<IDisposalOutBuilding> => {
-    return checkIs<IDisposalOutBuilding>(disposal, "DisposalOutBuildingId") ? BuildingService.saveDisposalOutBuilding(disposal.DisposalOutBuildingId, disposal) : BuildingService.createDisposalOutBuilding(disposal, leadId)
-  }
-
-  SaveStorage = (storage: IStorageBuilding | IPostStorageBuilding, leadId: number): Promise<IStorageBuilding> => {
-    return checkIs<IStorageBuilding>(storage, "StorageInBuildingId") ? BuildingService.saveStorageBuilding(storage.StorageInBuildingId, storage) : BuildingService.createStorageBuilding(storage, leadId)
-  }
-
-  SaveCleaning = (cleaning: ICleaningBuilding | IPostCleaningBuilding, leadId: number): Promise<ICleaningBuilding> => {
-    return checkIs<ICleaningBuilding>(cleaning, "CleaningBuildingId") ? BuildingService.saveCleaningBuilding(cleaning.CleaningBuildingId, cleaning) : BuildingService.createCleaningBuilding(cleaning, leadId)
   }
 
   SaveMoveService = (leadId: number, moveService: IPutMoveService | null) => {

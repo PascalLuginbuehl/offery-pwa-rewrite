@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { Route } from "react-router"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import Services from "../Services"
 import MoveService from "../Services/MoveService"
 import CleaningService from "../Services/CleaningService"
@@ -10,7 +9,6 @@ import DisposalService from "../Services/DisposalService"
 import MaterialShop from "../Services/MaterialShop"
 import PackService from "../Services/PackService"
 import StorageService from "../Services/StorageService"
-import { emptyMoveOutBuilding, emptyMoveInBuilding, emptyStorageBuilding, emptyCleaningBuilding, emptyDisposalOutBuilding } from "../../../interfaces/IBuilding"
 import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../../interfaces/IService"
 import { emptyMaterialOrder } from "../../../interfaces/IShop"
 import { InventoryKeysEnum, emptyInventory } from "../../../interfaces/IInventars"
@@ -25,11 +23,7 @@ interface Props {
 export default function ServiceRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave }: Props) {
   const {
     Lead,
-    moveOut,
-    moveIn,
-    storage,
-    disposal,
-    cleaning,
+    buildings,
     moveService: moveServiceNull,
     disposalService: disposalServiceNull,
     packService: packServiceNull,
@@ -38,20 +32,6 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
     materialOrder: materialOrderNull,
     inventory: inventoryNull,
   } = leadContainer
-
-  const moveOutBuilding = moveOut !== null ? moveOut : emptyMoveOutBuilding
-  const moveInBuilding = moveIn !== null ? moveIn : emptyMoveInBuilding
-  const storageBuilding = storage !== null ? storage : emptyStorageBuilding
-  const disposalBuilding = disposal !== null ? disposal : emptyDisposalOutBuilding
-  const cleaningBuilding = cleaning !== null ? cleaning : emptyCleaningBuilding
-
-  const buildingOptions: IBuildingCopy = {
-    moveOutBuilding: moveOut,
-    moveInBuilding: moveIn,
-    cleaningBuilding: cleaning,
-    storageBuilding: storage,
-    disposalBuilding: disposal,
-  }
 
   const moveService = moveServiceNull ? moveServiceNull : emptyMoveService
   const disposalService = disposalServiceNull ? disposalServiceNull : emptyDisposalService
@@ -87,16 +67,14 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         render={routeProps => (
           <MoveService
             {...routeProps}
-            buildingOptions={buildingOptions}
-            moveOut={moveOutBuilding}
-            moveIn={moveInBuilding}
+            buildings={buildings}
             lead={Lead}
             moveService={moveService ? moveService : emptyMoveService}
-            onChangeAndSave={(moveServiceData, moveInData, moveOutData, lead) => {
+            onChangeAndSave={(moveServiceData, buildings, lead) => {
               return Promise.all([
                 handleChangeAndSave(moveServiceData, "moveService", () => LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData)),
-                handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
-                handleChangeAndSave(moveInData, "moveIn", () => LeadAPI.SaveMoveIn(moveInData, Lead.LeadId)),
+                // handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
+                // handleChangeAndSave(moveInData, "moveIn", () => LeadAPI.SaveMoveIn(moveInData, Lead.LeadId)),
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}
@@ -129,14 +107,13 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         render={routeProps => (
           <PackService
             {...routeProps}
-            buildingOptions={buildingOptions}
-            moveOut={moveOutBuilding}
+            buildings={buildings}
             packService={packService}
             lead={Lead}
-            onChangeAndSave={(packServiceData, moveOutData, lead) => {
+            onChangeAndSave={(packServiceData, buildings, lead) => {
               return Promise.all([
                 handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData)),
-                handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
+                // handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}
@@ -152,14 +129,13 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         render={routeProps => (
           <StorageService
             {...routeProps}
-            buildingOptions={buildingOptions}
-            storage={storageBuilding}
             lead={Lead}
+            buildings={buildings}
             storageService={storageService ? storageService : emptyStorageService}
-            onChangeAndSave={(storageServiceData, storageData, lead) => {
+            onChangeAndSave={(storageServiceData, buildings, lead) => {
               return Promise.all([
                 handleChangeAndSave(storageServiceData, "storageService", () => LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData)),
-                handleChangeAndSave(storageData, "storage", () => LeadAPI.SaveStorage(storageData, Lead.LeadId)),
+                // handleChangeAndSave(storageData, "storage", () => LeadAPI.SaveStorage(storageData, Lead.LeadId)),
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}
@@ -192,14 +168,13 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         render={routeProps => (
           <DisposalService
             {...routeProps}
-            buildingOptions={buildingOptions}
-            disposal={disposalBuilding}
+            buildings={buildings}
             lead={Lead}
             disposalService={disposalService ? disposalService : emptyDisposalService}
-            onChangeAndSave={(disposalServiceData, disposalData, lead) => {
+            onChangeAndSave={(disposalServiceData, buildings, lead) => {
               return Promise.all([
                 handleChangeAndSave(disposalServiceData, "disposalService", () => LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData)),
-                handleChangeAndSave(disposalData, "disposal", () => LeadAPI.SaveDisposal(disposalData, Lead.LeadId)),
+                // handleChangeAndSave(disposalData, "disposal", () => LeadAPI.SaveDisposal(disposalData, Lead.LeadId)),
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}
@@ -232,14 +207,13 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
         render={routeProps => (
           <CleaningService
             {...routeProps}
-            cleaning={cleaningBuilding}
+            buildings={buildings}
             lead={Lead}
-            buildingOptions={buildingOptions}
             cleaningService={cleaningService ? cleaningService : emptyCleaningService}
-            onChangeAndSave={(cleaningServiceData, cleaningData, lead) => {
+            onChangeAndSave={(cleaningServiceData, buildings, lead) => {
               return Promise.all([
                 handleChangeAndSave(cleaningServiceData, "cleaningService", () => LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData)),
-                handleChangeAndSave(cleaningData, "cleaning", () => LeadAPI.SaveCleaning(cleaningData, Lead.LeadId)),
+                // handleChangeAndSave(cleaningData, "cleaning", () => LeadAPI.SaveCleaning(cleaningData, Lead.LeadId)),
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}

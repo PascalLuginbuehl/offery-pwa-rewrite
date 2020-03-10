@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { Route, Redirect } from "react-router"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../../interfaces/IService"
 import MoveConditions from "../Conditions/MoveConditions"
 import PackConditions from "../Conditions/PackConditions"
@@ -28,11 +27,7 @@ interface Props {
 export default function ConditionRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, getNextPage, handleChange, offline }: Props) {
   const {
     Lead,
-    moveOut,
-    moveIn,
-    storage,
-    disposal,
-    cleaning,
+    buildings,
     moveService: moveServiceNull,
     disposalService: disposalServiceNull,
     packService: packServiceNull,
@@ -41,14 +36,6 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
     materialOrder: materialOrderNull,
     inventory: inventoryNull,
   } = leadContainer
-
-  const buildingOptions: IBuildingCopy = {
-    moveOutBuilding: moveOut,
-    moveInBuilding: moveIn,
-    cleaningBuilding: cleaning,
-    storageBuilding: storage,
-    disposalBuilding: disposal,
-  }
 
   const moveService = moveServiceNull ? moveServiceNull : emptyMoveService
   const disposalService = disposalServiceNull ? disposalServiceNull : emptyDisposalService
@@ -194,7 +181,7 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
         path={`${matchUrl}/offer/generate`}
         render={routeProps => (
           <OfflineUnavailable offline={offline}>
-            <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildingOptions={buildingOptions} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+            <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
           </OfflineUnavailable>
         )}
       />

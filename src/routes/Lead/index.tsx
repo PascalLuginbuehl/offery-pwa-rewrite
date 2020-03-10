@@ -224,15 +224,10 @@ class Lead extends Component<Props, State> {
     }
 
     // Send this to API Here
-    const { Lead, moveOut, moveIn, disposal, storage, cleaning, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder, buildings } = offlineChanges
+    const { Lead, moveService, packService, storageService, disposalService, cleaningService, inventory, materialOrder, buildings } = offlineChanges
     const changeArray: {[key in keyof ILeadContainer]: () => Promise<any>} = {
       lastUpdated: () => Promise.resolve(),
       Lead: () => LeadAPI.SaveLead(offlineChanges.Lead),
-      moveOut: () => moveOut ? LeadAPI.SaveMoveOut(moveOut, leadId) : Promise.reject("Unable to remove SaveMoveOut"),
-      moveIn: () => moveIn ? LeadAPI.SaveMoveIn(moveIn, leadId) : Promise.reject("Unable to remove SaveMoveIn"),
-      disposal : () => disposal ? LeadAPI.SaveDisposal(disposal, leadId) : Promise.reject("Unable to remove SaveDisposal"),
-      storage: () => storage ? LeadAPI.SaveStorage(storage, leadId) : Promise.reject("Unable to remove SaveStorage"),
-      cleaning: () => cleaning ? LeadAPI.SaveCleaning(cleaning, leadId) : Promise.reject("Unable to remove SaveCleaning"),
       materialOrder: () => LeadAPI.SaveMaterialOrderService(leadId, materialOrder),
       inventory: () => LeadAPI.SaveInventoryService(leadId, inventory),
       moveService: () => LeadAPI.SaveMoveService(leadId, moveService),

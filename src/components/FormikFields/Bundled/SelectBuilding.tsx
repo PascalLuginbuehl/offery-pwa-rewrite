@@ -5,14 +5,13 @@ import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedDate, FormattedMe
 import Grid, { GridSize } from "@material-ui/core/Grid"
 import { InputAdornment, MenuItem, ListItemText, FormControl, Select, InputLabel } from "@material-ui/core"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
-import FormikTextField, { FormikTextFieldProps } from "./../FormikTextField"
-import { IBuildingCopy } from "./BuildingCopy";
-import { SelectProps } from "@material-ui/core/Select";
-import { IAddress } from "../../../interfaces/IAddress";
-import { BaseBuilding } from "../../../interfaces/IBuilding";
+import FormikTextField, { FormikTextFieldProps } from "../FormikTextField"
+import { SelectProps } from "@material-ui/core/Select"
+import { IAddress } from "../../../interfaces/IAddress"
+import {  IBuilding } from "../../../interfaces/IBuilding"
 
 export interface FormikSelectProps extends FieldProps, SelectProps {
-  buildings: IBuildingCopy
+  buildings: IBuilding[]
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
@@ -41,23 +40,23 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedInt
       ...props
     } = this.props
 
-    const { moveOutBuilding, moveInBuilding, cleaningBuilding, disposalBuilding, storageBuilding } = this.props.buildings
+    // const { moveOutBuilding, moveInBuilding, cleaningBuilding, disposalBuilding, storageBuilding } = this.props.buildings
 
     const options: AdressObj[] = [
-      { label: "MOVE_OUT_BUILDING", container: moveOutBuilding as BaseBuilding },
-      { label: "MOVE_IN_BUILDING", container: moveInBuilding as BaseBuilding },
-      { label: "STORAGE_BUILDING", container: storageBuilding as BaseBuilding },
-      { label: "DISPOSAL_BUILDING", container: disposalBuilding as BaseBuilding },
-      { label: "CLEANING_BUILDING", container: cleaningBuilding as {Address: IAddress} },
+      // { label: "MOVE_OUT_BUILDING", container: {Address} },
+      // { label: "MOVE_IN_BUILDING", container: moveInBuilding as BaseBuilding },
+      // { label: "STORAGE_BUILDING", container: storageBuilding as BaseBuilding },
+      // { label: "DISPOSAL_BUILDING", container: disposalBuilding as BaseBuilding },
+      // { label: "CLEANING_BUILDING", container: cleaningBuilding as {Address: IAddress} },
     ]
-      .filter((value) => {
-        return value.container !== null && value.container !== undefined
-      })
-      .map(value => ({ label: value.label, container: value.container.Address }))
-      // @ts-ignore
-      .filter((value: {label: string, container: IAddress}) => {
-        return value.container.hasOwnProperty("AddressId")
-      })
+      // .filter((value) => {
+      //   return value.container !== null && value.container !== undefined
+      // })
+      // .map(value => ({ label: value.label, container: value.container.Address }))
+      // // @ts-ignore
+      // .filter((value: {label: string, container: IAddress}) => {
+      //   return value.container.hasOwnProperty("AddressId")
+      // })
 
 
 

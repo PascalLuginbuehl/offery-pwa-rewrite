@@ -8,14 +8,14 @@ import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import { nullLiteral } from "@babel/types"
-import SelectAddress from "../../../components/FormikFields/Bundled/SelectAddress"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 import OfferService from "../../../services/OfferService"
 import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
 import HttpErrorHandler from "../../../components/HttpErrorHandler"
 import animation from "../../../components/lottie/12818-file-recover.json"
 import Lottie from "lottie-react-web"
+import { IBuilding } from "../../../interfaces/IBuilding"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -28,7 +28,7 @@ interface Values {
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
   nextPage: (stringAddition?: string) => void
   // onSaveAndNextPage: (templateCategoryId: number, type: number, outAddressId: number, inAddressId: number) => Promise<any>
-  buildingOptions: IBuildingCopy
+  buildings: IBuilding[]
   lead: ILead
   offline: boolean
   onChange: (value: any, name: keyof ILeadContainer) => void
@@ -42,7 +42,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
       status,
       resource,
       selectedCompany,
-      buildingOptions,
+      buildings,
       values,
     } = this.props
 
@@ -61,9 +61,9 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
             options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
           />
 
-          <Field component={SelectAddress} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildingOptions} />
+          <Field component={SelectBuilding} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildings} />
 
-          <Field component={SelectAddress} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildingOptions} />
+          <Field component={SelectBuilding} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildings} />
 
 
           {

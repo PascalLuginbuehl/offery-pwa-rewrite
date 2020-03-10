@@ -7,15 +7,12 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import { IPutLead, ILead } from "../../../interfaces/ILead"
+import {  ILead } from "../../../interfaces/ILead"
 import LeadAPI from "../LeadAPI"
-import LeadService from "../../../services/LeadService"
-import SelectAddress from "../../../components/FormikFields/Bundled/SelectAddress"
 import OfferService from "../../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { RouteComponentProps } from "react-router"
-import HttpErrorHandler from "../../../components/HttpErrorHandler"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined

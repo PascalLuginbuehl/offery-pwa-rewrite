@@ -26,28 +26,7 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
 
       <NavItem to={`${matchUrl}/`} title="LEAD_OVERVIEW" />
 
-      <NavFolder to={`${matchUrl}/customer`} title="CUSTOMER">
-        {Lead ? (
-          <>
-            <Collapse in={Lead.HasMoveOutBuilding}>
-              <NavItem to={`${matchUrl}/building/move-out`} title="MOVE_OUT_BUILDING" nested />
-            </Collapse>
-            <Collapse in={Lead.HasMoveInBuilding}>
-              <NavItem to={`${matchUrl}/building/move-in`} title="MOVE_IN_BUILDING" nested />
-            </Collapse>
-            <Collapse in={Lead.HasStorageInBuilding}>
-              <NavItem to={`${matchUrl}/building/storage`} title="STORAGE_BUILDING" nested />
-            </Collapse>
-            <Collapse in={Lead.HasDisposalOutBuilding}>
-              <NavItem to={`${matchUrl}/building/disposal`} title="DISPOSAL_BUILDING" nested />
-            </Collapse>
-            <Collapse in={Lead.HasCleaningBuilding}>
-              <NavItem to={`${matchUrl}/building/cleaning`} title="CLEANING_BUILDING" nested />
-            </Collapse>
-            <NavItem to={`${matchUrl}/building/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
-          </>
-        ) : null}
-      </NavFolder>
+      <NavItem to={`${matchUrl}/customer`} title="CUSTOMER" />
 
       <NavFolder to={`${matchUrl}/building`} title="BUILDINGS">
         {buildings.map(building => (

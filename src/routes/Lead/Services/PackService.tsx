@@ -1,39 +1,36 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { IPostMoveOutBuilding } from "../../../interfaces/IBuilding"
 import { FormikProps, Field, withFormik } from "formik"
 import Form from "../../../components/FormikFields/Form"
 import Submit from "../../../components/FormikFields/Submit"
 import { IPutPackService } from "../../../interfaces/IService"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
 import PageHeader from "../../../components/PageHeader"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import FormikDivider from "../../../components/FormikFields/FormikDivider"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { ILead } from "../../../interfaces/ILead"
+import { IBuilding } from "../../../interfaces/IBuilding"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   packService: IPutPackService
-  moveOut: IPostMoveOutBuilding
+  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (packService: IPutPackService, moveOut: IPostMoveOutBuilding, lead: ILead) => Promise<any>
-  buildingOptions: IBuildingCopy
+  onChangeAndSave: (packService: IPutPackService, buildings: IBuilding[], lead: ILead) => Promise<any>
 }
 
 class PackService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildingOptions, values } = this.props
+    const { isSubmitting, status, resource, values } = this.props
 
     return (
       <Grid item xs={12}>
@@ -54,7 +51,7 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
 
-          <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
+          {/* <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} /> */}
         </Form>
       </Grid>
     )
@@ -64,11 +61,11 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ packService: props.packService, moveOut: props.moveOut, lead: props.lead }),
+      mapPropsToValues: props => ({ packService: props.packService, buildings: props.buildings, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.packService, values.moveOut, values.lead)
+          await actions.props.onChangeAndSave(values.packService, values.buildings, values.lead)
 
           actions.setSubmitting(false)
 

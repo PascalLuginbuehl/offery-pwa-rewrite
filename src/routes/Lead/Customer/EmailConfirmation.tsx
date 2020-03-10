@@ -2,26 +2,20 @@ import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field } from "formik"
 import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
-import { IPostMoveInBuilding } from "../../../interfaces/IBuilding"
+import { IBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
-import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
-import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
-import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import { IPutLead, ILead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import IntlTypography from "../../../components/Intl/IntlTypography"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { IAddress } from "../../../interfaces/IAddress"
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../../services/LeadService"
-import SelectAddress from "../../../components/FormikFields/Bundled/SelectAddress"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 import HttpErrorHandler from "../../../components/HttpErrorHandler"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
@@ -41,12 +35,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIn
   lead: ILead
   offline: boolean
   // onChangeAndSave: (lead: ILead) => void
-  buildingOptions: IBuildingCopy
+  buildings: IBuilding[]
 }
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { selectedCompany, values, lead, buildingOptions } = this.props
+    const { selectedCompany, values, lead, buildings } = this.props
     const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
 
     return (
@@ -81,7 +75,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             </Typography>
           </Grid>
 
-          <Field component={SelectAddress} label="VISIT_ADDRESS" name="AddressId" buildings={buildingOptions} />
+          <Field component={SelectBuilding} label="VISIT_ADDRESS" name="AddressId" buildings={buildings} />
           {/* <SelectAddress label="" name="AddressId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />

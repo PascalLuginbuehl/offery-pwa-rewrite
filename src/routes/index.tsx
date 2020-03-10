@@ -156,6 +156,7 @@ class Index extends React.Component<Props, State> {
           registrationWaiting.postMessage({ type: "SKIP_WAITING" })
 
           registrationWaiting.addEventListener("statechange", e => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore
             if (e.target.state === "activated") {
               window.location.reload()

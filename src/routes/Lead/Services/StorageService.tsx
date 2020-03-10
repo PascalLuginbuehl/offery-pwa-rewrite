@@ -1,41 +1,37 @@
 import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { IPostStorageBuilding } from "../../../interfaces/IBuilding"
 import { FormikProps, Field, withFormik, InjectedFormikProps } from "formik"
 import * as Yup from "yup"
 import Form from "../../../components/FormikFields/Form"
 import Submit from "../../../components/FormikFields/Submit"
 import { IPutStorageService } from "../../../interfaces/IService"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
 import PageHeader from "../../../components/PageHeader"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import FormikDivider from "../../../components/FormikFields/FormikDivider"
-import Storage from "../../../components/FormikFields/Bundled/Storage"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import { IBuilding } from "../../../interfaces/IBuilding"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   storageService: IPutStorageService
-  storage: IPostStorageBuilding
+  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (storageService: IPutStorageService, storage: IPostStorageBuilding, lead: ILead) => Promise<any>
-  buildingOptions: IBuildingCopy
+  onChangeAndSave: (storageService: IPutStorageService, buildings: IBuilding[], lead: ILead) => Promise<any>
 }
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { resource, storageService, buildingOptions } = this.props
+    const { resource, storageService, buildings } = this.props
 
     return (
       <Grid item xs={12}>
@@ -60,7 +56,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
-          <Storage buildingOptions={buildingOptions} prefix={"storage"} resource={resource} />
+          {/* <Storage buildingOptions={buildingOptions} prefix={"storage"} resource={resource} /> */}
         </Form>
       </Grid>
     )
@@ -70,11 +66,11 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ storageService: props.storageService, storage: props.storage, lead: props.lead }),
+      mapPropsToValues: props => ({ storageService: props.storageService, buildings: props.buildings, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.storageService, values.storage, values.lead)
+          await actions.props.onChangeAndSave(values.storageService, values.buildings, values.lead)
 
           actions.setSubmitting(false)
 

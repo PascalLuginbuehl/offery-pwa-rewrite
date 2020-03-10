@@ -1,20 +1,17 @@
 import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { IPostMoveInBuilding, IPostMoveOutBuilding } from "../../../interfaces/IBuilding"
+import { IBuilding } from "../../../interfaces/IBuilding"
 import { FormikProps, Field, withFormik } from "formik"
 import Form from "../../../components/FormikFields/Form"
 import Submit from "../../../components/FormikFields/Submit"
-import MoveOut from "../../../components/FormikFields/Bundled/MoveOut"
 import PageHeader from "../../../components/PageHeader"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import FormikDivider from "../../../components/FormikFields/FormikDivider"
 import IntlTypography from "../../../components/Intl/IntlTypography"
-import MoveIn from "../../../components/FormikFields/Bundled/MoveIn"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import { IPutMoveService } from "../../../interfaces/IService"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
-import { IBuildingCopy } from "../../../components/FormikFields/Bundled/BuildingCopy"
 import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
@@ -22,20 +19,18 @@ const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   moveService: IPutMoveService
-  moveIn: IPostMoveInBuilding
-  moveOut: IPostMoveOutBuilding
+  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (moveService: IPutMoveService, moveIn: IPostMoveInBuilding, moveOut: IPostMoveOutBuilding, lead: ILead) => Promise<any>
-  buildingOptions: IBuildingCopy
+  onChangeAndSave: (moveService: IPutMoveService, buildings: IBuilding[], lead: ILead) => Promise<any>
 }
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildingOptions } = this.props
+    const { isSubmitting, status, resource, buildings } = this.props
 
     // const { data } = this.props
 
@@ -63,12 +58,13 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
-          <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} />
+          {/* <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} /> */}
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
-          <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} />
+
+          {/* <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} /> */}
         </Form>
       </Grid>
     )
@@ -78,11 +74,11 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ moveIn: props.moveIn, moveOut: props.moveOut, moveService: props.moveService, lead: props.lead }),
+      mapPropsToValues: props => ({ buildings: props.buildings, moveService: props.moveService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.moveService, values.moveIn, values.moveOut, values.lead)
+          await actions.props.onChangeAndSave(values.moveService, values.buildings, values.lead)
 
           actions.setSubmitting(false)
 
