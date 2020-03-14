@@ -1,19 +1,19 @@
 import * as React from "react"
-import * as Yup from "yup"
+
 import Form from "../../../components/FormikFields/Form"
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { createStyles,   Theme, WithStyles, withStyles, Grid,  InputAdornment, TextField as MuiTextField } from "@material-ui/core"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from "formik"
+import {  FormikProps, Field,   withFormik } from "formik"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
-import { IMoveServiceConditions, IPackServiceConditions, IDisposalServiceConditions } from "../../../interfaces/IConditions"
+import {   IDisposalServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
-import FormikDivider from "../../../components/FormikFields/FormikDivider"
+
 import { IPutDisposalService } from "../../../interfaces/IService"
 
 const styles = (theme: Theme) => createStyles({})

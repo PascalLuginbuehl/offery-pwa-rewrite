@@ -1,6 +1,6 @@
 import { IPostAddress, emtpyAddress, IAddress } from "./IAddress"
-import { IStorageCompany, emptyStorageCompany, IPostStorageCompany } from "./IStorageCompany"
-import { Omit } from "react-router"
+
+
 
 export interface IPostBuilding {
   Address: IPostAddress

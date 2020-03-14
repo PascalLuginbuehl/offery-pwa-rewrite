@@ -1,16 +1,16 @@
-import { createStyles, Grid, Theme, WithStyles, withStyles, IconButton, ButtonBase, Paper, InputAdornment, TextField as MuiTextfield, Typography, ClickAwayListener, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@material-ui/core"
+import { createStyles, Grid, Theme, WithStyles, withStyles, IconButton, ButtonBase, Paper, InputAdornment,  Typography, ClickAwayListener, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@material-ui/core"
 import * as React from "react"
-import CheckGrid from "./CheckGrid"
+
 import { IProduct } from "../../interfaces/IProduct"
 import IntlTypography from "../Intl/IntlTypography"
 import { FormattedMessage, FormattedNumber } from "react-intl"
-import Filter9PlusIcon from "@material-ui/icons/Filter9Plus"
-import { thisExpression } from "@babel/types"
-import { TextFieldProps } from "@material-ui/core/TextField"
+
+
+
 import { CurrentlyOpenStateEnum } from "../../interfaces/IShop"
 import { Formik, Field } from "formik"
 import FormikTextField from "../FormikFields/FormikTextField"
-import FormikNumberEndAdornmentText from "../FormikFields/Numbers/FormikNumberEndAdornmentText"
+
 import Form from "../FormikFields/Form"
 
 

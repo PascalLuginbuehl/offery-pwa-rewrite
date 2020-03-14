@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import { Route, RouteComponentProps } from "react-router"
+import React from "react"
+import { Route } from "react-router"
 import NewCustomer from "../Customer"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import EmailConfirmation from "../Customer/EmailConfirmation"
 import { emptyBuilding, IBuilding } from "../../../interfaces/IBuilding"
-import { ICustomer, ILead } from "../../../interfaces/ILead"
+import {  ILead } from "../../../interfaces/ILead"
 import OfflineUnavailable from "../../../components/OfflineUnavailable"
-import BuildingEdit from "../../../components/FormikFields/Bundled/BuildingEdit"
+
 import Building from "../Customer/Building"
 import BuildingsOverview from "../Customer/BuildingsOverview"
 

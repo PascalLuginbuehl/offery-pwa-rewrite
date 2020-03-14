@@ -1,9 +1,9 @@
 
 import React from "react"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import { Button, DialogContent, DialogContentText, DialogTitle, DialogActions, Dialog, Grid } from "@material-ui/core"
+import { Button, DialogContent,  DialogTitle, DialogActions, Dialog, Grid } from "@material-ui/core"
 import { FormattedMessage } from "react-intl"
-import { FieldArray, Formik, Field, ArrayHelpers } from "formik"
+import {  Formik, Field } from "formik"
 import Form from "../../../components/FormikFields/Form"
 import { ICustomInventar } from "../../../interfaces/IInventars"
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"

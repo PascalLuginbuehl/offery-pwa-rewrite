@@ -1,6 +1,6 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button } from "@material-ui/core"
-import { Formik, FormikProps, withFormik, Field } from "formik"
+import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button } from "@material-ui/core"
+import {  FormikProps, withFormik, Field } from "formik"
 import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
@@ -8,15 +8,15 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import PageHeader from "../../../components/PageHeader"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
-import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
-import { IPutLead, ILead } from "../../../interfaces/ILead"
+
+import {  ILead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import IntlTypography from "../../../components/Intl/IntlTypography"
-import { IAddress } from "../../../interfaces/IAddress"
+
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../../services/LeadService"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
-import HttpErrorHandler from "../../../components/HttpErrorHandler"
+
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined

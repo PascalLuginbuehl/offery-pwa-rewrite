@@ -1,11 +1,11 @@
-import React, { Component } from "react"
+import React from "react"
 import { ReactComponent as Box } from "./box.svg"
 import { ReactComponent as Warehouse } from "./warehouse.svg"
 import { Avatar, Grid, makeStyles } from "@material-ui/core"
 import LocalShippingIcon from "@material-ui/icons/LocalShipping"
 import DeleteIcon from "@material-ui/icons/Delete"
 import InvertColorsIcon from "@material-ui/icons/InvertColors"
-import { Button } from "@material-ui/core"
+
 import { IServices } from "../../../interfaces/IService"
 import { lightGreen, orange, yellow, brown, lightBlue } from "@material-ui/core/colors"
 import { ICompressedLead, ILead } from "../../../interfaces/ILead"

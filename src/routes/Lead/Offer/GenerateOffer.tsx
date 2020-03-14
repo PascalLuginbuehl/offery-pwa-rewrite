@@ -1,18 +1,18 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment } from "@material-ui/core"
+import { createStyles,   Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
-import * as Yup from "yup"
+import {  FormikProps, Field,   withFormik } from "formik"
+
 import Form from "../../../components/FormikFields/Form"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
-import { nullLiteral } from "@babel/types"
+
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 import OfferService from "../../../services/OfferService"
 import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
-import HttpErrorHandler from "../../../components/HttpErrorHandler"
+
 import animation from "../../../components/lottie/12818-file-recover.json"
 import Lottie from "lottie-react-web"
 import { IBuilding } from "../../../interfaces/IBuilding"

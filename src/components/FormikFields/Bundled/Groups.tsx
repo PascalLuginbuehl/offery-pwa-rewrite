@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Divider, Grid } from "@material-ui/core"
+import {  Grid } from "@material-ui/core"
 import IntlTypography from "../../Intl/IntlTypography"
 import FormikDivider from "../FormikDivider"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"

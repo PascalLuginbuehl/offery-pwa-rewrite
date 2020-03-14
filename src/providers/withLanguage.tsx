@@ -1,5 +1,5 @@
 import * as React from "react"
-import { IMessages, translations as baseTranslations, ITranslationAssortment } from "../i18n"
+import { IMessages, translations as baseTranslations } from "../i18n"
 import { IntlProvider } from "react-intl"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"

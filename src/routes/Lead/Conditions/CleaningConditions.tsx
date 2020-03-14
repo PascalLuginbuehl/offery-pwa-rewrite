@@ -1,10 +1,10 @@
 import * as React from "react"
 import Form from "../../../components/FormikFields/Form"
-import { createStyles, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid,  InputAdornment, TextField as MuiTextField } from "@material-ui/core"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import { FormikProps, Field, withFormik } from "formik"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
 import { ICleaningServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"

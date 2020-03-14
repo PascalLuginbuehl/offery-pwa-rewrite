@@ -1,6 +1,6 @@
 import React from "react"
 import ReactSelect from "react-select"
-import MuiTextField, {
+import  {
   TextFieldProps as MuiTextFieldProps,
 } from "@material-ui/core/TextField"
 import { FieldProps, getIn } from "formik"

@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import LeadAPI, { ILeadContainer } from "../LeadAPI"
+import React from "react"
+import  { ILeadContainer } from "../LeadAPI"
 import { ListSubheader, Collapse } from "@material-ui/core"
 import { FormattedMessage } from "react-intl"
 import NavFolder from "../../../components/Navigation/NavFolder"

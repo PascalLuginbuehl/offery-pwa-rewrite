@@ -1,45 +1,45 @@
 import {
   createStyles,
-  Grid,
+  
   Theme,
   WithStyles,
   withStyles,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
-  IconButton,
-  Typography,
-  Tabs,
-  Tab,
-  ListItem,
-  List,
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   Avatar,
-  ListItemText,
-  ListItemSecondaryAction,
-  Collapse,
+  
+  
+  
   ButtonBase,
 } from "@material-ui/core"
 import * as React from "react"
-import { ILead, IStatus, ICompressedLead } from "../../interfaces/ILead"
-import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
-import ContactsIcon from "@material-ui/icons/Contacts"
-import Fab from "@material-ui/core/Fab"
-import AddIcon from "@material-ui/icons/Add"
-import { green, red } from "@material-ui/core/colors"
-import ExpandLess from "@material-ui/icons/ExpandLess"
-import ExpandMore from "@material-ui/icons/ExpandMore"
+import {  IStatus, ICompressedLead } from "../../interfaces/ILead"
+
+
+
+
+import {  red } from "@material-ui/core/colors"
+
+
 import { injectIntl, WrappedComponentProps } from "react-intl"
-import { IOfflineLead } from "../../routes/Dashboard2"
+
 import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
-import HomeIcon from "@material-ui/icons/Home"
-import MonetizationOnIcon from "@material-ui/icons/MonetizationOn"
-import CheckCircleIcon from "@material-ui/icons/CheckCircle"
-import ArchiveIcon from "@material-ui/icons/Archive"
-import PlainLink from "../PlainLink"
-import OfflinePinIcon from "@material-ui/icons/OfflinePin"
-import IntlTooltip from "../Intl/IntlTooltip"
+
+
+
+
+
+
+
 
 const styles = (theme: Theme) =>
   createStyles({

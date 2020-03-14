@@ -1,13 +1,13 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
-import { Formik, FormikProps, withFormik } from "formik"
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+import {  FormikProps, withFormik } from "formik"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import { IPostBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
-import { RouteComponentProps, Prompt } from "react-router"
+import { RouteComponentProps } from "react-router"
 import BuildingEdit from "../../../components/FormikFields/Bundled/BuildingEdit"
 
 const styles = (theme: Theme) => createStyles({})

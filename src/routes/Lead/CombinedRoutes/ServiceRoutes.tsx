@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import { Route } from "react-router"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import Services from "../Services"

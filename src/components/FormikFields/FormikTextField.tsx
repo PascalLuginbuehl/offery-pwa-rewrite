@@ -3,7 +3,7 @@ import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/
 import { FieldProps, getIn } from "formik"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
-import { InputAdornment } from "@material-ui/core"
+
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 
 export interface FormikTextFieldProps extends WrappedComponentProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {

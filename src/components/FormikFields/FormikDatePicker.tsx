@@ -1,7 +1,5 @@
 import * as React from "react"
-import MuiTextField, {
-  TextFieldProps as MuiTextFieldProps,
-} from "@material-ui/core/TextField"
+
 import { FieldProps, getIn } from "formik"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"

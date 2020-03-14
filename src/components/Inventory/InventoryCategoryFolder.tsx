@@ -1,7 +1,7 @@
-import { createStyles, Grid, Theme, WithStyles, withStyles, IconButton, ButtonBase, Paper, InputAdornment, TextField as MuiTextfield, Typography } from "@material-ui/core"
+import { createStyles, Grid, Theme, WithStyles, withStyles,  ButtonBase, Paper } from "@material-ui/core"
 import * as React from "react"
 import IntlTypography from "../Intl/IntlTypography"
-import { FormattedMessage, FormattedNumber } from "react-intl"
+
 import { IFurnitureCategory } from "../../interfaces/IResource"
 
 const styles = (theme: Theme) =>

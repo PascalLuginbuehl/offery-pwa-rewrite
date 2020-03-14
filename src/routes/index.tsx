@@ -1,7 +1,7 @@
-import { AppBar, createStyles, Drawer, Hidden, IconButton, Theme, Toolbar, Typography, WithStyles, withStyles, SwipeableDrawer, Snackbar, Button, } from "@material-ui/core"
+import { AppBar, createStyles, Drawer, Hidden, IconButton, Theme, Toolbar,  WithStyles, withStyles, SwipeableDrawer, Snackbar, Button, } from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
 import * as React from "react"
-import { FormattedMessage, WrappedComponentProps, injectIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 import { Link, Route, Switch } from "react-router-dom"
 import withRoot from "../components/WithRoot"
 

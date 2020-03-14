@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Tab, Tabs, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { Tab, Tabs,   Grid,  InputAdornment, TextField as MuiTextField } from "@material-ui/core"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { IServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"

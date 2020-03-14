@@ -1,9 +1,9 @@
-import React, { CSSProperties, HTMLAttributes } from "react"
+import React, {  HTMLAttributes } from "react"
 import clsx from "clsx"
-import Select from "react-select"
-import { createStyles, emphasize, makeStyles, useTheme, Theme } from "@material-ui/core/styles"
+
+import { createStyles, emphasize,   Theme } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
-import NoSsr from "@material-ui/core/NoSsr"
+
 import TextField, { BaseTextFieldProps } from "@material-ui/core/TextField"
 import Paper from "@material-ui/core/Paper"
 import Chip from "@material-ui/core/Chip"

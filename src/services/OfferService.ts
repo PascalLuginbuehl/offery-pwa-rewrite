@@ -1,7 +1,7 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
-import { IOffer, IConfirmOffer } from "../interfaces/IOffer"
-import { ILead } from "../interfaces/ILead"
+import { IOffer } from "../interfaces/IOffer"
+
 
 const API_URL = process.env.REACT_APP_API_URL
 

@@ -1,7 +1,7 @@
-import { createStyles, Theme, ListItemText, ListItem, Collapse, IconButton, ListItemSecondaryAction } from "@material-ui/core"
-import { NavLink, withRouter } from "react-router-dom"
+import { createStyles, Theme, ListItemText, ListItem } from "@material-ui/core"
+import { NavLink } from "react-router-dom"
 import * as React from "react"
-import { RouteComponentProps, useLocation } from "react-router"
+import {  useLocation } from "react-router"
 import { IBuilding } from "../../interfaces/IBuilding"
 import { makeStyles } from "@material-ui/styles"
 

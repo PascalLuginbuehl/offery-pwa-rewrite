@@ -1,8 +1,8 @@
-import { createStyles, Paper, Theme, WithStyles, withStyles, List, ListItemText, ListItem, ListItemSecondaryAction, IconButton } from "@material-ui/core"
+import { createStyles,  Theme, WithStyles, withStyles, List, ListItemText, ListItem, ListItemSecondaryAction, IconButton } from "@material-ui/core"
 import * as React from "react"
 import { ICompany } from "../interfaces/ICompany"
 import ForwardIcon from "@material-ui/icons/Forward"
-import Wrapper from "./Form/Wrapper"
+
 import ResourceService from "../services/ResourceService"
 import IntlTypography from "./Intl/IntlTypography"
 

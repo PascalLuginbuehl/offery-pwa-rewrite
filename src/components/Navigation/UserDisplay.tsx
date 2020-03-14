@@ -14,7 +14,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 import ExpandLessIcon from "@material-ui/icons/ExpandLess"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import FlagIcon from "@material-ui/icons/Flag"
-import SettingsIcon from "@material-ui/icons/Settings"
+
 import { withResource, WithResourceProps } from "../../providers/withResource"
 import { withLanguage, WithLanguageProps } from "../../providers/withLanguage"
 import * as React from "react"

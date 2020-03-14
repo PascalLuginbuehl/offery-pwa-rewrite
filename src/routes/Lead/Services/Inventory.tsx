@@ -3,7 +3,7 @@ import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import { FormikProps, withFormik, ArrayHelpers, FieldArray, Formik, Field } from "formik"
-import * as Yup from "yup"
+
 import Form from "../../../components/FormikFields/Form"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"

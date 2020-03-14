@@ -6,24 +6,23 @@ import {
   WithStyles,
   withStyles,
   Grid,
-  Button,
-  InputAdornment,
+  
+  
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  ButtonBase,
-  Paper,
+  
+  
   IconButton,
-  TextField as MuiTextfield,
 } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, ArrayHelpers, FieldArray } from "formik"
+import {  FormikProps, Field,   withFormik,  ArrayHelpers, FieldArray } from "formik"
 import Form from "../../../components/FormikFields/Form"
-import Submit from "../../../components/FormikFields/Submit"
+
 import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder } from "../../../interfaces/IShop"
 import { IProduct } from "../../../interfaces/IProduct"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"

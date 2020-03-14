@@ -4,7 +4,7 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import { IBuilding } from "../../../interfaces/IBuilding"
 import { FormikProps, Field, withFormik } from "formik"
 import Form from "../../../components/FormikFields/Form"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import FormikDivider from "../../../components/FormikFields/FormikDivider"

@@ -1,7 +1,7 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button } from "@material-ui/core"
-import { Formik, FormikProps, withFormik, Field, FieldArray } from "formik"
-import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
+
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import PageHeader from "../../../components/PageHeader"
 import IntlTypography from "../../../components/Intl/IntlTypography"

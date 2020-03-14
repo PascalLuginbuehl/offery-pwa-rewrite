@@ -1,18 +1,18 @@
 import * as React from "react"
 import Form from "../../../components/FormikFields/Form"
-import { createStyles, Theme, WithStyles, withStyles, Grid, ListItem, List, ListItemText, ListItemSecondaryAction, TextField, MenuItem, IconButton } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { Formik, FormikProps, Field, withFormik, FieldArray } from "formik"
+import {  FormikProps, Field, withFormik } from "formik"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
 import { IMoveServiceConditions } from "../../../interfaces/IConditions"
-import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
 import { IPutMoveService } from "../../../interfaces/IService"
-import CarSelection from "./CarSelection"
+
 
 const styles = (theme: Theme) => createStyles({})
 

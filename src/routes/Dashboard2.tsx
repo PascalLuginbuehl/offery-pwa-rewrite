@@ -1,6 +1,6 @@
 import { createStyles, Grid, Theme, WithStyles, withStyles, Typography, Tabs, Tab } from "@material-ui/core"
 import * as React from "react"
-import { FormattedDate, FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
+import {   injectIntl, WrappedComponentProps } from "react-intl"
 import { withResource, WithResourceProps } from "../providers/withResource"
 import withWidth, { WithWidth, isWidthUp } from "@material-ui/core/withWidth"
 import { ILead, ICompressedLead } from "../interfaces/ILead"
@@ -8,9 +8,9 @@ import DashboardService from "../services/LeadService"
 import IntlTypography from "../components/Intl/IntlTypography"
 import Wrapper from "../components/Form/Wrapper"
 import TableDashboard from "../components/Dashboard/TableDashboard"
-import MobileDashboard from "../components/Dashboard/MobileDashboard"
-import { keys, get } from "idb-keyval"
-import CloudOffIcon from "@material-ui/icons/CloudOff"
+
+import { keys } from "idb-keyval"
+
 import ArchiveIcon from "@material-ui/icons/Archive"
 import LeadAPI, { ILeadContainer } from "./Lead/LeadAPI"
 

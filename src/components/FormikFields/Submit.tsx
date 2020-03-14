@@ -1,7 +1,7 @@
 import * as React from "react"
 import { WrappedComponentProps, injectIntl, FormattedMessage } from "react-intl"
 import { Button, Grid } from "@material-ui/core"
-import { createStyles, Theme, WithStyles, withStyles, Fab, CircularProgress } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Fab } from "@material-ui/core"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import withWidth, { WithWidth, isWidthUp } from "@material-ui/core/withWidth"
 

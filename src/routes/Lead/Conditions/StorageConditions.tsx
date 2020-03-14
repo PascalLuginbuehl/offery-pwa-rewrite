@@ -1,13 +1,13 @@
 import * as React from "react"
-import * as Yup from "yup"
+
 import Form from "../../../components/FormikFields/Form"
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
+import { createStyles,   Theme, WithStyles, withStyles, Grid,  InputAdornment, TextField as MuiTextField } from "@material-ui/core"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps, FieldArray } from "formik"
+import {  FormikProps, Field,   withFormik } from "formik"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
-import { IMoveServiceConditions, IPackServiceConditions, IStorageServiceConditions } from "../../../interfaces/IConditions"
+import {   IStorageServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"

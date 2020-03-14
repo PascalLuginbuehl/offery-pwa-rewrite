@@ -1,16 +1,14 @@
 
 import * as React from "react"
-import MuiTextField, {
-  TextFieldProps as MuiTextFieldProps,
-} from "@material-ui/core/TextField"
+
 import { FieldProps, getIn } from "formik"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
-import { InputAdornment, createStyles, Theme, withStyles, ButtonBase, Paper } from "@material-ui/core"
+import {  createStyles, Theme, withStyles, ButtonBase, Paper } from "@material-ui/core"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import { WithStyles } from "@material-ui/styles"
 import IntlTypography from "../Intl/IntlTypography"
-import MuiSwitch, {
+import  {
   SwitchProps as MuiSwitchProps,
 } from "@material-ui/core/Switch"
 import DoneOutlineIcon from "@material-ui/icons/DoneOutline"

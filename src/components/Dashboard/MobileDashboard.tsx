@@ -5,32 +5,32 @@ import {
   withStyles,
   ListItem,
   List,
-  Avatar,
+  
   ListItemText,
-  ListItemSecondaryAction,
-  Collapse,
+  
+  
   ListItemAvatar,
 } from "@material-ui/core"
 import * as React from "react"
-import { ILead, ICompressedLead } from "../../interfaces/ILead"
-import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
-import ContactsIcon from "@material-ui/icons/Contacts"
+import {  ICompressedLead } from "../../interfaces/ILead"
+
+
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
-import { green } from "@material-ui/core/colors"
-import ExpandLess from "@material-ui/icons/ExpandLess"
-import ExpandMore from "@material-ui/icons/ExpandMore"
+
+
+
 import { injectIntl, WrappedComponentProps } from "react-intl"
-import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
-import HomeIcon from "@material-ui/icons/Home"
-import MonetizationOnIcon from "@material-ui/icons/MonetizationOn"
-import CheckCircleIcon from "@material-ui/icons/CheckCircle"
-import ArchiveIcon from "@material-ui/icons/Archive"
-import ControlPointDuplicateIcon from "@material-ui/icons/ControlPointDuplicate"
+
+
+
+
+
+
 
 import PlainLink from "../PlainLink"
 import StatusButton from "./StatusButton"
-import IntlTooltip from "../Intl/IntlTooltip"
+
 
 
 const styles = (theme: Theme) =>

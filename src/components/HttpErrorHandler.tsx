@@ -1,4 +1,4 @@
-import { createStyles, Theme, WithStyles, withStyles, CircularProgress, Grid, Typography } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles,  Grid, Typography } from "@material-ui/core"
 import * as React from "react"
 import IntlTypography from "./Intl/IntlTypography"
 import { FormattedMessage } from "react-intl"

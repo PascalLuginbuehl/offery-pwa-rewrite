@@ -1,6 +1,4 @@
-import { createStyles, Theme, WithStyles, withStyles, ListItemText, ListItem, Collapse, IconButton, ListItemSecondaryAction } from "@material-ui/core"
-import ExpandLess from "@material-ui/icons/ExpandLess"
-import ExpandMore from "@material-ui/icons/ExpandMore"
+import { createStyles, Theme, WithStyles, withStyles, ListItemText, ListItem } from "@material-ui/core"
 import { NavLink, withRouter } from "react-router-dom"
 import * as React from "react"
 import { WrappedComponentProps, injectIntl } from "react-intl"

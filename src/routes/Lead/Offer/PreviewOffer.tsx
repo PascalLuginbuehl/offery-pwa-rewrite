@@ -1,10 +1,10 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Button, Snackbar, InputAdornment, withWidth } from "@material-ui/core"
+import { createStyles,   Theme, WithStyles, withStyles, Grid, Button, Snackbar } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { Formik, FormikProps, Field, FieldProps, ErrorMessage, withFormik, InjectedFormikProps } from "formik"
-import * as Yup from "yup"
+import {  FormikProps, Field,   withFormik } from "formik"
+
 import Form from "../../../components/FormikFields/Form"
-import Submit from "../../../components/FormikFields/Submit"
+
 import PageHeader from "../../../components/PageHeader"
 import { ILead } from "../../../interfaces/ILead"
 import OfferService from "../../../services/OfferService"
@@ -15,7 +15,7 @@ import { Document, Page } from "react-pdf/dist/entry.webpack"
 import { PDFDocumentProxy } from "pdfjs-dist"
 import { RouteComponentProps } from "react-router"
 import { IOffer, IOFile } from "../../../interfaces/IOffer"
-import HttpErrorHandler from "../../../components/HttpErrorHandler"
+
 const styles = (theme: Theme) => createStyles({
   snackbar: {
     [theme.breakpoints.down("xs")]: {
