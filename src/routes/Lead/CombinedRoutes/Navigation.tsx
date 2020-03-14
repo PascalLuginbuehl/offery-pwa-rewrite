@@ -25,7 +25,7 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         <FormattedMessage id="EDIT_LEAD" />
       </ListSubheader>
 
-      <NavItem to={`${matchUrl}/`} title="LEAD_OVERVIEW" />
+      <NavItem to={`${matchUrl}`} title="LEAD_OVERVIEW" />
 
       <NavItem to={`${matchUrl}/customer`} title="CUSTOMER" />
 
@@ -35,6 +35,8 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         ))}
         <NavItem to={`${matchUrl}/building/new`} icon={<AddCircleIcon color="primary" />} title="CREATE_NEW_BUILDING" nested />
       </NavFolder>
+
+      <NavItem to={`${matchUrl}/building/email-confirmation`} title="EMAIL_CONFIRMATION" nested />
 
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">
         <Collapse in={Services.HasMoveServiceEnabled}>

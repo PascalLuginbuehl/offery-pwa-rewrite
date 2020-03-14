@@ -8,6 +8,7 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import AddCircleIcon from "@material-ui/icons/AddCircle"
 import DeleteIcon from "@material-ui/icons/Delete"
 import { useIntl } from "react-intl"
+import FormikMockSubmit from "../../../components/FormikFields/FormikMockSubmit"
 
 interface Props {
   nextPage: () => void
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export default function BUildingOverview (props: Props) {
-  const { buildings } = props
+  const { buildings, nextPage } = props
   const match = useRouteMatch()
 
 
@@ -62,6 +63,8 @@ export default function BUildingOverview (props: Props) {
             </ListItem>
           </List>
         </Grid>
+
+        <FormikMockSubmit isSubmitting={false} onClick={() => nextPage()} />
       </Grid>
     </Grid>
   )

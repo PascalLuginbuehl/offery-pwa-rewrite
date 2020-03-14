@@ -54,7 +54,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
                 return handleChangeAndSave(buildings, "buildings", () => Promise.resolve(buildings))
               }}
 
-              nextPage={redirectToNextPage("/building")}
+              nextPage={redirectToNextPage("/building/new")}
             />
           </OfflineUnavailable>
         )}
@@ -79,7 +79,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
 
                   return handleChangeAndSave(newBuildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, newBuildings))
                 }}
-                nextPage={redirectToNextPage("/building")}
+                nextPage={redirectToNextPage("/building/new")}
               />
             )
           }

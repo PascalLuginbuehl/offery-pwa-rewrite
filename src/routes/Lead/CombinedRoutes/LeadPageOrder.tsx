@@ -8,8 +8,8 @@ export default function LeadPageOrder(container: ILeadContainer) {
 
   return [
     { name: "/customer", active: true },
-    { name: "/buildings/new", active: buildings.length > 0 },
-    { name: "/buildings", active: true },
+    { name: "/building/new", active: buildings.length < 0 },
+    { name: "/building", active: true },
 
     { name: "/building/email-confirmation", active: true },
     { name: "/services", active: true },
