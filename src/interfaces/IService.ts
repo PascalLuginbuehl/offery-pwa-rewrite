@@ -66,7 +66,7 @@ export interface IPackSerivce extends IPutPackService {
 
 export interface IPutStorageService {
   OutBuildingId: number | null
-  StorageBuildingId: number | null
+  StorageInBuildingId: number | null
   InBuildingId: number | null
 
   HeavyLiftService: boolean
@@ -123,7 +123,7 @@ export const emptyPackService: IPutPackService = {
 
 export const emptyStorageService: IPutStorageService = {
   InBuildingId: null,
-  StorageBuildingId: null,
+  StorageInBuildingId: null,
   OutBuildingId: null,
 
   HeavyLiftService: false,

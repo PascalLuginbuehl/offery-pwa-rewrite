@@ -78,8 +78,8 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
 
-          <Field name="storageService.StorageBuildingId" label="STORAGE_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.StorageBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+          <Field name="storageService.StorageInBuildingId" label="STORAGE_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.StorageInBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>

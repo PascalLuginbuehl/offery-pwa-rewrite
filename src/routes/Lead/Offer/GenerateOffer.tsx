@@ -8,7 +8,7 @@ import Form from "../../../components/FormikFields/Form"
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 
-import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
+
 import OfferService from "../../../services/OfferService"
 import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
@@ -21,8 +21,6 @@ const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   templateCategoryId: number | null
-  outAddressId: number | null
-  inAddressId: number | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
@@ -37,7 +35,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
-      values: { templateCategoryId, inAddressId, outAddressId },
+      values: { templateCategoryId },
       isSubmitting,
       status,
       resource,
@@ -60,11 +58,6 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
             // Fixme, there is no 2 possible
             options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
           />
-
-          <Field component={SelectBuilding} label="MOVE_OUT_ADDRESS" name="outAddressId" buildings={buildings} />
-
-          <Field component={SelectBuilding} label="MOVE_IN_ADDRESS" name="inAddressId" buildings={buildings} />
-
 
           {
             isSubmitting ?
@@ -105,9 +98,9 @@ export default withStyles(styles)(
 
       handleSubmit: async (values, actions) => {
         try {
-          const { templateCategoryId, inAddressId, outAddressId } = values
-          if (templateCategoryId && inAddressId && outAddressId) {
-            const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, outAddressId, inAddressId)
+          const { templateCategoryId } = values
+          if (templateCategoryId) {
+            const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId)
 
             // Update Lead
             const { props } = actions
