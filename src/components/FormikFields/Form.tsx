@@ -1,24 +1,15 @@
 import * as React from "react"
 import { Form as FormikForm, FormikFormProps, useFormikContext } from "formik"
 import Grid from "@material-ui/core/Grid"
-import withWidth, { WithWidthProps } from "@material-ui/core/withWidth"
-import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
-import { Theme, Typography } from "@material-ui/core"
+
+
+import {  Typography } from "@material-ui/core"
 import { Prompt } from "react-router"
 import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
 import HttpErrorHandler from "../HttpErrorHandler"
 import Submit from "./Submit"
 import IntlTypography from "../Intl/IntlTypography"
-
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      padding: 8,
-      // [theme.breakpoints.down('xs')]: {
-      //   padding: 4,
-      // }
-    },
-  })
+import GridContainer from "../GridContainer"
 
 class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: { [key: string]: any } }, { error: any; errorInfo: any }> {
   state = { error: null, errorInfo: null }
@@ -61,6 +52,9 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
           <IntlTypography color="error">Something went wrong.</IntlTypography>
 
           <Typography>
+            {/*
+            Weird TS error component property does not exist
+            //@ts-ignore */}
             <IntlTypography component="span">FILL_FOLLOWING_FORM</IntlTypography>
             &nbsp;
             <a target="_blank" rel="noopener noreferrer" href={googleForm + queryString}>
@@ -85,13 +79,13 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
   }
 }
 
-interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, WrappedComponentProps {
+interface Props extends FormikFormProps, WrappedComponentProps {
   routerDisabled?: boolean
   disableSubmit?: boolean
   disableGridContainer?: boolean
 }
 
-const Form: React.ComponentType<Props> = ({ classes, intl, width, children, routerDisabled, disableSubmit = false, disableGridContainer = false }: Props) => {
+const Form: React.ComponentType<Props> = ({ intl, children, routerDisabled, disableSubmit = false, disableGridContainer = false }: Props) => {
   const { dirty } = useFormikContext()
 
   const handleUnload = (e: BeforeUnloadEvent) => {
@@ -138,9 +132,9 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children, rout
           disableGridContainer ?
             gridChildren
             :
-            <Grid container spacing={width == "xs" ? 1 : 2} className={classes.root}>
+            <GridContainer>
               {gridChildren}
-            </Grid>
+            </GridContainer>
         }
 
       </FormikForm>
@@ -148,4 +142,4 @@ const Form: React.ComponentType<Props> = ({ classes, intl, width, children, rout
   )
 }
 
-export default injectIntl(withStyles(styles)(withWidth()(Form)))
+export default injectIntl(Form)

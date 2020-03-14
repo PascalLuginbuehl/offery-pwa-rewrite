@@ -1,11 +1,21 @@
 import React, { useEffect } from "react"
 import BuildingEdit from "../../../components/FormikFields/Bundled/BuildingEdit"
 
-import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography, Grid } from "@material-ui/core"
+import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography, Grid, createStyles, Theme } from "@material-ui/core"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { Formik } from "formik"
 import { IResource } from "../../../interfaces/IResource"
+import { makeStyles } from "@material-ui/styles";
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      padding: theme.spacing(1),
+    },
+  })
+)
 
 interface Props {
   buildingId: number | null
@@ -21,6 +31,7 @@ export default function NestedBuildingEdit(props: Props) {
     console.log("ReInizializing")
   }, [buildingId])
 
+  const classes = useStyles()
 
   // useEffect()
   const initalBuilding = buildings.find((building) => building.BuildingId === buildingId)
@@ -44,7 +55,7 @@ export default function NestedBuildingEdit(props: Props) {
         <ExpansionPanelSummary>
           <Typography>Edit building here</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails classes={{ root: classes.root }}>
           <Formik<IBuilding>
             initialValues={initalBuilding}
             enableReinitialize

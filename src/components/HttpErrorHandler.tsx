@@ -69,6 +69,9 @@ class HttpErrorHandler extends React.Component<Props> {
           <IntlTypography color="error">ERROR_WHILE_SAVING</IntlTypography>
 
           <Typography>
+            {/*
+            Weird TS error component property does not exist
+            //@ts-ignore */}
             <IntlTypography component="span">FILL_FOLLOWING_FORM</IntlTypography>
             &nbsp;
             <a target="_blank" href={googleForm + queryString}>

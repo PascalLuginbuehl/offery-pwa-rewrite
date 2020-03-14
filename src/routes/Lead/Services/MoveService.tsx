@@ -16,6 +16,7 @@ import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 import NestedBuildingEdit from "./NestedBuildingEdit"
+import GridContainer from "../../../components/GridContainer"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -56,7 +57,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
         </Form>
 
-        <Grid container spacing={2}>
+        <GridContainer>
 
           <FormikDivider />
           <Grid item xs={12}>
@@ -70,7 +71,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
           <Field name="moveService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-        </Grid>
+        </GridContainer>
 
         {/* <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} /> */}
       </Grid>
