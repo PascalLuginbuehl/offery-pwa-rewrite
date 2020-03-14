@@ -22,19 +22,20 @@ const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   moveService: IPutMoveService
-  buildings: IBuilding[]
   lead: ILead
 }
 
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (moveService: IPutMoveService, buildings: IBuilding[], lead: ILead) => Promise<any>
+  buildings: IBuilding[]
+  onChangeAndSave: (moveService: IPutMoveService, lead: ILead) => Promise<any>
+  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
 }
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings, values } = this.props
+    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuildings } = this.props
 
     // const { data } = this.props
     return (
@@ -58,22 +59,21 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
         </Form>
 
         <GridContainer>
-
           <FormikDivider />
+
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
           <Field name="moveService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.moveService.OutBuildingId} buildings={buildings} saveBuildings={() => Promise.resolve()} />
+          <NestedBuildingEdit resource={resource} buildingId={values.moveService.OutBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
           <Field name="moveService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.moveService.InBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
 
         </GridContainer>
-
-        {/* <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} /> */}
       </Grid>
     )
   }
@@ -82,11 +82,11 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ buildings: props.buildings, moveService: props.moveService, lead: props.lead }),
+      mapPropsToValues: props => ({ moveService: props.moveService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.moveService, values.buildings, values.lead)
+          await actions.props.onChangeAndSave(values.moveService, values.lead)
 
           actions.setSubmitting(false)
 

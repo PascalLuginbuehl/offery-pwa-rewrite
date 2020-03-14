@@ -15,23 +15,27 @@ import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTim
 import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { IBuilding } from "../../../interfaces/IBuilding"
+import GridContainer from "../../../components/GridContainer"
+import NestedBuildingEdit from "./NestedBuildingEdit"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   storageService: IPutStorageService
-  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
+  buildings: IBuilding[]
   nextPage: () => void
-  onChangeAndSave: (storageService: IPutStorageService, buildings: IBuilding[], lead: ILead) => Promise<any>
+  onChangeAndSave: (storageService: IPutStorageService, lead: ILead) => Promise<any>
+  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
 }
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { resource, storageService, buildings } = this.props
+    const { resource, values, buildings, onSaveNestedBuildings } = this.props
 
     return (
       <Grid item xs={12}>
@@ -58,13 +62,32 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="storageService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+        </Form>
 
+        <GridContainer>
           <FormikDivider />
+
+          <Grid item xs={12}>
+            <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
+          </Grid>
+
+          <Field name="storageService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.OutBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+
           <Grid item xs={12}>
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
-          {/* <Storage buildingOptions={buildingOptions} prefix={"storage"} resource={resource} /> */}
-        </Form>
+
+          <Field name="storageService.StorageBuildingId" label="STORAGE_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.StorageBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+
+          <Grid item xs={12}>
+            <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
+          </Grid>
+          <Field name="storageService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.InBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+
+        </GridContainer>
       </Grid>
     )
   }
@@ -73,11 +96,11 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ storageService: props.storageService, buildings: props.buildings, lead: props.lead }),
+      mapPropsToValues: props => ({ storageService: props.storageService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.storageService, values.buildings, values.lead)
+          await actions.props.onChangeAndSave(values.storageService, values.lead)
 
           actions.setSubmitting(false)
 

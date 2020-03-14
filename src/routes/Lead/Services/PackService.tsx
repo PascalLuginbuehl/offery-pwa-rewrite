@@ -14,23 +14,27 @@ import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { ILead } from "../../../interfaces/ILead"
 import { IBuilding } from "../../../interfaces/IBuilding"
+import NestedBuildingEdit from "./NestedBuildingEdit"
+import GridContainer from "../../../components/GridContainer"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   packService: IPutPackService
-  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (packService: IPutPackService, buildings: IBuilding[], lead: ILead) => Promise<any>
+  buildings: IBuilding[]
+  onChangeAndSave: (packService: IPutPackService, lead: ILead) => Promise<any>
+  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
 }
 
 class PackService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, values } = this.props
+    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuildings } = this.props
 
     return (
       <Grid item xs={12}>
@@ -45,14 +49,19 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="packService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+        </Form>
 
+
+        <GridContainer>
           <FormikDivider />
+
           <Grid item xs={12}>
-            <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
+            <IntlTypography variant="h6">PACK_BUILDING</IntlTypography>
           </Grid>
 
-          {/* <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} /> */}
-        </Form>
+          <Field name="packService.BuildingId" label="PACK_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.packService.BuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+        </GridContainer>
       </Grid>
     )
   }
@@ -61,11 +70,11 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ packService: props.packService, buildings: props.buildings, lead: props.lead }),
+      mapPropsToValues: props => ({ packService: props.packService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.packService, values.buildings, values.lead)
+          await actions.props.onChangeAndSave(values.packService, values.lead)
 
           actions.setSubmitting(false)
 

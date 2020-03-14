@@ -14,23 +14,27 @@ import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { IBuilding } from "../../../interfaces/IBuilding"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
+import NestedBuildingEdit from "./NestedBuildingEdit"
+import GridContainer from "../../../components/GridContainer"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   disposalService: IPutDisposalService
-  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (disposalService: IPutDisposalService, buildings: IBuilding[], lead: ILead) => Promise<any>
+  buildings: IBuilding[]
+  onChangeAndSave: (disposalService: IPutDisposalService, lead: ILead) => Promise<any>
+  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
 }
 
 class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings } = this.props
+    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuildings } = this.props
 
     return (
       <Grid item xs={12}>
@@ -47,14 +51,18 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="disposalService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+        </Form>
 
+        <GridContainer>
           <FormikDivider />
+
           <Grid item xs={12}>
             <IntlTypography variant="h6">DISPOSAL_BUILDING</IntlTypography>
           </Grid>
 
-          {/* <Disposal buildingOptions={buildingOptions} prefix="disposal" resource={resource} /> */}
-        </Form>
+          <Field name="disposalService.BuildingId" label="DISPOSAL_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.disposalService.BuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+        </GridContainer>
       </Grid>
     )
   }
@@ -63,11 +71,11 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ disposalService: props.disposalService, buildings: props.buildings, lead: props.lead }),
+      mapPropsToValues: props => ({ disposalService: props.disposalService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.disposalService, values.buildings, values.lead)
+          await actions.props.onChangeAndSave(values.disposalService, values.lead)
 
           actions.setSubmitting(false)
 

@@ -16,23 +16,27 @@ import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 
 import { ILead } from "../../../interfaces/ILead"
 import { IBuilding } from "../../../interfaces/IBuilding"
+import GridContainer from "../../../components/GridContainer"
+import NestedBuildingEdit from "./NestedBuildingEdit"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   cleaningService: IPutCleaningService
-  buildings: IBuilding[]
   lead: ILead
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
-  onChangeAndSave: (cleaningSerivce: IPutCleaningService, buildings: IBuilding[], lead: ILead) => Promise<any>
+  onChangeAndSave: (cleaningSerivce: IPutCleaningService, lead: ILead) => Promise<any>
+  buildings: IBuilding[]
+  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
 }
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, values, buildings } = this.props
+    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuildings } = this.props
 
     return (
       <Grid item xs={12}>
@@ -54,14 +58,19 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+        </Form>
 
+        <GridContainer>
           <FormikDivider />
+
           <Grid item xs={12}>
             <IntlTypography variant="h6">CLEANING_BUILDING</IntlTypography>
           </Grid>
 
-          {/* <Cleaning buildingOptions={buildingOptions} prefix={"cleaning"} resource={resource} /> */}
-        </Form>
+          <Field name="cleaningService.BuildingId" label="CLEANING_BUILDING" buildings={buildings} component={SelectBuilding} />
+
+          <NestedBuildingEdit resource={resource} buildingId={values.cleaningService.BuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+        </GridContainer>
       </Grid>
     )
   }
@@ -70,11 +79,11 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 export default withStyles(styles)(
   withResource(
     withFormik<Props, Values>({
-      mapPropsToValues: props => ({ cleaningService: props.cleaningService, buildings: props.buildings, lead: props.lead }),
+      mapPropsToValues: props => ({ cleaningService: props.cleaningService, lead: props.lead }),
 
       handleSubmit: async (values, actions) => {
         try {
-          await actions.props.onChangeAndSave(values.cleaningService, values.buildings, values.lead)
+          await actions.props.onChangeAndSave(values.cleaningService, values.lead)
 
           actions.resetForm()
           actions.setSubmitting(false)
