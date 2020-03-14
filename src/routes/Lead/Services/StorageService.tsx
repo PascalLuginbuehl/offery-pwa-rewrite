@@ -46,6 +46,13 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
           <Field name="storageService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
+          <FormikGroups label="CONTACT_PERSON" xs={12}>
+            <Field label="FULL_NAME" name="storageService.ContactPersonFullName" component={FormikTextField} required />
+            <Field label="COMPANY" name="storageService.CompanyName" component={FormikTextField} />
+            <Field label="CONTACTPERSON_EMAIL" name="storageService.ContactPersonEMail" component={FormikTextField} />
+            <Field label="CONTACT_PERSON_TEL" name="storageService.ContactPersonTel" component={FormikTextField} />
+          </FormikGroups>
+
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
           </FormikGroups>

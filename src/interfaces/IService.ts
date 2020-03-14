@@ -65,6 +65,11 @@ export interface IPutStorageService {
   LampDemontageService: boolean
   BoreService: boolean
   Comment: string
+
+  CompanyName: string
+  ContactPersonFullName: string
+  ContactPersonTel: string
+  ContactPersonEMail: string
 }
 
 export interface IStorageSerivce extends IPutStorageService {
@@ -107,7 +112,12 @@ export const emptyStorageService: IPutStorageService = {
   MontageService: false,
   PianoService: false,
   StorageDate: null,
-  Comment: ""
+  Comment: "",
+
+  CompanyName: "",
+  ContactPersonFullName: "",
+  ContactPersonTel: "",
+  ContactPersonEMail: "",
 }
 
 export const emptyDisposalService: IPutDisposalService = {
