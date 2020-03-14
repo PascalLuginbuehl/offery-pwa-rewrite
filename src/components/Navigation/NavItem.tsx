@@ -6,15 +6,6 @@ import { RouteComponentProps } from "react-router"
 
 const styles = (theme: Theme) =>
   createStyles({
-    activeLink: {
-      color: theme.palette.primary.main
-    },
-
-    noLink: {
-      textDecoration: "none",
-      color: "inherit",
-    },
-
     nested: {
       paddingLeft: theme.spacing(4),
     },
@@ -38,11 +29,9 @@ class NavItem extends React.Component<Props> {
 
     return (
       <>
-        <NavLink to={to} activeClassName={classes.activeLink} className={classes.noLink}>
-          <ListItem selected={location.pathname === to} button className={nested ? classes.nested : (doubleNested ? classes.doubleNested : "")}>
-            <ListItemText primary={intl.formatMessage({ id: title })} />
-          </ListItem>
-        </NavLink>
+        <ListItem component={NavLink} to={to} selected={location.pathname === to} button className={nested ? classes.nested : (doubleNested ? classes.doubleNested : "")}>
+          <ListItemText primary={intl.formatMessage({ id: title })} />
+        </ListItem>
       </>
 
     )
