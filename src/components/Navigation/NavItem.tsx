@@ -1,11 +1,10 @@
-
-import { createStyles, Theme, WithStyles, withStyles, ListItemText, ListItem, Collapse, IconButton, ListItemSecondaryAction } from '@material-ui/core'
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import { NavLink, withRouter } from 'react-router-dom'
-import * as React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
-import { RouteComponentProps } from 'react-router';
+import { createStyles, Theme, WithStyles, withStyles, ListItemText, ListItem, Collapse, IconButton, ListItemSecondaryAction } from "@material-ui/core"
+import ExpandLess from "@material-ui/icons/ExpandLess"
+import ExpandMore from "@material-ui/icons/ExpandMore"
+import { NavLink, withRouter } from "react-router-dom"
+import * as React from "react"
+import { InjectedIntlProps, injectIntl } from "react-intl"
+import { RouteComponentProps } from "react-router"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,8 +27,8 @@ const styles = (theme: Theme) =>
 
 
 interface Props extends WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
-  to: string,
-  title: string,
+  to: string
+  title: string
   nested?: boolean
   doubleNested?: boolean
 }

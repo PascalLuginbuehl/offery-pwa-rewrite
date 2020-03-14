@@ -4,6 +4,7 @@ import { ListSubheader, Collapse } from "@material-ui/core"
 import { FormattedMessage } from "react-intl"
 import NavFolder from "../../../components/Navigation/NavFolder"
 import NavItem from "../../../components/Navigation/NavItem"
+import NavItemBuilding from "../../../components/Navigation/NavItemBuilding"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -30,7 +31,7 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
 
       <NavFolder to={`${matchUrl}/building`} title="BUILDINGS">
         {buildings.map(building => (
-          <NavItem to={`${matchUrl}/building/${building.BuildingId}`} key={building.BuildingId} title="MOVE_OUT_BUILDING" nested />
+          <NavItemBuilding to={`${matchUrl}/building/${building.BuildingId}`} key={building.BuildingId} building={building} nested />
         ))}
       </NavFolder>
 
