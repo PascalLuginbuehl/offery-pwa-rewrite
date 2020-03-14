@@ -106,6 +106,10 @@ class LeadAPI {
     return BuildingService.createBuilding(leadId, building)
   }
 
+  DeleteBuilding = (building: IBuilding) => {
+    return BuildingService.deleteBuilding(building.BuildingId)
+  }
+
   SaveCleaningService = (leadId: number, cleaningService: IPutCleaningService | null) => {
     return cleaningService ? ServicesService.saveCleaningService(leadId, cleaningService) : Promise.resolve(null)
   }

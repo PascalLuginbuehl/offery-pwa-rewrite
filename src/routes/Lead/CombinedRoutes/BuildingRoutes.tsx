@@ -44,7 +44,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
         exact
         path={`${matchUrl}/building/new`}
         render={routeProps => (
-          <OfflineUnavailable offline={offline} nextPage={redirectToNextPage("/building/building")}>
+          <OfflineUnavailable offline={offline} nextPage={redirectToNextPage("/building/new")}>
             <Building
               building={emptyBuilding}
               {...routeProps}
@@ -92,6 +92,7 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
         path={`${matchUrl}/building/`}
         render={routeProps => (
           <BuildingsOverview
+            handleChange={(buildings: IBuilding[]) => handleChange(buildings, "buildings")}
             {...routeProps}
             buildings={buildings}
 

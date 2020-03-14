@@ -37,6 +37,20 @@ class BuildingService {
       .then(json => this.toSpecificType<IBuilding[]>(json))
   }
 
+
+  async deleteBuilding(buildingId: number): Promise<IBuilding[]> {
+    return fetch(API_URL + "/building/" + buildingId, await LoginService.authorizeRequest({
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }))
+      .then(errorFunction)
+      .then((response) => response.json())
+      // .then(middleWare)
+      .then(json => this.toSpecificType<IBuilding[]>(json))
+  }
+
   async saveBuildings(leadId: number, body: IPostBuilding[]): Promise<IBuilding[]> {
     return fetch(API_URL + "/building/" + leadId, await LoginService.authorizeRequest({
       method: "PUT",
