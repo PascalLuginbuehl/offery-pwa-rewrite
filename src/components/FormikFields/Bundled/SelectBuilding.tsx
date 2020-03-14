@@ -7,7 +7,7 @@ import {  MenuItem, ListItemText, FormControl, Select, InputLabel } from "@mater
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import  { FormikTextFieldProps } from "../FormikTextField"
 import { SelectProps } from "@material-ui/core/Select"
-import { IAddress } from "../../../interfaces/IAddress"
+// import { IAddress } from "../../../interfaces/IAddress"
 import { IBuilding } from "../../../interfaces/IBuilding"
 
 export interface FormikSelectProps extends FieldProps, SelectProps {
@@ -15,11 +15,6 @@ export interface FormikSelectProps extends FieldProps, SelectProps {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
-}
-
-interface AdressObj {
-  label: string
-  container: IAddress
 }
 
 class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComponentProps> {
@@ -40,26 +35,6 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComp
       ...props
     } = this.props
 
-    // const { moveOutBuilding, moveInBuilding, cleaningBuilding, disposalBuilding, storageBuilding } = this.props.buildings
-
-    const options: AdressObj[] = [
-      // { label: "MOVE_OUT_BUILDING", container: {Address} },
-      // { label: "MOVE_IN_BUILDING", container: moveInBuilding as BaseBuilding },
-      // { label: "STORAGE_BUILDING", container: storageBuilding as BaseBuilding },
-      // { label: "DISPOSAL_BUILDING", container: disposalBuilding as BaseBuilding },
-      // { label: "CLEANING_BUILDING", container: cleaningBuilding as {Address: IAddress} },
-    ]
-    // .filter((value) => {
-    //   return value.container !== null && value.container !== undefined
-    // })
-    // .map(value => ({ label: value.label, container: value.container.Address }))
-    // // @ts-ignore
-    // .filter((value: {label: string, container: IAddress}) => {
-    //   return value.container.hasOwnProperty("AddressId")
-    // })
-
-
-
     const { name } = field
     const { touched, errors, isSubmitting } = form
 
@@ -73,11 +48,11 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComp
           displayEmpty
           renderValue={(value: unknown) => {
             if (value && typeof value === "number") {
-              const foundBuilding = options.find(building => building.container.AddressId === value)
+              const foundBuilding = buildings.find(building => building.BuildingId === value)
 
               if (foundBuilding) {
-                return intl.formatMessage({ id: foundBuilding.label })
-                // return foundBuilding.container.Street + ", " + foundBuilding.container.PLZ + " " + foundBuilding.container.City
+                // return intl.formatMessage({ id: foundBuilding.label })
+                return foundBuilding.Address.Street + ", " + foundBuilding.Address.PLZ + " " + foundBuilding.Address.City
               }
             }
 
@@ -91,11 +66,11 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComp
           {...field}
           value={field.value === undefined || field.value === null ? "" : field.value}
         >
-          {options.map((building, index) => (
-            <MenuItem value={building.container.AddressId} dense key={index}>
+          {buildings.map((building, index) => (
+            <MenuItem value={building.BuildingId} dense key={index}>
               <ListItemText
-                primary={building.container.Street + ", " + building.container.PLZ + " " + building.container.City}
-                secondary={intl.formatMessage({ id: building.label })}
+                primary={building.Address.Street + ", " + building.Address.PLZ + " " + building.Address.City}
+                // secondary={intl.formatMessage({ id: building.label })}
               />
             </MenuItem>
           ))}

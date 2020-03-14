@@ -1,4 +1,7 @@
 export interface IPutMoveService {
+  OutBuildingId: number | null
+  InBuildingId: number | null
+
   MoveDate: Date | null
   FurnitureLiftService: boolean
   PianoService: boolean
@@ -15,6 +18,8 @@ export interface IMoveService extends IPutMoveService {
 }
 
 export interface IPutCleaningService {
+  BuildingId: number | null
+
   CleaningDate: Date | null
   HandOverDate: Date | null
   HighPressureTerraceCleaningService: boolean
@@ -34,6 +39,8 @@ export interface ICleaningService extends IPutCleaningService {
 }
 
 export interface IPutDisposalService {
+  BuildingId: number | null
+
   DisposalDate: Date | null
   HeavyLiftService: boolean
   FurnitureLiftService: boolean
@@ -46,6 +53,8 @@ export interface IDisposalSerivce extends IPutDisposalService {
 }
 
 export interface IPutPackService {
+  BuildingId: number | null
+
   HeavyLiftService: boolean
   PackServiceDate: Date | null
   HasOutService: boolean
@@ -56,6 +65,10 @@ export interface IPackSerivce extends IPutPackService {
 }
 
 export interface IPutStorageService {
+  OutBuildingId: number | null
+  StorageBuildingId: number | null
+  InBuildingId: number | null
+
   HeavyLiftService: boolean
   StorageDate: string | null
   FurnitureLiftService: boolean
@@ -85,6 +98,9 @@ export interface IServices {
 }
 
 export const emptyMoveService: IPutMoveService = {
+  InBuildingId: null,
+  OutBuildingId: null,
+
   HeavyLiftService: false,
   BoreService: false,
   DeMontageService: false,
@@ -97,6 +113,8 @@ export const emptyMoveService: IPutMoveService = {
 }
 
 export const emptyPackService: IPutPackService = {
+  BuildingId: null,
+
   HeavyLiftService: false,
   HasOutService: false,
   PackServiceDate: null,
@@ -104,6 +122,10 @@ export const emptyPackService: IPutPackService = {
 }
 
 export const emptyStorageService: IPutStorageService = {
+  InBuildingId: null,
+  StorageBuildingId: null,
+  OutBuildingId: null,
+
   HeavyLiftService: false,
   BoreService: false,
   DeMontageService: false,
@@ -121,6 +143,8 @@ export const emptyStorageService: IPutStorageService = {
 }
 
 export const emptyDisposalService: IPutDisposalService = {
+  BuildingId: null,
+
   HeavyLiftService: false,
   DeMontage: false,
   FurnitureLiftService: false,
@@ -130,6 +154,8 @@ export const emptyDisposalService: IPutDisposalService = {
 }
 
 export const emptyCleaningService: IPutCleaningService = {
+  BuildingId: null,
+
   CleaningCarpetService: false,
   CleaningFireplaceService: false,
   CleaningSpecialService: false,

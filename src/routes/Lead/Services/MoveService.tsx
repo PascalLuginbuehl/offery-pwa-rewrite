@@ -14,6 +14,8 @@ import { IPutMoveService } from "../../../interfaces/IService"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { ILead } from "../../../interfaces/ILead"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
+import NestedBuildingEdit from "./NestedBuildingEdit"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -23,6 +25,7 @@ interface Values {
   lead: ILead
 }
 
+
 interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (moveService: IPutMoveService, buildings: IBuilding[], lead: ILead) => Promise<any>
@@ -30,11 +33,9 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings } = this.props
+    const { isSubmitting, status, resource, buildings, values } = this.props
 
     // const { data } = this.props
-
-    console.log(this.props)
     return (
       <Grid item xs={12}>
         <Form>
@@ -53,19 +54,25 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+        </Form>
+
+        <Grid container spacing={2}>
 
           <FormikDivider />
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
-          {/* <MoveOut buildingOptions={buildingOptions} prefix={"moveOut"} resource={resource} /> */}
+          <Field name="moveService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
+          <NestedBuildingEdit resource={resource} buildingId={values.moveService.OutBuildingId} buildings={buildings} saveBuildings={() => Promise.resolve()} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
+          <Field name="moveService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-          {/* <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} /> */}
-        </Form>
+        </Grid>
+
+        {/* <MoveIn buildingOptions={buildingOptions} prefix={"moveIn"} resource={resource} /> */}
       </Grid>
     )
   }

@@ -25,7 +25,7 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
-  AddressId: number | null
+  BuildingId: number | null
   Comment: string
   VisitDate: Date | null
 }
@@ -75,13 +75,13 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             </Typography>
           </Grid>
 
-          <Field component={SelectBuilding} label="VISIT_ADDRESS" name="AddressId" buildings={buildings} />
-          {/* <SelectAddress label="" name="AddressId" buildings={buildingOptions} /> */}
+          <Field component={SelectBuilding} label="VISIT_ADDRESS" name="BuildingId" buildings={buildings} />
+          {/* <SelectAddress label="" name="BuildingId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
           <Grid item xs={12}>
-            <Button onClick={this.sendAndSubmit} disabled={!values.AddressId || !values.VisitDate} variant="contained">
+            <Button onClick={this.sendAndSubmit} disabled={!values.BuildingId || !values.VisitDate} variant="contained">
               <FormattedMessage id="SEND_EMAIL" />
             </Button>
           </Grid>
@@ -92,16 +92,16 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
   sendAndSubmit = async () => {
     const { lead, submitForm, values, setSubmitting, intl } = this.props
-    const { AddressId, Comment, VisitDate } = values
+    const { BuildingId, Comment, VisitDate } = values
 
     setSubmitting(true)
 
-    if (!LeadAPI.isCompleteLead(lead) || !AddressId || !VisitDate) {
+    if (!LeadAPI.isCompleteLead(lead) || !BuildingId || !VisitDate) {
       alert(intl.formatMessage({ id: "VISIT_AND_ADDRESS_REQUIRED" }))
       setSubmitting(false)
       return
     }
-    await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, AddressId: AddressId, VisitDate: VisitDate })
+    await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, BuildingId: BuildingId, VisitDate: VisitDate })
 
     submitForm()
   }
@@ -113,7 +113,7 @@ export default injectIntl(
       withFormik<Props, Values>({
         mapPropsToValues: props => {
           const { lead: { FromAddress, VisitDate } } = props
-          return { AddressId: FromAddress ? FromAddress.AddressId : null, Comment: "", VisitDate }
+          return { BuildingId: FromAddress ? FromAddress.AddressId : null, Comment: "", VisitDate }
         },
 
         handleSubmit: (values, actions) => {
