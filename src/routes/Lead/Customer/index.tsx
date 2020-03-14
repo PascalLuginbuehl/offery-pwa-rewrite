@@ -109,14 +109,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="CleaningDate" label="CLEANING" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />
             <Field name="HandOverDate" label="HANDIN" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />
           </FormikGroups>
-
-          <FormikGroups label="BUILDINGS" xs={12}>
-            <Field name="HasMoveOutBuilding" label="MOVE_OUT_BUILDING" component={FormikButtonCheckbox} />
-            <Field name="HasMoveInBuilding" label="MOVE_IN_BUILDING" component={FormikButtonCheckbox} />
-            <Field name="HasStorageInBuilding" label="STORAGE_BUILDING" component={FormikButtonCheckbox} />
-            <Field name="HasDisposalOutBuilding" label="DISPOSAL_BUILDING" component={FormikButtonCheckbox} />
-            <Field name="HasCleaningBuilding" label="CLEANING_BUILDING" component={FormikButtonCheckbox} />
-          </FormikGroups>
         </Form>
       </Grid>
     )

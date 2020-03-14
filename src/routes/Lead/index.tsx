@@ -503,7 +503,7 @@ class Lead extends Component<Props, State> {
 
     // Check if lead is even defined
     if (container) {
-      const order = LeadPageOrder(container.Lead, container.Lead.Services)
+      const order = LeadPageOrder(container)
 
       let lastPage = { name: "" }
       for (let index = 0; index < order.length; index++) {

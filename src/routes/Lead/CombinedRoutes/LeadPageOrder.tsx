@@ -1,18 +1,16 @@
-import { ILead } from "../../../interfaces/ILead"
-import { IServices } from "../../../interfaces/IService"
+import { ILeadContainer } from "../LeadAPI"
 
-export default (lead: ILead, services: IServices) => {
+export default function LeadPageOrder(container: ILeadContainer) {
 
-  const { HasMoveInBuilding, HasMoveOutBuilding, HasDisposalOutBuilding, HasStorageInBuilding, HasCleaningBuilding } = lead
-  const {HasCleaningServiceEnabled, HasDisposalServiceEnabled, HasPackServiceEnabled, HasStorageServiceEnabled, HasMoveServiceEnabled} = services
+  const { buildings, Lead: { Services } } = container
+
+  const { HasCleaningServiceEnabled, HasDisposalServiceEnabled, HasPackServiceEnabled, HasStorageServiceEnabled, HasMoveServiceEnabled } = Services
 
   return [
-    { name: "/building", active: true },
-    { name: "/building/move-out", active: HasMoveOutBuilding },
-    { name: "/building/move-in", active: HasMoveInBuilding },
-    { name: "/building/storage", active: HasStorageInBuilding },
-    { name: "/building/disposal", active: HasDisposalOutBuilding },
-    { name: "/building/cleaning", active: HasCleaningBuilding },
+    { name: "/customer", active: true },
+    { name: "/buildings/new", active: buildings.length > 0 },
+    { name: "/buildings", active: true },
+
     { name: "/building/email-confirmation", active: true },
     { name: "/services", active: true },
     { name: "/services/move", active: HasMoveServiceEnabled },

@@ -37,12 +37,6 @@ export interface IPostLead {
   HandOverDate: Date | null
   DeliveryDate: Date | null
 
-  HasMoveOutBuilding: boolean
-  HasMoveInBuilding: boolean
-  HasStorageInBuilding: boolean
-  HasCleaningBuilding: boolean
-  HasDisposalOutBuilding: boolean
-
   Comment: string
 }
 
@@ -125,10 +119,4 @@ export const emptyLead: IPostLead = {
   Comment: "",
 
   Customer: emptyCustomer,
-
-  HasCleaningBuilding: false,
-  HasDisposalOutBuilding: false,
-  HasMoveInBuilding: true,
-  HasMoveOutBuilding: true,
-  HasStorageInBuilding: false,
 }

@@ -7,15 +7,6 @@ import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    activeLink: {
-      color: theme.palette.primary.main
-    },
-
-    noLink: {
-      textDecoration: "none",
-      color: "inherit",
-    },
-
     nested: {
       paddingLeft: theme.spacing(4),
     },
@@ -24,7 +15,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-
 
 interface Props {
   building: IBuilding
@@ -40,11 +30,9 @@ export default function NavItemBuilding(props: Props) {
 
   return (
     <>
-      <NavLink to={to} activeClassName={classes.activeLink} className={classes.noLink}>
-        <ListItem selected={location.pathname === to} button className={nested ? classes.nested : ""}>
-          <ListItemText primary={building.Address.Street} secondary={`${building.Address.PLZ} ${building.Address.City}`} />
-        </ListItem>
-      </NavLink>
+      <ListItem dense component={NavLink} to={to} selected={location.pathname === to} button className={nested ? classes.nested : ""}>
+        <ListItemText primary={building.Address.Street} secondary={`${building.Address.PLZ} ${building.Address.City}`} />
+      </ListItem>
     </>
   )
 }
