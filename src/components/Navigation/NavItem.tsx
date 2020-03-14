@@ -1,41 +1,46 @@
-import { createStyles, Theme, WithStyles, withStyles, ListItemText, ListItem } from "@material-ui/core"
-import { NavLink, withRouter } from "react-router-dom"
+import { createStyles, Theme, ListItemText, ListItem, ListItemIcon } from "@material-ui/core"
+import { NavLink } from "react-router-dom"
 import * as React from "react"
-import { WrappedComponentProps, injectIntl } from "react-intl"
-import { RouteComponentProps } from "react-router"
+import { useIntl } from "react-intl"
+import { useLocation } from "react-router"
+import { makeStyles } from "@material-ui/styles"
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     nested: {
       paddingLeft: theme.spacing(4),
     },
     doubleNested: {
       paddingLeft: theme.spacing(8),
-    }
+    },
+    noMinWidth: {
+      minWidth: "auto"
+    },
   })
+)
 
-
-interface Props extends WithStyles<typeof styles>, WrappedComponentProps, RouteComponentProps {
+interface Props {
   to: string
   title: string
   nested?: boolean
   doubleNested?: boolean
+
+  icon?: React.ReactElement
 }
 
-class NavItem extends React.Component<Props> {
+export default function NavItem(props: Props) {
+  const { icon, title, nested, doubleNested, to } = props
 
-  public render() {
-    const { classes, to, title, intl, children, nested, doubleNested, location } = this.props
+  const location = useLocation()
+  const classes = useStyles()
+  const { formatMessage } = useIntl()
 
-    return (
-      <>
-        <ListItem component={NavLink} to={to} selected={location.pathname === to} button className={nested ? classes.nested : (doubleNested ? classes.doubleNested : "")}>
-          <ListItemText primary={intl.formatMessage({ id: title })} />
-        </ListItem>
-      </>
-
-    )
-  }
+  return (
+    <>
+      <ListItem component={NavLink} to={to} selected={location.pathname === to} button className={nested ? classes.nested : (doubleNested ? classes.doubleNested : "")}>
+        {icon ? <ListItemIcon className={classes.noMinWidth} >{icon}</ListItemIcon> : null}
+        <ListItemText primary={formatMessage({ id: title })} />
+      </ListItem>
+    </>
+  )
 }
-
-export default withRouter(injectIntl(withStyles(styles)(NavItem)))

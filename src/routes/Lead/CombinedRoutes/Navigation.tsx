@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl"
 import NavFolder from "../../../components/Navigation/NavFolder"
 import NavItem from "../../../components/Navigation/NavItem"
 import NavItemBuilding from "../../../components/Navigation/NavItemBuilding"
+import AddCircleIcon from "@material-ui/icons/AddCircle"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -32,7 +33,7 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         {buildings.map(building => (
           <NavItemBuilding to={`${matchUrl}/building/${building.BuildingId}`} key={building.BuildingId} building={building} nested />
         ))}
-        <NavItem to={`${matchUrl}/building/new`} title="CREATE_NEW_BUILDING" nested />
+        <NavItem to={`${matchUrl}/building/new`} icon={<AddCircleIcon color="primary" />} title="CREATE_NEW_BUILDING" nested />
       </NavFolder>
 
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">

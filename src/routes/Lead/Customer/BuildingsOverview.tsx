@@ -24,7 +24,7 @@ export default function BUildingOverview (props: Props) {
     throw new Error("Now route match property was given")
   }
 
-  const {} = useIntl()
+  const { formatMessage} = useIntl()
 
 
   return (
@@ -57,7 +57,7 @@ export default function BUildingOverview (props: Props) {
                 <AddCircleIcon color="primary" />
               </ListItemIcon>
               <ListItemText
-                primary={"CREATE_NEW_BUILDING"}
+                primary={formatMessage({id: "CREATE_NEW_BUILDING"})}
               />
             </ListItem>
           </List>
