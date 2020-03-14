@@ -1,5 +1,5 @@
-import { createStyles, Theme, WithStyles, withStyles, CircularProgress } from '@material-ui/core'
-import * as React from 'react'
+import { createStyles, Theme, WithStyles, withStyles, CircularProgress } from "@material-ui/core"
+import * as React from "react"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -25,7 +25,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 class Loading extends React.Component<Props, State> {
-  mounted: boolean = false
+  mounted = false
   state: State = {
     complete: false
   }

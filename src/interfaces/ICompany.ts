@@ -1,10 +1,10 @@
-import { IUser } from "./IUser";
-import { IProduct } from "./IProduct";
+import { IUser } from "./IUser"
+import { IProduct } from "./IProduct"
 
 export interface IAddress {
-  AddressId: number,
-  Street: string,
-  PLZ: string,
+  AddressId: number
+  Street: string
+  PLZ: string
   City: string
 }
 export interface IOfferTemplate {

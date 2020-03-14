@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { Divider, Theme, createStyles, WithStyles, List, withStyles } from '@material-ui/core';
-import NavItem from './NavItem';
-import { RouteComponentProps, withRouter } from 'react-router';
+import * as React from "react"
+import { Divider, Theme, createStyles, WithStyles, List, withStyles } from "@material-ui/core"
+import NavItem from "./NavItem"
+import { RouteComponentProps, withRouter } from "react-router"
 
 const styles = (theme: Theme) =>
   createStyles({

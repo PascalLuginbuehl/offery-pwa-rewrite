@@ -1,26 +1,26 @@
-import { IconButton, Theme, Tooltip, WithStyles, Typography, withWidth } from '@material-ui/core'
-import { createStyles, withStyles } from '@material-ui/core'
-import Collapse from '@material-ui/core/Collapse'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
+import { IconButton, Theme, Tooltip, WithStyles, Typography, withWidth } from "@material-ui/core"
+import { createStyles, withStyles } from "@material-ui/core"
+import Collapse from "@material-ui/core/Collapse"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
 import AccountCircleIcon from "@material-ui/icons/AccountCircle"
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
-import ChatIcon from '@material-ui/icons/Chat'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import FlagIcon from '@material-ui/icons/Flag'
-import SettingsIcon from '@material-ui/icons/Settings'
-import { withResource, WithResourceProps } from '../../providers/withResource'
-import { withLanguage, WithLanguageProps } from '../../providers/withLanguage'
-import * as React from 'react'
-import { WrappedComponentProps, injectIntl } from 'react-intl'
-import { FormattedMessage } from 'react-intl'
-import { WithWidthProps } from '@material-ui/core/withWidth';
+import ChatIcon from "@material-ui/icons/Chat"
+import ExitToAppIcon from "@material-ui/icons/ExitToApp"
+import ExpandLessIcon from "@material-ui/icons/ExpandLess"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import FlagIcon from "@material-ui/icons/Flag"
+import SettingsIcon from "@material-ui/icons/Settings"
+import { withResource, WithResourceProps } from "../../providers/withResource"
+import { withLanguage, WithLanguageProps } from "../../providers/withLanguage"
+import * as React from "react"
+import { WrappedComponentProps, injectIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
+import { WithWidthProps } from "@material-ui/core/withWidth"
 
 
 const styles = (theme: Theme) =>
@@ -54,8 +54,8 @@ interface Props extends WithStyles<typeof styles>, WithLanguageProps, WrappedCom
 }
 
 interface State {
-  anchorEl: any,
-  openNestedLanguages: boolean,
+  anchorEl: any
+  openNestedLanguages: boolean
 }
 
 class UserDisplay extends React.Component<Props, State> {

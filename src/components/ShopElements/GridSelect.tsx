@@ -1,6 +1,6 @@
-import { createStyles, Grid, Theme, WithStyles, withStyles } from '@material-ui/core'
-import * as React from 'react'
-import CheckGrid from './CheckGrid';
+import { createStyles, Grid, Theme, WithStyles, withStyles } from "@material-ui/core"
+import * as React from "react"
+import CheckGrid from "./CheckGrid"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -10,7 +10,7 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.background.default,
       // border: "1px solid grey",
       padding: theme.spacing(1),
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         padding: theme.spacing(2),
       },
       boxSizing: "border-box",

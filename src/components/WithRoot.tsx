@@ -1,11 +1,11 @@
 
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
-import * as React from 'react'
+import CssBaseline from "@material-ui/core/CssBaseline"
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles"
+import * as React from "react"
 // import { HashRouter } from 'react-router-dom'
 // import { ResourceProvider } from 'providers/withResource';
-import { HashRouter } from 'react-router-dom';
-import { ResourceProvider } from '../providers/withResource';
+import { HashRouter } from "react-router-dom"
+import { ResourceProvider } from "../providers/withResource"
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -53,7 +53,7 @@ function withRoot<P>(Component: React.ComponentType<P>) {
 
           {/* <HashRouter basename={process.env.PUBLIC_URL}> */}
           {/* <BrowserRouter basename={process.env.PUBLIC_URL}> */}
-            {/* <Component {...props} /> */}
+          {/* <Component {...props} /> */}
           {/* </BrowserRouter> */}
           {/* </HashRouter> */}
         </ResourceProvider>

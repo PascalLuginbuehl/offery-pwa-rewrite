@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { IResource } from '../interfaces/IResource';
-import { ICompany } from '../interfaces/ICompany';
-import ResourceService from '../services/ResourceService';
-import Loading from '../components/Loading';
-import Login from '../components/Login';
+import * as React from "react"
+import { IResource } from "../interfaces/IResource"
+import { ICompany } from "../interfaces/ICompany"
+import ResourceService from "../services/ResourceService"
+import Loading from "../components/Loading"
+import Login from "../components/Login"
 // import { get, set } from 'idb-keyval'
-import { LanguageProvider } from '../providers/withLanguage'
-import SelectCompany from '../components/SelectCompany';
-import Wrapper from '../components/Form/Wrapper';
+import { LanguageProvider } from "../providers/withLanguage"
+import SelectCompany from "../components/SelectCompany"
+import Wrapper from "../components/Form/Wrapper"
 
 interface Props {
 
@@ -66,21 +66,21 @@ export class ResourceProvider extends React.Component<Props, State> {
 
     const resourceAwait = ResourceService.fetchResourceWithOffline()
     resourceAwait
-    .then(this.setResource)
-    .catch((e) => {
-      if (e.message == "Failed to fetch") {
+      .then(this.setResource)
+      .catch((e) => {
+        if (e.message == "Failed to fetch") {
         // U r now offline, keep offline
-      } else if(e.message == "Unauthorized") {
-        console.log("Session expired :(, no longer logged in")
-        this.setState({
-          loggedIn: false,
-        })
-      } else {
-        this.setState({
-          loggedIn: false,
-        })
-      }
-    })
+        } else if(e.message == "Unauthorized") {
+          console.log("Session expired :(, no longer logged in")
+          this.setState({
+            loggedIn: false,
+          })
+        } else {
+          this.setState({
+            loggedIn: false,
+          })
+        }
+      })
 
 
     if(resource) {
@@ -134,10 +134,10 @@ export class ResourceProvider extends React.Component<Props, State> {
             <Login onLoginSuccess={this.handleLoginSuccess} />
           </Loading>
         </LanguageProvider>
-        )
-      }
+      )
     }
   }
+}
 
 function withResource<P>(Component: React.ComponentType<P & WithResourceProps>) {
   function WithRoot(props: Pick<P, Exclude<keyof P, keyof WithResourceProps>>) {

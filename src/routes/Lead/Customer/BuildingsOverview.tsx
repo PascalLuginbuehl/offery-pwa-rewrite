@@ -3,7 +3,7 @@ import { Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton
 import PageHeader from "../../../components/PageHeader"
 import HomeIcon from "@material-ui/icons/Home"
 import { useRouteMatch } from "react-router"
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import AddCircleIcon from "@material-ui/icons/AddCircle"
 import DeleteIcon from "@material-ui/icons/Delete"

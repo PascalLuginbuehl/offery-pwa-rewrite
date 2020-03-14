@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { injectIntl } from 'react-intl';
-import { InputAdornment } from '@material-ui/core';
-import FormikTextField, { FormikTextFieldProps } from '../FormikTextField';
+import * as React from "react"
+import { injectIntl } from "react-intl"
+import { InputAdornment } from "@material-ui/core"
+import FormikTextField, { FormikTextFieldProps } from "../FormikTextField"
 
 
 type newProps = Omit<FormikTextFieldProps, "type" | "InputProps">

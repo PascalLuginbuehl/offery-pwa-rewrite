@@ -1,5 +1,5 @@
-import { createStyles, Grid, Paper, Theme, Typography, WithStyles, withStyles } from '@material-ui/core'
-import * as React from 'react'
+import { createStyles, Grid, Paper, Theme, Typography, WithStyles, withStyles } from "@material-ui/core"
+import * as React from "react"
 
 const styles = (theme: Theme) =>
   createStyles({

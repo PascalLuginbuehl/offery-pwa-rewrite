@@ -1,7 +1,7 @@
-import { createStyles, Theme, WithStyles, withStyles, CircularProgress, Grid, Typography } from '@material-ui/core'
-import * as React from 'react'
-import IntlTypography from './Intl/IntlTypography';
-import { FormattedMessage } from 'react-intl';
+import { createStyles, Theme, WithStyles, withStyles, CircularProgress, Grid, Typography } from "@material-ui/core"
+import * as React from "react"
+import IntlTypography from "./Intl/IntlTypography"
+import { FormattedMessage } from "react-intl"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -60,7 +60,7 @@ class HttpErrorHandler extends React.Component<Props> {
       const queryString = Object.keys(preFilledFormValues)
         .map(key => {
           // @ts-ignore
-          return encodeURIComponent(key) + '=' + encodeURIComponent(preFilledFormValues[key])
+          return encodeURIComponent(key) + "=" + encodeURIComponent(preFilledFormValues[key])
         })
         .join("&")
 

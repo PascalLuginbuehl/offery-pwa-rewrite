@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { Divider, Grid } from '@material-ui/core';
-import { DividerProps } from '@material-ui/core/Divider';
+import * as React from "react"
+import { Divider, Grid } from "@material-ui/core"
+import { DividerProps } from "@material-ui/core/Divider"
 
 
 const FormikDivider: React.ComponentType<DividerProps> = (props) => (

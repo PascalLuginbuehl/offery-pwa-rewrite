@@ -1,6 +1,6 @@
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
-import * as React from 'react'
-import { LinkProps, Link } from 'react-router-dom';
+import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core/styles"
+import * as React from "react"
+import { LinkProps, Link } from "react-router-dom"
 
 const styles = (theme: Theme) =>
   createStyles({

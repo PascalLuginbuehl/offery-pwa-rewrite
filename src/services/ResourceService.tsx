@@ -1,8 +1,8 @@
 
 import { errorFunction } from "./errorFunction"
-import { IResource } from "../interfaces/IResource";
-import LoginService from "./LoginService";
-import { ICompany } from "../interfaces/ICompany";
+import { IResource } from "../interfaces/IResource"
+import LoginService from "./LoginService"
+import { ICompany } from "../interfaces/ICompany"
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -28,7 +28,7 @@ class ResourceService {
   public fetchResource() {
     return new Promise<IResource>(async (resolve, reject) => {
       try {
-        const data = await fetch(API_URL + '/resource', await LoginService.authorizeRequest())
+        const data = await fetch(API_URL + "/resource", await LoginService.authorizeRequest())
           .then(errorFunction)
           .then((response) => response.json())
           .then(json => this.toResource(json))
@@ -43,7 +43,7 @@ class ResourceService {
   public fetchCompanies() {
     return new Promise<ICompany[]>(async (resolve, reject) => {
       try {
-        const data = await fetch(API_URL + '/company/all', await LoginService.authorizeRequest())
+        const data = await fetch(API_URL + "/company/all", await LoginService.authorizeRequest())
           .then(errorFunction)
           .then((response) => response.json())
           .then(json => json.map(this.toCompany))

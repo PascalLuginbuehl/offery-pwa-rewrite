@@ -1,5 +1,5 @@
-import { createStyles, Table, TableBody, TableCell, TableHead, TableRow, Theme, WithStyles, withStyles } from '@material-ui/core'
-import * as React from 'react'
+import { createStyles, Table, TableBody, TableCell, TableHead, TableRow, Theme, WithStyles, withStyles } from "@material-ui/core"
+import * as React from "react"
 
 const styles = (theme: Theme) =>
   createStyles({

@@ -1,7 +1,7 @@
-import DefaultTextField, { StandardTextFieldProps } from '@material-ui/core/TextField'
-import * as React from 'react'
-import { WrappedComponentProps, injectIntl } from 'react-intl'
-import { Omit } from 'react-router';
+import DefaultTextField, { StandardTextFieldProps } from "@material-ui/core/TextField"
+import * as React from "react"
+import { WrappedComponentProps, injectIntl } from "react-intl"
+import { Omit } from "react-router"
 
 
 interface Props extends WrappedComponentProps, Omit<StandardTextFieldProps, "onChange">  {
