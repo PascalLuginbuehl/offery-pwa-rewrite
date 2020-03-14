@@ -1,20 +1,20 @@
 
-import * as React from 'react';
+import * as React from "react"
 import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
-} from '@material-ui/core/TextField';
-import { FieldProps, getIn } from 'formik';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import Grid, { GridSize } from '@material-ui/core/Grid';
-import { InputAdornment, createStyles, Theme, withStyles, ButtonBase, Paper } from '@material-ui/core';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import { WithStyles } from '@material-ui/styles';
-import IntlTypography from '../Intl/IntlTypography';
+} from "@material-ui/core/TextField"
+import { FieldProps, getIn } from "formik"
+import { injectIntl, WrappedComponentProps } from "react-intl"
+import Grid, { GridSize } from "@material-ui/core/Grid"
+import { InputAdornment, createStyles, Theme, withStyles, ButtonBase, Paper } from "@material-ui/core"
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
+import { WithStyles } from "@material-ui/styles"
+import IntlTypography from "../Intl/IntlTypography"
 import MuiSwitch, {
   SwitchProps as MuiSwitchProps,
-} from '@material-ui/core/Switch';
-import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+} from "@material-ui/core/Switch"
+import DoneOutlineIcon from "@material-ui/icons/DoneOutline"
+import HighlightOffIcon from "@material-ui/icons/HighlightOff"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,7 +38,7 @@ const styles = (theme: Theme) =>
     },
   })
 
-export interface FormikButtonCheckboxProps extends InjectedIntlProps, FieldProps, Omit<MuiSwitchProps, 'error' | 'name' | 'onChange' | 'value' | "classes" | 'form' | 'defaultChecked'>, WithStyles<typeof styles> {
+export interface FormikButtonCheckboxProps extends WrappedComponentProps, FieldProps, Omit<MuiSwitchProps, "error" | "name" | "onChange" | "value" | "classes" | "form" | "defaultChecked">, WithStyles<typeof styles> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
@@ -67,29 +67,29 @@ class FormikButtonCheckbox extends React.Component<FormikButtonCheckboxProps> {
     } = this.props
 
 
-    const { name } = field;
-    const { touched, errors, isSubmitting } = form;
+    const { name } = field
+    const { touched, errors, isSubmitting } = form
 
-    const fieldError = getIn(errors, name);
+    const fieldError = getIn(errors, name)
 
     const ButtonCheckbox = (
-    <ButtonBase className={classes.fullButton} disabled={disabled != undefined ? disabled : isSubmitting} onClick={this.onChange}>
-      <Paper elevation={1} className={classes.fullPaper + " " + classes.root + " " + (value ? classes.checked : "")}>
-        {
+      <ButtonBase className={classes.fullButton} disabled={disabled != undefined ? disabled : isSubmitting} onClick={this.onChange}>
+        <Paper elevation={1} className={classes.fullPaper + " " + classes.root + " " + (value ? classes.checked : "")}>
+          {
             value ?
-            <DoneOutlineIcon />
-            :
-            <HighlightOffIcon />
-        }
-        <IntlTypography noWrap>{label}</IntlTypography>
-      </Paper>
-    </ButtonBase>
+              <DoneOutlineIcon />
+              :
+              <HighlightOffIcon />
+          }
+          <IntlTypography noWrap>{label}</IntlTypography>
+        </Paper>
+      </ButtonBase>
     )
 
     if (disableGrid) {
       return ButtonCheckbox
     } else {
-      const defaultGrid: FormikButtonCheckboxProps['overrideGrid'] = { xs: 6, sm: 4, md: 3, lg: 3 }
+      const defaultGrid: FormikButtonCheckboxProps["overrideGrid"] = { xs: 6, sm: 4, md: 3, lg: 3 }
       // SetDefaultValues
       const newGrid = { ...defaultGrid, ...overrideGrid }
       return (

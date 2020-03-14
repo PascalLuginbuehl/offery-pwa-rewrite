@@ -6,7 +6,7 @@ import { FormikProps, withFormik, Field } from "formik"
 import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
 import { IPackServiceConditions } from "../../../interfaces/IConditions"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import ServiceConditions from "./ServiceConditions"
 import { IPutPackService } from "../../../interfaces/IService"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
@@ -20,7 +20,7 @@ interface Values {
   packService: IPutPackService
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   onChangeAndSave: (packConditions: IPackServiceConditions, packService: IPutPackService) => Promise<any>
   packConditions: IPackServiceConditions

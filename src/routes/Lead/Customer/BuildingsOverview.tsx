@@ -1,76 +1,68 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from "@material-ui/core"
-import { Formik, FormikProps, withFormik } from "formik"
-import { injectIntl, InjectedIntlProps } from "react-intl"
-import { IPostBuilding, IBuilding } from "../../../interfaces/IBuilding"
-import Form from "../../../components/FormikFields/Form"
-import { withResource, WithResourceProps } from "../../../providers/withResource"
-import Submit from "../../../components/FormikFields/Submit"
+import { Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, ListItemIcon } from "@material-ui/core"
 import PageHeader from "../../../components/PageHeader"
-import { RouteComponentProps, Prompt } from "react-router"
+import HomeIcon from "@material-ui/icons/Home"
+import { useRouteMatch } from "react-router"
+import { Link } from "react-router-dom";
+import { IBuilding } from "../../../interfaces/IBuilding"
+import AddCircleIcon from "@material-ui/icons/AddCircle"
+import DeleteIcon from "@material-ui/icons/Delete"
+import { useIntl } from "react-intl"
 
-const styles = (theme: Theme) => createStyles({})
-
-interface Values {
-  buildings: IBuilding[]
-}
-
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
+interface Props {
   nextPage: () => void
   buildings: IBuilding[]
 }
 
-class CleaningBuilding extends React.Component<Props & FormikProps<Values>, {}> {
-  public render() {
-    const { isSubmitting, status, resource, selectedCompany, buildings } = this.props
+export default function BUildingOverview (props: Props) {
+  const { buildings } = props
+  const match = useRouteMatch()
 
-    return (
-      <Grid item xs={12}>
-        <Form>
-          <PageHeader title="BUILDING" />
 
+
+  if(!match) {
+    throw new Error("Now route match property was given")
+  }
+
+  const {} = useIntl()
+
+
+  return (
+    <Grid item xs={12}>
+      <Grid container spacing={1} style={{ padding: 8 }}>
+        <PageHeader title="BUILDING" />
+
+        <Grid item xs={12}>
           <List>
             {buildings.map(building => (
-              <ListItem key={building.BuildingId}>
+              <ListItem key={building.BuildingId} button component={Link} to={match.url + "/" + building.BuildingId}>
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
                 <ListItemText
-                  primary={building.Address.Street}
-                  secondary={""}
+                  primary={`${building.Address.Street}, ${building.Address.PLZ} ${building.Address.City}`}
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete">
-                    {/* <DeleteIcon /> */}
+                    <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
+
+            {/* {building.lenght < 0 ?  : null} */}
+
+            <ListItem button component={Link} to={match.url + "/new"}>
+              <ListItemIcon>
+                <AddCircleIcon color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={"CREATE_NEW_BUILDING"}
+              />
+            </ListItem>
           </List>
-
-        </Form>
+        </Grid>
       </Grid>
-    )
-  }
-}
-
-export default injectIntl(
-  withStyles(styles)(
-    withResource(
-      withFormik<Props, Values>({
-        mapPropsToValues: props => ({ buildings: props.buildings }),
-
-        handleSubmit: async (values, actions) => {
-          try {
-            await Promise.resolve()
-            // await actions.props.onChangeAndSave(values.building)
-
-            actions.setSubmitting(false)
-
-            actions.resetForm()
-            actions.props.nextPage()
-          } catch (e) {
-            actions.setStatus(e)
-          }
-        },
-      })(CleaningBuilding)
-    )
+    </Grid>
   )
-)
+}

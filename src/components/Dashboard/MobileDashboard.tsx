@@ -20,7 +20,7 @@ import AddIcon from "@material-ui/icons/Add"
 import { green } from "@material-ui/core/colors"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
 import HomeIcon from "@material-ui/icons/Home"
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn"
@@ -54,7 +54,7 @@ interface State {
   openListActions: number | null
 }
 
-interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithStyles<typeof styles>, WrappedComponentProps {
   leads: ICompressedLead[]
 }
 

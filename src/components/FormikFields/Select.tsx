@@ -2,21 +2,21 @@ import React from "react"
 import ReactSelect from "react-select"
 import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
-} from '@material-ui/core/TextField'
-import { FieldProps, getIn } from 'formik'
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl'
-import Grid from '@material-ui/core/Grid'
-import { components, styles } from './../ReactSelectComponents'
+} from "@material-ui/core/TextField"
+import { FieldProps, getIn } from "formik"
+import { injectIntl, WrappedComponentProps } from "react-intl"
+import Grid from "@material-ui/core/Grid"
+import { components, styles } from "./../ReactSelectComponents"
 import { WithStyles, withStyles } from "@material-ui/styles"
 import { OptionsType, ValueType } from "react-select/src/types"
 
 interface Option {
-  label: string;
-  value: string;
+  label: string
+  value: string
 }
 
 
-interface Props extends InjectedIntlProps, WithStyles<typeof styles>, FieldProps, Omit<MuiTextFieldProps, 'error' | 'name' | 'onChange' | 'value' | 'classes'> {
+interface Props extends WrappedComponentProps, WithStyles<typeof styles>, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value" | "classes"> {
   options: OptionsType<Option>
   isMulti?: boolean
 
@@ -25,7 +25,7 @@ interface Props extends InjectedIntlProps, WithStyles<typeof styles>, FieldProps
 
 
 class Select extends React.Component<Props> {
-  displayName = 'FormikMaterialUISelect'
+  displayName = "FormikMaterialUISelect"
 
   render() {
     const {
@@ -55,8 +55,8 @@ class Select extends React.Component<Props> {
         isMulti
           ? (option as Option[]).map((item: Option) => item.value)
           : (option as Option).value
-      );
-    };
+      )
+    }
 
     const options = tempOptions.map(e => ({ ...e, label: intl.formatMessage({ id: e.label }) }))
 
@@ -64,16 +64,16 @@ class Select extends React.Component<Props> {
       if (options) {
         return isMulti
           ? options.filter(option => field.value.indexOf(option.value) >= 0)
-          : options.find(option => option.value === field.value);
+          : options.find(option => option.value === field.value)
       } else {
-        return isMulti ? [] : ("" as any);
+        return isMulti ? [] : ("" as any)
       }
-    };
+    }
 
     const isDisabled = disabled != undefined ? disabled : isSubmitting
 
-    const fieldError = getIn(errors, name);
-    const showError = getIn(touched, name) && !!fieldError;
+    const fieldError = getIn(errors, name)
+    const showError = getIn(touched, name) && !!fieldError
 
     return (
       <Grid item xs={12} md={6}>

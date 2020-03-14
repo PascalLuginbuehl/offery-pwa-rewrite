@@ -18,7 +18,6 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
     buildings,
   } = leadContainer
 
-
   return (
     <>
       <ListSubheader>
@@ -33,6 +32,7 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         {buildings.map(building => (
           <NavItemBuilding to={`${matchUrl}/building/${building.BuildingId}`} key={building.BuildingId} building={building} nested />
         ))}
+        <NavItem to={`${matchUrl}/building/new`} title="CREATE_NEW_BUILDING" nested />
       </NavFolder>
 
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">
@@ -96,5 +96,4 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
       </NavFolder>
     </>
   )
-
 }

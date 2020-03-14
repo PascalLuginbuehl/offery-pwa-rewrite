@@ -8,7 +8,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
 import { IMoveServiceConditions, IPackServiceConditions, IDisposalServiceConditions } from "../../../interfaces/IConditions"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
@@ -23,7 +23,7 @@ interface Values {
   disposalService: IPutDisposalService
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   onChangeAndSave: (disposalConditions: IDisposalServiceConditions, disposalService: IPutDisposalService) => Promise<any>
   disposalConditions: IDisposalServiceConditions

@@ -1,8 +1,8 @@
 import * as React from "react"
 import TableCell, { TableCellProps } from "@material-ui/core/TableCell"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 
-interface Props extends TableCellProps, InjectedIntlProps {
+interface Props extends TableCellProps, WrappedComponentProps {
   children: string
 }
 
@@ -11,7 +11,7 @@ class IntlTableCell extends React.Component<Props> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { intl, children, ...props } = this.props
 
-    return <TableCell {...props}>{intl.formatMessage({id: children})}</TableCell>
+    return <TableCell {...props}>{intl.formatMessage({ id: children })}</TableCell>
   }
 }
 

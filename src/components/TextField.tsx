@@ -1,10 +1,10 @@
 import DefaultTextField, { StandardTextFieldProps } from '@material-ui/core/TextField'
 import * as React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { WrappedComponentProps, injectIntl } from 'react-intl'
 import { Omit } from 'react-router';
 
 
-interface Props extends InjectedIntlProps, Omit<StandardTextFieldProps, "onChange">  {
+interface Props extends WrappedComponentProps, Omit<StandardTextFieldProps, "onChange">  {
   onChange: (value: any, target: any) => void
   defaultValue?: string
   className?: string

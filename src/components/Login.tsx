@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import LockIcon from "@material-ui/icons/LockOutlined"
 import React, { MouseEvent } from "react"
-import { FormattedMessage, InjectedIntlProps, injectIntl } from "react-intl"
+import { FormattedMessage, WrappedComponentProps, injectIntl } from "react-intl"
 
 import LoginService, { LoginInformation } from "../services/LoginService"
 import IntlTypography from "./Intl/IntlTypography"
@@ -47,12 +47,12 @@ const styles = (theme: Theme) =>
     },
   })
 
-interface Values  {
+interface Values {
   Email: string
   Password: string
 }
 
-interface Props extends WithStyles<typeof styles>, InjectedIntlProps, WithResourceProps {
+interface Props extends WithStyles<typeof styles>, WrappedComponentProps, WithResourceProps {
   onLoginSuccess: () => void
 }
 
@@ -105,7 +105,7 @@ class Login extends React.Component<Props & FormikProps<Values>> {
                 <HttpErrorHandler status={status} data={values} />
               }
 
-              <br/>
+              <br />
 
               <Grid item xs={12}>
                 <Button disabled={isSubmitting} type="submit" fullWidth variant="contained" color="primary">

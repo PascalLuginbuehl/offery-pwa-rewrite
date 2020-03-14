@@ -4,7 +4,7 @@ import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText
 import AddIcon from "@material-ui/icons/Add"
 import { ArrayHelpers, FieldProps, FieldArray } from "formik"
 import { ICarType } from "../../../interfaces/ICompany"
-import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import { ICarAmount } from "../../../interfaces/IConditions"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 
@@ -12,7 +12,7 @@ export interface FormikGroupListProps {
   carTypes: ICarType[]
 }
 
-type Props = FormikGroupListProps & Omit<FieldProps, "label"> & InjectedIntlProps
+type Props = FormikGroupListProps & Omit<FieldProps, "label"> & WrappedComponentProps
 
 interface State {
   selectedCarType: number | null

@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray } from "formik"
-import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import PageHeader from "../../../components/PageHeader"
@@ -27,7 +27,7 @@ interface Values {
 }
 
 
-interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   lead: ILead
   offline: boolean

@@ -1,12 +1,7 @@
 import * as React from "react"
-import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/core/TextField"
-import { FieldProps, getIn } from "formik"
-import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedDate, FormattedMessage } from "react-intl"
-import Grid, { GridSize } from "@material-ui/core/Grid"
-import { InputAdornment, MenuItem } from "@material-ui/core"
-import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
+import { FormattedMessage } from "react-intl"
+import { MenuItem } from "@material-ui/core"
 import FormikTextField, { FormikTextFieldProps } from "./FormikTextField"
-import TextField from "../TextField";
 
 export interface FormikSelectProps extends FormikTextFieldProps {
   options: Array<{
@@ -24,15 +19,16 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps> {
       <FormikTextField
         select
         required={required}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         ref={props.ref}
         {...props}
       >
-          {/*
+        {/*
           // @ts-ignore */}
-          <MenuItem value={null} disabled={required}>
-            <em><FormattedMessage id={"SELECT_DOT_DOT_DOT"} /></em>
-          </MenuItem>
+        <MenuItem value={null} disabled={required}>
+          <em><FormattedMessage id={"SELECT_DOT_DOT_DOT"} /></em>
+        </MenuItem>
         }
         {options.map(option => (
           <MenuItem key={option.value} value={option.value}>

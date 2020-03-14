@@ -1,6 +1,6 @@
 import { createStyles, Grid, Theme, WithStyles, withStyles, Typography, Tabs, Tab } from "@material-ui/core"
 import * as React from "react"
-import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import { FormattedDate, FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import { withResource, WithResourceProps } from "../providers/withResource"
 import withWidth, { WithWidth, isWidthUp } from "@material-ui/core/withWidth"
 import { ILead, ICompressedLead } from "../interfaces/ILead"
@@ -33,7 +33,7 @@ interface State {
   openListActions: number | null
 }
 
-interface Props extends WithStyles<typeof styles>, WithResourceProps, InjectedIntlProps, WithWidth {}
+interface Props extends WithStyles<typeof styles>, WithResourceProps, WrappedComponentProps, WithWidth {}
 export interface IOfflineLead {
   Lead: ICompressedLead
   isCached: boolean

@@ -1,8 +1,8 @@
 import TypographyOriginal, { TypographyProps } from "@material-ui/core/Typography"
 import * as React from "react"
-import { InjectedIntlProps, injectIntl } from "react-intl"
+import { WrappedComponentProps, injectIntl } from "react-intl"
 
-interface Props extends TypographyProps, InjectedIntlProps {}
+interface Props extends TypographyProps, WrappedComponentProps {}
 
 class Typography extends React.Component<Props> {
   public render() {

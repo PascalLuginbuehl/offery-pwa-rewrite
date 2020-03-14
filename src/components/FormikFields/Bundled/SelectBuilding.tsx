@@ -1,14 +1,14 @@
 import * as React from "react"
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/core/TextField"
 import { FieldProps, getIn } from "formik"
-import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedDate, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
 import { InputAdornment, MenuItem, ListItemText, FormControl, Select, InputLabel } from "@material-ui/core"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import FormikTextField, { FormikTextFieldProps } from "../FormikTextField"
 import { SelectProps } from "@material-ui/core/Select"
 import { IAddress } from "../../../interfaces/IAddress"
-import {  IBuilding } from "../../../interfaces/IBuilding"
+import { IBuilding } from "../../../interfaces/IBuilding"
 
 export interface FormikSelectProps extends FieldProps, SelectProps {
   buildings: IBuilding[]
@@ -22,9 +22,9 @@ interface AdressObj {
   container: IAddress
 }
 
-class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedIntlProps> {
+class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComponentProps> {
   render() {
-    const defaultGrid: FormikTextFieldProps['overrideGrid'] = { xs: 12, md: 6 }
+    const defaultGrid: FormikTextFieldProps["overrideGrid"] = { xs: 12, md: 6 }
     const {
       children,
       intl,
@@ -49,14 +49,14 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedInt
       // { label: "DISPOSAL_BUILDING", container: disposalBuilding as BaseBuilding },
       // { label: "CLEANING_BUILDING", container: cleaningBuilding as {Address: IAddress} },
     ]
-      // .filter((value) => {
-      //   return value.container !== null && value.container !== undefined
-      // })
-      // .map(value => ({ label: value.label, container: value.container.Address }))
-      // // @ts-ignore
-      // .filter((value: {label: string, container: IAddress}) => {
-      //   return value.container.hasOwnProperty("AddressId")
-      // })
+    // .filter((value) => {
+    //   return value.container !== null && value.container !== undefined
+    // })
+    // .map(value => ({ label: value.label, container: value.container.Address }))
+    // // @ts-ignore
+    // .filter((value: {label: string, container: IAddress}) => {
+    //   return value.container.hasOwnProperty("AddressId")
+    // })
 
 
 
@@ -76,7 +76,7 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & InjectedInt
               const foundBuilding = options.find(building => building.container.AddressId === value)
 
               if (foundBuilding) {
-                return intl.formatMessage({id: foundBuilding.label})
+                return intl.formatMessage({ id: foundBuilding.label })
                 // return foundBuilding.container.Street + ", " + foundBuilding.container.PLZ + " " + foundBuilding.container.City
               }
             }

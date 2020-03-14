@@ -28,7 +28,7 @@ import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder } from "../../..
 import { IProduct } from "../../../interfaces/IProduct"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
-import { FormattedNumber, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import { FormattedNumber, FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import SelectGridItem from "../../../components/ShopElements/SelectGridItem"
 import PageHeader from "../../../components/PageHeader"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
@@ -39,7 +39,7 @@ const styles = (theme: Theme) => createStyles({})
 
 type Values = IMaterialOrder & { lead: ILead }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   onChangeAndSave: (data: IMaterialOrder, lead: ILead) => Promise<any>
   materialOrder: IMaterialOrder
   lead: ILead

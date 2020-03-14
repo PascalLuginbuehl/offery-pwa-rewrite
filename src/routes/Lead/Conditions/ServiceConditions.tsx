@@ -2,7 +2,7 @@ import * as React from "react"
 import { Tab, Tabs, WithStyles, withStyles, Grid, Button, InputAdornment, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { IServiceConditions } from "../../../interfaces/IConditions"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikPercent from "../../../components/FormikFields/Numbers/FormikPercent"
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
@@ -13,7 +13,7 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import RemoveIcon from "@material-ui/icons/Remove"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 
-interface Props<Values extends { ServiceConditions: IServiceConditions }> extends InjectedIntlProps, WithResourceProps {
+interface Props<Values extends { ServiceConditions: IServiceConditions }> extends WrappedComponentProps, WithResourceProps {
   setFieldValue: (field: keyof Values | any, value: any) => void
   values: Values
   additionalCost: number
@@ -22,6 +22,8 @@ interface Props<Values extends { ServiceConditions: IServiceConditions }> extend
 
   prefix: string
   commentPrefix: string
+
+  children: any
 }
 
 class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceConditions }> extends React.Component<Props<Values>, {}> {

@@ -7,7 +7,7 @@ import * as Yup from "yup"
 import Form from "../../../components/FormikFields/Form"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
-import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import InventoryCategoryFolder from "../../../components/Inventory/InventoryCategoryFolder"
 import { IFurnitureCategory, IFurniture, IFurnitureTranslated } from "../../../interfaces/IResource"
 import InventoryItems from "../../../components/Inventory/InventoryItems"
@@ -66,7 +66,7 @@ const fuseOptions: FuseOptions<IFurnitureTranslated> = {
   ]
 }
 
-interface _IProps extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, WithWidthProps {
+interface _IProps extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps, WithWidthProps {
   onChangeAndSave: (data: IInventars) => Promise<void>
   initalInventoryTypeKey: InventoryKeysEnum
   inventory: IInventars

@@ -1,8 +1,8 @@
-import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip'
-import * as React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip"
+import * as React from "react"
+import { WrappedComponentProps, injectIntl } from "react-intl"
 
-interface Props extends TooltipProps, InjectedIntlProps {
+interface Props extends TooltipProps, WrappedComponentProps {
   title: string
 }
 

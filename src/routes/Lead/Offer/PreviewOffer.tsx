@@ -9,7 +9,7 @@ import PageHeader from "../../../components/PageHeader"
 import { ILead } from "../../../interfaces/ILead"
 import OfferService from "../../../services/OfferService"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
-import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
 // import { Document, Page } from 'react-pdf'
 import { Document, Page } from "react-pdf/dist/entry.webpack"
 import { PDFDocumentProxy } from "pdfjs-dist"
@@ -28,7 +28,7 @@ interface Values {
   selectedOfferId: number | null
 }
 
-interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: (stringAddition?: string) => void
   offline: boolean
   lead: ILead

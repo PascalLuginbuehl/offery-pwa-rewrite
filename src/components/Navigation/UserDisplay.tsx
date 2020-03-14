@@ -18,7 +18,7 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import { withResource, WithResourceProps } from '../../providers/withResource'
 import { withLanguage, WithLanguageProps } from '../../providers/withLanguage'
 import * as React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { WrappedComponentProps, injectIntl } from 'react-intl'
 import { FormattedMessage } from 'react-intl'
 import { WithWidthProps } from '@material-ui/core/withWidth';
 
@@ -49,7 +49,7 @@ const styles = (theme: Theme) =>
   })
 
 
-interface Props extends WithStyles<typeof styles>, WithLanguageProps, InjectedIntlProps, WithResourceProps, WithWidthProps {
+interface Props extends WithStyles<typeof styles>, WithLanguageProps, WrappedComponentProps, WithResourceProps, WithWidthProps {
 
 }
 

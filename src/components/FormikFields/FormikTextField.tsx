@@ -1,12 +1,12 @@
 import * as React from "react"
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/core/TextField"
 import { FieldProps, getIn } from "formik"
-import { injectIntl, InjectedIntlProps, InjectedIntl } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
 import { InputAdornment } from "@material-ui/core"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 
-export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
+export interface FormikTextFieldProps extends WrappedComponentProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
@@ -14,7 +14,7 @@ export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omi
 
 class FormikTextField extends React.Component<FormikTextFieldProps> {
   render() {
-    const defaultGrid: FormikTextFieldProps['overrideGrid'] = { xs: 12, md: 6 }
+    const defaultGrid: FormikTextFieldProps["overrideGrid"] = { xs: 12, md: 6 }
     const {
       children,
       intl,

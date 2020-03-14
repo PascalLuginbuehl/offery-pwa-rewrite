@@ -7,7 +7,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
 import { ICleaningServiceConditions } from "../../../interfaces/IConditions"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
@@ -23,7 +23,7 @@ interface Values {
   cleaningService: IPutCleaningService
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   onChangeAndSave: (cleaningConditions: ICleaningServiceConditions, cleaningService: IPutCleaningService) => Promise<any>
   cleaningConditions: ICleaningServiceConditions

@@ -7,7 +7,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import Submit from "../../../components/FormikFields/Submit"
 import PageHeader from "../../../components/PageHeader"
 import { IMoveServiceConditions } from "../../../interfaces/IConditions"
-import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
@@ -21,7 +21,7 @@ interface Values  {
   moveService: IPutMoveService
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   onChangeAndSave: (moveConditions: IMoveServiceConditions, moveService: IPutMoveService) => Promise<any>
   moveConditions: IMoveServiceConditions

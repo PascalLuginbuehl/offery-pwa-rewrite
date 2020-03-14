@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button, Table, TableHead, TableRow, TableBody, TableCell, RadioGroup, FormControlLabel, Radio, ButtonGroup } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, FieldArray, Form } from "formik"
-import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
 import { withResource, WithResourceProps } from "../../providers/withResource"
 import PageHeader from "../../components/PageHeader"
 import IntlTypography from "../../components/Intl/IntlTypography"
@@ -17,7 +17,7 @@ import LeadService from "../../services/LeadService"
 import { Link } from "react-router-dom"
 import FormikTextField from "../../components/FormikFields/FormikTextField"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 
 const styles = (theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -51,7 +51,7 @@ function desc<T>(a: T, b: T, orderBy: keyof T) {
   return 0
 }
 
-interface _Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface _Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   lead: ILead
   offline: boolean
   handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: () => Promise<any>) => Promise<void>

@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field, ErrorMessage } from "formik"
-import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import Submit from "../../../components/FormikFields/Submit"
@@ -19,7 +19,7 @@ const styles = (theme: Theme) => createStyles({})
 
 type Values = IPostLead
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   onChangeAndSave: (lead: IPostLead) => Promise<void>
   lead: IPostLead

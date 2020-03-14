@@ -3,7 +3,7 @@ import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
 import { NavLink, withRouter } from "react-router-dom"
 import * as React from "react"
-import { InjectedIntlProps, injectIntl } from "react-intl"
+import { WrappedComponentProps, injectIntl } from "react-intl"
 import { RouteComponentProps } from "react-router"
 
 const styles = (theme: Theme) =>
@@ -26,7 +26,7 @@ interface State {
   open: boolean
 }
 
-interface Props extends WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
+interface Props extends WithStyles<typeof styles>, WrappedComponentProps, RouteComponentProps {
   to: string
   title: string
   children: React.ReactNode

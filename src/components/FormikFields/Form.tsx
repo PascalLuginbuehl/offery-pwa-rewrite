@@ -5,7 +5,7 @@ import withWidth, { WithWidthProps } from "@material-ui/core/withWidth"
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
 import { Theme, Typography } from "@material-ui/core"
 import { Prompt } from "react-router"
-import { injectIntl, InjectedIntlProps, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
 import HttpErrorHandler from "../HttpErrorHandler"
 import Submit from "./Submit"
 import IntlTypography from "../Intl/IntlTypography"
@@ -20,7 +20,7 @@ const styles = (theme: Theme) =>
     },
   })
 
-class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {[key: string]: any} }, { error: any; errorInfo: any }> {
+class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: { [key: string]: any } }, { error: any; errorInfo: any }> {
   state = { error: null, errorInfo: null }
 
   componentDidCatch(error: any, errorInfo: any) {
@@ -37,6 +37,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
 
     if (this.state.errorInfo) {
       const errorMessage = this.state.error
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       const stackTrace = this.state.errorInfo.componentStack
 
@@ -49,6 +50,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
 
       const queryString = Object.keys(preFilledFormValues)
         .map(key => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
           return encodeURIComponent(key) + "=" + encodeURIComponent(preFilledFormValues[key])
         })
@@ -83,13 +85,13 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: {
   }
 }
 
-interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends FormikFormProps, WithWidthProps, WithStyles<typeof styles>, WrappedComponentProps {
   routerDisabled?: boolean
   disableSubmit?: boolean
   disableGridContainer?: boolean
 }
 
-const Form: React.ComponentType<Props> = ({ classes, intl, width, children, routerDisabled, disableSubmit = false, disableGridContainer = false}: Props) => {
+const Form: React.ComponentType<Props> = ({ classes, intl, width, children, routerDisabled, disableSubmit = false, disableGridContainer = false }: Props) => {
   const { dirty } = useFormikContext()
 
   const handleUnload = (e: BeforeUnloadEvent) => {

@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography } from "@material-ui/core"
 import { Formik, FormikProps, withFormik } from "formik"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import { IPostBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -16,7 +16,7 @@ interface Values {
   building: IPostBuilding
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps, RouteComponentProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps, RouteComponentProps {
   nextPage: () => void
   onChangeAndSave: (building: IPostBuilding) => Promise<void>
   building: IPostBuilding

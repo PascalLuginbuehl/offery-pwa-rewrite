@@ -1,5 +1,5 @@
 import * as React from "react"
-import { InjectedIntlProps, injectIntl, FormattedMessage } from "react-intl"
+import { WrappedComponentProps, injectIntl, FormattedMessage } from "react-intl"
 import { Button, Grid } from "@material-ui/core"
 import { createStyles, Theme, WithStyles, withStyles, Fab, CircularProgress } from "@material-ui/core"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
     }
   })
 
-interface Props extends WithStyles<typeof styles>, InjectedIntlProps, WithWidth {
+interface Props extends WithStyles<typeof styles>, WrappedComponentProps, WithWidth {
   label?: string
   isSubmitting: boolean
 }

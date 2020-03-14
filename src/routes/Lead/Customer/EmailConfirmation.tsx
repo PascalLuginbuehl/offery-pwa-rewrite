@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid, TextField as MuiTextField, Divider, Typography, Button } from "@material-ui/core"
 import { Formik, FormikProps, withFormik, Field } from "formik"
-import { injectIntl, InjectedIntlProps, FormattedDate, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -30,7 +30,7 @@ interface Values {
   VisitDate: Date | null
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   nextPage: () => void
   lead: ILead
   offline: boolean

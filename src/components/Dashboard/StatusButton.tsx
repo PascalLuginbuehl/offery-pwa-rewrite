@@ -30,7 +30,7 @@ import AddIcon from "@material-ui/icons/Add"
 import { green, red } from "@material-ui/core/colors"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
-import { injectIntl, InjectedIntlProps } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import { IOfflineLead } from "../../routes/Dashboard2"
 import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
 import HomeIcon from "@material-ui/icons/Home"
@@ -58,7 +58,7 @@ const styles = (theme: Theme) =>
     },
   })
 
-interface Props extends WithStyles<typeof styles>, InjectedIntlProps {
+interface Props extends WithStyles<typeof styles>, WrappedComponentProps {
   lead: ICompressedLead
 }
 

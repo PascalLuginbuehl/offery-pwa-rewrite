@@ -1,18 +1,17 @@
-import * as React from 'react';
+import * as React from "react"
 import MuiSwitch, {
   SwitchProps as MuiSwitchProps,
-} from '@material-ui/core/Switch';
-import { FieldProps } from 'formik';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import { file } from '@babel/types';
+} from "@material-ui/core/Switch"
+import { FieldProps } from "formik"
+import { injectIntl, WrappedComponentProps } from "react-intl"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Grid from "@material-ui/core/Grid"
 
 export interface SwitchProps
   extends FieldProps,
     Omit<
       MuiSwitchProps,
-      'form' | 'name' | 'onChange' | 'value' | 'defaultChecked'
+      "form" | "name" | "onChange" | "value" | "defaultChecked"
     > {}
 
 export const fieldToSwitch = ({
@@ -30,19 +29,20 @@ export const fieldToSwitch = ({
     checked: field.value,
     // Ugly fix for event checked
     onChange: event => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       //@ts-ignore
       event.target.value = event.target.checked
       field.onChange(event)
     },
-  };
-};
+  }
+}
 
 const Switch: React.ComponentType<SwitchProps & {label: string}> = injectIntl((
   {
     intl,
     label,
     ...props
-  }: SwitchProps & InjectedIntlProps & {label: string}
+  }: SwitchProps & WrappedComponentProps & {label: string}
 ) =>
   <Grid item xs={6} sm={4} md={3} >
     <FormControlLabel
@@ -54,6 +54,6 @@ const Switch: React.ComponentType<SwitchProps & {label: string}> = injectIntl((
   </Grid>
 )
 
-Switch.displayName = 'FormikMaterialUISwitch';
+Switch.displayName = "FormikMaterialUISwitch"
 
 export default Switch

@@ -1,13 +1,13 @@
 import * as React from "react"
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/core/TextField"
 import { FieldProps, getIn } from "formik"
-import { injectIntl, InjectedIntlProps, InjectedIntl } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
 import { InputAdornment } from "@material-ui/core"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import MuiPhoneNumber from "material-ui-phone-number"
 
-export interface FormikTextFieldProps extends InjectedIntlProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
+export interface FormikTextFieldProps extends WrappedComponentProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
@@ -46,6 +46,7 @@ class FormikPhoneNumber extends React.Component<FormikTextFieldProps> {
 
     console.log(field.value)
     const TextFieldElement = (
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       //@ts-ignore
       <MuiPhoneNumber
         error={showError}

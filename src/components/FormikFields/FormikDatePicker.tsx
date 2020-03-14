@@ -3,14 +3,14 @@ import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
 } from "@material-ui/core/TextField"
 import { FieldProps, getIn } from "formik"
-import { injectIntl, InjectedIntlProps, InjectedIntl } from "react-intl"
+import { injectIntl, WrappedComponentProps } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import { DatePicker as DatePickerOriginal, DatePickerProps as MuiDatePickerProps } from "@material-ui/pickers"
 import CloseIcon from "@material-ui/icons/Close"
 import { InputAdornment, IconButton } from "@material-ui/core"
 
-export interface FormikDatePickerProps extends InjectedIntlProps, FieldProps, Omit<MuiDatePickerProps, "form" | "error" | "name" | "onChange" | "value" | "defaultChecked"> {
+export interface FormikDatePickerProps extends WrappedComponentProps, FieldProps, Omit<MuiDatePickerProps, "form" | "error" | "name" | "onChange" | "value" | "defaultChecked"> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>

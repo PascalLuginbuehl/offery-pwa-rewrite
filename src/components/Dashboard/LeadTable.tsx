@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
-import { FormattedDate, FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl"
+import { FormattedDate, FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import ContactsIcon from "@material-ui/icons/Contacts"
 import { createStyles, Grid, Theme, WithStyles, withStyles, Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography, Tabs, Tab, ListItem, List, Avatar, ListItemText, ListItemSecondaryAction, Collapse, TableFooter, TablePagination, Button, TableSortLabel, Tooltip, makeStyles } from "@material-ui/core"
 import { ILead, ICompressedLead } from "../../interfaces/ILead"
