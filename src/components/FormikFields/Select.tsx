@@ -16,7 +16,7 @@ interface Option {
 }
 
 
-interface Props extends WrappedComponentProps, WithStyles<typeof styles>, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value" | "classes"> {
+export interface SelectProps extends WrappedComponentProps, WithStyles<typeof styles>, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value" | "classes"> {
   options: OptionsType<Option>
   isMulti?: boolean
 
@@ -24,7 +24,7 @@ interface Props extends WrappedComponentProps, WithStyles<typeof styles>, FieldP
 }
 
 
-class Select extends React.Component<Props> {
+class Select extends React.Component<SelectProps> {
   displayName = "FormikMaterialUISelect"
 
   render() {

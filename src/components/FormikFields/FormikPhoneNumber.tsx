@@ -7,13 +7,13 @@ import Grid, { GridSize } from "@material-ui/core/Grid"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 import MuiPhoneNumber from "material-ui-phone-number"
 
-export interface FormikTextFieldProps extends WrappedComponentProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
+export interface FomrikPhoneNumberProps extends WrappedComponentProps, FieldProps, Omit<MuiTextFieldProps, "error" | "name" | "onChange" | "value"> {
   label: string
   disableGrid?: boolean
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
 }
 
-class FormikPhoneNumber extends React.Component<FormikTextFieldProps> {
+class FormikPhoneNumber extends React.Component<FomrikPhoneNumberProps> {
 
   handleChange = (value: Date | null) => {
     const { field: { name }, form: { setFieldValue } } = this.props
@@ -22,7 +22,7 @@ class FormikPhoneNumber extends React.Component<FormikTextFieldProps> {
   }
 
   render() {
-    const defaultGrid: FormikTextFieldProps["overrideGrid"] = { xs: 12, md: 6 }
+    const defaultGrid: FomrikPhoneNumberProps["overrideGrid"] = { xs: 12, md: 6 }
     const {
       children,
       intl,
