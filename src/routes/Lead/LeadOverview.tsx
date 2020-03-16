@@ -361,7 +361,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
           </FormikGroups>
 
           {lead.AppointmentReminders && lead.AppointmentReminders.length > 0 ? (
-            <FormikGroups label="SMS_HISTORY" xs={12}>
+            <FormikGroups label="REMINDER_HISTORY" xs={12}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
