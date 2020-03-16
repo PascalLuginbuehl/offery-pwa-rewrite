@@ -181,7 +181,7 @@ class TableDashboard extends React.Component<Props, _State> {
             {isWidthUp("sm", width) ? <LeadTable leads={filteredLeads !== null ? filteredLeads : leads} /> : <MobileDashboard leads={filteredLeads !== null ? filteredLeads : leads} />}
 
             <div className={classes.positionAddRight}>
-              <PlainLink to="/lead/new/building">
+              <PlainLink to="/lead/new">
                 <Fab color="primary" size="small">
                   <AddIcon fontSize="small" />
                 </Fab>

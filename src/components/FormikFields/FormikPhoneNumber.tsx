@@ -44,7 +44,6 @@ class FormikPhoneNumber extends React.Component<FomrikPhoneNumberProps> {
     const fieldError = getIn(errors, name)
     const showError = getIn(touched, name) && !!fieldError
 
-    console.log(field.value)
     const TextFieldElement = (
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       //@ts-ignore

@@ -89,7 +89,7 @@ class MobileDashboard extends React.Component<Props, State> {
           ))}
         </List>
 
-        <PlainLink to="/lead/new/building" className={classes.fab}>
+        <PlainLink to="/lead/new" className={classes.fab}>
           <Fab color="primary">
             <AddIcon />
           </Fab>

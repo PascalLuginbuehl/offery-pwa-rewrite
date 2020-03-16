@@ -71,7 +71,7 @@ class TableDashboard extends React.Component<Props> {
         </Table>
 
         <div className={classes.positionAddRight}>
-          <PlainLink to="/lead/new/building">
+          <PlainLink to="/lead/new">
             <Fab color="primary" size="small">
               <AddIcon fontSize="small" />
             </Fab>
