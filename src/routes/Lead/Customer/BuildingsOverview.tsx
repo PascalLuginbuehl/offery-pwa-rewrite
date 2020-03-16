@@ -102,7 +102,7 @@ export default function BUildingOverview (props: Props) {
                 </DialogActions>
               </>
             )
-          : null}
+            : <div/>}
 
         </Dialog>
       </Grid>
