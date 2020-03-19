@@ -137,9 +137,9 @@ export default function LeadTable({ leads }: _Props) {
               <TableCell padding="checkbox">
                 <IntlTooltip title={lead.Status.NameTextKey}>
                   <Avatar>
-                    <Typography noWrap variant="body2">
-                      <RemoveRedEyeIcon />
-                    </Typography>
+                    {/* <Typography noWrap variant="body2"> */}
+                    <RemoveRedEyeIcon />
+                    {/* </Typography> */}
                   </Avatar>
                 </IntlTooltip>
               </TableCell>

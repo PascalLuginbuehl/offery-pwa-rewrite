@@ -25,13 +25,14 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles>, WrappedComponentProps, WithWidth {
   label?: string
   isSubmitting: boolean
+  stayInline?: boolean
 }
 
 class Submit extends React.Component<Props> {
   public render() {
-    const { classes, width, label = "NEXT", isSubmitting } = this.props
+    const { classes, width, label = "NEXT", isSubmitting, stayInline = false } = this.props
 
-    if (isWidthUp("sm", width)) {
+    if (isWidthUp("sm", width) || stayInline) {
       return (
         <Grid item xs={12} className={classes.rightAlign}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>

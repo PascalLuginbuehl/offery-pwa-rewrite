@@ -178,15 +178,21 @@ class TableDashboard extends React.Component<Props, _State> {
           </Grid>
 
           <Grid item xs={12}>
-            {isWidthUp("sm", width) ? <LeadTable leads={filteredLeads !== null ? filteredLeads : leads} /> : <MobileDashboard leads={filteredLeads !== null ? filteredLeads : leads} />}
-
-            <div className={classes.positionAddRight}>
-              <PlainLink to="/lead/new">
-                <Fab color="primary" size="small">
-                  <AddIcon fontSize="small" />
-                </Fab>
-              </PlainLink>
-            </div>
+            {isWidthUp("sm", width) ? (
+              <>
+                <LeadTable leads={filteredLeads !== null ? filteredLeads : leads} />
+                <div className={classes.positionAddRight}>
+                  <PlainLink to="/lead/new">
+                    <Fab color="primary" size="small">
+                      <AddIcon fontSize="small" />
+                    </Fab>
+                  </PlainLink>
+                </div>
+              </>
+            )
+              :
+              <MobileDashboard leads={filteredLeads !== null ? filteredLeads : leads} />
+            }
           </Grid>
         </Grid>
       </Wrapper>

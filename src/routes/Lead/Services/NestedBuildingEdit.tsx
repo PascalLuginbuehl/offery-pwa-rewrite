@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/styles"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { green } from "@material-ui/core/colors";
 import IntlTypography from "../../../components/Intl/IntlTypography";
+import Submit from "../../../components/FormikFields/Submit";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -106,9 +107,12 @@ export default function NestedBuildingEdit(props: Props) {
               }
             }}
           >
-            <Form>
-              <BuildingEdit prefix={""} resource={resource} />
-            </Form>
+            {({isSubmitting}) => (
+              <Form disableSubmit>
+                <BuildingEdit resource={resource} />
+                <Submit isSubmitting={isSubmitting} stayInline label="SAVE_BUILDING"></Submit>
+              </Form>
+            )}
           </Formik>
         </ExpansionPanelDetails>
       </ExpansionPanel>
