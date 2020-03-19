@@ -411,7 +411,7 @@ class Lead extends Component<Props, State> {
               <LeadOverview
                 {...routeProps}
                 offline={offline}
-                lead={container.Lead}
+                leadContainer={container}
                 handleChangeAndSave={this.handleChangeAndSave}
               />
             )}

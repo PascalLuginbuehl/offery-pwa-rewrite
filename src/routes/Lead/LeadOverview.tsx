@@ -18,6 +18,7 @@ import { Link } from "react-router-dom"
 import FormikTextField from "../../components/FormikFields/FormikTextField"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
+import { BuildingTags } from "./BuildingTags";
 
 const styles = (theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -52,7 +53,7 @@ function desc<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 interface _Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
-  lead: ILead
+  leadContainer: ILeadContainer
   offline: boolean
   handleChangeAndSave: (value: any, name: keyof ILeadContainer, savePromise: () => Promise<any>) => Promise<void>
 }
@@ -63,7 +64,8 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
   }
 
   public render() {
-    const { selectedCompany, lead, intl, classes } = this.props
+    const { selectedCompany, leadContainer: {Lead, buildings, ...restLead}, intl, classes, } = this.props
+    const services = { disposalService: restLead.disposalService, moveService: restLead.moveService, packService: restLead.packService, storageService: restLead.storageService, cleaningService: restLead.cleaningService }
 
     return (
       <Grid item xs={12}>
@@ -79,136 +81,135 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                 <TableBody>
                   <TableRow>
                     <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
-                    <TableCell>{intl.formatMessage({ id: lead.Customer.IsMale ? "MR" : "MRS"})}. {lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
+                    <TableCell>{intl.formatMessage({ id: Lead.Customer.IsMale ? "MR" : "MRS"})}. {Lead.Customer.Firstname} {Lead.Customer.Lastname}</TableCell>
                   </TableRow>
 
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">FROM</IntlTableCell>
-                    <TableCell>
-                      {
-                        lead.FromAddress ?
-                          <a href={"https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(`${lead.FromAddress.Street}, ${lead.FromAddress.PLZ} ${lead.FromAddress.City}`)} target="_blank">{lead.FromAddress.PLZ} {lead.FromAddress.City}, {lead.FromAddress.Street}</a>
-                          : <FormattedMessage id="NO_ADDRESS" />
-                      }
-                    </TableCell>
+                  <TableRow >
+                    <IntlTableCell component="th" scope="row" colSpan={2}>BUILDINGS</IntlTableCell>
                   </TableRow>
 
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">TO</IntlTableCell>
-                    <TableCell>
-                      {
-                        lead.ToAddress ?
-                          <a href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}`)} target="_blank">{lead.ToAddress.PLZ} {lead.ToAddress.City}, {lead.ToAddress.Street}</a>
-                          : <FormattedMessage id="NO_ADDRESS" />
-                      }
-                    </TableCell>
-                  </TableRow>
+                  {
+                    buildings.map(building => (
+                      <TableRow key={building.BuildingId}>
+                        {/* <IntlTableCell component="th" scope="row">TO</IntlTableCell> */}
+
+                        <TableCell>
+                          <a href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${building.Address.PLZ} ${building.Address.City}, ${building.Address.Street}`)} target="_blank">{building.Address.PLZ} {building.Address.City}, {building.Address.Street}</a>
+                        </TableCell>
+                        <TableCell>
+                          <BuildingTags services={services} building={building} />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  }
+
+
 
                   <TableRow>
                     <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
-                    <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                    <TableCell><FormattedDate value={Lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                   </TableRow>
 
                   {
-                    lead.VisitDate ?
+                    Lead.VisitDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
                   {
-                    lead.MoveDate ?
+                    Lead.MoveDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
                   {
-                    lead.PackServiceDate ?
+                    Lead.PackServiceDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
 
                   {
-                    lead.DeliveryDate ?
+                    Lead.DeliveryDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
 
                   {
-                    lead.StorageDate ?
+                    Lead.StorageDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
                   {
-                    lead.DisposalDate ?
+                    Lead.DisposalDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
                   {
-                    lead.CleaningDate ?
+                    Lead.CleaningDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
                   {
-                    lead.HandOverDate ?
+                    Lead.HandOverDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">HANDIN</IntlTableCell>
-                        <TableCell><FormattedDate value={lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+                        <TableCell><FormattedDate value={Lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       </TableRow>
                       : null
                   }
 
                   <TableRow>
                     <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
-                    <TableCell><a href={"mailto:" + lead.Customer.Email}>{lead.Customer.Email}</a></TableCell>
+                    <TableCell><a href={"mailto:" + Lead.Customer.Email}>{Lead.Customer.Email}</a></TableCell>
                   </TableRow>
                   <TableRow>
                     <IntlTableCell component="th" scope="row">PHONE</IntlTableCell>
 
-                    <TableCell><a href={"tel:" + lead.Customer.TelephoneNumber}>{lead.Customer.TelephoneNumber}</a></TableCell>
+                    <TableCell><a href={"tel:" + Lead.Customer.TelephoneNumber}>{Lead.Customer.TelephoneNumber}</a></TableCell>
                   </TableRow>
 
                   {
-                    lead.Customer.CompanyName.length > 0 ?
+                    Lead.Customer.CompanyName.length > 0 ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">COMPANY</IntlTableCell>
-                        <TableCell>{lead.Customer.CompanyName}</TableCell>
+                        <TableCell>{Lead.Customer.CompanyName}</TableCell>
                       </TableRow>
                       : null
                   }
 
                   <TableRow>
                     <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
-                    <TableCell><ServiceIcons lead={lead} services={lead.Services} /></TableCell>
+                    <TableCell><ServiceIcons lead={Lead} services={Lead.Services} /></TableCell>
                   </TableRow>
                   <TableRow>
                     <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
-                    <IntlTableCell>{lead.Status.NameTextKey}</IntlTableCell>
+                    <IntlTableCell>{Lead.Status.NameTextKey}</IntlTableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -217,22 +218,22 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
           <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
             {
-              lead.ConfirmedOffer && lead.ConfirmedOrder != null && !this.state.OverrideConfirmation ? (
+              Lead.ConfirmedOffer && Lead.ConfirmedOrder != null && !this.state.OverrideConfirmation ? (
                 <Grid item xs={12}>
-                  <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
+                  <IntlTypography>{Lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
                   <Typography>
-                    <IntlTypography component="span">{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
-                    <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
+                    <IntlTypography component="span">{intl.formatDate(Lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + Lead.ConfirmedOffer.FromTemplate}</IntlTypography>
+                    <Link target="_blank" to={`/lead/${Lead.LeadId}/offer/preview/${Lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
                   </Typography>
                   <hr/>
-                  {lead.ConfirmedOrder != null &&
+                  {Lead.ConfirmedOrder != null &&
                     <IntlTypography className={classes.infoMessage}>{"OFFER_RESENT_MAIL_CANCELFIRST"}</IntlTypography>
                   }
                   <Button onClick={() => this.setState({ OverrideConfirmation: true })} variant="contained" color="primary">
                     <FormattedMessage id="OVERRIDE"  />
                   </Button>
                 </Grid>
-              ) : this.state.OverrideConfirmation || (lead.Offers.length > 0) ? (
+              ) : this.state.OverrideConfirmation || (Lead.Offers.length > 0) ? (
                 <Formik<{
                     OfferId: number | null
                     ConfirmedOrderVerbal: boolean
@@ -240,9 +241,9 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                     Comment: string
                   }>
                   initialValues={{
-                    OfferId: lead.ConfirmedOffer ? lead.ConfirmedOffer.OfferId : null,
-                    ConfirmedOrderVerbal: lead.ConfirmedOrderVerbal,
-                    ConfirmedOrder: lead.ConfirmedOrder,
+                    OfferId: Lead.ConfirmedOffer ? Lead.ConfirmedOffer.OfferId : null,
+                    ConfirmedOrderVerbal: Lead.ConfirmedOrderVerbal,
+                    ConfirmedOrder: Lead.ConfirmedOrder,
                     Comment: "",
                   }}
                   onSubmit={async (values, actions) => {
@@ -257,17 +258,17 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
                       if(OfferId) {
                         const order: IConfirmOffer = {
-                          LeadId: lead.LeadId,
+                          LeadId: Lead.LeadId,
                           OfferId,
                           ConfirmedOrderVerbal,
                           ConfirmedOrder: ConfirmedOrder,
                           Comment,
                         }
 
-                        const offer = lead.Offers.find(offer => offer.OfferId === OfferId)
+                        const offer = Lead.Offers.find(offer => offer.OfferId === OfferId)
 
 
-                        await this.props.handleChangeAndSave({...lead, ConfirmedOffer: offer, ConfirmedOrderVerbal, ConfirmedOrder}, "Lead", () => LeadService.confirmOffer(order))
+                        await this.props.handleChangeAndSave({...Lead, ConfirmedOffer: offer, ConfirmedOrderVerbal, ConfirmedOrder}, "Lead", () => LeadService.confirmOffer(order))
                         this.setState({OverrideConfirmation: false})
                         actions.setSubmitting(false)
                       }
@@ -283,9 +284,9 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                           <IntlTypography>OFFER_SENT_EMAIL</IntlTypography>
                           {
                             (() => {
-                              if (lead.ConfirmedOrderVerbal && lead.ConfirmedOffer ) {
+                              if (Lead.ConfirmedOrderVerbal && Lead.ConfirmedOffer ) {
                                 return <>
-                                  <IntlTypography>{intl.formatDate(lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + lead.ConfirmedOffer.FromTemplate}</IntlTypography>
+                                  <IntlTypography>{intl.formatDate(Lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + Lead.ConfirmedOffer.FromTemplate}</IntlTypography>
                                   <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
                                 </>
                               }
@@ -309,7 +310,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                                 component={FormikSimpleSelect}
                                 notTranslated
                                 required
-                                options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
+                                options={Lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
                                   label: intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
                                   value: offer.OfferId,
                                 }))}
@@ -318,14 +319,14 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                               />
                             </Grid>
                             <Grid item>
-                              <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${OfferId}`}><OpenInNewIcon /></Link>
+                              <Link target="_blank" to={`/lead/${Lead.LeadId}/offer/preview/${OfferId}`}><OpenInNewIcon /></Link>
                             </Grid>
                           </Grid>
                         </Grid>
 
                         <Grid item xs={12}>
                           <ButtonGroup className={classes.buttonGroupPadding}>
-                            {!lead.ConfirmedOrderVerbal ?
+                            {!Lead.ConfirmedOrderVerbal ?
                               <Button onClick={() => {setFieldValue("ConfirmedOrderVerbal", true); setFieldValue("ConfirmedOrder", null)}} classes={{ root: classes.buttonRootText }} color={ConfirmedOrderVerbal ? "primary" : "inherit"} variant={ConfirmedOrderVerbal ? "contained" : "outlined"} >
                                 <FormattedMessage id="VERBAL_CONFIRMATION" />
                               </Button> : null
@@ -360,7 +361,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
             }
           </FormikGroups>
 
-          {lead.AppointmentReminders && lead.AppointmentReminders.length > 0 ? (
+          {Lead.AppointmentReminders && Lead.AppointmentReminders.length > 0 ? (
             <FormikGroups label="REMINDER_HISTORY" xs={12}>
               <Table size="small">
                 <TableHead>
@@ -374,7 +375,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {lead.AppointmentReminders.sort((a, b) => desc(a, b, "Created")).map(e => (
+                  {Lead.AppointmentReminders.sort((a, b) => desc(a, b, "Created")).map(e => (
                     <TableRow key={e.AppointmentReminderId} className={!e.Succeed ? classes.errorRow : classes.successRow}>
                       <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       <IntlTableCell>{e.AppointmentTypeTextKey}</IntlTableCell>
@@ -399,7 +400,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lead.StatusHistories.sort((a, b) => desc(a, b, "Created")).map(e => (
+                {Lead.StatusHistories.sort((a, b) => desc(a, b, "Created")).map(e => (
                   <TableRow key={e.StatusHistoryId}>
                     <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
                     <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
