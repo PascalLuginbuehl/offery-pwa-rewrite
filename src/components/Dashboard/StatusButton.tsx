@@ -1,44 +1,16 @@
 import {
   createStyles,
-  
   Theme,
   WithStyles,
   withStyles,
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   Avatar,
-  
-  
-  
   ButtonBase,
 } from "@material-ui/core"
 import * as React from "react"
 import {  IStatus, ICompressedLead } from "../../interfaces/ILead"
-
-
-
-
 import {  red } from "@material-ui/core/colors"
-
-
 import { injectIntl, WrappedComponentProps } from "react-intl"
-
 import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver"
-
-
-
-
-
-
 
 
 const styles = (theme: Theme) =>

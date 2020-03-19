@@ -5,10 +5,10 @@ import {
   withStyles,
   ListItem,
   List,
-  
+
   ListItemText,
-  
-  
+
+
   ListItemAvatar,
 } from "@material-ui/core"
 import * as React from "react"
@@ -73,7 +73,7 @@ class MobileDashboard extends React.Component<Props, State> {
         <List className={classes.root}>
           {leads.map((lead) => (
             <div key={lead.LeadId}>
-              <PlainLink to={`/lead/${lead.LeadId}/building`}>
+              <PlainLink to={`/lead/${lead.LeadId}`}>
                 <ListItem disableGutters>
                   <ListItemAvatar>
                     <StatusButton lead={lead} />

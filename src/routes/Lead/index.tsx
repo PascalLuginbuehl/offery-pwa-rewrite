@@ -388,7 +388,7 @@ class Lead extends Component<Props, State> {
           onChangeAndSave={lead => {
             return this.createLead(lead)
           }}
-          nextPage={this.redirectToNextPage("/building/new")}
+          nextPage={this.redirectToNextPage("/customer")}
         />
       )
     } else if (container) {
