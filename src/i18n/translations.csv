@@ -330,3 +330,6 @@ SURE_DELETE_BUILDING,Are you sure you want to delete this building?,Möchten Sie
 DELETE,Delete,Löschen
 
 SAVE_BUILDING,Save building,Gebäude speichern
+EDIT_AMOUNT_,Edit amount of {item},Anzahl von {item} anpassen
+NEW_PRICE,New price,Neuer preis
+CHANGE,Change,Ändern

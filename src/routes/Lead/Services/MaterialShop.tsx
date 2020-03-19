@@ -6,15 +6,11 @@ import {
   WithStyles,
   withStyles,
   Grid,
-  
-  
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  
-  
   IconButton,
 } from "@material-ui/core"
 import * as React from "react"
@@ -22,17 +18,15 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import {  FormikProps, Field,   withFormik,  ArrayHelpers, FieldArray } from "formik"
 import Form from "../../../components/FormikFields/Form"
-
 import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder } from "../../../interfaces/IShop"
 import { IProduct } from "../../../interfaces/IProduct"
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
 import { FormattedNumber, FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import SelectGridItem from "../../../components/ShopElements/SelectGridItem"
 import PageHeader from "../../../components/PageHeader"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import { ILead } from "../../../interfaces/ILead"
+import { MaterialShopRow } from "./MateriallShopRow";
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -99,28 +93,6 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
     } else {
       throw new Error("Product u r looking for not found")
     }
-  }
-
-  removeOneItem = (index: number) => {
-    const { handleChange, values } = this.props
-    const items = values.OrderPositions
-
-    const newItems = [
-      ...items.map((item, itemIndex) => {
-        if (index == itemIndex) {
-          return {
-            ...item,
-            Amount: item.Amount - 1,
-          }
-        }
-
-        return item
-      }),
-    ]
-      // Filter for Amount 0
-      .filter(item => item.Amount > 0)
-
-    handleChange({ target: { value: newItems, name: "OrderPositions" } })
   }
 
   filterShowList = (currentlyOpen: CurrentlyOpenStateEnum) => (item: IOrderPosition) => {
@@ -198,35 +170,8 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
                         .filter(this.filterShowList(currentlyOpen))
                         .map(item => {
                           const product = this.getCorrespondingProduct(item)
-                          return (
-                            <TableRow key={item.originalIndex}>
-                              <TableCell>
-                                <FormattedMessage id={product.NameTextKey} />
-                              </TableCell>
-                              <TableCell align="right">{item.Amount} Stk.</TableCell>
-                              <TableCell align="right">
-                                {currentlyOpen != CurrentlyOpenStateEnum.Free ? (
-                                  <FormattedNumber
-                                    value={(currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice) * item.Amount}
-                                    style="currency"
-                                    currency="CHF"
-                                  />
-                                ) : (
-                                  "-"
-                                )}
-                              </TableCell>
 
-                              <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
-                                <IconButton onClick={() => this.removeOneItem(item.originalIndex)}>
-                                  <RemoveCircleOutlineIcon />
-                                </IconButton>
-
-                                <IconButton onClick={() => arrayHelpers.remove(item.originalIndex)}>
-                                  <DeleteForeverIcon />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          )
+                          return <MaterialShopRow key={item.originalIndex} product={product} item={item} arrayHelpers={arrayHelpers} currentlyOpen={currentlyOpen}/>
                         })
                     ) : (
                       <TableRow>

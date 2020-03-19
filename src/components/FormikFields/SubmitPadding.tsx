@@ -1,7 +1,7 @@
 import React from "react"
 import { createStyles, makeStyles, Theme, useMediaQuery } from "@material-ui/core"
-import { useTheme } from "@material-ui/styles";
-import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import { useTheme } from "@material-ui/styles"
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
