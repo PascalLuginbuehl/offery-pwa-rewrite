@@ -18,6 +18,8 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import GridContainer from "../../../components/GridContainer"
 import NestedBuildingEdit from "./NestedBuildingEdit"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
+import Submit from "../../../components/FormikFields/Submit"
+import SubmitPadding from "../../../components/FormikFields/SubmitPadding"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -30,16 +32,16 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   buildings: IBuilding[]
   nextPage: () => void
   onChangeAndSave: (storageService: IPutStorageService, lead: ILead) => Promise<any>
-  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
+  onSaveNestedBuilding: (buildings: IBuilding) => Promise<any>
 }
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { resource, values, buildings, onSaveNestedBuildings } = this.props
+    const { resource, values, buildings, onSaveNestedBuilding, isSubmitting } = this.props
 
     return (
       <Grid item xs={12}>
-        <Form>
+        <Form disableSubmit>
           <PageHeader title="STORAGE_SERVICE" />
 
           <Field name="storageService.BoreService" label="BORE" component={FormikButtonCheckbox} />
@@ -62,6 +64,8 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="storageService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+
+          <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>
 
         <GridContainer>
@@ -72,22 +76,23 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Field name="storageService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.OutBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.OutBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
 
           <Field name="storageService.StorageInBuildingId" label="STORAGE_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.StorageInBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.StorageInBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
           <Field name="storageService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.InBuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
-
+          <NestedBuildingEdit resource={resource} buildingId={values.storageService.InBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
+
+        <SubmitPadding />
       </Grid>
     )
   }

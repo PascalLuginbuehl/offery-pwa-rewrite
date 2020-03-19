@@ -31,13 +31,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   buildingId: number | null
-  saveBuildings: (buildings: IBuilding[]) => Promise <any>
+  saveBuilding: (building: IBuilding) => Promise<any>
   buildings: IBuilding[]
   resource: IResource
 }
 
 export default function NestedBuildingEdit(props: Props) {
-  const { buildings, saveBuildings, buildingId, resource} = props
+  const { buildings, saveBuilding, buildingId, resource} = props
 
   const [expandOpen, setExpanded] = useState<boolean>(false)
   const [showSuccess, setSuccess] = useState<boolean>(false)
@@ -89,12 +89,7 @@ export default function NestedBuildingEdit(props: Props) {
             enableReinitialize
             onSubmit={async (values, actions) => {
               try {
-                const newBuildings = [...buildings]
-
-                const buildingIndex = newBuildings.findIndex((building) => building.BuildingId === values.BuildingId)
-                newBuildings[buildingIndex] = values
-
-                await saveBuildings(newBuildings)
+                await saveBuilding(values)
 
                 actions.setSubmitting(false)
                 actions.resetForm()
@@ -103,6 +98,7 @@ export default function NestedBuildingEdit(props: Props) {
                 setSuccess(true)
                 setTimeout(() => setSuccess(false), 3000)
               } catch (e) {
+                console.log(e)
                 actions.setStatus(e)
               }
             }}

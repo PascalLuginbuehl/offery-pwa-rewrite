@@ -79,8 +79,8 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}
-            onSaveNestedBuildings={(buildings) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, buildings))
+            onSaveNestedBuilding={(building) => {
+              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
             }}
             nextPage={redirectToNextPage("/services/move")}
           />
@@ -114,8 +114,8 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             buildings={buildings}
             packService={packService}
             lead={Lead}
-            onSaveNestedBuildings={(buildings) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, buildings))
+            onSaveNestedBuilding={(building) => {
+              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
             }}
             onChangeAndSave={(packServiceData, lead) => {
               return Promise.all([
@@ -137,8 +137,8 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
           <StorageService
             {...routeProps}
             lead={Lead}
-            onSaveNestedBuildings={(buildings) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, buildings))
+            onSaveNestedBuilding={(building) => {
+              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
             }}
             buildings={buildings}
             storageService={storageService ? storageService : emptyStorageService}
@@ -180,8 +180,8 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             {...routeProps}
             buildings={buildings}
             lead={Lead}
-            onSaveNestedBuildings={(buildings) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, buildings))
+            onSaveNestedBuilding={(building) => {
+              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
             }}
             disposalService={disposalService ? disposalService : emptyDisposalService}
             onChangeAndSave={(disposalServiceData, lead) => {
@@ -222,8 +222,8 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             {...routeProps}
             buildings={buildings}
             lead={Lead}
-            onSaveNestedBuildings={(buildings) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuildings(Lead.LeadId, buildings))
+            onSaveNestedBuilding={(building) => {
+              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
             }}
             cleaningService={cleaningService ? cleaningService : emptyCleaningService}
             onChangeAndSave={(cleaningServiceData, lead) => {

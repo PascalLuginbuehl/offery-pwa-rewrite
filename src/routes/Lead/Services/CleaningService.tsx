@@ -19,6 +19,8 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import GridContainer from "../../../components/GridContainer"
 import NestedBuildingEdit from "./NestedBuildingEdit"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
+import Submit from "../../../components/FormikFields/Submit"
+import SubmitPadding from "../../../components/FormikFields/SubmitPadding"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -31,16 +33,16 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   onChangeAndSave: (cleaningSerivce: IPutCleaningService, lead: ILead) => Promise<any>
   buildings: IBuilding[]
-  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
+  onSaveNestedBuilding: (buildings: IBuilding) => Promise<any>
 }
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuildings } = this.props
+    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuilding } = this.props
 
     return (
       <Grid item xs={12}>
-        <Form>
+        <Form disableSubmit>
           <PageHeader title="CLEANING_SERVICE" />
           <Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={FormikButtonCheckbox} />
           <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />
@@ -58,6 +60,8 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+
+          <Submit isSubmitting={isSubmitting} disableSubmitPadding/>
         </Form>
 
         <GridContainer>
@@ -69,8 +73,10 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="cleaningService.BuildingId" label="CLEANING_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-          <NestedBuildingEdit resource={resource} buildingId={values.cleaningService.BuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+          <NestedBuildingEdit resource={resource} buildingId={values.cleaningService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
+
+        <SubmitPadding />
       </Grid>
     )
   }

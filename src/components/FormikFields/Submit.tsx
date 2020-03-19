@@ -26,11 +26,12 @@ interface Props extends WithStyles<typeof styles>, WrappedComponentProps, WithWi
   label?: string
   isSubmitting: boolean
   stayInline?: boolean
+  disableSubmitPadding?: boolean
 }
 
 class Submit extends React.Component<Props> {
   public render() {
-    const { classes, width, label = "NEXT", isSubmitting, stayInline = false } = this.props
+    const { classes, width, label = "NEXT", isSubmitting, stayInline = false, disableSubmitPadding = false } = this.props
 
     if (isWidthUp("sm", width) || stayInline) {
       return (
@@ -42,7 +43,7 @@ class Submit extends React.Component<Props> {
       )
     } else {
       return (
-        <Grid item xs={12} className={classes.submitPadding}>
+        <Grid item xs={12} className={disableSubmitPadding ? "" : classes.submitPadding }>
           <Fab className={classes.fab} color="primary" type="submit" disabled={isSubmitting}>
             <ChevronRightIcon />
           </Fab>

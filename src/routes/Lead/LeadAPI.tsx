@@ -102,6 +102,10 @@ class LeadAPI {
     return BuildingService.saveBuildings(leadId, buildings)
   }
 
+  SaveBuilding = (building: IBuilding) => {
+    return BuildingService.saveBuilding(building)
+  }
+
   CreateBuilding = (leadId: number, building: IPostBuilding) => {
     return BuildingService.createBuilding(leadId, building)
   }

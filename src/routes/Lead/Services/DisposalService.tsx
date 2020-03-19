@@ -3,7 +3,6 @@ import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import { FormikProps, Field, withFormik } from "formik"
 import Form from "../../../components/FormikFields/Form"
-
 import { IPutDisposalService } from "../../../interfaces/IService"
 import PageHeader from "../../../components/PageHeader"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
@@ -17,6 +16,8 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 import NestedBuildingEdit from "./NestedBuildingEdit"
 import GridContainer from "../../../components/GridContainer"
+import Submit from "../../../components/FormikFields/Submit"
+import SubmitPadding from "../../../components/FormikFields/SubmitPadding"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -29,16 +30,16 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   buildings: IBuilding[]
   onChangeAndSave: (disposalService: IPutDisposalService, lead: ILead) => Promise<any>
-  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
+  onSaveNestedBuilding: (buildings: IBuilding) => Promise<any>
 }
 
 class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuildings } = this.props
+    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuilding } = this.props
 
     return (
       <Grid item xs={12}>
-        <Form>
+        <Form disableSubmit>
           <PageHeader title="DISPOSAL_SERVICE" />
 
           <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
@@ -51,6 +52,8 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="disposalService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+
+          <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>
 
         <GridContainer>
@@ -61,8 +64,10 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Field name="disposalService.BuildingId" label="DISPOSAL_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.disposalService.BuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+          <NestedBuildingEdit resource={resource} buildingId={values.disposalService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
+
+        <SubmitPadding />
       </Grid>
     )
   }

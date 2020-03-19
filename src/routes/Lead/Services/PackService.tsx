@@ -17,6 +17,8 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import NestedBuildingEdit from "./NestedBuildingEdit"
 import GridContainer from "../../../components/GridContainer"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
+import Submit from "../../../components/FormikFields/Submit"
+import SubmitPadding from "../../../components/FormikFields/SubmitPadding"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -29,16 +31,16 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
   nextPage: () => void
   buildings: IBuilding[]
   onChangeAndSave: (packService: IPutPackService, lead: ILead) => Promise<any>
-  onSaveNestedBuildings: (buildings: IBuilding[]) => Promise<any>
+  onSaveNestedBuilding: (buildings: IBuilding) => Promise<any>
 }
 
 class PackService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuildings } = this.props
+    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuilding } = this.props
 
     return (
       <Grid item xs={12}>
-        <Form>
+        <Form disableSubmit>
           <PageHeader title="PACK_SERVICE" />
 
           <Field name="packService.HasOutService" label="WITH_UNPACK" component={FormikButtonCheckbox} />
@@ -49,6 +51,8 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <Field name="packService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+
+          <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>
 
 
@@ -60,8 +64,10 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Field name="packService.BuildingId" label="PACK_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.packService.BuildingId} buildings={buildings} saveBuildings={onSaveNestedBuildings} />
+          <NestedBuildingEdit resource={resource} buildingId={values.packService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
+
+        <SubmitPadding />
       </Grid>
     )
   }

@@ -64,6 +64,20 @@ class BuildingService {
       // .then(middleWare)
       .then(json => this.toSpecificType<IBuilding[]>(json))
   }
+
+  async saveBuilding(body: IBuilding): Promise<IBuilding[]> {
+    return fetch(API_URL + "/building/single", await LoginService.authorizeRequest({
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }))
+      .then(errorFunction)
+      .then((response) => response.json())
+      // .then(middleWare)
+      .then(json => this.toSpecificType<IBuilding[]>(json))
+  }
 }
 
 
