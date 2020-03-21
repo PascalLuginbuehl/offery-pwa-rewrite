@@ -33,7 +33,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, isSubmitting, status, intl, setFieldValue, selectedCompany, disposalService } = this.props
-    const showDeMontageCondition = (disposalService.DeMontage && selectedCompany.Settings.ConditionMoveServiceShowDemontageCondition)
+    const showDeMontageCondition = (disposalService.DeMontage && selectedCompany.Settings.EnableServiceDisposalDemontagePrice)
     return (
       <Grid item xs={12}>
         <Form>

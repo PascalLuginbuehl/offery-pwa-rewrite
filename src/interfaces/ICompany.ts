@@ -20,16 +20,24 @@ export interface IOfferTemplateCategory {
 }
 
 export interface ICompanySetting {
-  ConditionEnableDefaultHourPrice: boolean
-  ConditionEnableDefaultHasCostCeiling: boolean
-  ConditionHourlyPriceRange: number[]
-  ConditionMoveServiceShowMontageCondition: boolean
-  ConditionMoveServiceShowDemontageCondition: boolean
-  ConditionStorageServiceShowMontageCondition: boolean
-  ConditionStorageServiceShowDemontageCondition: boolean
-  ConditionDisposalServiceShowDemontageCondition: boolean
 
+  //Conditiontypes
+  EnableDefaultHourPrice: boolean
+  EnableDefaultHasCostCeiling: boolean
+  HourlyPriceRangeJSON: number[]
 
+  //Move
+  EnableServiceMoveMontagePrice: boolean
+  EnableServiceMoveDemontagePrice: boolean
+
+  //Storage
+  EnableServiceStorageMontagePrice: boolean
+  EnableServiceStorageDemontagePrice: boolean
+
+  //Disposal
+  EnableServiceDisposalDemontagePrice: boolean
+
+  //Email
   VisitConfirmEmailSubjectTextKey: string
   VisitConfirmEmailBodyContentIntroTextKey: string
   VisitConfirmEmailBodyContentOutroTextKey: string

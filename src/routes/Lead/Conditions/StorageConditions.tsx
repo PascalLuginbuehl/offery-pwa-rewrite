@@ -32,8 +32,8 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 class StorageConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, intl, resource, setFieldValue, selectedCompany, storageService } = this.props
-    const showMontageCondition = (storageService.MontageService && selectedCompany.Settings.ConditionMoveServiceShowMontageCondition)
-    const showDeMontageCondition = (storageService.DeMontageService && selectedCompany.Settings.ConditionMoveServiceShowDemontageCondition)
+    const showMontageCondition = (storageService.MontageService && selectedCompany.Settings.EnableServiceStorageMontagePrice)
+    const showDeMontageCondition = (storageService.DeMontageService && selectedCompany.Settings.EnableServiceStorageDemontagePrice)
 
     return (
       <Grid item xs={12}>
