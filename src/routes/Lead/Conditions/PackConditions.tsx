@@ -30,10 +30,10 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, isSubmitting, status, setFieldValue, selectedCompany, packService } = this.props
+    const showHeavyLift = (packService.HeavyLiftService && selectedCompany.Settings.EnableServicePackHeavyLift && selectedCompany.Settings.EnableServicePackHeavyLiftPrice)
 
     //Set default values from settings if configured, enabled and not set yet
-    if (selectedCompany.Settings.EnableServicePackHeavyLift  && selectedCompany.Settings.EnableServicePackHeavyLiftPrice
-      && packService.HeavyLiftService && values.packConditions.ServiceConditions.HeavyLiftPrice == null)
+    if (showHeavyLift && values.packConditions.ServiceConditions.HeavyLiftPrice == null)
       values.packConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
 
     return (
@@ -50,9 +50,9 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
             setFieldValue={setFieldValue}
             values={values.packConditions}
           >
-            {packService.HeavyLiftService ?
+            {showHeavyLift ?
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {packService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="packConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {showHeavyLift ? <Field label="HEAVY_LIFT_PRICE" name="packConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
               </FormikGroups>
               : null }
           </ServiceConditions>
