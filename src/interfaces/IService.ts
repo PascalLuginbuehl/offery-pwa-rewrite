@@ -162,7 +162,7 @@ export const emptyCleaningService: IPutCleaningService = {
   CleaningWindowsService: false,
   CleaningWindowsWithShuttersService: false,
   DovelholeService: false,
-  HandoutGaranty: true,
+  HandoutGaranty: false,
   HighPressureGarageCleaningService: false,
   HighPressureTerraceCleaningService: false,
   CleaningDate: null,
