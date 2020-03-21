@@ -75,13 +75,23 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
           <Field name="moveService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.moveService.OutBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.MoveServiceOutBuildingSetting}
+            buildingId={values.moveService.OutBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
           <Field name="moveService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.moveService.InBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.MoveServiceInBuildingSetting}
+            buildingId={values.moveService.InBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />

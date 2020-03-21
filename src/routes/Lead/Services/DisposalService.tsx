@@ -69,7 +69,12 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Field name="disposalService.BuildingId" label="DISPOSAL_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.disposalService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.DisposalServiceBuildingSetting}
+            buildingId={values.disposalService.BuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />

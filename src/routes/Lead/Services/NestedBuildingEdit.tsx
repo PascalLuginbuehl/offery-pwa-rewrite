@@ -11,6 +11,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { green } from "@material-ui/core/colors";
 import IntlTypography from "../../../components/Intl/IntlTypography";
 import Submit from "../../../components/FormikFields/Submit";
+import { IBuildingSetting } from "../../../interfaces/ICompany"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,10 +35,11 @@ interface Props {
   saveBuilding: (building: IBuilding) => Promise<any>
   buildings: IBuilding[]
   resource: IResource
+  buildingSetting: IBuildingSetting
 }
 
 export default function NestedBuildingEdit(props: Props) {
-  const { buildings, saveBuilding, buildingId, resource} = props
+  const { buildings, saveBuilding, buildingId, resource, buildingSetting} = props
 
   const [expandOpen, setExpanded] = useState<boolean>(false)
   const [showSuccess, setSuccess] = useState<boolean>(false)
@@ -105,7 +107,7 @@ export default function NestedBuildingEdit(props: Props) {
           >
             {({isSubmitting}) => (
               <Form disableSubmit>
-                <BuildingEdit resource={resource} />
+                <BuildingEdit resource={resource} buildingSetting={buildingSetting}/>
                 <Submit isSubmitting={isSubmitting} stayInline label="SAVE_BUILDING"></Submit>
               </Form>
             )}

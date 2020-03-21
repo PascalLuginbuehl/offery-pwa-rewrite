@@ -69,7 +69,12 @@ class PackService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Field name="packService.BuildingId" label="PACK_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.packService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.PackServiceBuildingSetting}
+            buildingId={values.packService.BuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />

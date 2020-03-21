@@ -134,6 +134,7 @@ export interface ICompanySetting {
   EnableMaterialOrderComment: boolean
 
   //Buildings
+  DefaultBuildingSetting: IBuildingSetting
   CleaningServiceBuildingSetting: IBuildingSetting
   DisposalServiceBuildingSetting: IBuildingSetting
   MoveServiceOutBuildingSetting: IBuildingSetting

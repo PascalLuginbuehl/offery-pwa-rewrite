@@ -78,7 +78,11 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="cleaningService.BuildingId" label="CLEANING_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-          <NestedBuildingEdit resource={resource} buildingId={values.cleaningService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.CleaningServiceBuildingSetting}
+            buildingId={values.cleaningService.BuildingId}
+            buildings={buildings} saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />

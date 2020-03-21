@@ -81,20 +81,35 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           </Grid>
 
           <Field name="storageService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.OutBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.StorageServiceOutBuildingSetting}
+            buildingId={values.storageService.OutBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">STORAGE_BUILDING</IntlTypography>
           </Grid>
 
           <Field name="storageService.StorageInBuildingId" label="STORAGE_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.StorageInBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.StorageServiceStorageInBuildingSetting}
+            buildingId={values.storageService.StorageInBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
           <Field name="storageService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.storageService.InBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.StorageServiceInBuildingSetting}
+            buildingId={values.storageService.InBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />
