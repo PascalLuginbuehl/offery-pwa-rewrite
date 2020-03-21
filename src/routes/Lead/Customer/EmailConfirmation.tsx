@@ -43,6 +43,11 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     const { selectedCompany, values, lead, buildings } = this.props
     const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
 
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -68,7 +73,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
                 : null
             }
 
-            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} required />
+            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required />
 
             <Typography>
               <FormattedMessage id={VisitConfirmEmailBodyContentOutroTextKey} values={{ br: <br /> }} />

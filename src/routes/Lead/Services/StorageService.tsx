@@ -37,7 +37,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { resource, values, buildings, onSaveNestedBuilding, isSubmitting } = this.props
+    const { resource, selectedCompany, values, buildings, onSaveNestedBuilding, isSubmitting } = this.props
+
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
 
     return (
       <Grid item xs={12}>
@@ -60,7 +65,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
           </FormikGroups>
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} />
+            <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
           </FormikGroups>
 
           <Field name="storageService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />

@@ -35,7 +35,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuilding } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildings, values, onSaveNestedBuilding } = this.props
+
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
 
     return (
       <Grid item xs={12}>
@@ -48,7 +53,7 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="disposalService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="lead.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
           </FormikGroups>
 
           <Field name="disposalService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />

@@ -119,6 +119,11 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
     const { currentlyOpen } = this.state
     const ShopProducts = selectedCompany.ShopProducts
 
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -132,7 +137,7 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
           </Grid>
 
           <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST" component={FormikPrice} />
-          <Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} />
+          <Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
 
           <Grid item xs={12}>
             <Tabs value={currentlyOpen} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>

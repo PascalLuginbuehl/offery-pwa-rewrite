@@ -37,7 +37,13 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuilding } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildings, values, onSaveNestedBuilding } = this.props
+
+    const initialDate = new Date()
+    initialDate.setDate(initialDate.getDate() + 7)
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
 
     // const { data } = this.props
     return (
@@ -54,7 +60,7 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="moveService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate} />
           </FormikGroups>
 
           <Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />

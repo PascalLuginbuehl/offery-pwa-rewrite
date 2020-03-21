@@ -38,7 +38,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuilding } = this.props
+    const { isSubmitting, status, resource, selectedCompany, values, buildings, onSaveNestedBuilding } = this.props
+
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
 
     return (
       <Grid item xs={12}>
@@ -55,8 +60,8 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="lead.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
-            <Field name="lead.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
+            <Field name="lead.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
           </FormikGroups>
 
           <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />

@@ -39,7 +39,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     const { VisitDate, MoveDate } = values
 
     const initialDate = new Date()
-    initialDate.setHours(8)
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
     initialDate.setMinutes(0)
     initialDate.setSeconds(0)
 
