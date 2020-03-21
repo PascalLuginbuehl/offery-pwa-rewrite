@@ -49,26 +49,26 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
         <Form disableSubmit>
           <PageHeader title="STORAGE_SERVICE" />
 
-          <Field name="storageService.BoreService" label="BORE" component={FormikButtonCheckbox} />
-          <Field name="storageService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
-          <Field name="storageService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
-          <Field name="storageService.PianoService" label="PIANO" component={FormikButtonCheckbox} />
-          <Field name="storageService.MontageService" label="MONTAGE" component={FormikButtonCheckbox} />
-          <Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />
-          <Field name="storageService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceStorageBore ? (<Field name="storageService.BoreService" label="BORE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceStorageLampDemontage ? (<Field name="storageService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceStorageFurnitureLift ? (<Field name="storageService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceStoragePiano ? (<Field name="storageService.PianoService" label="PIANO" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceStorageMontage ? (<Field name="storageService.MontageService" label="MONTAGE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceStorageDemontage ? (<Field name="storageService.DeMontageService" label="DEMONTAGE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceStorageHeavyLift ? (<Field name="storageService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />) : null }
 
           <FormikGroups label="CONTACT_PERSON" xs={12}>
-            <Field label="FULL_NAME" name="storageService.ContactPersonFullName" component={FormikTextField} required />
-            <Field label="COMPANY" name="storageService.CompanyName" component={FormikTextField} />
-            <Field label="CONTACTPERSON_EMAIL" name="storageService.ContactPersonEMail" component={FormikTextField} />
-            <Field label="CONTACT_PERSON_TEL" name="storageService.ContactPersonTel" component={FormikTextField} />
+            {selectedCompany.Settings.EnableServiceStorageContactPersonFullName ? (<Field label="FULL_NAME" name="storageService.ContactPersonFullName" component={FormikTextField} />) : null }
+            {selectedCompany.Settings.EnableServiceStorageCompanyName ? (<Field label="COMPANY" name="storageService.CompanyName" component={FormikTextField} />) : null }
+            {selectedCompany.Settings.EnableServiceStorageContactPersonEMail ? (<Field label="CONTACTPERSON_EMAIL" name="storageService.ContactPersonEMail" component={FormikTextField} />) : null }
+            {selectedCompany.Settings.EnableServiceStorageContactPersonTel ? (<Field label="CONTACT_PERSON_TEL" name="storageService.ContactPersonTel" component={FormikTextField} />) : null }
           </FormikGroups>
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.StorageDate" label="STORAGE_UNSTORE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
           </FormikGroups>
 
-          <Field name="storageService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+          {selectedCompany.Settings.EnableServiceStorageComment ? (<Field name="storageService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
           <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>
