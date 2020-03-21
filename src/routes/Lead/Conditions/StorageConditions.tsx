@@ -32,8 +32,21 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 class StorageConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, intl, resource, setFieldValue, selectedCompany, storageService } = this.props
-    const showMontageCondition = (storageService.MontageService && selectedCompany.Settings.ConditionMoveServiceShowMontageCondition)
-    const showDeMontageCondition = (storageService.DeMontageService && selectedCompany.Settings.ConditionMoveServiceShowDemontageCondition)
+    const showMontagePrice = (storageService.MontageService && selectedCompany.Settings.EnableServiceStorageMontage && selectedCompany.Settings.EnableServiceStorageMontagePrice)
+    const showDeMontagePrice = (storageService.DeMontageService && selectedCompany.Settings.EnableServiceStorageDemontage && selectedCompany.Settings.EnableServiceStorageDemontagePrice)
+    const showFurnitureLiftPrice = (storageService.FurnitureLiftService && selectedCompany.Settings.EnableServiceStorageFurnitureLift && selectedCompany.Settings.EnableServiceStorageFurnitureLiftPrice)
+    const showHeavyLiftPrice = (storageService.HeavyLiftService && selectedCompany.Settings.EnableServiceStorageHeavyLift && selectedCompany.Settings.EnableServiceStorageHeavyLiftPrice)
+    const showPiano = (storageService.PianoService && selectedCompany.Settings.EnableServiceStoragePiano && selectedCompany.Settings.EnableServiceStoragePianoPrice)
+
+    //Set default values from settings if configured, enabled and not set yet
+    if (showFurnitureLiftPrice && values.storageConditions.FurnitureLiftPrice == null)
+      values.storageConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
+
+    if (showPiano && values.storageConditions.PianoPrice == null)
+      values.storageConditions.PianoPrice = selectedCompany.Settings.DefaultPianoPrice
+
+    if (showHeavyLiftPrice && values.storageConditions.ServiceConditions.HeavyLiftPrice == null)
+      values.storageConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
 
     return (
       <Grid item xs={12}>
@@ -43,42 +56,49 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
           <ServiceConditions
             prefix={"storageConditions"}
             commentPrefix={"storageService"}
+            commentEnabled={selectedCompany.Settings.EnableServiceStorageComment}
             additionalCost={this.getAdditionalCost()}
             setFieldValue={setFieldValue}
             values={values.storageConditions}
           >
-            {storageService.BoreService ? (
-              <FormikGroups label="BORE" xs={6} md={3}>
-                <Field label="AMOUNT" name="storageConditions.BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />
-                <Field label="PRICE" name="storageConditions.BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+            {selectedCompany.Settings.EnableServiceStorageBore && storageService.BoreService &&
+              (selectedCompany.Settings.EnableServiceStorageBoreAmount || selectedCompany.Settings.EnableServiceStorageBorePrice) ?
+              (<FormikGroups label="BORE" xs={6} md={3}>
+                {selectedCompany.Settings.EnableServiceStorageBoreAmount ?
+                  (<Field label="AMOUNT" name="storageConditions.BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />) : null }
+                {selectedCompany.Settings.EnableServiceStorageBorePrice ?
+                  (<Field label="PRICE" name="storageConditions.BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
               </FormikGroups>
-            ) : null}
+              ) : null}
 
-            {storageService.LampDemontageService ? (
-              <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
-                <Field
-                  label="AMOUNT"
-                  name="storageConditions.LampDemontageAmount"
-                  type="number"
-                  component={FormikTextField}
-                  inputProps={{ step: 1, min: 0 }}
-                  overrideGrid={{ xs: 6, md: undefined }}
-                />
-                <Field label="PRICE" name="storageConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+            {selectedCompany.Settings.EnableServiceStorageLampDemontage && storageService.LampDemontageService &&
+              (selectedCompany.Settings.EnableServiceStorageLampDemontageAmount || selectedCompany.Settings.EnableServiceStorageLampDemontagePrice ) ?
+              (<FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
+                {selectedCompany.Settings.EnableServiceStorageLampDemontageAmount ?
+                  (<Field
+                    label="AMOUNT"
+                    name="storageConditions.LampDemontageAmount"
+                    type="number"
+                    component={FormikTextField}
+                    inputProps={{ step: 1, min: 0 }}
+                    overrideGrid={{ xs: 6, md: undefined }}
+                  />) : null }
+                {selectedCompany.Settings.EnableServiceStorageLampDemontagePrice ?
+                  (<Field label="PRICE" name="storageConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
               </FormikGroups>
-            ) : null}
+              ) : null}
 
-            {storageService.FurnitureLiftService || storageService.PianoService || showMontageCondition || showDeMontageCondition || storageService.HeavyLiftService ? (
+            {showFurnitureLiftPrice || showPiano || showMontagePrice || showDeMontagePrice || showHeavyLiftPrice ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {storageService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
+                {showFurnitureLiftPrice ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
 
-                {storageService.PianoService ? <Field label="PIANO" name="storageConditions.PianoPrice" component={FormikPrice} /> : null}
+                {showPiano ? <Field label="PIANO" name="storageConditions.PianoPrice" component={FormikPrice} /> : null}
 
-                {showMontageCondition ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
+                {showMontagePrice ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
 
-                {showDeMontageCondition ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
+                {showDeMontagePrice ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
 
-                {storageService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {showHeavyLiftPrice ? <Field label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
               </FormikGroups>
             ) : null}
           </ServiceConditions>

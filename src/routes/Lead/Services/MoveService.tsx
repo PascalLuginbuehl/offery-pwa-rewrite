@@ -37,7 +37,13 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class Index extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, buildings, values, onSaveNestedBuilding } = this.props
+    const { isSubmitting, status, resource, selectedCompany, buildings, values, onSaveNestedBuilding } = this.props
+
+    const initialDate = new Date()
+    initialDate.setDate(initialDate.getDate() + 7)
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
 
     // const { data } = this.props
     return (
@@ -45,19 +51,19 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
         <Form disableSubmit>
           <PageHeader title="MOVE_SERVICE" />
 
-          <Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceMoveBore ? (<Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveLampDemontage ? (<Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveFurnitureLift ? (<Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMovePiano ? (<Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveMontage ? (<Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveDemontage ? (<Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveHeavyLift ? (<Field name="moveService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />) : null }
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate} />
           </FormikGroups>
 
-          <Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+          {selectedCompany.Settings.EnableServiceMoveComment ? (<Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
           <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>
@@ -69,13 +75,23 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
             <IntlTypography variant="h6">MOVE_OUT_BUILDING</IntlTypography>
           </Grid>
           <Field name="moveService.OutBuildingId" label="MOVE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.moveService.OutBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.MoveServiceOutBuildingSetting}
+            buildingId={values.moveService.OutBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
 
           <Grid item xs={12}>
             <IntlTypography variant="h6">MOVE_IN_BUILDING</IntlTypography>
           </Grid>
           <Field name="moveService.InBuildingId" label="MOVE_IN_BUILDING" buildings={buildings} component={SelectBuilding} />
-          <NestedBuildingEdit resource={resource} buildingId={values.moveService.InBuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.MoveServiceInBuildingSetting}
+            buildingId={values.moveService.InBuildingId}
+            buildings={buildings}
+            saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />

@@ -38,28 +38,33 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, Values {
 
 class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, resource, values, buildings, onSaveNestedBuilding } = this.props
+    const { isSubmitting, status, resource, selectedCompany, values, buildings, onSaveNestedBuilding } = this.props
+
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
 
     return (
       <Grid item xs={12}>
         <Form disableSubmit>
           <PageHeader title="CLEANING_SERVICE" />
-          <Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.DovelholeService" label="DOVELHOLE" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.CleaningFireplaceService" label="CLEANING_FIREPLACE" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.CleaningCarpetService" label="CLEANING_CARPET" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.CleaningWindowsService" label="CLEANING_WINDOWS" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.CleaningWindowsWithShuttersService" label="CLEAING_WINDOWS_WITH_SHUTTER" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={FormikButtonCheckbox} />
-          <Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceCleaningHighPressureTerrace ? (<Field name="cleaningService.HighPressureTerraceCleaningService" label="HIGH_PRESSURE_TERRACE_CLEANING" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningHighPressureGarage ? (<Field name="cleaningService.HighPressureGarageCleaningService" label="HIGH_PRESSURE_GARAGE_CLEANING" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningDovelhole ? (<Field name="cleaningService.DovelholeService" label="DOVELHOLE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningFirePlace ? (<Field name="cleaningService.CleaningFireplaceService" label="CLEANING_FIREPLACE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningCarpet ? (<Field name="cleaningService.CleaningCarpetService" label="CLEANING_CARPET" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningWindows ? (<Field name="cleaningService.CleaningWindowsService" label="CLEANING_WINDOWS" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningWindowsWithShutters ? (<Field name="cleaningService.CleaningWindowsWithShuttersService" label="CLEAING_WINDOWS_WITH_SHUTTER" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningSpecial ? (<Field name="cleaningService.CleaningSpecialService" label="CLEANING_SPECIAL" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceCleaningHandOutGaranty ? (<Field name="cleaningService.HandoutGaranty" label="HANDOUT_GARANTY" component={FormikButtonCheckbox} />) : null }
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
-            <Field name="lead.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} />
-            <Field name="lead.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} />
+            <Field name="lead.CleaningDate" label="CLEANING_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
+            <Field name="lead.HandOverDate" label="HANDOVER_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
           </FormikGroups>
 
-          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+          {selectedCompany.Settings.EnableServiceCleaningComment ? (<Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
           <Submit isSubmitting={isSubmitting} disableSubmitPadding/>
         </Form>
@@ -73,7 +78,11 @@ class CleaningService extends React.Component<Props & FormikProps<Values>, {}> {
 
           <Field name="cleaningService.BuildingId" label="CLEANING_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-          <NestedBuildingEdit resource={resource} buildingId={values.cleaningService.BuildingId} buildings={buildings} saveBuilding={onSaveNestedBuilding} />
+          <NestedBuildingEdit
+            resource={resource}
+            buildingSetting={selectedCompany.Settings.CleaningServiceBuildingSetting}
+            buildingId={values.cleaningService.BuildingId}
+            buildings={buildings} saveBuilding={onSaveNestedBuilding} />
         </GridContainer>
 
         <SubmitPadding />

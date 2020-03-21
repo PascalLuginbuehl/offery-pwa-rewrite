@@ -32,26 +32,55 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, intl, selectedCompany, cleaningService, resource} = this.props
+    const { isSubmitting, status, intl, selectedCompany, cleaningConditions, cleaningService, resource} = this.props
 
-    console.log(selectedCompany.CarTypes)
+    const showHighPressureTerracePrice = (selectedCompany.Settings.EnableServiceCleaningHighPressureTerrace &&
+        selectedCompany.Settings.EnableServiceCleaningHighPressureTerracePrice &&
+        cleaningService.HighPressureTerraceCleaningService)
+
+    const showFirePlacePrice = (selectedCompany.Settings.EnableServiceCleaningFirePlace &&
+      selectedCompany.Settings.EnableServiceCleaningFirePlacePrice &&
+      cleaningService.CleaningFireplaceService)
+
+    const showCarpetPrice = (selectedCompany.Settings.EnableServiceCleaningCarpet &&
+      selectedCompany.Settings.EnableServiceCleaningCarpetPrice &&
+      cleaningService.CleaningCarpetService)
+
+    const showHighPressureGaragePrice = (selectedCompany.Settings.EnableServiceCleaningHighPressureGarage &&
+      selectedCompany.Settings.EnableServiceCleaningHighPressureGaragePrice &&
+      cleaningService.HighPressureGarageCleaningService)
+
+    const showWindowPrice = (selectedCompany.Settings.EnableServiceCleaningWindows &&
+      selectedCompany.Settings.EnableServiceCleaningWindowsPrice &&
+      cleaningService.CleaningWindowsService)
+
+    const showWindowShuttersPrice = (selectedCompany.Settings.EnableServiceCleaningWindowsWithShutters &&
+      selectedCompany.Settings.EnableServiceCleaningWindowsWithShuttersPrice &&
+      cleaningService.CleaningWindowsWithShuttersService)
+
+    //Set default values from settings if configured, enabled and not set yet
+    if (cleaningConditions.PaymentMethodId == null)
+    {
+      const defaultPaymentMethod = resource.PaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
+      cleaningConditions.PaymentMethodId = defaultPaymentMethod != null ? defaultPaymentMethod.PaymentMethodId : null
+    }
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="CLEANING_CONDITIONS" />
 
-          <Field label="HANDOUT_GARANTY" name="cleaningService.HandoutGaranty" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceCleaningHandOutGaranty ? (<Field label="HANDOUT_GARANTY" name="cleaningService.HandoutGaranty" component={FormikButtonCheckbox} />) : null }
 
           <FormikGroups label="PERSONAL_COST" xs={12}>
-            <Field
+            {selectedCompany.Settings.EnableServiceCleaningWorkersAmount ? (<Field
               label="CLEANING_PERSONAL_AMOUNT"
               name="cleaningConditions.WorkersAmount"
               type="number"
               component={FormikTextField}
               inputProps={{ step: 1, min: 0 }}
               overrideGrid={{ xs: 6, md: 3 }}
-            />
+            />) : null}
             <Field
               label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
               name="cleaningConditions.EstimatedHoursOfWorkWhenFixPrice"
@@ -63,60 +92,63 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
             <Field label="FIX_PRICE" name="cleaningConditions.FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
           </FormikGroups>
 
-          {cleaningService.HighPressureGarageCleaningService || cleaningService.HighPressureTerraceCleaningService ? (
+          {showHighPressureGaragePrice || showHighPressureTerracePrice ? (
             <FormikGroups label="HIGH_PRESURE_CLEANING_FIX_PRICE" xs={6} md={3}>
-              {cleaningService.HighPressureTerraceCleaningService ? (
+              {showHighPressureTerracePrice ? (
                 <Field label="TERRACE" name="cleaningConditions.HighPressureTerraceCleaningFixPrice" component={FormikPrice} overrideGrid={{ xs: 6 }} />
               ) : null}
-              {cleaningService.HighPressureGarageCleaningService ? (
+              {showHighPressureGaragePrice ? (
                 <Field label="GARAGE" name="cleaningConditions.HighPressureGarageCleaningFixPrice" component={FormikPrice} overrideGrid={{ xs: 6 }} />
               ) : null}
             </FormikGroups>
           ) : null}
 
-          {cleaningService.DovelholeService ? (
-            <FormikGroups label="DOVEL_HOLES" xs={6} md={3}>
-              <Field
+          {selectedCompany.Settings.EnableServiceCleaningDovelhole && cleaningService.DovelholeService &&
+            (selectedCompany.Settings.EnableServiceCleaningDovelholeAmount || selectedCompany.Settings.EnableServiceCleaningDovelholePrice) ?
+            (<FormikGroups label="DOVEL_HOLES" xs={6} md={3}>
+              {selectedCompany.Settings.EnableServiceCleaningDovelholeAmount ? (<Field
                 label="AMOUNT"
                 name="cleaningConditions.DovelholeAmount"
                 type="number"
                 component={FormikTextField}
                 inputProps={{ step: 1, min: 0 }}
                 overrideGrid={{ xs: 6, md: undefined }}
-              />
-              <Field label="PRICE" name="cleaningConditions.DovelholePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+              />) : null }
+              {selectedCompany.Settings.EnableServiceCleaningDovelholePrice ?
+                (<Field label="PRICE" name="cleaningConditions.DovelholePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
             </FormikGroups>
-          ) : null}
+            ) : null}
 
           {
-            cleaningService.CleaningFireplaceService ||
-            cleaningService.CleaningCarpetService ||
-            cleaningService.CleaningWindowsService ||
-            cleaningService.CleaningWindowsWithShuttersService
+            showFirePlacePrice ||
+            showCarpetPrice ||
+            showWindowPrice ||
+            showWindowShuttersPrice
               ? (
                 <FormikGroups label="CLEANING_PRICES" xs={12} md={6}>
-                  {cleaningService.CleaningFireplaceService ? (
+                  {showFirePlacePrice ? (
                     <Field label="FIREPLACE" name="cleaningConditions.CleaningFireplacePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
                   ) : null}
-                  {cleaningService.CleaningCarpetService ? (
+                  {showCarpetPrice ? (
                     <Field label="CLEANING_CARPET" name="cleaningConditions.CleaningCarpetPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
                   ) : null}
-                  {cleaningService.CleaningWindowsService ? (
+                  {showWindowPrice ? (
                     <Field label="WINDOWS" name="cleaningConditions.CleaningWindowsPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
                   ) : null}
-                  {cleaningService.CleaningWindowsWithShuttersService ? (
+                  {showWindowShuttersPrice ? (
                     <Field label="WINDOWS_WITH_SHUTTERS" name="cleaningConditions.CleaningWindowsWithShuttersPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
                   ) : null}
                 </FormikGroups>
               ) : null
           }
 
-          {cleaningService.CleaningSpecialService ? (
-            <FormikGroups label="SPECIAL_CLEANING" xs={6} md={3}>
-              <Field label="PRICE" name="cleaningConditions.CleaningSpecialPrice" component={FormikPrice} overrideGrid={{ xs: 12, md: undefined }} />
+          {selectedCompany.Settings.EnableServiceCleaningSpecial && cleaningService.CleaningSpecialService ?
+            (<FormikGroups label="SPECIAL_CLEANING" xs={6} md={3}>
+              {selectedCompany.Settings.EnableServiceCleaningSpecialPrice ?
+                (<Field label="PRICE" name="cleaningConditions.CleaningSpecialPrice" component={FormikPrice} overrideGrid={{ xs: 12, md: undefined }} />) : null }
               <Field name="cleaningConditions.CleaningSpecialComment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
             </FormikGroups>
-          ) : null}
+            ) : null}
 
           <FormikGroups label="PRICE" xs={12} md={6}>
             <Field label="DISCOUNT_IN_PERCENT" name="cleaningConditions.DiscountInPercent" component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />
@@ -139,7 +171,8 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
             options={resource.PaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
           />
 
-          <Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
+          {selectedCompany.Settings.EnableServiceCleaningComment ?
+            (<Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />) : null }
         </Form>
       </Grid>
     )

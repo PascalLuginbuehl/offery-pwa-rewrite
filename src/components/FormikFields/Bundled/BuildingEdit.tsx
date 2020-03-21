@@ -7,168 +7,182 @@ import Switch from "../Switch"
 import Address from "./Address"
 import FormikGroups from "./Groups"
 import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText"
+import { IBuildingSetting } from "../../../interfaces/ICompany"
 
-export default function BuildingEdit({ prefix: _prefix, resource }: { prefix?: string; resource: IResource }) {
+export default function BuildingEdit({ prefix: _prefix, resource, buildingSetting }: { prefix?: string; resource: IResource; buildingSetting: IBuildingSetting }) {
   const prefix = _prefix ? _prefix + "." : ""
+
   return (
     <>
       <Address prefix={prefix + "Address"} />
 
       <FormikGroups label="BUILDING" xs={12}>
-        <Field
-          label="BUILDING_TYPE"
-          name={`${prefix}BuildingTypeId`}
-          component={FormikSimpleSelect}
-          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
-          overrideGrid={{ xs: 12, sm: 6, md: 3 }}
-        />
 
-        <Field
-          label="BUILDING_AGE"
-          name={`${prefix}BuildingAgeId`}
-          component={FormikSimpleSelect}
-          options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
-          overrideGrid={{ xs: 12, sm: 6, md: 3 }}
-        />
+        {buildingSetting.BuildingType ?
+          (<Field
+            label="BUILDING_TYPE"
+            name={`${prefix}BuildingTypeId`}
+            component={FormikSimpleSelect}
+            options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
+            overrideGrid={{ xs: 12, sm: 6, md: 3 }}
+          />) : null }
 
-        <Field label="ROOMS" name={`${prefix}RoomAmount`} type="number" component={FormikTextField} inputProps={{ step: 0.5, min: 0.5 }} overrideGrid={{ xs: 6, sm: 3 }} />
+        {buildingSetting.BuildingAge ?
+          (<Field
+            label="BUILDING_AGE"
+            name={`${prefix}BuildingAgeId`}
+            component={FormikSimpleSelect}
+            options={resource.BuildingAges.map(e => ({ label: e.NameTextKey, value: e.BuildingAgeId }))}
+            overrideGrid={{ xs: 12, sm: 6, md: 3 }}
+          />) : null }
 
-        <Field label="TOTAL_AREA" name={`${prefix}TotalArea`} component={FormikNumberEndAdornmentText} adornmentText="m&sup2;" overrideGrid={{ xs: 6, sm: 3 }} />
+        {buildingSetting.RoomAmount ?
+          (<Field label="ROOMS" name={`${prefix}RoomAmount`} type="number" component={FormikTextField} inputProps={{ step: 0.5, min: 0.5 }} overrideGrid={{ xs: 6, sm: 3 }} />) : null }
 
-        <Field
-          label="AMOUNT_PEOPLE_IN_HOUSEHOLD"
-          name={`${prefix}PeopleLivingAmount`}
-          type="number"
-          component={FormikTextField}
-          inputProps={{ step: 1, min: 0 }}
-          overrideGrid={{ xs: 12, sm: 6 }}
-        />
+        {buildingSetting.TotalArea ?
+          (<Field label="TOTAL_AREA" name={`${prefix}TotalArea`} component={FormikNumberEndAdornmentText} adornmentText="m&sup2;" overrideGrid={{ xs: 6, sm: 3 }} />) : null }
 
-        <Field
-          label="ETAGE"
-          name={`${prefix}EtageId`}
-          component={FormikSimpleSelect}
-          options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
-          overrideGrid={{ xs: 12, sm: 6, md: 3 }}
-        />
+        {buildingSetting.PeopleLivingAmount ?
+          (<Field
+            label="AMOUNT_PEOPLE_IN_HOUSEHOLD"
+            name={`${prefix}PeopleLivingAmount`}
+            type="number"
+            component={FormikTextField}
+            inputProps={{ step: 1, min: 0 }}
+            overrideGrid={{ xs: 12, sm: 6 }}
+          />) : null }
 
-        <Field
-          label="ELEVATOR"
-          name={`${prefix}ElevatorId`}
-          component={FormikSimpleSelect}
-          options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
-          overrideGrid={{ xs: 12, sm: 6, md: 3 }}
-        />
+        {buildingSetting.Etage ?
+          (<Field
+            label="ETAGE"
+            name={`${prefix}EtageId`}
+            component={FormikSimpleSelect}
+            options={resource.Etages.map(e => ({ label: e.NameTextKey, value: e.EtageId }))}
+            overrideGrid={{ xs: 12, sm: 6, md: 3 }}
+          />) : null }
+
+        {buildingSetting.Elevator ?
+          (<Field
+            label="ELEVATOR"
+            name={`${prefix}ElevatorId`}
+            component={FormikSimpleSelect}
+            options={resource.Elevators.map(e => ({ label: e.NameTextKey, value: e.ElevatorId }))}
+            overrideGrid={{ xs: 12, sm: 6, md: 3 }}
+          />) : null }
       </FormikGroups>
 
 
 
-      <Field
-        label="AMOUNT_STAIRS_TO_ENTRY"
-        component={FormikNumberEndAdornmentText}
-        adornmentText=""
-        name={`${prefix}StairsToEntryAmount`}
-        inputProps={{ step: 1, min: 0 }}
-        overrideGrid={{ xs: 12, sm: 6 }}
-      />
+      {buildingSetting.StairsToEntryAmount ?
+        (<Field
+          label="AMOUNT_STAIRS_TO_ENTRY"
+          component={FormikNumberEndAdornmentText}
+          adornmentText=""
+          name={`${prefix}StairsToEntryAmount`}
+          inputProps={{ step: 1, min: 0 }}
+          overrideGrid={{ xs: 12, sm: 6 }}
+        />) : null }
 
-      <Field
-        label="METER_TO_PARKING"
-        component={FormikNumberEndAdornmentText}
-        adornmentText="m"
-        name={`${prefix}MetersToParking`}
-        inputProps={{ step: 1, min: 0 }}
-        overrideGrid={{ xs: 12, sm: 6 }}
-      />
+      {buildingSetting.MetersToParking ?
+        (<Field
+          label="METER_TO_PARKING"
+          component={FormikNumberEndAdornmentText}
+          adornmentText="m"
+          name={`${prefix}MetersToParking`}
+          inputProps={{ step: 1, min: 0 }}
+          overrideGrid={{ xs: 12, sm: 6 }}
+        />) : null }
 
-
-
-
-
-      <FormikGroups label="BUILDING" xs={12}>
-        {/* <Field
-          label="BUILDING_TYPE"
-          name={`${prefix}BuildingTypeId`}
-          component={FormikSimpleSelect}
-          options={resource.BuildingTypes.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeId }))}
-          overrideGrid={{ xs: 12, sm: 6, md: 3 }}
-        /> */}
-
-        {/* Only cleaning */}
-
-
-        <Field
+      {buildingSetting.BuildingTypeDetail ?
+        (<Field
           label="BUILDING_TYPE_DETAIL"
           name={`${prefix}BuildingTypeDetailId`}
           component={FormikSimpleSelect}
           options={resource.BuildingTypeDetails.map(e => ({ label: e.NameTextKey, value: e.BuildingTypeDetailId }))}
           overrideGrid={{ xs: 12, sm: 6, md: 3 }}
-        />
-        <Field
+        />) : null }
+
+      {buildingSetting.Balcony ?
+        (<Field
           label="BALCONY_TERRASSE"
           name={`${prefix}BalconyId`}
           component={FormikSimpleSelect}
           options={resource.Balconies.map(e => ({ label: e.NameTextKey, value: e.BalconyId }))}
-        />
-        <Field
+        />) : null }
+
+      {buildingSetting.FloorType ?
+        (<Field
           label="FLOOR_TYPE"
           name={`${prefix}FloorTypeId`}
           component={FormikSimpleSelect}
           options={resource.FloorTypes.map(e => ({ label: e.NameTextKey, value: e.FloorTypeId }))}
-        />
-        <Field
+        />) : null }
+
+      {buildingSetting.RestroomAmount ?
+        (<Field
           label="RESTROOM_AMOUNT"
           name={`${prefix}RestroomAmount`}
           type="number"
           component={FormikTextField}
           inputProps={{ step: 1, min: 0 }}
           overrideGrid={{ xs: 6, sm: 3 }}
-        />
-      </FormikGroups>
+        />) : null }
 
-      <FormikGroups label="POLLUTION" xs={12}>
-        <Field
+      {buildingSetting.RollerBlindType ?
+        (<Field
           label="ROLLERBLIND"
           name={`${prefix}RollerBlindTypeId`}
           component={FormikSimpleSelect}
           options={resource.RollerBlindTypes.map(e => ({ label: e.NameTextKey, value: e.RollerBlindTypeId }))}
-        />
-        <Field label="AMOUNT_NORMAL_WINDOWS" name={`${prefix}WindowNormalAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
+        />) : null }
 
-        <Field label="AMOUNT_HIGH_WINDOWS" name={`${prefix}WindowHighVerticalAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />
+      {buildingSetting.WindowNormalAmount ?
+        (<Field label="AMOUNT_NORMAL_WINDOWS" name={`${prefix}WindowNormalAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />): null }
 
-        <Field
+      {buildingSetting.WindowHighVerticalAmount ?
+        (<Field label="AMOUNT_HIGH_WINDOWS" name={`${prefix}WindowHighVerticalAmount`} type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} />) : null }
+
+      {buildingSetting.GarageType ?
+        (<Field
           label="GARAGE"
           name={`${prefix}GarageTypeId`}
           component={FormikSimpleSelect}
           options={resource.GarageTypes.map(e => ({ label: e.NameTextKey, value: e.GarageTypeId }))}
-        />
-        <Field
+        />) : null }
+
+      {buildingSetting.BuiltInWardrobeRange ?
+        (<Field
           label="BUILTIN_WARDROBE"
           name={`${prefix}BuiltInWardrobeRangeId`}
           component={FormikSimpleSelect}
           options={resource.BuiltInWardrobeRanges.map(e => ({ label: e.NameTextKey, value: e.BuiltInWardrobeRangeId }))}
-        />
-        <Field
+        />) : null }
+
+      {buildingSetting.PollutionDegree ?
+        (<Field
           label="POLLUTION_DEGREE_GENERAL"
           name={`${prefix}PollutionDegreeId`}
           component={FormikSimpleSelect}
           options={resource.PollutionDegrees.map(e => ({ label: e.NameTextKey, value: e.PollutionDegreeId }))}
-        />
+        />) : null }
 
-        <Field label="PETS" name={`${prefix}HadPets`} component={Switch} />
-        <Field label="HARDENED_DIRT" name={`${prefix}HasHardenedDirt`} component={Switch} />
-        <Field label="MOLD_AT_WALL" name={`${prefix}HasMoldAtWall`} component={Switch} />
-        <Field label="MOLD_AT_WINDOW" name={`${prefix}HasMoldAtWindow`} component={Switch} />
-        <Field label="SMOKED" name={`${prefix}HadSmoked`} component={Switch} />
-      </FormikGroups>
+      {buildingSetting.HadPets || buildingSetting.HasHardenedDirt ||
+        buildingSetting.HasMoldAtWall || buildingSetting.HasMoldAtWindow || buildingSetting.HadSmoked ?
+        (<FormikGroups label="POLLUTION" xs={12}>
+          {buildingSetting.HadPets ? (<Field label="PETS" name={`${prefix}HadPets`} component={Switch} />) : null }
+          {buildingSetting.HasHardenedDirt ? (<Field label="HARDENED_DIRT" name={`${prefix}HasHardenedDirt`} component={Switch} />) : null }
+          {buildingSetting.HasMoldAtWall ? (<Field label="MOLD_AT_WALL" name={`${prefix}HasMoldAtWall`} component={Switch} />) : null }
+          {buildingSetting.HasMoldAtWindow ? (<Field label="MOLD_AT_WINDOW" name={`${prefix}HasMoldAtWindow`} component={Switch} />) : null }
+          {buildingSetting.HadSmoked ? (<Field label="SMOKED" name={`${prefix}HadSmoked`} component={Switch} />) : null }
+        </FormikGroups>) : null }
 
-      <FormikGroups label="AREAS" xs={12}>
-        <Field label="CELLAR" name={`${prefix}HasBasement`} component={Switch} />
-        <Field label="ATTIC" name={`${prefix}HasAttic`} component={Switch} />
-        <Field label="GARDEN" name={`${prefix}HasGarden`} component={Switch} />
-        <Field label="WINTERGARDEN" name={`${prefix}HasWinterGarden`} component={Switch} />
-      </FormikGroups>
+      {buildingSetting.HasBasement || buildingSetting.HasAttic || buildingSetting.HasGarden || buildingSetting.HasWinterGarden ?
+        (<FormikGroups label="AREAS" xs={12}>
+          {buildingSetting.HasBasement ? (<Field label="CELLAR" name={`${prefix}HasBasement`} component={Switch} />) : null }
+          {buildingSetting.HasAttic ? (<Field label="ATTIC" name={`${prefix}HasAttic`} component={Switch} />) : null }
+          {buildingSetting.HasGarden ? (<Field label="GARDEN" name={`${prefix}HasGarden`} component={Switch} />) : null }
+          {buildingSetting.HasWinterGarden ? (<Field label="WINTERGARDEN" name={`${prefix}HasWinterGarden`} component={Switch} />) : null }
+        </FormikGroups>) : null }
     </>
   )
 }

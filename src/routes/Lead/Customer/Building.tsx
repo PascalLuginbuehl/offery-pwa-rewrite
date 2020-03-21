@@ -31,7 +31,7 @@ class CleaningBuilding extends React.Component<Props & FormikProps<Values>, {}> 
         <Form>
           <PageHeader title="BUILDING" />
 
-          <BuildingEdit prefix="building" resource={resource} />
+          <BuildingEdit prefix="building" resource={resource} buildingSetting={selectedCompany.Settings.DefaultBuildingSetting}/>
         </Form>
       </Grid>
     )

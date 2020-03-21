@@ -27,6 +27,7 @@ import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTim
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import { ILead } from "../../../interfaces/ILead"
 import { MaterialShopRow } from "./MateriallShopRow";
+import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -46,7 +47,14 @@ interface State {
 // Ugly fix so i don't have to rewrite this whole component
 class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
   state: State = {
-    currentlyOpen: CurrentlyOpenStateEnum.Buy,
+    currentlyOpen: this.getDefaultCurrentlyOpen(),
+  }
+
+  getDefaultCurrentlyOpen(): CurrentlyOpenStateEnum {
+    const { selectedCompany } = this.props
+    return selectedCompany.Settings.EnableMaterialOrderBuy ? CurrentlyOpenStateEnum.Buy :
+      selectedCompany.Settings.EnableMaterialOrderRent ? CurrentlyOpenStateEnum.Rent :
+        CurrentlyOpenStateEnum.Free
   }
 
   addItemToList = (product: IProduct, amount: number) => {
@@ -119,6 +127,11 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
     const { currentlyOpen } = this.state
     const ShopProducts = selectedCompany.ShopProducts
 
+    const initialDate = new Date()
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
+    initialDate.setMinutes(0)
+    initialDate.setSeconds(0)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -132,13 +145,16 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
           </Grid>
 
           <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST" component={FormikPrice} />
-          <Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} />
+          {selectedCompany.Settings.EnableMaterialOrderDelivery ? (<Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>) : null }
+
+          {selectedCompany.Settings.EnableMaterialOrderComment ? (<Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
+
 
           <Grid item xs={12}>
             <Tabs value={currentlyOpen} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
-              <Tab label={intl.formatMessage({ id: "BUY" })} value={CurrentlyOpenStateEnum.Buy} />
-              <Tab label={intl.formatMessage({ id: "RENT" })} value={CurrentlyOpenStateEnum.Rent} />
-              <Tab label={intl.formatMessage({ id: "INCLUSIVE" })} value={CurrentlyOpenStateEnum.Free} />
+              {selectedCompany.Settings.EnableMaterialOrderBuy ? (<Tab label={intl.formatMessage({ id: "BUY" })} value={CurrentlyOpenStateEnum.Buy} />) : null }
+              {selectedCompany.Settings.EnableMaterialOrderRent ? (<Tab label={intl.formatMessage({ id: "RENT" })} value={CurrentlyOpenStateEnum.Rent} />) : null }
+              {selectedCompany.Settings.EnableMaterialOrderFree ? (<Tab label={intl.formatMessage({ id: "INCLUSIVE" })} value={CurrentlyOpenStateEnum.Free} />) : null }
             </Tabs>
           </Grid>
           <Grid item xs={12}>

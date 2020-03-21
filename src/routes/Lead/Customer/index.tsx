@@ -39,7 +39,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     const { VisitDate, MoveDate } = values
 
     const initialDate = new Date()
-    initialDate.setHours(8)
+    initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
     initialDate.setMinutes(0)
     initialDate.setSeconds(0)
 
@@ -99,13 +99,15 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <FormikGroups label="DATES" xs={12}>
             <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} />
-            <Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />
-            <Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
-            <Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />
-            <Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
-            <Field name="DisposalDate" label="DISPOSAL" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />
-            <Field name="CleaningDate" label="CLEANING" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />
-            <Field name="HandOverDate" label="HANDIN" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />
+            {selectedCompany.Settings.EnableServiceMove ? (<Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />) : null }
+            {selectedCompany.Settings.EnableServicePack ? (<Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
+            {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
+              (<Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />) : null }
+            {selectedCompany.Settings.EnableServiceStorage ? (<Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
+            {selectedCompany.Settings.EnableServiceDisposal ? (<Field name="DisposalDate" label="DISPOSAL" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
+            {selectedCompany.Settings.EnableServiceCleaning ? (<Field name="CleaningDate" label="CLEANING" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />) : null }
+            {selectedCompany.Settings.EnableServiceCleaning && selectedCompany.Settings.EnableServiceCleaningHandOutGaranty ?
+              (<Field name="HandOverDate" label="HANDIN" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />) : null }
           </FormikGroups>
         </Form>
       </Grid>
