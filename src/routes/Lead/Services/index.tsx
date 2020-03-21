@@ -19,24 +19,22 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 
 class Index extends React.Component<Props & FormikProps<IServices>, {}> {
   public render() {
-    // const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status } = this.props
-
-    const { data } = this.props
+    const { selectedCompany, data } = this.props
 
     return (
       <Grid item xs={12}>
         <Form>
           <PageHeader title="SERVICES" />
 
-          <Field name="HasMoveServiceEnabled" label="MOVE" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceMove ? (<Field name="HasMoveServiceEnabled" label="MOVE" component={FormikButtonCheckbox} />) : null}
 
-          <Field name="HasPackServiceEnabled" label="PACK" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServicePack ? (<Field name="HasPackServiceEnabled" label="PACK" component={FormikButtonCheckbox} />) : null}
 
-          <Field name="HasStorageServiceEnabled" label="STORAGE" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceStorage ? (<Field name="HasStorageServiceEnabled" label="STORAGE" component={FormikButtonCheckbox} />) : null}
 
-          <Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceDisposal ? (<Field name="HasDisposalServiceEnabled" label="DISPOSAL" component={FormikButtonCheckbox} />) : null}
 
-          <Field name="HasCleaningServiceEnabled" label="CLEANING" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceCleaning ? (<Field name="HasCleaningServiceEnabled" label="CLEANING" component={FormikButtonCheckbox} />) : null}
         </Form>
       </Grid>
     )
