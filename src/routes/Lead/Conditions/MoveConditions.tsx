@@ -30,9 +30,22 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values, isSubmitting, status, setFieldValue, selectedCompany, moveService, intl } = this.props
+    const { values, isSubmitting, status, setFieldValue, resource, selectedCompany, moveService, intl } = this.props
     const showMontageCondition = (moveService.MontageService && selectedCompany.Settings.EnableServiceMoveMontagePrice)
     const showDeMontageCondition = (moveService.DeMontageService && selectedCompany.Settings.EnableServiceMoveDemontagePrice)
+
+    //Set default values from settings if configured, enabled and not set yet
+    if (selectedCompany.Settings.EnableServiceMoveFurnitureLift && selectedCompany.Settings.EnableServiceMoveFurnitureLiftPrice
+      && moveService.FurnitureLiftService && values.moveConditions.FurnitureLiftPrice == null)
+      values.moveConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
+
+    if (selectedCompany.Settings.EnableServiceMovePiano && selectedCompany.Settings.EnableServiceMovePianoPrice
+      && moveService.PianoService && values.moveConditions.PianoPrice == null)
+      values.moveConditions.PianoPrice = selectedCompany.Settings.DefaultPianoPrice
+
+    if (selectedCompany.Settings.EnableServiceMoveHeavyLift && selectedCompany.Settings.EnableServiceMoveHeavyLiftPrice
+      && moveService.HeavyLiftService && values.moveConditions.ServiceConditions.HeavyLiftPrice == null)
+      values.moveConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
 
     return (
       <Grid item xs={12}>

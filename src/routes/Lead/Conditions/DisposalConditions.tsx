@@ -34,6 +34,19 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
   public render() {
     const { values, isSubmitting, status, intl, setFieldValue, selectedCompany, disposalService } = this.props
     const showDeMontageCondition = (disposalService.DeMontage && selectedCompany.Settings.EnableServiceDisposalDemontagePrice)
+
+    //Set default values from settings if configured, enabled and not set yet
+    if (selectedCompany.Settings.EnableServiceDisposalFurnitureLift && selectedCompany.Settings.EnableServiceDisposalFurnitureLiftPrice
+      && disposalService.FurnitureLiftService && values.disposalConditions.FurnitureLiftPrice == null)
+      values.disposalConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
+
+    if (selectedCompany.Settings.EnableServiceDisposalHeavyLift && selectedCompany.Settings.EnableServiceDisposalHeavyLiftPrice
+      && disposalService.HeavyLiftService && values.disposalConditions.ServiceConditions.HeavyLiftPrice == null)
+      values.disposalConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
+
+    if (values.disposalConditions.CostPerCubicInMoney == null)
+      values.disposalConditions.CostPerCubicInMoney = selectedCompany.Settings.DefaultCostPerCubicInMoney
+
     return (
       <Grid item xs={12}>
         <Form>

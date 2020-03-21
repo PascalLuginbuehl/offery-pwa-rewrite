@@ -35,6 +35,19 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
     const showMontageCondition = (storageService.MontageService && selectedCompany.Settings.EnableServiceStorageMontagePrice)
     const showDeMontageCondition = (storageService.DeMontageService && selectedCompany.Settings.EnableServiceStorageDemontagePrice)
 
+    //Set default values from settings if configured, enabled and not set yet
+    if (selectedCompany.Settings.EnableServiceStorageFurnitureLift && selectedCompany.Settings.EnableServiceStorageFurnitureLiftPrice
+      && storageService.FurnitureLiftService && values.storageConditions.FurnitureLiftPrice == null)
+      values.storageConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
+
+    if (selectedCompany.Settings.EnableServiceStoragePiano && selectedCompany.Settings.EnableServiceStoragePianoPrice
+      && storageService.PianoService && values.storageConditions.PianoPrice == null)
+      values.storageConditions.PianoPrice = selectedCompany.Settings.DefaultPianoPrice
+
+    if (selectedCompany.Settings.EnableServiceStorageHeavyLift && selectedCompany.Settings.EnableServiceStorageHeavyLiftPrice
+      && storageService.HeavyLiftService && values.storageConditions.ServiceConditions.HeavyLiftPrice == null)
+      values.storageConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
+
     return (
       <Grid item xs={12}>
         <Form>

@@ -68,6 +68,12 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       disabledVehicles = false,
     } = this.props
 
+    if (values.ServiceConditions.PaymentMethodId == null)
+    {
+      const defaultPaymentMethod = resource.PaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
+      values.ServiceConditions.PaymentMethodId = defaultPaymentMethod != null ? defaultPaymentMethod.PaymentMethodId : null
+    }
+
     return (
       <>
         <Grid item xs={12}>

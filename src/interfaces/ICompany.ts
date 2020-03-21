@@ -96,6 +96,8 @@ export interface ICompanySetting {
   //Pack
   EnableServicePack: boolean
   EnableServicePackOut: boolean
+  EnableServicePackHeavyLift: boolean
+  EnableServicePackHeavyLiftPrice: boolean
   EnableServicePackComment: boolean
 
   //Storage

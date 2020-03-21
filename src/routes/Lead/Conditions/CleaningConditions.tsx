@@ -32,9 +32,14 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { isSubmitting, status, intl, selectedCompany, cleaningService, resource} = this.props
+    const { isSubmitting, status, intl, selectedCompany, cleaningConditions, cleaningService, resource} = this.props
 
-    console.log(selectedCompany.CarTypes)
+    //Set default values from settings if configured, enabled and not set yet
+    if (cleaningConditions.PaymentMethodId == null)
+    {
+      const defaultPaymentMethod = resource.PaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
+      cleaningConditions.PaymentMethodId = defaultPaymentMethod != null ? defaultPaymentMethod.PaymentMethodId : null
+    }
 
     return (
       <Grid item xs={12}>
