@@ -47,16 +47,16 @@ class DisposalService extends React.Component<Props & FormikProps<Values>, {}> {
         <Form disableSubmit>
           <PageHeader title="DISPOSAL_SERVICE" />
 
-          <Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />
-          <Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />
-          <Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />
-          <Field name="disposalService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceDisposalLampDemontage ? (<Field name="disposalService.LampDemontageService" label="LAMP_DEMONTAGE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceDisposalFurnitureLift ? (<Field name="disposalService.FurnitureLiftService" label="FURNITURE_LIFT" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceDisposalDemontage ? (<Field name="disposalService.DeMontage" label="DEMONTAGE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceDisposalHeavyLift ? (<Field name="disposalService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />) : null }
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.DisposalDate" label="DISPOSAL_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>
           </FormikGroups>
 
-          <Field name="disposalService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+          {selectedCompany.Settings.EnableServiceDisposalComment ? (<Field name="disposalService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
           <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>

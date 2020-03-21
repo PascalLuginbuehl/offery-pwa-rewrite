@@ -33,15 +33,15 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { values, isSubmitting, status, intl, setFieldValue, selectedCompany, disposalService } = this.props
-    const showDeMontageCondition = (disposalService.DeMontage && selectedCompany.Settings.EnableServiceDisposalDemontagePrice)
+    const showDeMontagePrice = (disposalService.DeMontage && selectedCompany.Settings.EnableServiceDisposalDemontage && selectedCompany.Settings.EnableServiceDisposalDemontagePrice)
+    const showHeavyLiftPrice = (disposalService.HeavyLiftService && selectedCompany.Settings.EnableServiceDisposalHeavyLift && selectedCompany.Settings.EnableServiceDisposalHeavyLiftPrice)
+    const showFurnitureLiftPrice = (disposalService.FurnitureLiftService && selectedCompany.Settings.EnableServiceDisposalFurnitureLift && selectedCompany.Settings.EnableServiceDisposalFurnitureLiftPrice)
 
     //Set default values from settings if configured, enabled and not set yet
-    if (selectedCompany.Settings.EnableServiceDisposalFurnitureLift && selectedCompany.Settings.EnableServiceDisposalFurnitureLiftPrice
-      && disposalService.FurnitureLiftService && values.disposalConditions.FurnitureLiftPrice == null)
+    if (showFurnitureLiftPrice && values.disposalConditions.FurnitureLiftPrice == null)
       values.disposalConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
 
-    if (selectedCompany.Settings.EnableServiceDisposalHeavyLift && selectedCompany.Settings.EnableServiceDisposalHeavyLiftPrice
-      && disposalService.HeavyLiftService && values.disposalConditions.ServiceConditions.HeavyLiftPrice == null)
+    if (showHeavyLiftPrice && values.disposalConditions.ServiceConditions.HeavyLiftPrice == null)
       values.disposalConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
 
     if (values.disposalConditions.CostPerCubicInMoney == null)
@@ -61,27 +61,30 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
             commentEnabled={selectedCompany.Settings.EnableServiceDisposalComment}
             personalCostAddon={<Field label="ENTRY_COST" name="disposalConditions.CostEntry" component={FormikPrice} overrideGrid={{ xs: 3 }} />}
           >
-            {disposalService.LampDemontageService ? (
-              <FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
-                <Field
-                  label="AMOUNT"
-                  name="disposalConditions.LampDemontageAmount"
-                  type="number"
-                  component={FormikTextField}
-                  inputProps={{ step: 1, min: 0 }}
-                  overrideGrid={{ xs: 6, md: undefined }}
-                />
-                <Field label="PRICE" name="disposalConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+            {selectedCompany.Settings.EnableServiceDisposalLampDemontage && disposalService.LampDemontageService &&
+              (selectedCompany.Settings.EnableServiceDisposalLampDemontageAmount || selectedCompany.Settings.EnableServiceDisposalLampDemontagePrice) ?
+              (<FormikGroups label="LAMP_DEMONTAGE" xs={6} md={3}>
+                {selectedCompany.Settings.EnableServiceDisposalLampDemontageAmount ?
+                  (<Field
+                    label="AMOUNT"
+                    name="disposalConditions.LampDemontageAmount"
+                    type="number"
+                    component={FormikTextField}
+                    inputProps={{ step: 1, min: 0 }}
+                    overrideGrid={{ xs: 6, md: undefined }}
+                  />) : null }
+                {selectedCompany.Settings.EnableServiceDisposalLampDemontagePrice ?
+                  (<Field label="PRICE" name="disposalConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
               </FormikGroups>
-            ) : null}
+              ) : null}
 
-            {disposalService.FurnitureLiftService || disposalService.HeavyLiftService || showDeMontageCondition ? (
+            {showFurnitureLiftPrice || showHeavyLiftPrice || showDeMontagePrice ? (
               <FormikGroups label="PRICES" xs={6} md={3}>
-                {disposalService.FurnitureLiftService ? <Field label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} /> : null }
+                {showFurnitureLiftPrice ? <Field label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} /> : null }
 
-                {disposalService.HeavyLiftService ? <Field label="HEAVY_LIFT_PRICE" name="disposalConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} /> : null}
+                {showHeavyLiftPrice ? <Field label="HEAVY_LIFT_PRICE" name="disposalConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} /> : null}
 
-                {showDeMontageCondition ? <Field label="DE_MONTAGE_SERVICE" name="disposalConditions.DeMontageServicePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }}/> : null}
+                {showDeMontagePrice ? <Field label="DE_MONTAGE_SERVICE" name="disposalConditions.DeMontageServicePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }}/> : null}
               </FormikGroups>
             ) : null}
 
