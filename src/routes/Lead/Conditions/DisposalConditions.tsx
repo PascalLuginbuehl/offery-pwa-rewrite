@@ -58,6 +58,7 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
             values={values.disposalConditions}
             prefix={"disposalConditions"}
             commentPrefix={"disposalService"}
+            commentEnabled={selectedCompany.Settings.EnableServiceDisposalComment}
             personalCostAddon={<Field label="ENTRY_COST" name="disposalConditions.CostEntry" component={FormikPrice} overrideGrid={{ xs: 3 }} />}
           >
             {disposalService.LampDemontageService ? (

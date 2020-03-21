@@ -44,6 +44,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
           <ServiceConditions
             prefix={"packConditions"}
             commentPrefix={"packService"}
+            commentEnabled={selectedCompany.Settings.EnableServicePackComment}
             disabledVehicles
             additionalCost={this.getAdditionalCost()}
             setFieldValue={setFieldValue}

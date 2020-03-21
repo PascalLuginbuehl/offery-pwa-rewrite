@@ -56,6 +56,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
           <ServiceConditions
             prefix={"storageConditions"}
             commentPrefix={"storageService"}
+            commentEnabled={selectedCompany.Settings.EnableServiceStorageComment}
             additionalCost={this.getAdditionalCost()}
             setFieldValue={setFieldValue}
             values={values.storageConditions}

@@ -22,6 +22,7 @@ interface Props<Values extends { ServiceConditions: IServiceConditions }> extend
 
   prefix: string
   commentPrefix: string
+  commentEnabled: boolean
 
   children: any
 }
@@ -61,7 +62,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       resource,
       prefix,
       commentPrefix,
-
+      commentEnabled,
       intl,
       selectedCompany,
       personalCostAddon,
@@ -229,7 +230,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           options={enabledPaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
         />
 
-        <Field name={`${commentPrefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
+        {commentEnabled ? (<Field name={`${commentPrefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />) : null }
       </>
     )
   }

@@ -48,6 +48,7 @@ export interface ICompanySetting {
   EnableServiceMoveDemontage: boolean
   EnableServiceMoveDemontagePrice: boolean
   EnableServiceMoveLampDemontage: boolean
+  EnableServiceMoveLampDemontageAmount: boolean
   EnableServiceMoveLampDemontagePrice: boolean
   EnableServiceMoveFurnitureLift: boolean
   EnableServiceMoveFurnitureLiftPrice: boolean

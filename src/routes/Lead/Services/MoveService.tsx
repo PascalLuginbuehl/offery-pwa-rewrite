@@ -51,19 +51,19 @@ class Index extends React.Component<Props & FormikProps<Values>, {}> {
         <Form disableSubmit>
           <PageHeader title="MOVE_SERVICE" />
 
-          <Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />
-          <Field name="moveService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />
+          {selectedCompany.Settings.EnableServiceMoveBore ? (<Field name="moveService.BoreService" label="BORE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveLampDemontage ? (<Field name="moveService.LampDemontageService" label="LAMP_DEMONTAGE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveFurnitureLift ? (<Field name="moveService.FurnitureLiftService" label="FURNITURE_LIFT_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMovePiano ? (<Field name="moveService.PianoService" label="PIANO_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveMontage ? (<Field name="moveService.MontageService" label="MONTAGE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveDemontage ? (<Field name="moveService.DeMontageService" label="DE_MONTAGE_SERVICE" component={FormikButtonCheckbox} />) : null }
+          {selectedCompany.Settings.EnableServiceMoveHeavyLift ? (<Field name="moveService.HeavyLiftService" label="HEAVY_LIFT_SERVICE" component={FormikButtonCheckbox} />) : null }
 
           <FormikGroups label="APPOINTMENTS" xs={12}>
             <Field name="lead.MoveDate" label="MOVE_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate} />
           </FormikGroups>
 
-          <Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />
+          {selectedCompany.Settings.EnableServiceMoveComment ? (<Field name="moveService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
           <Submit isSubmitting={isSubmitting} disableSubmitPadding />
         </Form>
