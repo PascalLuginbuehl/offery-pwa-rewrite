@@ -68,9 +68,10 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       disabledVehicles = false,
     } = this.props
 
+    const enabledPaymentMethods = resource.PaymentMethods.filter(p => selectedCompany.Settings.EnabledPaymentMethodTextKeys.includes(p.NameTextKey))
     if (values.ServiceConditions.PaymentMethodId == null)
     {
-      const defaultPaymentMethod = resource.PaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
+      const defaultPaymentMethod = enabledPaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
       values.ServiceConditions.PaymentMethodId = defaultPaymentMethod != null ? defaultPaymentMethod.PaymentMethodId : null
     }
 
@@ -85,9 +86,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             variant="fullWidth"
             centered
           >
-            <Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={0} />
-            <Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={1} />
-            <Tab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />
+            {selectedCompany.Settings.EnableHourPice ? (<Tab label={intl.formatMessage({ id: "IS_HOURLY_RATE" })} value={0} />) : null}
+            {selectedCompany.Settings.EnableFixPrice ? (<Tab label={intl.formatMessage({ id: "FIX_PRICE" })} value={1} />) : null }
+            {selectedCompany.Settings.EnableCostCeiling ? (<Tab label={intl.formatMessage({ id: "HAS_COST_CEILING" })} value={2} />) : null }
           </Tabs>
         </Grid>
 
@@ -111,7 +112,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
             />
           ) : null}
 
-          {values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate ? (
+          {selectedCompany.Settings.EnableWorkerExpenses && (values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate) ? (
             <Field label="EXPENSES" name={`${prefix}.ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
           ) : null}
 
@@ -225,7 +226,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           label="PAYMENT_METHOD"
           name={`${prefix}.ServiceConditions.PaymentMethodId`}
           component={FormikSimpleSelect}
-          options={resource.PaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
+          options={enabledPaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
         />
 
         <Field name={`${commentPrefix}.Comment`} label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
