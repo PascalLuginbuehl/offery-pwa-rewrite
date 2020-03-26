@@ -12,6 +12,8 @@ import StorageService from "../Services/StorageService"
 import { emptyCleaningService, emptyStorageService, emptyPackService, emptyDisposalService, emptyMoveService } from "../../../interfaces/IService"
 import { emptyMaterialOrder } from "../../../interfaces/IShop"
 import { InventoryKeysEnum, emptyInventory } from "../../../interfaces/IInventars"
+import { IBuilding } from "../../../interfaces/IBuilding"
+
 
 
 interface Props {
@@ -42,6 +44,17 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
 
   const materialOrder = materialOrderNull ? materialOrderNull : emptyMaterialOrder
   const inventory = inventoryNull ? inventoryNull : emptyInventory
+
+  function NestedBuildingSaveFunction(building: IBuilding) {
+    const oldBuildingIndex = buildings.findIndex((newBuilding) => newBuilding.BuildingId == building.BuildingId)
+
+    const newBuildings = [...buildings]
+    newBuildings[oldBuildingIndex] = building
+
+    return handleChangeAndSave(newBuildings, "buildings", () => LeadAPI.SaveBuilding(building))
+
+  }
+
   return (
     <>
       {/* Services */}
@@ -79,9 +92,7 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
                 handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
               ])
             }}
-            onSaveNestedBuilding={(building) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
-            }}
+            onSaveNestedBuilding={NestedBuildingSaveFunction}
             nextPage={redirectToNextPage("/services/move")}
           />
         )}
@@ -114,9 +125,7 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             buildings={buildings}
             packService={packService}
             lead={Lead}
-            onSaveNestedBuilding={(building) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
-            }}
+            onSaveNestedBuilding={NestedBuildingSaveFunction}
             onChangeAndSave={(packServiceData, lead) => {
               return Promise.all([
                 handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData)),
@@ -137,9 +146,7 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
           <StorageService
             {...routeProps}
             lead={Lead}
-            onSaveNestedBuilding={(building) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
-            }}
+            onSaveNestedBuilding={NestedBuildingSaveFunction}
             buildings={buildings}
             storageService={storageService ? storageService : emptyStorageService}
             onChangeAndSave={(storageServiceData, lead) => {
@@ -180,9 +187,7 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             {...routeProps}
             buildings={buildings}
             lead={Lead}
-            onSaveNestedBuilding={(building) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
-            }}
+            onSaveNestedBuilding={NestedBuildingSaveFunction}
             disposalService={disposalService ? disposalService : emptyDisposalService}
             onChangeAndSave={(disposalServiceData, lead) => {
               return Promise.all([
@@ -222,9 +227,7 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             {...routeProps}
             buildings={buildings}
             lead={Lead}
-            onSaveNestedBuilding={(building) => {
-              return handleChangeAndSave(buildings, "buildings", () => LeadAPI.SaveBuilding(building))
-            }}
+            onSaveNestedBuilding={NestedBuildingSaveFunction}
             cleaningService={cleaningService ? cleaningService : emptyCleaningService}
             onChangeAndSave={(cleaningServiceData, lead) => {
               return Promise.all([
