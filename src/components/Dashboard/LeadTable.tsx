@@ -94,7 +94,7 @@ export default function LeadTable({ leads }: _Props) {
             </TableCell>
 
             <TableCell variant="head">
-              <FormattedMessage id="START_DESTINATION_ADDRESSES" />
+              <FormattedMessage id="ADDRESSES" />
             </TableCell>
 
             <TableCell variant="head" padding="checkbox">
@@ -148,13 +148,13 @@ export default function LeadTable({ leads }: _Props) {
                   {lead.Customer.Firstname + " " + lead.Customer.Lastname}
                 </Typography>
               </TableCell>
+
               <TableCell style={{ padding: "6px 16px" }}>
-                <Typography variant="caption" component="p" noWrap>
-                  {lead.FromAddress ? `${lead.FromAddress.PLZ} ${lead.FromAddress.City}, ${lead.FromAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
-                </Typography>
-                <Typography variant="caption" component="p" noWrap>
-                  {lead.ToAddress ? `${lead.ToAddress.PLZ} ${lead.ToAddress.City}, ${lead.ToAddress.Street}` : <FormattedMessage id="NO_ADDRESS" />}
-                </Typography>
+                {lead.Addresses.map(address => (
+                  <Typography variant="caption" component="p" noWrap key={address.AddressId}>
+                    {`${address.PLZ} ${address.City}, ${address.Street}`}
+                  </Typography>
+                ))}
               </TableCell>
 
               <TableCell>

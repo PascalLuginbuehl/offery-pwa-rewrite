@@ -57,11 +57,11 @@ class TableDashboard extends React.Component<Props> {
                   {Lead.Customer.Firstname + " " + Lead.Customer.Lastname}
                 </TableCell>
                 <TableCell>{Lead.VisitDate ? <FormattedDate year="numeric" month="long" day="2-digit" value={Lead.VisitDate} /> : <FormattedMessage id="OPEN" />}</TableCell>
-                <TableCell>
+                {/* <TableCell>
                   {Lead.FromAddress ? `${Lead.FromAddress.PLZ} ${Lead.FromAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
                   &nbsp;/&nbsp;
                   {Lead.ToAddress ? `${Lead.ToAddress.PLZ} ${Lead.ToAddress.City}` : <FormattedMessage id="NO_ADDRESS" />}
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell></TableCell>
               </TableRow>

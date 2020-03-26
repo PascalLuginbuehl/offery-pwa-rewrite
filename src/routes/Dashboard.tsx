@@ -55,10 +55,10 @@ const options: FuseOptions<ICompressedLead> = {
     {name: "Customer.Email", weight: 1.0},
     // "FromAddress.Street",
     // "FromAddress.PLZ",
-    {name: "FromAddress.City", weight: 0.1},
+    { name: "Addresses.Street", weight: 0.1 },
+    { name: "Addresses.City", weight: 0.1 },
     // "ToAddress.Street",
     // "ToAddress.PLZ",
-    { name: "ToAddress.City", weight: 0.1},
   ]
 }
 

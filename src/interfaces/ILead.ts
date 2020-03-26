@@ -62,9 +62,7 @@ export interface ICompressedLead extends IUpdateLead {
   // LeadId: number
   Status: IStatus
 
-  // VisitDate: Date
-  FromAddress: IAddress | null
-  ToAddress: IAddress | null
+  Addresses: IAddress[]
 }
 
 

@@ -86,10 +86,10 @@ export default withStyles(styles)(
     withFormik<Props, Values>({
       mapPropsToValues: props => {
         // Default values asignment
-        const { lead: { FromAddress, ToAddress }, selectedCompany: { OfferTemplateCategories } } = props
+        const { selectedCompany: { OfferTemplateCategories } } = props
 
-        const outAddressId = FromAddress ? FromAddress.AddressId : null
-        const inAddressId = ToAddress ? ToAddress.AddressId : null
+        const outAddressId = null
+        const inAddressId = null
 
         const templateCategoryId = OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null
 
