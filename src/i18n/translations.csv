@@ -38,7 +38,7 @@ CARDBOARDBOX_DELIVERY_DATE,Cardboardbox Delivery Appointment,Termin Kartonliefer
 STORAGE_DATE,Storage Appointment,Termin Ein-/Auslagerung
 DISPOSAL_DATE,Disposal Appointment,Entsorgungstermin
 CLEANING_DATE,Cleaning Appointment Date,Reinigungstermin
-HANDIN_DATE,Handin Appointment,Abgabetermin
+HANDIN_DATE,Handout Appointment,Abgabetermin
 MOVE_OUT_BUILDING,Move out building,Auszugsgebäude
 MOVE_IN_BUILDING,Move in building,Einzugsgebäude
 STORAGE_BUILDING,Storage building,Lagergebäude
@@ -235,7 +235,7 @@ PACKINGSERVICE,Packing Service,Einpackservice
 CARDBOARDBOX_DELIVERY,Cardboardbox Delivery,Kartonlieferung
 DISPOSAL,Disposal,Entsorgung
 CLEANING,Cleaning,Reinigung
-HANDIN,Handin,Abgabetermin
+HANDIN,Handout,Abgabetermin
 APPOINTMENTS,Appointments,Termine
 OPEN,Open,Offen
 
@@ -301,17 +301,17 @@ ERRORMESSAGE,Error message,Fehlermeldung
 
 MR,Mr.,Herr
 MRS,Mrs.,Frau
-VERBAL_CONFIRMATION,TRANSLATEME,Mündliche Zusage erhalten
-CONFIRMED,TRANSLATEME,Angenommen
-DECLINED,TRANSLATEME,Abgelehnt
-OFFER_CONFIRMED,TRANSLATEME,Die Offerte wurde bestätigt
-OFFER_DECLINED,TRANSLATEME,DIe Offerte wurde abgelehnt
-CUSTOMER_VERBAL_CONFIRMATION,TRANSLATEME,Mündlich zugesagt
+VERBAL_CONFIRMATION,Verbal confirmation,Mündliche Zusage erhalten
+CONFIRMED,Confirmed,Angenommen
+DECLINED,Declined,Abgelehnt
+OFFER_CONFIRMED,Offer confirmed,Die Offerte wurde bestätigt
+OFFER_DECLINED,Offer declined,DIe Offerte wurde abgelehnt
+CUSTOMER_VERBAL_CONFIRMATION,Verbal confirmation,Mündlich zugesagt
 OFFER_RESENT_MAIL_CANCELFIRST,To send an offer-email again you have to cancel the old one first,Um erneut eine Offertenmail auszulösen: Stornieren Sie zuerst die alte Offerte
-MANUAL_OVERRIDE,TRANSLATEME,Manuell Überschreiben
+MANUAL_OVERRIDE,Manual override,Manuell Überschreiben
 OVERRIDE,Override,Überschreiben
 SAVE,Save,Speichern
-OFFLINE_NOT_AVAILABLE,TRANSLATEME,Diese Seite ist Offline nicht verfügbar
+OFFLINE_NOT_AVAILABLE,Offline not available,Diese Seite ist Offline nicht verfügbar
 FILE_NOT_FOUND,File not found, Datei konnte nicht geladen werden
 
 CUSTOM_ITEM,Custom item,Spezial Objekt
