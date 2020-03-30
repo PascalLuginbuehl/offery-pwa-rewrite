@@ -47,6 +47,9 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
     if (values.disposalConditions.CostPerCubicInMoney == null)
       values.disposalConditions.CostPerCubicInMoney = selectedCompany.Settings.DefaultCostPerCubicInMoney
 
+    if (values.disposalConditions.CostEntry == null)
+      values.disposalConditions.CostEntry = selectedCompany.Settings.DefaultCostEntry
+
     return (
       <Grid item xs={12}>
         <Form>

@@ -26,6 +26,7 @@ export interface ICompanySetting {
   DefaultPianoPrice: number | null
   DefaultHeavyLiftPrice: number | null
   DefaultCostPerCubicInMoney: number | null
+  DefaultCostEntry: number | null
   DefaultPaymentMethodTextKey: string
 
   //Conditiontypes Hourly/CostCeiling/Fixprice
@@ -60,6 +61,7 @@ export interface ICompanySetting {
 
   //Cleaning
   EnableServiceCleaning: boolean
+  EnableServiceCleaningEstimatedHoursOfWorkWhenFixPrice: boolean
   EnableServiceCleaningWorkersAmount: boolean
   EnableServiceCleaningHandOutGaranty: boolean
   EnableServiceCleaningHighPressureTerrace: boolean

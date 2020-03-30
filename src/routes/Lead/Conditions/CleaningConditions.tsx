@@ -81,13 +81,14 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
               inputProps={{ step: 1, min: 0 }}
               overrideGrid={{ xs: 6, md: 3 }}
             />) : null}
-            <Field
+
+            {selectedCompany.Settings.EnableServiceCleaningEstimatedHoursOfWorkWhenFixPrice ? (<Field
               label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
               name="cleaningConditions.EstimatedHoursOfWorkWhenFixPrice"
               component={FormikNumberEndAdornmentText}
               adornmentText="h"
               overrideGrid={{ xs: 6, md: 3 }}
-            />
+            />) : null}
 
             <Field label="FIX_PRICE" name="cleaningConditions.FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
           </FormikGroups>
