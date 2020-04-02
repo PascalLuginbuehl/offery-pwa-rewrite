@@ -42,6 +42,7 @@ HANDIN_DATE,Handout Appointment,Abgabetermin
 MOVE_OUT_BUILDING,Move out building,Auszugsgebäude
 MOVE_IN_BUILDING,Move in building,Einzugsgebäude
 STORAGE_BUILDING,Storage building,Lagergebäude
+STORAGE_OUT_BUILDING,Storage out,Lagerauslieferungsgebäude
 CLEANING_BUILDING,Cleaning building,Reinigungsgebäude
 DISPOSAL_BUILDING,Disposal building,Entsorgungsgebäude
 SERVICES,Services,Services
