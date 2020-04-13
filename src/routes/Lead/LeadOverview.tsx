@@ -120,7 +120,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.MoveDate ?
+                    Lead.MoveDate && Lead.Services.HasMoveServiceEnabled ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -129,7 +129,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.PackServiceDate ?
+                    Lead.PackServiceDate && Lead.Services.HasPackServiceEnabled ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -149,7 +149,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
 
                   {
-                    Lead.StorageDate ?
+                    Lead.StorageDate && Lead.Services.HasStorageServiceEnabled ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -158,7 +158,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.DisposalDate ?
+                    Lead.DisposalDate && Lead.Services.HasDisposalServiceEnabled ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -167,7 +167,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.CleaningDate ?
+                    Lead.CleaningDate && Lead.Services.HasCleaningServiceEnabled ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
