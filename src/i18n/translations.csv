@@ -92,12 +92,12 @@ FULL_NAME,Full name,Vollständiger Name
 CONTACT_PERSON,Contactperson,Kontaktperson
 CONTACTPERSON_EMAIL,Contactperson E-Mail,Kontaktperson E-Mail
 CONTACT_PERSON_TEL,Contactperson Phone,Kontaktperson Telefon
-BUILDING_TYPE_DETAIL,Building Type,Wohnungsart detail
+BUILDING_TYPE_DETAIL,Building Type,Wohnungsart Detail
 RESTROOM_AMOUNT,Restroom amount,Anzahl Badezimmer
 BALCONY_TERRASSE,Balcony/terrasse,Balkon/Terrasse
 ROLLERBLIND,Rollerblinds,Storen
-AMOUNT_NORMAL_WINDOWS,Amount normal Windows,Anzahl Normale Fenster
-AMOUNT_HIGH_WINDOWS,Amount high Windows,Anzahl Hochfenster
+AMOUNT_NORMAL_WINDOWS,Amount normal Windows,Anzahl normale Fenster
+AMOUNT_HIGH_WINDOWS,Amount big Windows,Anzahl grosse Fenster
 BUILTIN_WARDROBE,Builtin Wardrobe,Einbauschränke
 POLLUTION_DEGREE_GENERAL,Polutiondegree General,Verschmutzungsgrad Allgemein
 POLLUTION,Polution,Verschmutzung
