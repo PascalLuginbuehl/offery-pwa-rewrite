@@ -81,8 +81,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
               component={FormikSimpleSelect}
               options={[
                 { label: "GERMAN", value: "DE" },
-                { label: "FRENCH", value: "FR" },
-                { label: "ITALIAN", value: "IT" },
                 { label: "ENGLISH", value: "EN" },
               ]}
               overrideGrid={{ xs: 6, md: undefined }}
