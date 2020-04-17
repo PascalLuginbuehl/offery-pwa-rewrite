@@ -27,7 +27,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   validatePhoneNumber = (value: string) => {
-    if (isValidPhoneNumber(value) !== true) {
+    if (value != undefined && value.length > 0 && isValidPhoneNumber(value) !== true) {
       return this.props.intl.formatMessage({id: "PHONE_NUMBER_INVALID"})
     }
     return
@@ -89,7 +89,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field label="COMPANY" name="Customer.CompanyName" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
             <Field label="EMAIL" name="Customer.Email" type="email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
-            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} required validate={this.validatePhoneNumber}
+            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} validate={this.validatePhoneNumber}
               defaultCountry="ch"
               preferredCountries={["ch"]}
               onlyCountries= {["ch", "de", "it", "fr", "at"]}/>
