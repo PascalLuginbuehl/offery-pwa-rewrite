@@ -13,6 +13,7 @@ import OfferService from "../../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { RouteComponentProps } from "react-router"
+import DateHelper from "../../../helpers/DateHelper"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -77,8 +78,8 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
             name="OfferId"
             component={FormikSimpleSelect}
             notTranslated
-            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
-              label: offer.FromTemplate + ", " + intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+            options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
+              label: offer.FromTemplate + ", " + intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
               value: offer.OfferId,
             }))}
           />

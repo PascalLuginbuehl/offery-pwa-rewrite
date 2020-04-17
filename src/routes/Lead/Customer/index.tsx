@@ -27,7 +27,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   validatePhoneNumber = (value: string) => {
-    if (isValidPhoneNumber(value) !== true) {
+    if (value != undefined && value.length > 0 && isValidPhoneNumber(value) !== true) {
       return this.props.intl.formatMessage({id: "PHONE_NUMBER_INVALID"})
     }
     return
@@ -43,14 +43,14 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     initialDate.setMinutes(0)
     initialDate.setSeconds(0)
 
-    const VisitDatePlus7: Date = VisitDate ? new Date(VisitDate.toString()) : new Date(initialDate.toString())
+    const VisitDatePlus7: Date = VisitDate ? new Date(VisitDate) : new Date(initialDate)
 
     VisitDatePlus7.setDate(VisitDatePlus7.getDate() + 7)
 
-    const VisitDatePlus1 = VisitDate ? new Date(VisitDate.toString()) : new Date(initialDate)
+    const VisitDatePlus1 = VisitDate ? new Date(VisitDate) : new Date(initialDate)
     VisitDatePlus1.setDate(VisitDatePlus1.getDate() + 7)
 
-    const MoveDatePlus1 = MoveDate ? new Date(MoveDate.toString()) : new Date(VisitDatePlus7.toString())
+    const MoveDatePlus1 = MoveDate ? new Date(MoveDate) : new Date(VisitDatePlus7)
     MoveDatePlus1.setDate(MoveDatePlus1.getDate() + 1)
 
     return (
@@ -81,8 +81,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
               component={FormikSimpleSelect}
               options={[
                 { label: "GERMAN", value: "DE" },
-                { label: "FRENCH", value: "FR" },
-                { label: "ITALIAN", value: "IT" },
                 { label: "ENGLISH", value: "EN" },
               ]}
               overrideGrid={{ xs: 6, md: undefined }}
@@ -91,7 +89,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field label="COMPANY" name="Customer.CompanyName" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} />
 
             <Field label="EMAIL" name="Customer.Email" type="email" component={FormikTextField} overrideGrid={{ xs: 6, md: undefined }} required />
-            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} required validate={this.validatePhoneNumber}
+            <Field label="PHONE" name="Customer.TelephoneNumber" component={FormikPhoneNumber} overrideGrid={{ xs: 6, md: undefined }} validate={this.validatePhoneNumber}
               defaultCountry="ch"
               preferredCountries={["ch"]}
               onlyCountries= {["ch", "de", "it", "fr", "at"]}/>

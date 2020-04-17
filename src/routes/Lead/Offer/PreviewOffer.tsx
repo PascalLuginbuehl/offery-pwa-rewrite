@@ -15,6 +15,7 @@ import { Document, Page } from "react-pdf/dist/entry.webpack"
 import { PDFDocumentProxy } from "pdfjs-dist"
 import { RouteComponentProps } from "react-router"
 import { IOffer, IOFile } from "../../../interfaces/IOffer"
+import DateHelper from "../../../helpers/DateHelper"
 
 const styles = (theme: Theme) => createStyles({
   snackbar: {
@@ -131,8 +132,8 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
             name="selectedOfferId"
             component={FormikSimpleSelect}
             notTranslated
-            options={lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
-              label: intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
+            options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
+              label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
               value: offer.OfferId,
             }))}
           />

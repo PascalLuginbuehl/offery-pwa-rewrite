@@ -9,6 +9,7 @@ import { ILead } from "../../interfaces/ILead"
 import FormikGroups from "../../components/FormikFields/Bundled/Groups"
 import ServiceIcons from "../../components/Dashboard/ServiceIcons"
 import IntlTableCell from "../../components/Intl/IntlTableCell"
+import DateHelper from "../../helpers/DateHelper"
 
 import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
 import { IConfirmOffer } from "../../interfaces/IOffer"
@@ -120,7 +121,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.MoveDate && Lead.Services.HasMoveServiceEnabled ?
+                    Lead.MoveDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -129,7 +130,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.PackServiceDate && Lead.Services.HasPackServiceEnabled ?
+                    Lead.PackServiceDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -149,7 +150,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
 
                   {
-                    Lead.StorageDate && Lead.Services.HasStorageServiceEnabled ?
+                    Lead.StorageDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -158,7 +159,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.DisposalDate && Lead.Services.HasDisposalServiceEnabled ?
+                    Lead.DisposalDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -167,7 +168,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   }
 
                   {
-                    Lead.CleaningDate && Lead.Services.HasCleaningServiceEnabled ?
+                    Lead.CleaningDate ?
                       <TableRow>
                         <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
                         <TableCell><FormattedDate value={Lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
@@ -222,7 +223,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                 <Grid item xs={12}>
                   <IntlTypography>{Lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
                   <Typography>
-                    <IntlTypography component="span">{intl.formatDate(Lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + Lead.ConfirmedOffer.FromTemplate}</IntlTypography>
+                    <IntlTypography component="span">{intl.formatDate(DateHelper.parseDateNotNull(Lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + Lead.ConfirmedOffer.FromTemplate}</IntlTypography>
                     <Link target="_blank" to={`/lead/${Lead.LeadId}/offer/preview/${Lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
                   </Typography>
                   <hr/>
@@ -286,7 +287,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                             (() => {
                               if (Lead.ConfirmedOrderVerbal && Lead.ConfirmedOffer ) {
                                 return <>
-                                  <IntlTypography>{intl.formatDate(Lead.ConfirmedOffer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + Lead.ConfirmedOffer.FromTemplate}</IntlTypography>
+                                  <IntlTypography>{intl.formatDate(DateHelper.parseDateNotNull(Lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + Lead.ConfirmedOffer.FromTemplate}</IntlTypography>
                                   <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
                                 </>
                               }
@@ -310,8 +311,8 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                                 component={FormikSimpleSelect}
                                 notTranslated
                                 required
-                                options={Lead.Offers.sort((offer1, offer2) => new Date(offer2.Created).getTime() - new Date(offer1.Created).getTime()).map(offer => ({
-                                  label: intl.formatDate(offer.Created, { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
+                                options={Lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
+                                  label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + offer.FromTemplate,
                                   value: offer.OfferId,
                                 }))}
                                 overrideGrid={{}}

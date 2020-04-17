@@ -4,32 +4,28 @@ import { ILead, IPutLead, IUpdateLead, ICompressedLead, IPostLead } from "../int
 import LoginService from "./LoginService"
 import { format } from "date-fns/esm"
 import { IConfirmOffer } from "../interfaces/IOffer"
+import DateHelper from "../helpers/DateHelper"
 
 const API_URL = process.env.REACT_APP_API_URL
 
-
 class LeadService {
-  private parseDate(date: string | null) {
-    return date ? new Date(date) : null
-  }
-
   private toCustomer = (json: any): ILead => {
     if (!json || typeof json !== "object") {
       throw new Error()
     }
 
-    json.DeliveryDate = this.parseDate(json.DeliveryDate)
-    json.CleaningDate = this.parseDate(json.CleaningDate)
-    json.DisposalDate = this.parseDate(json.DisposalDate)
-    json.HandOverDate = this.parseDate(json.HandOverDate)
-    json.PackServiceDate = this.parseDate(json.PackServiceDate)
-    json.MoveDate = this.parseDate(json.MoveDate)
-    json.StorageDate = this.parseDate(json.StorageDate)
-    json.VisitDate = this.parseDate(json.VisitDate)
-    json.Created = this.parseDate(json.Created)
+    json.DeliveryDate = DateHelper.parseDate(json.DeliveryDate)
+    json.CleaningDate = DateHelper.parseDate(json.CleaningDate)
+    json.DisposalDate = DateHelper.parseDate(json.DisposalDate)
+    json.HandOverDate = DateHelper.parseDate(json.HandOverDate)
+    json.PackServiceDate = DateHelper.parseDate(json.PackServiceDate)
+    json.MoveDate = DateHelper.parseDate(json.MoveDate)
+    json.StorageDate = DateHelper.parseDate(json.StorageDate)
+    json.VisitDate = DateHelper.parseDate(json.VisitDate)
+    json.Created = DateHelper.parseDate(json.Created)
 
-    json.StatusHistories.map((e: any) => ({ ...e, Created: new Date(e.Created) }))
-    json.AppointmentReminders.map((e: any) => ({ ...e, Created: new Date(e.Created), AppointedDate: new Date(e.AppointedDate) }))
+    json.StatusHistories = json.StatusHistories.map((e: any) => ({ ...e, Created: DateHelper.parseDate(e.Created) }))
+    json.AppointmentReminders = json.AppointmentReminders.map((e: any) => ({ ...e, Created: DateHelper.parseDate(e.Created), AppointedDate: DateHelper.parseDate(e.AppointedDate) }))
 
     return json
   }
@@ -39,8 +35,8 @@ class LeadService {
       throw new Error()
     }
 
-    json.VisitDate = this.parseDate(json.VisitDate)
-    json.Created = this.parseDate(json.Created)
+    json.VisitDate = DateHelper.parseDate(json.VisitDate)
+    json.Created = DateHelper.parseDate(json.Created)
 
     return json
   }
