@@ -14,9 +14,9 @@ class ServicesService {
     return json
   }
 
-  async getOffer(leadId: number, templateCategoryId: number): Promise<IOffer> {
+  async getOffer(leadId: number, templateCategoryId: number, billBuildingId: number): Promise<IOffer> {
     return (
-      fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId, await LoginService.authorizeRequest())
+      fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId + "/" + billBuildingId, await LoginService.authorizeRequest())
         .then(errorFunction)
         .then(response => response.json())
         // .then(middleWare)

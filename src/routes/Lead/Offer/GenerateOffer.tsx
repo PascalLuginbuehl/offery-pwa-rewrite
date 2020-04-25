@@ -7,7 +7,7 @@ import Form from "../../../components/FormikFields/Form"
 
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
-
+import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 
 import OfferService from "../../../services/OfferService"
 import { ILead } from "../../../interfaces/ILead"
@@ -21,6 +21,7 @@ const styles = (theme: Theme) => createStyles({})
 
 interface Values {
   templateCategoryId: number | null
+  billBuildingId: number | null
 }
 
 interface Props extends WithResourceProps, WithStyles<typeof styles> {
@@ -35,7 +36,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const {
-      values: { templateCategoryId },
+      values: { templateCategoryId, billBuildingId },
       isSubmitting,
       status,
       resource,
@@ -45,6 +46,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
     } = this.props
 
     console.log(templateCategoryId)
+    console.log(billBuildingId)
 
     return (
       <Grid item xs={12}>
@@ -58,6 +60,8 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
             // Fixme, there is no 2 possible
             options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
           />
+
+          <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
 
           {
             isSubmitting ?
@@ -86,21 +90,19 @@ export default withStyles(styles)(
     withFormik<Props, Values>({
       mapPropsToValues: props => {
         // Default values asignment
-        const { selectedCompany: { OfferTemplateCategories } } = props
-
-        const outAddressId = null
-        const inAddressId = null
+        const { selectedCompany: { OfferTemplateCategories }, lead: { BillBuildingId } } = props
 
         const templateCategoryId = OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null
+        const billBuildingId =  BillBuildingId
 
-        return { templateCategoryId, outAddressId, inAddressId }
+        return { templateCategoryId, billBuildingId }
       },
 
       handleSubmit: async (values, actions) => {
         try {
-          const { templateCategoryId } = values
-          if (templateCategoryId) {
-            const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId)
+          const { templateCategoryId, billBuildingId } = values
+          if (templateCategoryId && billBuildingId) {
+            const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, billBuildingId)
 
             // Update Lead
             const { props } = actions

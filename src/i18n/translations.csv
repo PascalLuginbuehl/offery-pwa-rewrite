@@ -44,6 +44,7 @@ MOVE_IN_BUILDING,Move in building,Einzugsgebäude
 STORAGE_BUILDING,Storage building,Lagergebäude
 STORAGE_OUT_BUILDING,Storage out,Lagerauslieferungsgebäude
 CLEANING_BUILDING,Cleaning building,Reinigungsgebäude
+BILL_BUILDING,Billing building,Rechnungsgebäude
 DISPOSAL_BUILDING,Disposal building,Entsorgungsgebäude
 SERVICES,Services,Services
 CUSTOMER,Customer,Kunde
