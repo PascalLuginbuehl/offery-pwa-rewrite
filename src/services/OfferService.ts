@@ -31,6 +31,23 @@ class ServicesService {
       .then(response => response.blob())
   }
 
+  async uploadOffer(leadId: number, file: any): Promise<IOffer> {
+    const formdata = new FormData()
+    formdata.append("LeadId", leadId.toString())
+    formdata.append("file", file)
+
+    return fetch(
+      API_URL + "/offer/upload",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        body: formdata
+      })
+    )
+      .then(errorFunction)
+      .then(response => response.json())
+      .then(json => this.toSpecificType<IOffer>(json))
+  }
+
   async sendOffer(OfferId: number, CCEmailList: string[], Comment: string): Promise<any> {
     return fetch(
       API_URL + "/offer/send",
