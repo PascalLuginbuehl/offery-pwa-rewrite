@@ -16,8 +16,25 @@ import { ILeadContainer } from "../LeadAPI"
 import animation from "../../../components/lottie/12818-file-recover.json"
 import Lottie from "lottie-react-web"
 import { IBuilding } from "../../../interfaces/IBuilding"
+import Dropzone from "react-dropzone"
 
-const styles = (theme: Theme) => createStyles({})
+const styles = (theme: Theme) => createStyles({
+  dropzone: {
+    flex: "1",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "20px",
+    borderWidth: "2px",
+    borderRadius: "2px",
+    borderColor: "#eeeeee",
+    borderStyle: "dashed",
+    backgroundColor: "#fafafa",
+    color: "#bdbdbd",
+    outline: "none",
+    transition: "border .24s ease-in-out"
+  }
+})
 
 interface Values {
   templateCategoryId: number | null
@@ -43,6 +60,8 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
       selectedCompany,
       buildings,
       values,
+      lead,
+      classes
     } = this.props
 
     console.log(templateCategoryId)
@@ -80,6 +99,21 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
           }
 
         </Form>
+
+        <Dropzone onDrop={acceptedFiles => OfferService.uploadOffer(lead.LeadId, "DE", acceptedFiles[0])}>
+          {({getRootProps, getInputProps}) => (
+            <section>
+              <div {...getRootProps({className: classes.dropzone})}>
+                <input {...getInputProps({
+                  accept: ".docx",
+                  multiple: false
+                })} />
+                <p>Drag  drop some files here, or click to select files</p>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+
       </Grid>
     )
   }

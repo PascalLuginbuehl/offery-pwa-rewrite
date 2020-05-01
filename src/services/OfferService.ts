@@ -31,6 +31,22 @@ class ServicesService {
       .then(response => response.blob())
   }
 
+  async uploadOffer(leadId: number, language: string, file: any) {
+    const formdata = new FormData()
+    formdata.append("LeadId", leadId.toString())
+    formdata.append("Language", language)
+    formdata.append("file", file)
+
+    return fetch(
+      API_URL + "/offer/upload",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        body: formdata
+      })
+    )
+      .then(errorFunction)
+  }
+
   async sendOffer(OfferId: number, CCEmailList: string[], Comment: string): Promise<any> {
     return fetch(
       API_URL + "/offer/send",
