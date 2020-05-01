@@ -16,7 +16,7 @@ import { ILeadContainer } from "../LeadAPI"
 import animation from "../../../components/lottie/12818-file-recover.json"
 import Lottie from "lottie-react-web"
 import { IBuilding } from "../../../interfaces/IBuilding"
-import Dropzone from "react-dropzone"
+import Dropzone from "react-dropzone" //https://github.com/react-dropzone/react-dropzone
 
 const styles = (theme: Theme) => createStyles({
   dropzone: {
