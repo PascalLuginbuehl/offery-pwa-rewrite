@@ -311,6 +311,7 @@ OFFER_DECLINED,Offer declined,DIe Offerte wurde abgelehnt
 CUSTOMER_VERBAL_CONFIRMATION,Verbal confirmation,Mündlich zugesagt
 OFFER_RESENT_MAIL_CANCELFIRST,To send an offer-email again you have to cancel the old one first,Um erneut eine Offertenmail auszulösen: Stornieren Sie zuerst die alte Offerte
 MANUAL_OVERRIDE,Manual override,Manuell Überschreiben
+DROPZONE_FIELD_DRAGORCLICK,Drag n'drop a File here or click to select file,Ziehen Sie die Datei herein oder klicken Sie
 OVERRIDE,Override,Überschreiben
 SAVE,Save,Speichern
 OFFLINE_NOT_AVAILABLE,Offline not available,Diese Seite ist Offline nicht verfügbar

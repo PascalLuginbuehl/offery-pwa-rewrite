@@ -17,6 +17,7 @@ import animation from "../../../components/lottie/12818-file-recover.json"
 import Lottie from "lottie-react-web"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Dropzone from "react-dropzone" //https://github.com/react-dropzone/react-dropzone
+import IntlTypography from "../../../components/Intl/IntlTypography"
 
 const styles = (theme: Theme) => createStyles({
   dropzone: {
@@ -36,6 +37,10 @@ const styles = (theme: Theme) => createStyles({
   }
 })
 
+interface State {
+  isUploading: boolean
+}
+
 interface Values {
   templateCategoryId: number | null
   billBuildingId: number | null
@@ -50,11 +55,27 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
   onChange: (value: any, name: keyof ILeadContainer) => void
 }
 
-class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
+class GenerateOffer extends React.Component<Props & FormikProps<Values>, State> {
+  state: State = {
+    isUploading: false
+  }
 
-  uploadOffer(file: any): void {
-    const { lead } = this.props
-    OfferService.uploadOffer(lead.LeadId, file)
+  async uploadOffer(file: any) {
+    try {
+      const { lead } = this.props
+      this.setState({isUploading: true})
+      const offer = await OfferService.uploadOffer(lead.LeadId, file)
+
+      // Update Lead
+      this.props.onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
+      this.props.nextPage("/" + offer.OfferId)
+    }
+    catch (e) {
+      this.setState({isUploading: false})
+      if (e.json && e.json.Message) {
+        alert(e.json.Message)
+      }
+    }
   }
 
   public render() {
@@ -68,9 +89,8 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
       values,
       classes
     } = this.props
+    const { isUploading } = this.state
 
-    console.log(templateCategoryId)
-    console.log(billBuildingId)
 
     return (
       <Grid item xs={12}>
@@ -88,7 +108,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
           <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
 
           {
-            isSubmitting ?
+            isSubmitting || isUploading ?
               <Grid item xs={12}>
                 <Lottie
                   height={256}
@@ -113,12 +133,11 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
                   accept: ".docx",
                   multiple: false
                 })} />
-                <p>Drag  drop some files here, or click to select files</p>
+                <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
               </div>
             </section>
           )}
         </Dropzone>
-
       </Grid>
     )
   }
