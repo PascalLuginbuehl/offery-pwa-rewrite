@@ -51,6 +51,12 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
 }
 
 class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
+
+  uploadOffer(file: any): void {
+    const { lead } = this.props
+    OfferService.uploadOffer(lead.LeadId, file)
+  }
+
   public render() {
     const {
       values: { templateCategoryId, billBuildingId },
@@ -60,7 +66,6 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
       selectedCompany,
       buildings,
       values,
-      lead,
       classes
     } = this.props
 
@@ -100,7 +105,7 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, {}> {
 
         </Form>
 
-        <Dropzone onDrop={acceptedFiles => OfferService.uploadOffer(lead.LeadId, "DE", acceptedFiles[0])}>
+        <Dropzone onDrop={acceptedFiles => this.uploadOffer(acceptedFiles[0])}>
           {({getRootProps, getInputProps}) => (
             <section>
               <div {...getRootProps({className: classes.dropzone})}>

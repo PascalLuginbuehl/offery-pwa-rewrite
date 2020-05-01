@@ -31,10 +31,9 @@ class ServicesService {
       .then(response => response.blob())
   }
 
-  async uploadOffer(leadId: number, language: string, file: any) {
+  async uploadOffer(leadId: number, file: any): Promise<IOffer> {
     const formdata = new FormData()
     formdata.append("LeadId", leadId.toString())
-    formdata.append("Language", language)
     formdata.append("file", file)
 
     return fetch(
@@ -45,6 +44,8 @@ class ServicesService {
       })
     )
       .then(errorFunction)
+      .then(response => response.json())
+      .then(json => this.toSpecificType<IOffer>(json))
   }
 
   async sendOffer(OfferId: number, CCEmailList: string[], Comment: string): Promise<any> {
