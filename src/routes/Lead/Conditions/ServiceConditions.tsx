@@ -70,11 +70,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     } = this.props
 
     const enabledPaymentMethods = resource.PaymentMethods.filter(p => selectedCompany.Settings.EnabledPaymentMethodTextKeys.includes(p.NameTextKey))
-    if (values.ServiceConditions.PaymentMethodId == null)
-    {
-      const defaultPaymentMethod = enabledPaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
-      values.ServiceConditions.PaymentMethodId = defaultPaymentMethod != null ? defaultPaymentMethod.PaymentMethodId : null
-    }
 
     return (
       <>
