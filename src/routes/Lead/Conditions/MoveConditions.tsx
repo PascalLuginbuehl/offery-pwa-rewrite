@@ -37,16 +37,6 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
     const showMontageCondition = (moveService.MontageService && selectedCompany.Settings.EnableServiceMoveMontage && selectedCompany.Settings.EnableServiceMoveMontagePrice)
     const showDeMontageCondition = (moveService.DeMontageService && selectedCompany.Settings.EnableServiceMoveDemontage && selectedCompany.Settings.EnableServiceMoveDemontagePrice)
 
-    //Set default values from settings if configured, enabled and not set yet
-    if (showFurnitureLift && values.moveConditions.FurnitureLiftPrice == null)
-      values.moveConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
-
-    if (showPiano && values.moveConditions.PianoPrice == null)
-      values.moveConditions.PianoPrice = selectedCompany.Settings.DefaultPianoPrice
-
-    if (showHeavyLift && values.moveConditions.ServiceConditions.HeavyLiftPrice == null)
-      values.moveConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
-
     return (
       <Grid item xs={12}>
         <Form>

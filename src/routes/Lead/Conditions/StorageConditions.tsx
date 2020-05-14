@@ -38,16 +38,6 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
     const showHeavyLiftPrice = (storageService.HeavyLiftService && selectedCompany.Settings.EnableServiceStorageHeavyLift && selectedCompany.Settings.EnableServiceStorageHeavyLiftPrice)
     const showPiano = (storageService.PianoService && selectedCompany.Settings.EnableServiceStoragePiano && selectedCompany.Settings.EnableServiceStoragePianoPrice)
 
-    //Set default values from settings if configured, enabled and not set yet
-    if (showFurnitureLiftPrice && values.storageConditions.FurnitureLiftPrice == null)
-      values.storageConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
-
-    if (showPiano && values.storageConditions.PianoPrice == null)
-      values.storageConditions.PianoPrice = selectedCompany.Settings.DefaultPianoPrice
-
-    if (showHeavyLiftPrice && values.storageConditions.ServiceConditions.HeavyLiftPrice == null)
-      values.storageConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
-
     return (
       <Grid item xs={12}>
         <Form>
