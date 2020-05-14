@@ -34,6 +34,8 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
   public render() {
     const { isSubmitting, status, intl, selectedCompany, cleaningConditions, cleaningService, resource} = this.props
 
+    const enabledPaymentMethods = resource.PaymentMethods.filter(p => selectedCompany.Settings.EnabledPaymentMethodTextKeys.includes(p.NameTextKey))
+
     const showHighPressureTerracePrice = (selectedCompany.Settings.EnableServiceCleaningHighPressureTerrace &&
         selectedCompany.Settings.EnableServiceCleaningHighPressureTerracePrice &&
         cleaningService.HighPressureTerraceCleaningService)
@@ -162,7 +164,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
             label="PAYMENT_METHOD"
             name={`cleaningConditions.PaymentMethodId`}
             component={FormikSimpleSelect}
-            options={resource.PaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
+            options={enabledPaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
           />
 
           {selectedCompany.Settings.EnableServiceCleaningComment ?
