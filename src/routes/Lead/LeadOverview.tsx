@@ -20,6 +20,7 @@ import FormikTextField from "../../components/FormikFields/FormikTextField"
 import HttpErrorHandler from "../../components/HttpErrorHandler"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import { BuildingTags } from "./BuildingTags";
+import SortHelper from "../../helpers/SortHelper"
 
 const styles = (theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -42,16 +43,6 @@ const styles = (theme: Theme) => createStyles({
   successRow: {
   }
 })
-
-function desc<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
 
 interface _Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   leadContainer: ILeadContainer
@@ -376,7 +367,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {Lead.AppointmentReminders.sort((a, b) => desc(a, b, "Created")).map(e => (
+                  {Lead.AppointmentReminders.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
                     <TableRow key={e.AppointmentReminderId} className={!e.Succeed ? classes.errorRow : classes.successRow}>
                       <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
                       <IntlTableCell>{e.AppointmentTypeTextKey}</IntlTableCell>
@@ -401,7 +392,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Lead.StatusHistories.sort((a, b) => desc(a, b, "Created")).map(e => (
+                {Lead.StatusHistories.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
                   <TableRow key={e.StatusHistoryId}>
                     <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
                     <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
