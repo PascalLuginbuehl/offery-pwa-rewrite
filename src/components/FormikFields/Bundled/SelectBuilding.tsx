@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { FieldProps, getIn } from "formik"
-import { injectIntl, WrappedComponentProps } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
 import Grid, { GridSize } from "@material-ui/core/Grid"
 import {  MenuItem, ListItemText, FormControl, Select, InputLabel } from "@material-ui/core"
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
@@ -26,6 +26,7 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComp
       field,
       form,
       disabled,
+      required,
       // helperText,
 
       label,
@@ -60,12 +61,19 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComp
           }}
           error={showError}
           fullWidth
+          required={required}
           {...props}
           disabled={disabled != undefined ? disabled : isSubmitting}
           {...props}
           {...field}
           value={field.value === undefined || field.value === null ? "" : field.value}
         >
+          { !required ?
+            // @ts-ignore
+            <MenuItem value={null} disabled={required}>
+              <em><FormattedMessage id={"SELECT_DOT_DOT_DOT"} /></em>
+            </MenuItem>
+            : null }
           {buildings.map((building, index) => (
             <MenuItem value={building.BuildingId} dense key={index}>
               <ListItemText

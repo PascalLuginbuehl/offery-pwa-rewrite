@@ -80,7 +80,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             </Typography>
           </Grid>
 
-          <Field component={SelectBuilding} label="VISIT_ADDRESS" name="BuildingId" buildings={buildings} />
+          <Field component={SelectBuilding} label="VISIT_ADDRESS" name="BuildingId" buildings={buildings} required/>
           {/* <SelectAddress label="" name="BuildingId" buildings={buildingOptions} /> */}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
