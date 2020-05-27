@@ -27,6 +27,7 @@ function stableSort(array: ICompressedLead[], cmp: (a: ICompressedLead, b: IComp
 
   stabilizedThis.sort((a, b) => {
     const order = cmp(a[0], b[0])
+    console.log(order)
     if (order !== 0) return order
     return a[1] - b[1]
   })
@@ -38,9 +39,10 @@ type Order = "asc" | "desc";
 
 function getSorting(
   order: Order,
-  orderBy: keyof ICompressedLead,
+  orderBy: keyof ICompressedLead | "CustomerCombined",
 ): (a: ICompressedLead, b: ICompressedLead) => number {
-
+  console.log("hi", orderBy)
+  // @ts-ignore
   return order === "desc" ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy)
 }
 
@@ -49,7 +51,7 @@ export default function LeadTable({ leads }: _Props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const [order, setOrder] = React.useState<Order>("desc")
-  const [orderBy, setOrderBy] = React.useState<keyof ICompressedLead>("Created")
+  const [orderBy, setOrderBy] = React.useState<keyof ICompressedLead | "CustomerCombined">("Created")
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage)
@@ -62,7 +64,7 @@ export default function LeadTable({ leads }: _Props) {
     setPage(0)
   }
 
-  const handleSort = (property: keyof ICompressedLead) => (_event: React.MouseEvent<unknown>) => {
+  const handleSort = (property: keyof ICompressedLead | "CustomerCombined") => (_event: React.MouseEvent<unknown>) => {
     const isAsc = orderBy === property && order === "asc"
     setOrder(isAsc ? "desc" : "asc")
     setOrderBy(property)
@@ -85,9 +87,9 @@ export default function LeadTable({ leads }: _Props) {
 
             <TableCell variant="head">
               <TableSortLabel
-                active={orderBy === "Customer"}
-                direction={orderBy === "Customer" ? order : "asc"}
-                onClick={handleSort("Customer")}
+                active={orderBy === "CustomerCombined"}
+                direction={orderBy === "CustomerCombined" ? order : "asc"}
+                onClick={handleSort("CustomerCombined")}
               >
                 <FormattedMessage id="CUSTOMER" />
               </TableSortLabel>
@@ -130,7 +132,7 @@ export default function LeadTable({ leads }: _Props) {
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? stableSort(leads, getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            ? stableSort(leads.map((lead) => ({CustomerCombined: lead.Customer.Lastname + lead.Customer.Firstname, ...lead})), getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : leads
           ).map((lead) =>
             <TableRow key={lead.LeadId}>
