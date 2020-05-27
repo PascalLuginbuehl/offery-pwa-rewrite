@@ -89,7 +89,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
               overrideGrid={{ xs: 6, md: 3 }}
             />
 
-            <Field label="FIX_PRICE" name="cleaningConditions.FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
+            <Field label="BASE_PRICE" name="cleaningConditions.FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
           </FormikGroups>
 
           {showHighPressureGaragePrice || showHighPressureTerracePrice ? (
@@ -155,7 +155,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
 
             <Grid item xs={5}>
               <MuiTextField
-                label={intl.formatMessage({ id: "PRICE" })}
+                label={intl.formatMessage({ id: "FIX_PRICE" })}
                 value={this.getCost()}
                 disabled={true}
                 type="number"
