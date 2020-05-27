@@ -9,7 +9,7 @@ import PageHeader from "../../../components/PageHeader"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
-import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
+
 import {  IPostLead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import { isValidPhoneNumber } from "react-phone-number-input"
@@ -99,10 +99,12 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
 
           <FormikGroups label="DATES" xs={12}>
             <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} />
-            {selectedCompany.Settings.EnableServiceMove ? (<Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />) : null }
-            {selectedCompany.Settings.EnableServicePack ? (<Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
+
             {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
               (<Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />) : null }
+
+            {selectedCompany.Settings.EnableServicePack ? (<Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
+            {selectedCompany.Settings.EnableServiceMove ? (<Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />) : null }
             {selectedCompany.Settings.EnableServiceStorage ? (<Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
             {selectedCompany.Settings.EnableServiceDisposal ? (<Field name="DisposalDate" label="DISPOSAL" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
             {selectedCompany.Settings.EnableServiceCleaning ? (<Field name="CleaningDate" label="CLEANING" component={FormikDateTimePicker} initialFocusedDate={MoveDatePlus1} />) : null }
