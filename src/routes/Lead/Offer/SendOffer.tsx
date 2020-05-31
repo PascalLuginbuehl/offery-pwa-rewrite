@@ -56,7 +56,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
     const { emailValue } = this.state
     return (
       <Grid item xs={12}>
-        <Form>
+        <Form disableSubmit>
           <PageHeader title="SEND_OFFER" />
           <Grid item xs={12}>
 

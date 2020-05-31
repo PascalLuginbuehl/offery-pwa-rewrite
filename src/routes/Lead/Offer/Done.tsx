@@ -6,6 +6,8 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import PageHeader from "../../../components/PageHeader"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import { ILead } from "../../../interfaces/ILead"
+import animation from "../../../components/lottie/12824-mail.json"
+import Lottie from "lottie-react-web"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -23,6 +25,15 @@ class OfferDone extends React.Component<Props> {
           <Grid item xs={12}>
             <PageHeader title="OFFER_DONE" />
             <IntlTypography>LEAD_FINISHED_TEXT</IntlTypography>
+
+            <Lottie
+              height={256}
+              width={256}
+              options={{
+                animationData: animation,
+                loop: false,
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>

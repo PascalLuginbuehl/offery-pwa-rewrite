@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button, Table, TableHead, TableRow, TableBody, TableCell,    ButtonGroup, Hidden } from "@material-ui/core"
+import {  Theme, WithStyles, withStyles, Grid,   Typography, Button, Table, TableHead, TableRow, TableBody, TableCell,    ButtonGroup, Hidden, createStyles } from "@material-ui/core"
 import { Formik,   Field,  Form } from "formik"
 import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -20,6 +20,7 @@ import HttpErrorHandler from "../../../components/HttpErrorHandler"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import SortHelper from "../../../helpers/SortHelper"
 import { LeadDetailsMobile, LeadDetailsTable } from "./LeadDetails"
+import ReminderHistory from "./ReminderHistory"
 
 
 const styles = (theme: Theme) => createStyles({
@@ -43,6 +44,23 @@ const styles = (theme: Theme) => createStyles({
   successRow: {
   }
 })
+
+
+export const StyledTableCell = withStyles((theme: Theme) => ({
+  root: {
+    [theme.breakpoints.down("sm")]: {
+      padding: "6px 8px 6px 0",
+    },
+  }
+}))(TableCell)
+
+export const IntlStyledTableCell = withStyles((theme: Theme) => ({
+  root: {
+    [theme.breakpoints.down("sm")]: {
+      padding: "6px 8px 6px 0",
+    },
+  }
+}))(IntlTableCell)
 
 interface _Props extends WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
   leadContainer: ILeadContainer
@@ -224,50 +242,23 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
             }
           </FormikGroups>
 
-          {Lead.AppointmentReminders && Lead.AppointmentReminders.length > 0 ? (
-            <FormikGroups label="REMINDER_HISTORY" xs={12}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <IntlTableCell>SENT</IntlTableCell>
-                    <IntlTableCell>APPOINTMENTTYPE</IntlTableCell>
-                    <IntlTableCell>DATE</IntlTableCell>
-                    <IntlTableCell>NOTIFICATIONTYPE</IntlTableCell>
-                    <IntlTableCell>TO</IntlTableCell>
-                    <IntlTableCell>ERRORMESSAGE</IntlTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Lead.AppointmentReminders.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
-                    <TableRow key={e.AppointmentReminderId} className={!e.Succeed ? classes.errorRow : classes.successRow}>
-                      <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      <IntlTableCell>{e.AppointmentTypeTextKey}</IntlTableCell>
-                      <TableCell><FormattedDate value={e.AppointedDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      <TableCell>{e.NotificationType}</TableCell>
-                      <TableCell>{e.To}</TableCell>
-                      <TableCell>{e.ErrorMessage ? e.ErrorMessage : "-"}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </FormikGroups>
-          ) : null}
+          <ReminderHistory lead={Lead} />
 
           <FormikGroups label="STATUS_HISTORY" xs={12}>
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <IntlTableCell>STATUS</IntlTableCell>
-                  <IntlTableCell>DATE</IntlTableCell>
-                  <IntlTableCell>COMMENT</IntlTableCell>
+                  <IntlStyledTableCell>STATUS</IntlStyledTableCell>
+                  <IntlStyledTableCell>DATE</IntlStyledTableCell>
+                  <IntlStyledTableCell>COMMENT</IntlStyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {Lead.StatusHistories.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
                   <TableRow key={e.StatusHistoryId}>
-                    <IntlTableCell>{e.Status.NameTextKey}</IntlTableCell>
-                    <TableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                    <TableCell>{e.Comment}</TableCell>
+                    <IntlStyledTableCell>{e.Status.NameTextKey}</IntlStyledTableCell>
+                    <StyledTableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
+                    <StyledTableCell>{e.Comment}</StyledTableCell>
                   </TableRow>
                 ))}
               </TableBody>

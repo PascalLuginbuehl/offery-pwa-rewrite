@@ -2,15 +2,16 @@ import React from "react"
 import { ILeadContainer } from "../LeadAPI"
 
 import IntlTypography from "../../../components/Intl/IntlTypography"
-import { Typography,   Link, Table, TableRow, TableBody, TableCell, Divider } from "@material-ui/core"
+import { Typography,   Link, Table, TableRow, TableBody,  Divider } from "@material-ui/core"
 import { useIntl, FormattedDate } from "react-intl"
 import { BuildingTags } from "../BuildingTags"
 import ServiceIcons from "../../../components/Dashboard/ServiceIcons"
 import { IDisposalSerivce, ICleaningService, IMoveService, IPackSerivce, IStorageSerivce } from "../../../interfaces/IService"
 import { IBuilding } from "../../../interfaces/IBuilding"
-import IntlTableCell from "../../../components/Intl/IntlTableCell"
+
 import { ILead } from "../../../interfaces/ILead"
 import Services from "../Services"
+import { IntlStyledTableCell, StyledTableCell } from "."
 
 interface Services {
   disposalService: IDisposalSerivce | null
@@ -56,7 +57,7 @@ function Detail(props: detailProps) {
   const {title, children} = props
   return (
     <div style={{padding: 4}}>
-      <IntlTypography variant="body2">{title}</IntlTypography>
+      <IntlTypography variant="body2" style={{fontWeight: "bold"}}>{title}</IntlTypography>
       {children}
     </div>
   )
@@ -74,15 +75,20 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
 
   return (
     <div>
+      <Detail title="STATUS">
+        <IntlTypography>{Lead.Status.NameTextKey}</IntlTypography>
+      </Detail>
+
+      {
+        Lead.Customer.CompanyName.length > 0 ?
+          <Detail title="COMPANY">
+            <Typography>{Lead.Customer.CompanyName}</Typography>
+          </Detail>
+          : null
+      }
+
       <Detail title='FULL_NAME'>
         <Typography>{intl.formatMessage({ id: Lead.Customer.IsMale ? "MR" : "MRS" })}. {Lead.Customer.Firstname} {Lead.Customer.Lastname}</Typography>
-      </Detail>
-      <Detail title='BUILDINGS'>
-        {
-          buildings.map(building => (
-            <FormattedAddress services={services} building={building} key={building.BuildingId} />
-          ))
-        }
       </Detail>
 
       <Detail title="EMAIL">
@@ -93,24 +99,21 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
         <Link href={"tel:" + Lead.Customer.TelephoneNumber}>{Lead.Customer.TelephoneNumber}</Link>
       </Detail>
 
-
-      {
-        Lead.Customer.CompanyName.length > 0 ?
-          <Detail title="COMPANY">
-            <Typography>{Lead.Customer.CompanyName}</Typography>
-          </Detail>
-          : null
-      }
-
       <Detail title="SERVICES">
         <Typography><ServiceIcons lead={Lead} services={Lead.Services} /></Typography>
       </Detail>
-
-      <Detail title="STATUS">
-        <IntlTypography>{Lead.Status.NameTextKey}</IntlTypography>
+      <Divider />
+      <Detail title='BUILDINGS'>
+        {
+          buildings.map(building => (
+            <FormattedAddress services={services} building={building} key={building.BuildingId} />
+          ))
+        }
       </Detail>
 
+      <br />
 
+      <Detail title="APPOINTMENTS"><div /></Detail>
       <Table size="small" aria-label="a dense table">
         <LeadDates lead={Lead}/>
       </Table>
@@ -132,62 +135,64 @@ export function LeadDetailsTable(props: LeadDetailsTableProps) {
     <Table size="small" aria-label="a dense table">
       <TableBody>
         <TableRow>
-          <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
-          <TableCell>{intl.formatMessage({ id: lead.Customer.IsMale ? "MR" : "MRS" })}. {lead.Customer.Firstname} {lead.Customer.Lastname}</TableCell>
-        </TableRow>
-
-        <TableRow >
-          <IntlTableCell component="th" scope="row" colSpan={2}>BUILDINGS</IntlTableCell>
-        </TableRow>
-
-        {
-          buildings.map(building => (
-            <TableRow key={building.BuildingId}>
-              {/* <IntlTableCell component="th" scope="row">TO</IntlTableCell> */}
-
-              <TableCell>
-                <Link href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${building.Address.PLZ} ${building.Address.City}, ${building.Address.Street}`)} target="_blank">
-                  {building.Address.Street}
-                  <br />
-                  {building.Address.PLZ} {building.Address.City}
-                </Link>
-              </TableCell>
-              <TableCell>
-                <BuildingTags services={services} building={building} />
-              </TableCell>
-            </TableRow>
-          ))
-        }
-
-        <LeadDates lead={lead} />
-
-        <TableRow>
-          <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
-          <TableCell><Link href={"mailto:" + lead.Customer.Email}>{lead.Customer.Email}</Link></TableCell>
-        </TableRow>
-        <TableRow>
-          <IntlTableCell component="th" scope="row">PHONE</IntlTableCell>
-
-          <TableCell><Link href={"tel:" + lead.Customer.TelephoneNumber}>{lead.Customer.TelephoneNumber}</Link></TableCell>
+          <IntlStyledTableCell component="th" scope="row">STATUS</IntlStyledTableCell>
+          <IntlStyledTableCell>{lead.Status.NameTextKey}</IntlStyledTableCell>
         </TableRow>
 
         {
           lead.Customer.CompanyName.length > 0 ?
             <TableRow>
-              <IntlTableCell component="th" scope="row">COMPANY</IntlTableCell>
-              <TableCell>{lead.Customer.CompanyName}</TableCell>
+              <IntlStyledTableCell component="th" scope="row">COMPANY</IntlStyledTableCell>
+              <StyledTableCell>{lead.Customer.CompanyName}</StyledTableCell>
             </TableRow>
             : null
         }
 
         <TableRow>
-          <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
-          <TableCell><ServiceIcons lead={lead} services={lead.Services} /></TableCell>
+          <IntlStyledTableCell component="th" scope="row">FULL_NAME</IntlStyledTableCell>
+          <StyledTableCell>{intl.formatMessage({ id: lead.Customer.IsMale ? "MR" : "MRS" })}. {lead.Customer.Firstname} {lead.Customer.Lastname}</StyledTableCell>
+        </TableRow>
+
+        <TableRow>
+          <IntlStyledTableCell component="th" scope="row">EMAIL</IntlStyledTableCell>
+          <StyledTableCell><Link href={"mailto:" + lead.Customer.Email}>{lead.Customer.Email}</Link></StyledTableCell>
         </TableRow>
         <TableRow>
-          <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
-          <IntlTableCell>{lead.Status.NameTextKey}</IntlTableCell>
+          <IntlStyledTableCell component="th" scope="row">PHONE</IntlStyledTableCell>
+
+          <StyledTableCell><Link href={"tel:" + lead.Customer.TelephoneNumber}>{lead.Customer.TelephoneNumber}</Link></StyledTableCell>
         </TableRow>
+
+        <LeadDates lead={lead} />
+
+        <TableRow>
+          <IntlStyledTableCell component="th" scope="row">SERVICES</IntlStyledTableCell>
+          <StyledTableCell><ServiceIcons lead={lead} services={lead.Services} /></StyledTableCell>
+        </TableRow>
+
+
+        <TableRow >
+          <IntlStyledTableCell component="th" scope="row" colSpan={2}>BUILDINGS</IntlStyledTableCell>
+        </TableRow>
+
+        {
+          buildings.map(building => (
+            <TableRow key={building.BuildingId}>
+              {/* <IntlStyledTableCell component="th" scope="row">TO</IntlStyledTableCell> */}
+
+              <StyledTableCell>
+                <Link href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${building.Address.PLZ} ${building.Address.City}, ${building.Address.Street}`)} target="_blank">
+                  {building.Address.Street}
+                  <br />
+                  {building.Address.PLZ} {building.Address.City}
+                </Link>
+              </StyledTableCell>
+              <StyledTableCell>
+                <BuildingTags services={services} building={building} />
+              </StyledTableCell>
+            </TableRow>
+          ))
+        }
       </TableBody>
     </Table>
 
@@ -205,15 +210,15 @@ function LeadDates(props: LeadDatesProps) {
   return (
     <>
       <TableRow>
-        <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
-        <TableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+        <IntlStyledTableCell component="th" scope="row">CREATED</IntlStyledTableCell>
+        <StyledTableCell><FormattedDate value={lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
       </TableRow>
 
       {
         lead.VisitDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-            <TableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">VISITING_DATE</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -221,8 +226,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.MoveDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
-            <TableCell><FormattedDate value={lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">MOVING</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -230,8 +235,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.PackServiceDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
-            <TableCell><FormattedDate value={lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">PACKINGSERVICE</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -240,8 +245,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.DeliveryDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlTableCell>
-            <TableCell><FormattedDate value={lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -250,8 +255,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.StorageDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
-            <TableCell><FormattedDate value={lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">STORAGE</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -259,8 +264,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.DisposalDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
-            <TableCell><FormattedDate value={lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">DISPOSAL</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -268,8 +273,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.CleaningDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
-            <TableCell><FormattedDate value={lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">CLEANING</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
@@ -277,8 +282,8 @@ function LeadDates(props: LeadDatesProps) {
       {
         lead.HandOverDate ?
           <TableRow>
-            <IntlTableCell component="th" scope="row">HANDIN</IntlTableCell>
-            <TableCell><FormattedDate value={lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
+            <IntlStyledTableCell component="th" scope="row">HANDIN</IntlStyledTableCell>
+            <StyledTableCell><FormattedDate value={lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
           </TableRow>
           : null
       }
