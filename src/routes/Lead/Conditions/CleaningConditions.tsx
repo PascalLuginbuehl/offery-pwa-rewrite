@@ -34,6 +34,8 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
   public render() {
     const { isSubmitting, status, intl, selectedCompany, cleaningConditions, cleaningService, resource} = this.props
 
+    const enabledPaymentMethods = resource.PaymentMethods.filter(p => selectedCompany.Settings.EnabledPaymentMethodTextKeys.includes(p.NameTextKey))
+
     const showHighPressureTerracePrice = (selectedCompany.Settings.EnableServiceCleaningHighPressureTerrace &&
         selectedCompany.Settings.EnableServiceCleaningHighPressureTerracePrice &&
         cleaningService.HighPressureTerraceCleaningService)
@@ -58,13 +60,6 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
       selectedCompany.Settings.EnableServiceCleaningWindowsWithShuttersPrice &&
       cleaningService.CleaningWindowsWithShuttersService)
 
-    //Set default values from settings if configured, enabled and not set yet
-    if (cleaningConditions.PaymentMethodId == null)
-    {
-      const defaultPaymentMethod = resource.PaymentMethods.find(p => p.NameTextKey == selectedCompany.Settings.DefaultPaymentMethodTextKey)
-      cleaningConditions.PaymentMethodId = defaultPaymentMethod != null ? defaultPaymentMethod.PaymentMethodId : null
-    }
-
     return (
       <Grid item xs={12}>
         <Form>
@@ -81,13 +76,14 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
               inputProps={{ step: 1, min: 0 }}
               overrideGrid={{ xs: 6, md: 3 }}
             />) : null}
-            <Field
+
+            {selectedCompany.Settings.EnableServiceCleaningEstimatedHoursOfWorkWhenFixPrice ? (<Field
               label="ESTIMATED_HOURS_OF_WORKING_WHEN_FIX_PRICE"
               name="cleaningConditions.EstimatedHoursOfWorkWhenFixPrice"
               component={FormikNumberEndAdornmentText}
               adornmentText="h"
               overrideGrid={{ xs: 6, md: 3 }}
-            />
+            />) : null}
 
             <Field label="BASE_PRICE" name="cleaningConditions.FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
           </FormikGroups>
@@ -168,7 +164,7 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
             label="PAYMENT_METHOD"
             name={`cleaningConditions.PaymentMethodId`}
             component={FormikSimpleSelect}
-            options={resource.PaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
+            options={enabledPaymentMethods.map(e => ({ label: e.NameTextKey, value: e.PaymentMethodId }))}
           />
 
           {selectedCompany.Settings.EnableServiceCleaningComment ?

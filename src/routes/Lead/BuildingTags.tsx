@@ -47,7 +47,7 @@ export function BuildingTags({building, services: {cleaningService, storageServi
 
   if (storageService) {
     if (storageService.InBuildingId === BuildingId) {
-      buildings.push("MOVE_IN_BUILDING")
+      buildings.push("STORAGE_OUT_BUILDING")
     }
 
     if (storageService.StorageInBuildingId === BuildingId) {
@@ -61,7 +61,7 @@ export function BuildingTags({building, services: {cleaningService, storageServi
 
   return (<>
     {buildings.map((name, index) => <Chip
-    size="small"
+      size="small"
       key={index}
       label={formatMessage({id: name})}
     />)}

@@ -32,10 +32,6 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
     const { values, isSubmitting, status, setFieldValue, selectedCompany, packService } = this.props
     const showHeavyLift = (packService.HeavyLiftService && selectedCompany.Settings.EnableServicePackHeavyLift && selectedCompany.Settings.EnableServicePackHeavyLiftPrice)
 
-    //Set default values from settings if configured, enabled and not set yet
-    if (showHeavyLift && values.packConditions.ServiceConditions.HeavyLiftPrice == null)
-      values.packConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
-
     return (
       <Grid item xs={12}>
         <Form>

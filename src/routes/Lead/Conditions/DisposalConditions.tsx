@@ -37,16 +37,6 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
     const showHeavyLiftPrice = (disposalService.HeavyLiftService && selectedCompany.Settings.EnableServiceDisposalHeavyLift && selectedCompany.Settings.EnableServiceDisposalHeavyLiftPrice)
     const showFurnitureLiftPrice = (disposalService.FurnitureLiftService && selectedCompany.Settings.EnableServiceDisposalFurnitureLift && selectedCompany.Settings.EnableServiceDisposalFurnitureLiftPrice)
 
-    //Set default values from settings if configured, enabled and not set yet
-    if (showFurnitureLiftPrice && values.disposalConditions.FurnitureLiftPrice == null)
-      values.disposalConditions.FurnitureLiftPrice = selectedCompany.Settings.DefaultFurnitureLiftPrice
-
-    if (showHeavyLiftPrice && values.disposalConditions.ServiceConditions.HeavyLiftPrice == null)
-      values.disposalConditions.ServiceConditions.HeavyLiftPrice = selectedCompany.Settings.DefaultHeavyLiftPrice
-
-    if (values.disposalConditions.CostPerCubicInMoney == null)
-      values.disposalConditions.CostPerCubicInMoney = selectedCompany.Settings.DefaultCostPerCubicInMoney
-
     return (
       <Grid item xs={12}>
         <Form>

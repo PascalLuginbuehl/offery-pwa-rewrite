@@ -14,9 +14,9 @@ class ServicesService {
     return json
   }
 
-  async getOffer(leadId: number, templateCategoryId: number): Promise<IOffer> {
+  async getOffer(leadId: number, templateCategoryId: number, billBuildingId: number): Promise<IOffer> {
     return (
-      fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId, await LoginService.authorizeRequest())
+      fetch(API_URL + "/offer/generate/" + leadId + "/" + templateCategoryId + "/" + billBuildingId, await LoginService.authorizeRequest())
         .then(errorFunction)
         .then(response => response.json())
         // .then(middleWare)
@@ -29,6 +29,23 @@ class ServicesService {
     return fetch(API_URL + "/offer/" + offerId + "/file/" + fileId, await LoginService.authorizeRequest())
       .then(errorFunction)
       .then(response => response.blob())
+  }
+
+  async uploadOffer(leadId: number, file: any): Promise<IOffer> {
+    const formdata = new FormData()
+    formdata.append("LeadId", leadId.toString())
+    formdata.append("file", file)
+
+    return fetch(
+      API_URL + "/offer/upload",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        body: formdata
+      })
+    )
+      .then(errorFunction)
+      .then(response => response.json())
+      .then(json => this.toSpecificType<IOffer>(json))
   }
 
   async sendOffer(OfferId: number, CCEmailList: string[], Comment: string): Promise<any> {
