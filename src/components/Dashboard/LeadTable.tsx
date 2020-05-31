@@ -2,11 +2,12 @@ import React from "react"
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
 import { FormattedDate, FormattedMessage } from "react-intl"
 
-import {      Table, TableHead, TableCell, TableRow, TableBody, IconButton, Typography,     Avatar,    TableFooter, TablePagination,  TableSortLabel } from "@material-ui/core"
+import {      Table, TableHead, TableCell, TableRow, TableBody,  Typography,     Avatar,    TableFooter, TablePagination,  TableSortLabel, Hidden, useMediaQuery, Theme, Tooltip } from "@material-ui/core"
 import {  ICompressedLead } from "../../interfaces/ILead"
 import ServicesComponent from "./ServiceIcons"
 import IntlTooltip from "../Intl/IntlTooltip"
 import PlainLink from "../PlainLink"
+import { makeStyles, withStyles } from "@material-ui/styles"
 
 interface _Props {
   leads: ICompressedLead[]
@@ -41,10 +42,27 @@ function getSorting(
   order: Order,
   orderBy: keyof ICompressedLead | "CustomerCombined",
 ): (a: ICompressedLead, b: ICompressedLead) => number {
-  console.log("hi", orderBy)
   // @ts-ignore
   return order === "desc" ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy)
 }
+
+
+const StyledTableCell = withStyles({
+  root: {
+    paddingLeft: 8,
+    paddingRight: 0,
+  },
+
+})(TableCell)
+
+const useStyles = makeStyles({
+  root: {
+
+  },
+  tableFixedLayout: {
+    tableLayout: "fixed"
+  }
+})
 
 export default function LeadTable({ leads }: _Props) {
   const [page, setPage] = React.useState(0)
@@ -70,12 +88,15 @@ export default function LeadTable({ leads }: _Props) {
     setOrderBy(property)
   }
 
+  const classes = useStyles()
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"))
+
   return (
     <>
-      <Table>
+      <Table className={classes.tableFixedLayout}>
         <TableHead>
           <TableRow>
-            <TableCell variant="head" padding="checkbox">
+            <StyledTableCell variant="head" style={{width: 90}}>
               <TableSortLabel
                 active={orderBy === "Status"}
                 direction={orderBy === "Status" ? order : "asc"}
@@ -83,9 +104,9 @@ export default function LeadTable({ leads }: _Props) {
               >
                 <FormattedMessage id="STATUS" />
               </TableSortLabel>
-            </TableCell>
+            </StyledTableCell>
 
-            <TableCell variant="head">
+            <StyledTableCell variant="head" style={{ width: 170}}>
               <TableSortLabel
                 active={orderBy === "CustomerCombined"}
                 direction={orderBy === "CustomerCombined" ? order : "asc"}
@@ -93,13 +114,13 @@ export default function LeadTable({ leads }: _Props) {
               >
                 <FormattedMessage id="CUSTOMER" />
               </TableSortLabel>
-            </TableCell>
+            </StyledTableCell>
 
-            <TableCell variant="head">
+            <StyledTableCell variant="head">
               <FormattedMessage id="ADDRESSES" />
-            </TableCell>
+            </StyledTableCell>
 
-            <TableCell variant="head" padding="checkbox">
+            <StyledTableCell variant="head" padding="checkbox" style={{ width: 110 }}>
               <TableSortLabel
                 active={orderBy === "VisitDate"}
                 direction={orderBy === "VisitDate" ? order : "asc"}
@@ -114,9 +135,9 @@ export default function LeadTable({ leads }: _Props) {
                   </Typography>
                 </div>
               </TableSortLabel>
-            </TableCell>
+            </StyledTableCell>
 
-            <TableCell variant="head" padding="checkbox">
+            <StyledTableCell variant="head" padding="checkbox" style={{ width: 90 }}>
               <TableSortLabel
                 active={orderBy === "Created"}
                 direction={orderBy === "Created" ? order : "asc"}
@@ -124,66 +145,77 @@ export default function LeadTable({ leads }: _Props) {
               >
                 <FormattedMessage id="CREATED" />
               </TableSortLabel>
-            </TableCell>
+            </StyledTableCell>
 
-            <TableCell variant="head"><FormattedMessage id="SERVICES" /></TableCell>
-            <TableCell variant="head"><FormattedMessage id="ACTIONS" /></TableCell>
+            <Hidden smDown>
+              <StyledTableCell variant="head" style={{ width: 195 }} ><FormattedMessage id="SERVICES" /></StyledTableCell>
+            </Hidden>
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
             ? stableSort(leads.map((lead) => ({CustomerCombined: lead.Customer.Lastname + lead.Customer.Firstname, ...lead})), getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : leads
-          ).map((lead) =>
-            <TableRow key={lead.LeadId}>
-              <TableCell padding="checkbox">
-                <IntlTooltip title={lead.Status.NameTextKey}>
-                  <Avatar>
-                    {/* <Typography noWrap variant="body2"> */}
-                    <RemoveRedEyeIcon />
-                    {/* </Typography> */}
-                  </Avatar>
-                </IntlTooltip>
-              </TableCell>
-              <TableCell>
-                <Typography noWrap variant="body2">
-                  {lead.Customer.Firstname + " " + lead.Customer.Lastname}
-                </Typography>
-              </TableCell>
+          ).map((lead) => {
+            let computedName: string
+            if(lead.Customer.CompanyName) {
+              computedName = lead.Customer.CompanyName + ", " + lead.Customer.Firstname + " " + lead.Customer.Lastname
+            } else {
+              computedName = lead.Customer.Firstname + " " + lead.Customer.Lastname
+            }
 
-              <TableCell style={{ padding: "6px 16px" }}>
-                {lead.Addresses.map(address => (
-                  <Typography variant="caption" component="p" noWrap key={address.AddressId}>
-                    {`${address.PLZ} ${address.City}, ${address.Street}`}
+            return (
+              <TableRow key={lead.LeadId}>
+                <StyledTableCell padding="checkbox">
+                  <PlainLink to={`/lead/${lead.LeadId}`}>
+
+                    <IntlTooltip title={lead.Status.NameTextKey}>
+                      <Avatar>
+                        {/* <Typography noWrap variant="body2"> */}
+                        <RemoveRedEyeIcon />
+                        {/* </Typography> */}
+                      </Avatar>
+                    </IntlTooltip>
+                  </PlainLink>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Tooltip title={computedName}>
+                    <Typography noWrap variant="body2">
+                      {computedName}
+                    </Typography>
+                  </Tooltip>
+                </StyledTableCell>
+
+                <StyledTableCell>
+                  {lead.Addresses.map(address => (
+                    <Tooltip title={`${address.PLZ} ${address.City}, ${address.Street}`} key={address.AddressId}>
+                      <Typography variant="caption" component="p" noWrap>
+                        {`${address.PLZ} ${address.City}, ${address.Street}`}
+                      </Typography>
+                    </Tooltip>
+                  ))}
+                </StyledTableCell>
+
+                <StyledTableCell>
+                  <Typography noWrap variant="body2">
+                    {lead.VisitDate ? <FormattedDate year="2-digit" month="2-digit" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="OPEN" />}
                   </Typography>
-                ))}
-              </TableCell>
+                </StyledTableCell>
 
-              <TableCell>
-                <Typography noWrap variant="body2">
-                  {lead.VisitDate ? <FormattedDate year="2-digit" month="2-digit" day="2-digit" value={lead.VisitDate} /> : <FormattedMessage id="OPEN" />}
-                </Typography>
-              </TableCell>
+                <StyledTableCell>
+                  <Typography noWrap variant="body2">
+                    <FormattedDate year="2-digit" month="2-digit" day="2-digit" value={lead.Created} />
+                  </Typography>
+                </StyledTableCell>
 
-              <TableCell>
-                <Typography noWrap variant="body2">
-                  <FormattedDate year="2-digit" month="2-digit" day="2-digit" value={lead.Created} />
-                </Typography>
-              </TableCell>
-
-              <TableCell style={{ padding: "6px 16px" }}>
-                <ServicesComponent services={lead.Services} lead={lead} />
-              </TableCell>
-              <TableCell style={{ padding: "6px 16px" }}>
-                <PlainLink to={`/lead/${lead.LeadId}`}>
-                  <IconButton>
-                    <RemoveRedEyeIcon />
-                  </IconButton>
-                </PlainLink>
-
-              </TableCell>
-            </TableRow>
-          )}
+                <Hidden smDown>
+                  <StyledTableCell>
+                    <ServicesComponent services={lead.Services} lead={lead} />
+                  </StyledTableCell>
+                </Hidden>
+              </TableRow>
+            )
+          })}
 
         </TableBody>
 
@@ -191,7 +223,7 @@ export default function LeadTable({ leads }: _Props) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={7}
+              colSpan={matches ? 6 : 5}
               count={leads.length}
               rowsPerPage={rowsPerPage}
               page={page}

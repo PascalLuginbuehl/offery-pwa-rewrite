@@ -30,11 +30,8 @@ const styles = (theme: Theme) =>
       textAlign: "right",
     },
     root: {
-      padding: theme.spacing(1),
-      [theme.breakpoints.up("sm")]: {
-        padding: theme.spacing(2),
-      },
-    },
+      padding: theme.spacing(1)
+    }
   })
 
 const options: FuseOptions<ICompressedLead> = {
@@ -138,7 +135,7 @@ class TableDashboard extends React.Component<Props, _State> {
 
     return (
       <Wrapper initialLoading={leadsAwait} >
-        <Grid container spacing={2} className={classes.root}>
+        <Grid container spacing={1} className={classes.root}>
           <Grid item xs={12}>
             <Typography variant="h5">{selectedCompany.Name}</Typography>
             <IntlTypography variant="caption">COMPANY_LEAD_OVERVIEW</IntlTypography>
