@@ -13,6 +13,17 @@ import PhonelinkRingIcon from "@material-ui/icons/PhonelinkRing"
 
 
 const useStyles = makeStyles({
+  icon: {
+    height: 53,
+    justifyContent: "center",
+    alignItems: "center",
+    minWidth: 44,
+  },
+
+  noSpacing: {
+    margin: 0,
+    padding: 0,
+  },
 
   errorRow: {
     backgroundColor: "lightpink"
@@ -62,8 +73,8 @@ export default function ReminderHistory(props: ReminderHistory) {
         <Hidden smUp>
           <List dense>
             {lead.AppointmentReminders.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
-              <ListItem alignItems="flex-start" key={e.AppointmentReminderId} dense disableGutters>
-                <ListItemIcon>
+              <ListItem alignItems="flex-start" key={e.AppointmentReminderId} dense disableGutters className={classes.noSpacing}>
+                <ListItemIcon className={classes.icon}>
                   {
                     e.NotificationType === "Email" ?
                       <MailIcon />
@@ -72,6 +83,7 @@ export default function ReminderHistory(props: ReminderHistory) {
                   }
                 </ListItemIcon>
                 <ListItemText
+                  className={classes.noSpacing}
                   primary={
                     <Typography><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></Typography>
                   }

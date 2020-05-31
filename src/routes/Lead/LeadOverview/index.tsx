@@ -1,7 +1,7 @@
 import * as React from "react"
-import {  Theme, WithStyles, withStyles, Grid,   Typography, Button, Table, TableHead, TableRow, TableBody, TableCell,    ButtonGroup, Hidden, createStyles } from "@material-ui/core"
+import {  Theme, WithStyles, withStyles, Grid,   Typography, Button,     TableCell,    ButtonGroup, Hidden, createStyles } from "@material-ui/core"
 import { Formik,   Field,  Form } from "formik"
-import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps,  FormattedMessage } from "react-intl"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import PageHeader from "../../../components/PageHeader"
 import IntlTypography from "../../../components/Intl/IntlTypography"
@@ -18,9 +18,10 @@ import { Link } from "react-router-dom"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import HttpErrorHandler from "../../../components/HttpErrorHandler"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
-import SortHelper from "../../../helpers/SortHelper"
+
 import { LeadDetailsMobile, LeadDetailsTable } from "./LeadDetails"
 import ReminderHistory from "./ReminderHistory"
+import StatusHistory from "./StatusHistory"
 
 
 const styles = (theme: Theme) => createStyles({
@@ -244,26 +245,7 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
           <ReminderHistory lead={Lead} />
 
-          <FormikGroups label="STATUS_HISTORY" xs={12}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <IntlStyledTableCell>STATUS</IntlStyledTableCell>
-                  <IntlStyledTableCell>DATE</IntlStyledTableCell>
-                  <IntlStyledTableCell>COMMENT</IntlStyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Lead.StatusHistories.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
-                  <TableRow key={e.StatusHistoryId}>
-                    <IntlStyledTableCell>{e.Status.NameTextKey}</IntlStyledTableCell>
-                    <StyledTableCell><FormattedDate value={e.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></StyledTableCell>
-                    <StyledTableCell>{e.Comment}</StyledTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </FormikGroups>
+          <StatusHistory lead={Lead} />
         </Grid>
       </Grid>
     )
