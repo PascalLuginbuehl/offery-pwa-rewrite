@@ -1,26 +1,26 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button, Table, TableHead, TableRow, TableBody, TableCell,    ButtonGroup } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button, Table, TableHead, TableRow, TableBody, TableCell,    ButtonGroup, Hidden } from "@material-ui/core"
 import { Formik,   Field,  Form } from "formik"
 import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
-import { withResource, WithResourceProps } from "../../providers/withResource"
-import PageHeader from "../../components/PageHeader"
-import IntlTypography from "../../components/Intl/IntlTypography"
-import { ILead } from "../../interfaces/ILead"
-import FormikGroups from "../../components/FormikFields/Bundled/Groups"
-import ServiceIcons from "../../components/Dashboard/ServiceIcons"
-import IntlTableCell from "../../components/Intl/IntlTableCell"
-import DateHelper from "../../helpers/DateHelper"
+import { withResource, WithResourceProps } from "../../../providers/withResource"
+import PageHeader from "../../../components/PageHeader"
+import IntlTypography from "../../../components/Intl/IntlTypography"
 
-import FormikSimpleSelect from "../../components/FormikFields/FormikSimpleSelect"
-import { IConfirmOffer } from "../../interfaces/IOffer"
-import  { ILeadContainer } from "./LeadAPI"
-import LeadService from "../../services/LeadService"
+import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
+import IntlTableCell from "../../../components/Intl/IntlTableCell"
+import DateHelper from "../../../helpers/DateHelper"
+
+import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
+import { IConfirmOffer } from "../../../interfaces/IOffer"
+import  { ILeadContainer } from "../LeadAPI"
+import LeadService from "../../../services/LeadService"
 import { Link } from "react-router-dom"
-import FormikTextField from "../../components/FormikFields/FormikTextField"
-import HttpErrorHandler from "../../components/HttpErrorHandler"
+import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import HttpErrorHandler from "../../../components/HttpErrorHandler"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
-import { BuildingTags } from "./BuildingTags";
-import SortHelper from "../../helpers/SortHelper"
+import SortHelper from "../../../helpers/SortHelper"
+import { LeadDetailsMobile, LeadDetailsTable } from "./LeadDetails"
+
 
 const styles = (theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -56,7 +56,8 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
   }
 
   public render() {
-    const { selectedCompany, leadContainer: {Lead, buildings, ...restLead}, intl, classes, } = this.props
+    const { selectedCompany, leadContainer, intl, classes, } = this.props
+    const { Lead, buildings, ...restLead } = leadContainer
     const services = { disposalService: restLead.disposalService, moveService: restLead.moveService, packService: restLead.packService, storageService: restLead.storageService, cleaningService: restLead.cleaningService }
 
     return (
@@ -68,143 +69,13 @@ class LeadOverview extends React.Component<_Props, {OverrideConfirmation: boolea
 
           <FormikGroups label="INFORMATION" xs={12} md={6}>
             <Grid item xs={12}>
-              <Table size="small" aria-label="a dense table">
+              <Hidden smUp>
+                <LeadDetailsMobile leadContainer={leadContainer} />
+              </Hidden>
 
-                <TableBody>
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">FULL_NAME</IntlTableCell>
-                    <TableCell>{intl.formatMessage({ id: Lead.Customer.IsMale ? "MR" : "MRS"})}. {Lead.Customer.Firstname} {Lead.Customer.Lastname}</TableCell>
-                  </TableRow>
-
-                  <TableRow >
-                    <IntlTableCell component="th" scope="row" colSpan={2}>BUILDINGS</IntlTableCell>
-                  </TableRow>
-
-                  {
-                    buildings.map(building => (
-                      <TableRow key={building.BuildingId}>
-                        {/* <IntlTableCell component="th" scope="row">TO</IntlTableCell> */}
-
-                        <TableCell>
-                          <a href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${building.Address.PLZ} ${building.Address.City}, ${building.Address.Street}`)} target="_blank">{building.Address.PLZ} {building.Address.City}, {building.Address.Street}</a>
-                        </TableCell>
-                        <TableCell>
-                          <BuildingTags services={services} building={building} />
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  }
-
-
-
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">CREATED</IntlTableCell>
-                    <TableCell><FormattedDate value={Lead.Created} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                  </TableRow>
-
-                  {
-                    Lead.VisitDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">VISITING_DATE</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  {
-                    Lead.MoveDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">MOVING</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.MoveDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  {
-                    Lead.PackServiceDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">PACKINGSERVICE</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.PackServiceDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-
-                  {
-                    Lead.DeliveryDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">CARDBOARDBOX_DELIVERY</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.DeliveryDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-
-                  {
-                    Lead.StorageDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">STORAGE</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.StorageDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  {
-                    Lead.DisposalDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">DISPOSAL</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.DisposalDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  {
-                    Lead.CleaningDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">CLEANING</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.CleaningDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  {
-                    Lead.HandOverDate ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">HANDIN</IntlTableCell>
-                        <TableCell><FormattedDate value={Lead.HandOverDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" /></TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">EMAIL</IntlTableCell>
-                    <TableCell><a href={"mailto:" + Lead.Customer.Email}>{Lead.Customer.Email}</a></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">PHONE</IntlTableCell>
-
-                    <TableCell><a href={"tel:" + Lead.Customer.TelephoneNumber}>{Lead.Customer.TelephoneNumber}</a></TableCell>
-                  </TableRow>
-
-                  {
-                    Lead.Customer.CompanyName.length > 0 ?
-                      <TableRow>
-                        <IntlTableCell component="th" scope="row">COMPANY</IntlTableCell>
-                        <TableCell>{Lead.Customer.CompanyName}</TableCell>
-                      </TableRow>
-                      : null
-                  }
-
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">SERVICES</IntlTableCell>
-                    <TableCell><ServiceIcons lead={Lead} services={Lead.Services} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <IntlTableCell component="th" scope="row">STATUS</IntlTableCell>
-                    <IntlTableCell>{Lead.Status.NameTextKey}</IntlTableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <Hidden xsDown>
+                <LeadDetailsTable leadContainer={leadContainer} />
+              </Hidden>
             </Grid>
           </FormikGroups>
 

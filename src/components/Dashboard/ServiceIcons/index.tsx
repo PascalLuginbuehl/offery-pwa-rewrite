@@ -39,7 +39,7 @@ function Icons({ color, title, link, children }: {  color: string; title: string
     </Grid>
   )
 }
-export default function ServicesComponent({ lead, services }: _Props) {
+export default function ServiceIcons({ lead, services }: _Props) {
   return (
     <Grid spacing={1} container wrap="nowrap">
       {

@@ -158,7 +158,7 @@ export default function LeadTable({ leads }: _Props) {
             : leads
           ).map((lead) => {
             let computedName: string
-            if(lead.Customer.CompanyName) {
+            if (lead.Customer.CompanyName.length > 0) {
               computedName = lead.Customer.CompanyName + ", " + lead.Customer.Firstname + " " + lead.Customer.Lastname
             } else {
               computedName = lead.Customer.Firstname + " " + lead.Customer.Lastname
