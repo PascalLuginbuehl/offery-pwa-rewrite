@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 
   noSpacing: {
     margin: 0,
-    padding: 0,
+    // padding: 0,
   },
 
   errorRow: {

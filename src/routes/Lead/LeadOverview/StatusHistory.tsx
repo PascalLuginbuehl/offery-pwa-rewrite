@@ -11,7 +11,7 @@ import IntlTypography from "../../../components/Intl/IntlTypography"
 const useStyles = makeStyles({
   noSpacing: {
     margin: 0,
-    padding: 0,
+    // padding: 0,
   },
 })
 

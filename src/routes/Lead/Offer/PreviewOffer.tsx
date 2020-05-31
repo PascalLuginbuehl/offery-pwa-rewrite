@@ -133,7 +133,7 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
             component={FormikSimpleSelect}
             notTranslated
             options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-              label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }) + ", " + (offer.Files.length > 0 ?  offer.Files[0].DocName : ""),
+              label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
               value: offer.OfferId,
             }))}
           />

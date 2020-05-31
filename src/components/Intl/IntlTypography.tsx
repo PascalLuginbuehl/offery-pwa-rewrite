@@ -4,6 +4,7 @@ import { WrappedComponentProps, injectIntl } from "react-intl"
 
 interface Props extends TypographyProps, WrappedComponentProps {
   children: string
+  component?: React.ReactNode
 }
 
 class Typography extends React.Component<Props> {

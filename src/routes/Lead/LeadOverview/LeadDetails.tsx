@@ -12,6 +12,7 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import { ILead } from "../../../interfaces/ILead"
 import Services from "../Services"
 import { IntlStyledTableCell, StyledTableCell } from "."
+import { makeStyles } from "@material-ui/styles"
 
 interface Services {
   disposalService: IDisposalSerivce | null
@@ -26,24 +27,35 @@ interface FormattedAddressProps {
   services: Services
 }
 
+
+const useStyles = makeStyles({
+  root: {
+    padding: "4px 0"
+  }
+})
+
 function FormattedAddress(props: FormattedAddressProps) {
   const { building, services } = props
   const { Address } = building
-
+  const classes = useStyles()
 
   return (
-    <div>
-      <Link href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${Address.PLZ} ${Address.City}, ${Address.Street}`)} target="_blank">
-        <span>
-          {Address.Street}
-          <br />
-          {Address.PLZ} {Address.City}
-        </span>
-      </Link>
-      <br/>
-      <BuildingTags services={services} building={building} />
+    <>
+      <div className={classes.root}>
+        <Link href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${Address.PLZ} ${Address.City}, ${Address.Street}`)} target="_blank">
+          <span>
+            {Address.Street}
+            <br />
+            {Address.PLZ} {Address.City}
+          </span>
+        </Link>
+
+        <br/>
+
+        <BuildingTags services={services} building={building} />
+      </div>
       <Divider />
-    </div>
+    </>
   )
 }
 
@@ -91,18 +103,25 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
         <Typography>{intl.formatMessage({ id: Lead.Customer.IsMale ? "MR" : "MRS" })}. {Lead.Customer.Firstname} {Lead.Customer.Lastname}</Typography>
       </Detail>
 
-      <Detail title="EMAIL">
-        <Link href={"mailto:" + Lead.Customer.Email}>{Lead.Customer.Email}</Link>
-      </Detail>
+      {Lead.Customer.Email.length > 0 ?
+        <Detail title="EMAIL">
+          <Link href={"mailto:" + Lead.Customer.Email}>{Lead.Customer.Email}</Link>
+        </Detail>
+        : null
+      }
 
-      <Detail title="PHONE">
-        <Link href={"tel:" + Lead.Customer.TelephoneNumber}>{Lead.Customer.TelephoneNumber}</Link>
-      </Detail>
+      {Lead.Customer.TelephoneNumber.length > 0 ?
+        <Detail title="PHONE">
+          <Link href={"tel:" + Lead.Customer.TelephoneNumber}>{Lead.Customer.TelephoneNumber}</Link>
+        </Detail>
+        : null
+      }
 
       <Detail title="SERVICES">
         <Typography><ServiceIcons lead={Lead} services={Lead.Services} /></Typography>
       </Detail>
       <Divider />
+
       <Detail title='BUILDINGS'>
         {
           buildings.map(building => (
