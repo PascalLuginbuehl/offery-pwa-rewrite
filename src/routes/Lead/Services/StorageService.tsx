@@ -100,7 +100,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             buildings={buildings}
             saveBuilding={onSaveNestedBuilding} />
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <IntlTypography variant="h6">STORAGE_OUT_BUILDING</IntlTypography>
           </Grid>
           <Field name="storageService.InBuildingId" label="STORAGE_OUT_BUILDING" buildings={buildings} component={SelectBuilding} />
@@ -109,7 +109,7 @@ class StorageService extends React.Component<Props & FormikProps<Values>, {}> {
             buildingSetting={selectedCompany.Settings.StorageServiceInBuildingSetting}
             buildingId={values.storageService.InBuildingId}
             buildings={buildings}
-            saveBuilding={onSaveNestedBuilding} />
+            saveBuilding={onSaveNestedBuilding} /> */}
         </GridContainer>
 
         <SubmitPadding />

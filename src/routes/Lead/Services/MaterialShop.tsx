@@ -11,7 +11,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  IconButton,
 } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -20,14 +19,15 @@ import {  FormikProps, Field,   withFormik,  ArrayHelpers, FieldArray } from "fo
 import Form from "../../../components/FormikFields/Form"
 import { IOrderPosition, CurrentlyOpenStateEnum, IMaterialOrder } from "../../../interfaces/IShop"
 import { IProduct } from "../../../interfaces/IProduct"
-import { FormattedNumber, FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
+import {  FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import SelectGridItem from "../../../components/ShopElements/SelectGridItem"
 import PageHeader from "../../../components/PageHeader"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
 import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
 import { ILead } from "../../../interfaces/ILead"
-import { MaterialShopRow } from "./MateriallShopRow";
+import { MaterialShopRow } from "./MateriallShopRow"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import { StyledTableCell } from "../LeadOverview"
 
 const styles = (theme: Theme) => createStyles({})
 
@@ -164,18 +164,18 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
+                      <StyledTableCell padding="checkbox">
                         <FormattedMessage id="ITEM" />
-                      </TableCell>
-                      <TableCell align="right" padding="checkbox">
+                      </StyledTableCell>
+                      <StyledTableCell align="right" padding="checkbox">
                         <FormattedMessage id="QUANTITY" />
-                      </TableCell>
-                      <TableCell align="right" padding="checkbox">
+                      </StyledTableCell>
+                      <StyledTableCell align="right" padding="checkbox">
                         <FormattedMessage id="PRICE" />
-                      </TableCell>
-                      <TableCell align="center" padding="checkbox">
+                      </StyledTableCell>
+                      <StyledTableCell align="center" padding="checkbox">
                         <FormattedMessage id="ACTIONS" />
-                      </TableCell>
+                      </StyledTableCell>
                     </TableRow>
                   </TableHead>
 

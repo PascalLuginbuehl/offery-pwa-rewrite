@@ -2,13 +2,14 @@ import React, { useState } from "react"
 import { ArrayHelpers, Formik, Field } from "formik"
 import { IProduct } from "../../../interfaces/IProduct"
 import { IOrderPosition, CurrentlyOpenStateEnum } from "../../../interfaces/IShop"
-import { TableCell, IconButton, TableRow, Dialog, DialogTitle, DialogContent, Grid, Typography, InputAdornment, DialogActions, Button, Theme } from "@material-ui/core"
+import {  IconButton, TableRow, Dialog, DialogTitle, DialogContent, Grid, Typography, InputAdornment, DialogActions, Button, Theme } from "@material-ui/core"
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
-import Form from "../../../components/FormikFields/Form";
-import FormikTextField from "../../../components/FormikFields/FormikTextField";
-import { makeStyles, createStyles } from "@material-ui/styles";
+import Form from "../../../components/FormikFields/Form"
+import FormikTextField from "../../../components/FormikFields/FormikTextField"
+import { makeStyles, createStyles } from "@material-ui/styles"
+import { StyledTableCell } from "../LeadOverview"
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,11 +52,11 @@ export function MaterialShopRow({ item, product, arrayHelpers, currentlyOpen}: P
   return (
     <>
       <TableRow key={item.originalIndex} onTouchEnd={touchEnd} onTouchStart={touchStart} onMouseDown={touchStart} onMouseUp={touchEnd} selected={!!timer} className={classes.root}>
-        <TableCell>
+        <StyledTableCell>
           <FormattedMessage id={product.NameTextKey} />
-        </TableCell>
-        <TableCell align="right">{item.Amount} Stk.</TableCell>
-        <TableCell align="right">
+        </StyledTableCell>
+        <StyledTableCell align="right">{item.Amount} Stk.</StyledTableCell>
+        <StyledTableCell align="right">
           {currentlyOpen != CurrentlyOpenStateEnum.Free ? (
             <FormattedNumber
               value={(currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice) * item.Amount}
@@ -65,9 +66,9 @@ export function MaterialShopRow({ item, product, arrayHelpers, currentlyOpen}: P
           ) : (
             "-"
           )}
-        </TableCell>
+        </StyledTableCell>
 
-        <TableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
+        <StyledTableCell padding="none" align="center" style={{ whiteSpace: "nowrap" }}>
           <IconButton onClick={() => arrayHelpers.replace(item.originalIndex, {...item, Amount: item.Amount > 1 ? item.Amount - 1 : 1})}>
             <RemoveCircleOutlineIcon />
           </IconButton>
@@ -75,7 +76,7 @@ export function MaterialShopRow({ item, product, arrayHelpers, currentlyOpen}: P
           <IconButton onClick={() => arrayHelpers.remove(item.originalIndex)}>
             <DeleteForeverIcon />
           </IconButton>
-        </TableCell>
+        </StyledTableCell>
       </TableRow>
 
       <Dialog open={dialogOpen} onClose={handleClose}>
@@ -109,14 +110,14 @@ export function MaterialShopRow({ item, product, arrayHelpers, currentlyOpen}: P
                     step: 1,
                     max: 10000,
                     startAdornment: <InputAdornment position="start">
-                      <IconButton onClick={() => setFieldValue("Amount", (values.Amount - 10 > 0 ? values.Amount - 10 : 1))}>
+                      <IconButton onClick={() => setFieldValue("Amount", (values.Amount * 1 - 10 > 0 ? values.Amount - 10 : 1))}>
                         <Typography>
                           -10
                         </Typography>
                       </IconButton>
                     </InputAdornment>,
                     endAdornment: <InputAdornment position="start">
-                      <IconButton onClick={() => setFieldValue("Amount", values.Amount + 10)}>
+                      <IconButton onClick={() => setFieldValue("Amount", values.Amount * 1 + 10)}>
                         <Typography>
                           +10
                         </Typography>

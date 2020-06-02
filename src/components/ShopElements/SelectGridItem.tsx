@@ -1,4 +1,4 @@
-import { createStyles, Grid, Theme, WithStyles, withStyles, ButtonBase, Paper, InputAdornment,  Typography, ClickAwayListener, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@material-ui/core"
+import { createStyles, Grid, Theme, WithStyles, withStyles, ButtonBase, Paper,   Typography } from "@material-ui/core"
 import * as React from "react"
 import { IProduct } from "../../interfaces/IProduct"
 import IntlTypography from "../Intl/IntlTypography"
@@ -24,6 +24,10 @@ const styles = (theme: Theme) =>
       right: 0,
       top: 0,
 
+    },
+    textOverflow: {
+      textOverflow: "ellipsis",
+      overflow: "hidden",
     }
   })
 
@@ -41,7 +45,7 @@ class GridSelect extends React.Component<Props> {
       <Grid item xs={4} sm={3} md={2} lg={2} >
         <ButtonBase className={classes.fullButton} onClick={() => onSelectProduct(1)} >
           <Paper elevation={1} className={classes.fullPaper}>
-            <IntlTypography>{product.NameTextKey}</IntlTypography>
+            <IntlTypography className={classes.textOverflow}>{product.NameTextKey}</IntlTypography>
 
             {currentlyOpenState == CurrentlyOpenStateEnum.Rent ?
               <Typography variant="body2">
