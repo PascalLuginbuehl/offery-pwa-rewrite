@@ -352,19 +352,19 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
               actions.setSubmitting(false)
             }}
           >
-            {({submitForm, values}) => (
+            {({submitForm, values, setFieldValue}) => (
               <Grid container spacing={1} classes={{ root: classes.searchInput }}>
-                <Field autoComplete="off" component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} endAdornment={
+                <Field autoComplete="off" component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} InputProps={{endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      // onClick={handleClickShowPassword}
+                      onClick={() => setFieldValue("search", "")}
                       edge="end"
                     >
                       <CloseIcon />
                     </IconButton>
                   </InputAdornment>
-                } />
+                )}} />
                 <AutoSubmit values={values} submitForm={submitForm} />
               </Grid>
             )}
