@@ -63,14 +63,14 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
             {...routeProps}
             moveConditions={MoveServiceConditions}
             moveService={moveService}
-            onChangeAndSave={(moveConditions, moveServiceData) => {
+            onChangeAndSave={async (moveConditions, moveServiceData) => {
               const lead = Lead
               const newLead = { ...lead, MoveServiceConditions: moveConditions }
 
-              return Promise.all([
-                handleChangeAndSave(moveServiceData, "moveService", () => LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData)),
-                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
-              ])
+              await handleChangeAndSave(moveServiceData, "moveService", () => LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData))
+              await handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/conditions/move")}
           />
@@ -86,14 +86,14 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
             {...routeProps}
             packConditions={PackServiceConditions}
             packService={packService}
-            onChangeAndSave={(packConditions, packServiceData) => {
+            onChangeAndSave={async (packConditions, packServiceData) => {
               const lead = Lead
               const newLead = { ...lead, PackServiceConditions: packConditions }
 
-              return Promise.all([
-                handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData)),
-                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
-              ])
+              await handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData))
+              await handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/conditions/pack")}
           />
@@ -109,14 +109,14 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
             {...routeProps}
             storageConditions={StorageServiceConditions}
             storageService={storageService}
-            onChangeAndSave={(storageConditions, storageServiceData) => {
+            onChangeAndSave={async(storageConditions, storageServiceData) => {
               const lead = Lead
               const newLead = { ...lead, StorageServiceConditions: storageConditions }
 
-              return Promise.all([
-                handleChangeAndSave(storageServiceData, "storageService", () => LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData)),
-                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
-              ])
+              await handleChangeAndSave(storageServiceData, "storageService", () => LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData))
+              await handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/conditions/storage")}
           />
@@ -132,14 +132,14 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
             {...routeProps}
             disposalConditions={DisposalServiceConditions}
             disposalService={disposalService}
-            onChangeAndSave={(disposalConditions, disposalServiceData) => {
+            onChangeAndSave={async (disposalConditions, disposalServiceData) => {
               const lead = Lead
               const newLead = { ...lead, DisposalServiceConditions: disposalConditions }
 
-              return Promise.all([
-                handleChangeAndSave(disposalServiceData, "disposalService", () => LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData)),
-                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead)),
-              ])
+              await handleChangeAndSave(disposalServiceData, "disposalService", () => LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData))
+              await handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/conditions/disposal")}
           />
@@ -155,14 +155,14 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
             {...routeProps}
             cleaningConditions={CleaningServiceConditions}
             cleaningService={cleaningService}
-            onChangeAndSave={(cleaningConditions, cleaningServiceData) => {
+            onChangeAndSave={async (cleaningConditions, cleaningServiceData) => {
               const lead = Lead
               const newLead = { ...lead, CleaningServiceConditions: cleaningConditions }
 
-              return Promise.all([
-                handleChangeAndSave(cleaningServiceData, "cleaningService", () => LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData)),
-                handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead)),
-              ])
+              await handleChangeAndSave(cleaningServiceData, "cleaningService", () => LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData))
+              await handleChangeAndSave(newLead, "Lead", () => LeadAPI.SaveLead(newLead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/conditions/cleaning")}
           />

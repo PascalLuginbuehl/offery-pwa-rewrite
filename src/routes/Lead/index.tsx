@@ -129,9 +129,12 @@ class Lead extends Component<Props, State> {
         // TODO get Repsone and save into container here
         // else this will stay outdated : (
 
+        console.log("This should happen")
+
         // Save instantly
         const response = await savePromise()
         this.handleChange(response, name)
+        console.log("THIS WILL NEVER HAPPEN : (", response, name)
 
         // saveWasSuccessFull, update offlineOrigin and offline
         this.saveLeadToOfflineOrigin({...container, [name]: response})
@@ -205,9 +208,9 @@ class Lead extends Component<Props, State> {
 
       this.setState({ OfflineConflict:
         {
-          origin: bothChangedSameAPI.map(key => origin[key]),
-          offlineOrigin: bothChangedSameAPI.map(key => onlineState[key]),
-          offline: bothChangedSameAPI.map(key => offlineChanges[key]),
+          offlineOrigin: bothChangedSameAPI.map(key => origin[key]),
+          onlineState: bothChangedSameAPI.map(key => onlineState[key]),
+          offlineChanges: bothChangedSameAPI.map(key => offlineChanges[key]),
         }
       })
 
@@ -275,7 +278,6 @@ class Lead extends Component<Props, State> {
       // Updating for offline origin with current container
       LeadAPI.SaveOriginToOffline(containerClone)
       this.setState({ container: containerClone, offlineSyncInProgress: false})
-      this.setState({  })
 
     } catch(e) {
 

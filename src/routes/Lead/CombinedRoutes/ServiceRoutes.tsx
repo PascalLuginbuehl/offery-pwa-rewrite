@@ -84,13 +84,13 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             buildings={buildings}
             lead={Lead}
             moveService={moveService ? moveService : emptyMoveService}
-            onChangeAndSave={(moveServiceData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(moveServiceData, "moveService", () => LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData)),
-                // handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
-                // handleChangeAndSave(moveInData, "moveIn", () => LeadAPI.SaveMoveIn(moveInData, Lead.LeadId)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
+            onChangeAndSave={async (moveServiceData, lead) => {
+              await handleChangeAndSave(moveServiceData, "moveService", () => LeadAPI.SaveMoveService(Lead.LeadId, moveServiceData))
+              // handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
+              // handleChangeAndSave(moveInData, "moveIn", () => LeadAPI.SaveMoveIn(moveInData, Lead.LeadId)),
+              await handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead))
+
+              return null
             }}
             onSaveNestedBuilding={NestedBuildingSaveFunction}
             nextPage={redirectToNextPage("/services/move")}
@@ -126,12 +126,12 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             packService={packService}
             lead={Lead}
             onSaveNestedBuilding={NestedBuildingSaveFunction}
-            onChangeAndSave={(packServiceData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData)),
-                // handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
+            onChangeAndSave={async (packServiceData, lead) => {
+              await handleChangeAndSave(packServiceData, "packService", () => LeadAPI.SavePackService(Lead.LeadId, packServiceData))
+              // handleChangeAndSave(moveOutData, "moveOut", () => LeadAPI.SaveMoveOut(moveOutData, Lead.LeadId)),
+              await handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/services/pack")}
           />
@@ -149,12 +149,11 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             onSaveNestedBuilding={NestedBuildingSaveFunction}
             buildings={buildings}
             storageService={storageService ? storageService : emptyStorageService}
-            onChangeAndSave={(storageServiceData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(storageServiceData, "storageService", () => LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData)),
-                // handleChangeAndSave(storageData, "storage", () => LeadAPI.SaveStorage(storageData, Lead.LeadId)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
+            onChangeAndSave={async (storageServiceData, lead) => {
+              await handleChangeAndSave(storageServiceData, "storageService", () => LeadAPI.SaveStorageService(Lead.LeadId, storageServiceData))
+              await handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/services/storage")}
           />
@@ -189,12 +188,12 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             lead={Lead}
             onSaveNestedBuilding={NestedBuildingSaveFunction}
             disposalService={disposalService ? disposalService : emptyDisposalService}
-            onChangeAndSave={(disposalServiceData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(disposalServiceData, "disposalService", () => LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData)),
-                // handleChangeAndSave(disposalData, "disposal", () => LeadAPI.SaveDisposal(disposalData, Lead.LeadId)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
+            onChangeAndSave={async (disposalServiceData, lead) => {
+              await handleChangeAndSave(disposalServiceData, "disposalService", () => LeadAPI.SaveDisposalService(Lead.LeadId, disposalServiceData))
+              // handleChangeAndSave(disposalData, "disposal", () => LeadAPI.SaveDisposal(disposalData, Lead.LeadId)),
+              await handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/services/disposal")}
           />
@@ -229,12 +228,12 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             lead={Lead}
             onSaveNestedBuilding={NestedBuildingSaveFunction}
             cleaningService={cleaningService ? cleaningService : emptyCleaningService}
-            onChangeAndSave={(cleaningServiceData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(cleaningServiceData, "cleaningService", () => LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData)),
-                // handleChangeAndSave(cleaningData, "cleaning", () => LeadAPI.SaveCleaning(cleaningData, Lead.LeadId)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
+            onChangeAndSave={async (cleaningServiceData, lead) => {
+              await handleChangeAndSave(cleaningServiceData, "cleaningService", () => LeadAPI.SaveCleaningService(Lead.LeadId, cleaningServiceData))
+              // handleChangeAndSave(cleaningData, "cleaning", () => LeadAPI.SaveCleaning(cleaningData, Lead.LeadId)),
+              await handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/services/cleaning")}
           />
@@ -250,11 +249,11 @@ export default function ServiceRoutes({ leadContainer, redirectToNextPage, match
             {...routeProps}
             materialOrder={materialOrder ? materialOrder : emptyMaterialOrder}
             lead={Lead}
-            onChangeAndSave={(materialOrderData, lead) => {
-              return Promise.all([
-                handleChangeAndSave(materialOrderData, "materialOrder", () => LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrderData)),
-                handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead)),
-              ])
+            onChangeAndSave={async (materialOrderData, lead) => {
+              await handleChangeAndSave(materialOrderData, "materialOrder", () => LeadAPI.SaveMaterialOrderService(Lead.LeadId, materialOrderData))
+              await handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead))
+
+              return null
             }}
             nextPage={redirectToNextPage("/services/material-shop")}
           />
