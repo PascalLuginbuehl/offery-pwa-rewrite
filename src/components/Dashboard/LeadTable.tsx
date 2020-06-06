@@ -1,13 +1,14 @@
 import React from "react"
-import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye"
+
 import { FormattedDate, FormattedMessage } from "react-intl"
 
-import {      Table, TableHead, TableCell, TableRow, TableBody,  Typography,     Avatar,    TableFooter, TablePagination,  TableSortLabel, Hidden, useMediaQuery, Theme, Tooltip } from "@material-ui/core"
+import {      Table, TableHead, TableCell, TableRow, TableBody,  Typography,         TableFooter, TablePagination,  TableSortLabel, Hidden, useMediaQuery, Theme, Tooltip } from "@material-ui/core"
 import {  ICompressedLead } from "../../interfaces/ILead"
 import ServicesComponent from "./ServiceIcons"
 import IntlTooltip from "../Intl/IntlTooltip"
 import PlainLink from "../PlainLink"
 import { makeStyles, withStyles } from "@material-ui/styles"
+import StatusButton from "./StatusButton"
 
 interface _Props {
   leads: ICompressedLead[]
@@ -168,14 +169,7 @@ export default function LeadTable({ leads }: _Props) {
               <TableRow key={lead.LeadId}>
                 <StyledTableCell padding="checkbox">
                   <PlainLink to={`/lead/${lead.LeadId}`}>
-
-                    <IntlTooltip title={lead.Status.NameTextKey}>
-                      <Avatar>
-                        {/* <Typography noWrap variant="body2"> */}
-                        <RemoveRedEyeIcon />
-                        {/* </Typography> */}
-                      </Avatar>
-                    </IntlTooltip>
+                    <StatusButton lead={lead} />
                   </PlainLink>
                 </StyledTableCell>
                 <StyledTableCell>
