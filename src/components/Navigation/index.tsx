@@ -8,25 +8,15 @@ const styles = (theme: Theme) =>
     toolbar: theme.mixins.toolbar,
   })
 
-interface State {
-
-}
 
 interface Props extends WithStyles<typeof styles>, RouteComponentProps {
-  onDrawerRender(element: HTMLDivElement): void
+  children: React.ReactNode
 }
 
-class Navigation extends React.Component<Props, State> {
-
-  setNavigationElementPortal = (element: HTMLDivElement | null) => {
-    if(element) {
-      this.props.onDrawerRender(element)
-    }
-  }
-
+class Navigation extends React.Component<Props> {
   public render() {
     // const { classes, value, onClick } = this.props
-    const { classes } = this.props
+    const { classes, children } = this.props
 
     return (
       <div>
@@ -37,7 +27,7 @@ class Navigation extends React.Component<Props, State> {
 
           <Divider />
 
-          <div ref={this.setNavigationElementPortal} />
+          {children}
 
         </List>
       </div>

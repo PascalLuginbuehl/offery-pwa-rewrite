@@ -40,7 +40,6 @@ interface State {
 
 interface Props extends RouteComponentProps<{ id?: string }>, WithResourceProps, WithStyles<typeof styles> {
   portal: HTMLDivElement | null
-  closeNavigation: () => void
 
   offline: boolean
   onOfflineChange: (offline: boolean) => void
@@ -168,10 +167,6 @@ class Lead extends Component<Props, State> {
 
     if (this.props.match.params.id !== prevProps.match.params.id) {
       this.componentDidMount()
-    }
-
-    if (this.props.location !== prevProps.location) {
-      this.props.closeNavigation()
     }
 
     if(this.props.offline !== prevProps.offline) {
