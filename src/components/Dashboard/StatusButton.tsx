@@ -112,6 +112,7 @@ export default function StatusButton(props: Props) {
         }
 
       case 17:
+      case 18:
         return {
           icon: <Icon fontSize="small"><DoubleCheckIcon height="20" width="20" fill="white" /></Icon>,
           color: grey[800],

@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexFlow: "column",
     flexGrow: 1,
+    maxWidth: "100%",
     // padding: theme.spacing.unit * 2,
     [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(1),

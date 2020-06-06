@@ -37,13 +37,34 @@ interface Props extends WithStyles<typeof styles> {
   currentlyOpenState: CurrentlyOpenStateEnum
 }
 
+
+let lastTouchEnd = 0
+
 class GridSelect extends React.Component<Props> {
   public render() {
     const { classes, product, onSelectProduct, currentlyOpenState } = this.props
 
+
+    function handleIOSClick(event: React.TouchEvent<any>) {
+      const now = (new Date()).getTime()
+      if (now - lastTouchEnd <= 300) {
+
+        // Do onSelect here because onClick is never called
+        onSelectProduct(1)
+        event.preventDefault()
+      }
+
+      lastTouchEnd = now
+    }
+
+    function onClickWrapper() {
+      onSelectProduct(1)
+    }
+
+
     return (
       <Grid item xs={4} sm={3} md={2} lg={2} >
-        <ButtonBase className={classes.fullButton} onClick={() => onSelectProduct(1)} >
+        <ButtonBase className={classes.fullButton} onClick={onClickWrapper} onTouchEnd={handleIOSClick}>
           <Paper elevation={1} className={classes.fullPaper}>
             <IntlTypography className={classes.textOverflow}>{product.NameTextKey}</IntlTypography>
 

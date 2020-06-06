@@ -57,6 +57,8 @@ interface Props extends WithStyles<typeof styles> {
   furniture: IFurniture
 }
 
+let lastTouchEnd = 0
+
 class InventoryItems extends React.Component<Props, State> {
   state: State = {
     moreOpen: false,
@@ -87,11 +89,28 @@ class InventoryItems extends React.Component<Props, State> {
     const { classes, furniture, onSelect } = this.props
     const { moreOpen, selectedSizeId, selectedMaterialId } = this.state
 
+
+    function handleIOSClick(event: React.TouchEvent<any>) {
+      const now = (new Date()).getTime()
+      if (now - lastTouchEnd <= 300) {
+
+        // Do onSelect here because onClick is never called
+        onSelect(null, null)
+        event.preventDefault()
+      }
+
+      lastTouchEnd = now
+    }
+
+    function onClickWrapper () {
+      onSelect(null, null)
+    }
+
     return (
       <>
         <Grid item xs={4} sm={3} md={3} lg={2} className={classes.root}>
           <ButtonBase className={classes.fullButton}>
-            <Paper elevation={1} className={classes.fullPaper} onClick={() => onSelect(null, null)}>
+            <Paper elevation={1} className={classes.fullPaper} onClick={onClickWrapper} onTouchEnd={handleIOSClick}>
               <IntlTypography noWrap>{furniture.NameTextKey}</IntlTypography>
             </Paper>
           </ButtonBase>
