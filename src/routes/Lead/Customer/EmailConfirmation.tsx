@@ -1,7 +1,7 @@
 import * as React from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button } from "@material-ui/core"
 import {  FormikProps, withFormik, Field } from "formik"
-import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage, FormattedHTMLMessage } from "react-intl"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -54,11 +54,11 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
           <PageHeader title="EMAIL_CONFIRMATION" />
           <Grid item xs={12}>
             <Typography>
-              <b><FormattedMessage id={VisitConfirmEmailSubjectTextKey} values={{ br: <br /> }} /></b>
+              <b><FormattedHTMLMessage id={VisitConfirmEmailSubjectTextKey} /></b>
             </Typography>
 
             <Typography>
-              <FormattedMessage id={VisitConfirmEmailBodyContentIntroTextKey} values={{ br: <br /> }} />
+              <FormattedHTMLMessage id={VisitConfirmEmailBodyContentIntroTextKey} />
             </Typography>
 
             {
@@ -76,7 +76,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required />
 
             <Typography>
-              <FormattedMessage id={VisitConfirmEmailBodyContentOutroTextKey} values={{ br: <br /> }} />
+              <FormattedHTMLMessage id={VisitConfirmEmailBodyContentOutroTextKey} />
             </Typography>
           </Grid>
 

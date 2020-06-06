@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip, Typography,  } from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip, Typography, InputAdornment,  } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
@@ -27,6 +27,7 @@ import EditIcon from "@material-ui/icons/Edit"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import Fuse, { FuseOptions } from "fuse.js"
 import { debounce } from "debounce"
+import CloseIcon from "@material-ui/icons/Close"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -273,7 +274,6 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
   }
 
   saveCustomItem = (index: number, arrayHelpers: ArrayHelpers) => (item: ICustomInventar) => {
-    console.log(item, index)
     arrayHelpers.replace(index, item)
 
     this.setState({ editCustomItemIndex: null})
@@ -290,7 +290,6 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
   }
 
   filterFurnitures = (searchString: string) => {
-    console.log("filter called")
     const { resource } = this.props
     const { selectedFurnitureCategory, fuse } = this.state
     const fcat = selectedFurnitureCategory || resource.FurnitureCategories.find(c => c.NameTextKey === "FCATALL")
@@ -320,7 +319,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
 
     const { currentlyOpenInventory, selectedFurnitureCategory, filteredFurnitures, pageIndex, customItemModelOpen, editCustomItemIndex } = this.state
     const FurnitureCategories = resource.FurnitureCategories
-    console.log(editCustomItemIndex)
+
     return (
       <Grid item xs={12}>
         <PageHeader title="INVENTORY" />
@@ -339,6 +338,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
             &nbsp;
             <IntlTypography variant="h6">{selectedFurnitureCategory ? selectedFurnitureCategory.NameTextKey : "SELECT_CATEGORY"}</IntlTypography>
           </Toolbar>
+
           <Divider />
 
           <Formik
@@ -354,7 +354,17 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
           >
             {({submitForm, values}) => (
               <Grid container spacing={1} classes={{ root: classes.searchInput }}>
-                <Field autoComplete="off" component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} />
+                <Field autoComplete="off" component={FormikTextField} name="search" label="SEARCHFURNITUREDIRECT" disabled={false} overrideGrid={{ xs: 11 }} endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      // onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </InputAdornment>
+                } />
                 <AutoSubmit values={values} submitForm={submitForm} />
               </Grid>
             )}

@@ -68,7 +68,7 @@ class LanguageProvider extends React.Component<Props, State> {
     if (additionalTranlations) {
       // Transforms array to object by settings keys and fixing translation objects
       //@ts-ignore Copy translations over to extraMessages
-      additionalTranlations.map(e => extraMessages[e.TextKey] = e[localeKey.toUpperCase()].replace(/(?:\r\n|\r|\n)/g, "{br}"))
+      additionalTranlations.map(e => extraMessages[e.TextKey] = e[localeKey.toUpperCase()])
     }
     // Merge translations
     this.setState({ finalMessages: { ...messages, ...extraMessages } })

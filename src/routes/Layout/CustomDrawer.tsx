@@ -26,10 +26,10 @@ interface Props {
 
 export default function CustomDrawer(props: Props) {
   const classes = useStyles()
+  const history = useHistory()
 
   const { children, mobileDrawerOpen, setMobileDrawerOpen } = props
 
-  const history = useHistory()
   React.useEffect(() => {
     history.listen(() => {
       setMobileDrawerOpen(false)

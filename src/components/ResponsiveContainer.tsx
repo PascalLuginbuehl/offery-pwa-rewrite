@@ -4,9 +4,10 @@ import * as React from "react"
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      width: "auto",
+      // width: "auto",
       height: "100%",
       position: "relative",
+      width: "100%",
       // marginLeft: theme.spacing.unit * 3,
       // marginRight: theme.spacing.unit * 3,
       [theme.breakpoints.up(1100 + theme.spacing(3 * 2))]: {
