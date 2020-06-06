@@ -79,7 +79,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
             component={FormikSimpleSelect}
             notTranslated
             options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-              label: offer.FromTemplate + ", " + intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+              label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
               value: offer.OfferId,
             }))}
           />
