@@ -1,7 +1,7 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid,    Button } from "@material-ui/core"
 import {  FormikProps, withFormik, Field } from "formik"
-import { injectIntl, WrappedComponentProps, FormattedDate, FormattedMessage, FormattedHTMLMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps,  FormattedMessage } from "react-intl"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -11,7 +11,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
 import {  ILead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
-import IntlTypography from "../../../components/Intl/IntlTypography"
+
 
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../../services/LeadService"
@@ -52,33 +52,33 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
       <Grid item xs={12}>
         <Form>
           <PageHeader title="EMAIL_CONFIRMATION" />
-          <Grid item xs={12}>
+
+          {/* <Grid item xs={12}> */}
+          {/* <Typography>
+            <b><FormattedHTMLMessage id={VisitConfirmEmailSubjectTextKey} /></b>
+          </Typography>
+
+          <Typography>
+            <FormattedHTMLMessage id={VisitConfirmEmailBodyContentIntroTextKey} />
+          </Typography> */}
+
+          {/* lead.VisitDate ? (
+          <>
+            <IntlTypography>VISITING_DATE</IntlTypography>
             <Typography>
-              <b><FormattedHTMLMessage id={VisitConfirmEmailSubjectTextKey} /></b>
+              <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
             </Typography>
+          </>
+        )
+          : null
+        } */}
 
-            <Typography>
-              <FormattedHTMLMessage id={VisitConfirmEmailBodyContentIntroTextKey} />
-            </Typography>
+          <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required overrideGrid={{xs: 12, md: 6}}/>
 
-            {
-              lead.VisitDate ? (
-                <>
-                  <IntlTypography>VISITING_DATE</IntlTypography>
-                  <Typography>
-                    <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
-                  </Typography>
-                </>
-              )
-                : null
-            }
-
-            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required />
-
-            <Typography>
-              <FormattedHTMLMessage id={VisitConfirmEmailBodyContentOutroTextKey} />
-            </Typography>
-          </Grid>
+          {/* <Typography>
+            <FormattedHTMLMessage id={VisitConfirmEmailBodyContentOutroTextKey} />
+             </Typography>
+         </Grid> */}
 
           <Field component={SelectBuilding} label="VISIT_ADDRESS" name="BuildingId" buildings={buildings} required/>
           {/* <SelectAddress label="" name="BuildingId" buildings={buildingOptions} /> */}

@@ -1,7 +1,7 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid,   Typography, Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid,    Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
 import {  FormikProps, withFormik, Field, FieldArray } from "formik"
-import { injectIntl, WrappedComponentProps,  FormattedMessage, FormattedHTMLMessage } from "react-intl"
+import { injectIntl, WrappedComponentProps,  FormattedMessage } from "react-intl"
 import Form from "../../../components/FormikFields/Form"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import PageHeader from "../../../components/PageHeader"
@@ -58,7 +58,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
       <Grid item xs={12}>
         <Form disableSubmit>
           <PageHeader title="SEND_OFFER" />
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
 
             <Typography>
               <b><FormattedHTMLMessage id={OfferEmailSubjectTextKey} /></b>
@@ -71,7 +71,7 @@ class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
             <Typography>
               <FormattedHTMLMessage id={OfferEmailBodyContentOutroTextKey} />
             </Typography>
-          </Grid>
+          </Grid> */}
 
           <Field
             label="OFFER"
