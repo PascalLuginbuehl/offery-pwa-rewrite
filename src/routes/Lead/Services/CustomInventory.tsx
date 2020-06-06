@@ -41,8 +41,8 @@ export default function CustomInventory({ open, handleClose, editItem, onSave}: 
             </DialogTitle>
             <DialogContent>
               <Grid container spacing={1}>
-                <Field component={FormikTextField} name="Name" label="NAME" overrideGrid={{ xs: 12, md: 6 }} />
-                <Field component={FormikNumberEndAdornmentText} name="Amount" label="AMOUNT" disabled={false} overrideGrid={{ xs: 12, md: 6 }} />
+                <Field component={FormikTextField} name="Name" label="NAME" required overrideGrid={{ xs: 12, md: 6 }} />
+                <Field component={FormikNumberEndAdornmentText} name="Amount" required label="AMOUNT" disabled={false} overrideGrid={{ xs: 12, md: 6 }} />
 
                 <Field component={FormikTextField} name="Description" label="DESCRIPTION" disabled={false} multiline overrideGrid={{ xs: 12, md: 12 }} />
               </Grid>

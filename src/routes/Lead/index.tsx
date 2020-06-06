@@ -128,12 +128,10 @@ class Lead extends Component<Props, State> {
         // TODO get Repsone and save into container here
         // else this will stay outdated : (
 
-        console.log("This should happen")
 
         // Save instantly
         const response = await savePromise()
         this.handleChange(response, name)
-        console.log("THIS WILL NEVER HAPPEN : (", response, name)
 
         // saveWasSuccessFull, update offlineOrigin and offline
         this.saveLeadToOfflineOrigin({...container, [name]: response})

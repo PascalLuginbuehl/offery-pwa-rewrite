@@ -1,15 +1,16 @@
 import React, { useState } from "react"
-import { ArrayHelpers, Formik, Field } from "formik"
+import { ArrayHelpers } from "formik"
 import { IProduct } from "../../../interfaces/IProduct"
 import { IOrderPosition, CurrentlyOpenStateEnum } from "../../../interfaces/IShop"
-import {  IconButton, TableRow, Dialog, DialogTitle, DialogContent, Grid, Typography, InputAdornment, DialogActions, Button, Theme } from "@material-ui/core"
+import {  IconButton, TableRow,         Theme } from "@material-ui/core"
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
-import Form from "../../../components/FormikFields/Form"
-import FormikTextField from "../../../components/FormikFields/FormikTextField"
+
+
 import { makeStyles, createStyles } from "@material-ui/styles"
 import { StyledTableCell } from "../LeadOverview"
+import { AmountDialog } from "../../../components/AmountDialog"
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,80 +80,16 @@ export function MaterialShopRow({ item, product, arrayHelpers, currentlyOpen}: P
         </StyledTableCell>
       </TableRow>
 
-      <Dialog open={dialogOpen} onClose={handleClose}>
-        <Formik<{ Amount: number }>
-          initialValues={{
-            Amount: item.Amount,
-          }}
 
-          onSubmit={(values, actions) => {
-            // onSave(values)
+      <AmountDialog
+        dialogOpen={dialogOpen}
+        handleClose={handleClose}
+        ProductNameTextKey={product.NameTextKey}
+        amount={item.Amount}
+        setItemAmount={(amount) => arrayHelpers.replace(item.originalIndex, { ...item, Amount: amount })}
 
-            handleClose()
-
-            arrayHelpers.replace(item.originalIndex, { ...item, Amount: values.Amount })
-
-            actions.setSubmitting(false)
-            actions.resetForm()
-          }}
-        >
-
-          {({ submitForm, values, isSubmitting, handleSubmit, setFieldValue }) => (
-            <Form disableSubmit disableGridContainer>
-              <DialogTitle>
-                <FormattedMessage id="EDIT_AMOUNT_" values={{item: formatMessage({id: product.NameTextKey})}} />
-              </DialogTitle>
-
-              <DialogContent>
-                <Grid container spacing={1}>
-                  <Field component={FormikTextField} name="Amount" label="AMOUNT" type="number" disabled={false} autoFocus overrideGrid={{ xs: 12 }} InputProps={{
-                    min: 1,
-                    step: 1,
-                    max: 10000,
-                    startAdornment: <InputAdornment position="start">
-                      <IconButton onClick={() => setFieldValue("Amount", (values.Amount * 1 - 10 > 0 ? values.Amount - 10 : 1))}>
-                        <Typography>
-                          -10
-                        </Typography>
-                      </IconButton>
-                    </InputAdornment>,
-                    endAdornment: <InputAdornment position="start">
-                      <IconButton onClick={() => setFieldValue("Amount", values.Amount * 1 + 10)}>
-                        <Typography>
-                          +10
-                        </Typography>
-                      </IconButton>
-                    </InputAdornment>,
-                  }} />
-
-
-                  <Typography>
-                    <FormattedMessage id="NEW_PRICE"/>: &nbsp;
-                    {currentlyOpen != CurrentlyOpenStateEnum.Free ? (
-                      <FormattedNumber
-                        value={(currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice) * values.Amount}
-                        style="currency"
-                        currency="CHF"
-                      />
-                    ) : (
-                      "-"
-                    )}
-                  </Typography>
-                </Grid>
-              </DialogContent>
-
-              <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                  <FormattedMessage id="CANCEL" />
-                </Button>
-                <Button color="primary" type="submit" disabled={isSubmitting}>
-                  <FormattedMessage id={"CHANGE"} />
-                </Button>
-              </DialogActions>
-            </Form>
-          )}
-        </Formik>
-      </Dialog>
+        itemPrice={currentlyOpen != CurrentlyOpenStateEnum.Free ? currentlyOpen == CurrentlyOpenStateEnum.Rent ? product.RentPrice : product.SellPrice : undefined}
+      />
     </>
   )
 }

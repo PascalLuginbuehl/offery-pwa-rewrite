@@ -1,11 +1,11 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider, Chip, Typography, InputAdornment,  } from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider,  Typography, InputAdornment,  } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import { FormikProps, withFormik, ArrayHelpers, FieldArray, Formik, Field } from "formik"
 
 import Form from "../../../components/FormikFields/Form"
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
+
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
 import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
 import InventoryCategoryFolder from "../../../components/Inventory/InventoryCategoryFolder"
@@ -28,6 +28,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import Fuse, { FuseOptions } from "fuse.js"
 import { debounce } from "debounce"
 import CloseIcon from "@material-ui/icons/Close"
+import InventoryTableRow from "./InventoryTableRow"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -261,9 +262,9 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     throw new Error("Furniture not found")
   }
 
-  removeOneitem = (item: IInventar, index: number, arrayHelpers: ArrayHelpers) => {
+  setItemAmount = (item: IInventar, index: number, arrayHelpers: ArrayHelpers) => {
     if (item.Amount > 1) {
-      arrayHelpers.replace(index, { ...item, Amount: item.Amount - 1 })
+      arrayHelpers.replace(index, { ...item})
     } else {
       arrayHelpers.remove(index)
     }
@@ -475,28 +476,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                         .map(item => {
                           const furniture = this.getCorrespondingFurnitureItem(item)
                           return (
-                            <TableRow key={item.originalIndex}>
-                              <TableCell padding="checkbox">
-                                <FormattedMessage id={furniture.NameTextKey} />
-
-                                {item.FSize ? <Chip size="small" label={intl.formatMessage({ id: item.FSize.NameTextKey })} /> : null}
-                                {item.FMaterial ? <Chip size="small" label={intl.formatMessage({ id: item.FMaterial.NameTextKey })} /> : null}
-                              </TableCell>
-
-                              <TableCell align="right" padding="checkbox">
-                                {item.Amount} Stk.
-                              </TableCell>
-
-                              <TableCell padding="none" align="right" style={{ whiteSpace: "nowrap" }}>
-                                <IconButton onClick={() => this.removeOneitem(item, item.originalIndex, arrayHelpers)} classes={{ root: classes.buttonSmallPadding }}>
-                                  <RemoveCircleOutlineIcon />
-                                </IconButton>
-
-                                <IconButton onClick={() => arrayHelpers.remove(item.originalIndex)} classes={{ root: classes.buttonSmallPadding }}>
-                                  <DeleteForeverIcon />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
+                            <InventoryTableRow key={item.originalIndex} setItemAmount={(amount) => this.setItemAmount({...item, Amount: amount}, item.originalIndex, arrayHelpers)} item={item} furniture={furniture} />
                           )
                         })
                     ) : null
