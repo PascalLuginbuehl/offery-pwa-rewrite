@@ -26,7 +26,7 @@ export default function StatusHistory(props: StatusHistoryProps) {
 
   return (
     <FormikGroups label="STATUS_HISTORY" xs={12}>
-      <Hidden xsDown>
+      <Hidden smDown>
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -46,8 +46,8 @@ export default function StatusHistory(props: StatusHistoryProps) {
           </TableBody>
         </Table>
       </Hidden>
-      <Hidden smUp>
-        <List dense>
+      <Hidden mdUp>
+        <List dense disablePadding>
           {lead.StatusHistories.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
             <ListItem key={e.StatusHistoryId} dense disableGutters className={classes.noSpacing}>
               <ListItemText

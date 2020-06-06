@@ -44,7 +44,7 @@ export default function ReminderHistory(props: ReminderHistory) {
   if (lead.AppointmentReminders && lead.AppointmentReminders.length > 0) {
     return (
       <FormikGroups label="REMINDER_HISTORY" xs={12}>
-        <Hidden xsDown>
+        <Hidden smDown>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -70,8 +70,8 @@ export default function ReminderHistory(props: ReminderHistory) {
             </TableBody>
           </Table>
         </Hidden>
-        <Hidden smUp>
-          <List dense>
+        <Hidden mdUp>
+          <List dense disablePadding>
             {lead.AppointmentReminders.sort((a, b) => SortHelper.desc(a, b, "Created")).map(e => (
               <ListItem alignItems="flex-start" key={e.AppointmentReminderId} dense disableGutters className={classes.noSpacing}>
                 <ListItemIcon className={classes.icon}>
