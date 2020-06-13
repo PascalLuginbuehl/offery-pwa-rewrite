@@ -104,8 +104,10 @@ const Form: React.ComponentType<Props> = ({ intl, children, routerDisabled, disa
     return () => window.removeEventListener("beforeunload", handleUnload)
   })
 
-  const { values, status, isSubmitting } = useFormikContext()
+  const { values: values2, status, isSubmitting } = useFormikContext()
 
+  // Minor fix
+  const values = values2 as {[key: string]: any}
 
   const gridChildren = (
     <>

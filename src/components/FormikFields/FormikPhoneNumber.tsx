@@ -56,6 +56,8 @@ class FormikPhoneNumber extends React.Component<FomrikPhoneNumberProps> {
         label={intl.formatMessage({ id: label })}
         {...props}
         {...field}
+
+        //@ts-ignore
         value={field.value === undefined || field.value === null ? "" : field.value}
 
         defaultCountry={"ch"}

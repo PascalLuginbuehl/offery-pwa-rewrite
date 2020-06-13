@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function UpdateServiceWorker(props: Props) {
-  const [updateServiceFunction, setUpdateServiceFunction] = useState()
+  const [updateServiceFunction, setUpdateServiceFunction] = useState<() => void | null>()
   const { swUpdateEventGenerator } = props
 
 

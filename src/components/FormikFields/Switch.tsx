@@ -37,6 +37,7 @@ export const fieldToSwitch = ({
   }
 }
 
+// @ts-ignore
 const Switch: React.ComponentType<SwitchProps & {label: string}> = injectIntl((
   {
     intl,

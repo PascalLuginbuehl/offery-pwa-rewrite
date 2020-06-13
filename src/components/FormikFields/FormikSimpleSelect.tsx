@@ -29,7 +29,6 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps> {
         <MenuItem value={null} disabled={required}>
           <em><FormattedMessage id={"SELECT_DOT_DOT_DOT"} /></em>
         </MenuItem>
-        }
         {options.map(option => (
           <MenuItem key={option.value} value={option.value}>
             {notTranslated ? option.label : <FormattedMessage id={option.label} />}
