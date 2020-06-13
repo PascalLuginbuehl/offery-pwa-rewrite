@@ -1,10 +1,6 @@
-import { AppBar,  IconButton, Theme, Toolbar, } from "@material-ui/core"
-import MenuIcon from "@material-ui/icons/Menu"
+import { Theme } from "@material-ui/core"
+import AppBar from "../../components/Layout/AppBar"
 import * as React from "react"
-import { Link } from "react-router-dom"
-import IntlTypography from "../../components/Intl/IntlTypography"
-import UserDisplay from "../../components/Navigation/UserDisplay"
-import logo from "./../../logo_white.svg"
 import CustomDrawer from "./CustomDrawer"
 import { makeStyles } from "@material-ui/styles"
 
@@ -22,31 +18,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 1,
   },
 
-  appBar: {
-    boxShadow: theme.shadows["1"],
-    marginLeft: drawerWidth,
-    position: "absolute",
-    [theme.breakpoints.up("md")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
-  },
-
   toolbar: {
     ...theme.mixins.toolbar,
     paddingLeft: 0,
-
-  },
-
-  toolbarTitle: {
-    // flexGrow: 1,
-    padding: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      paddingLeft: theme.spacing(3),
-    },
-
-    color: "white",
-    display: "flex",
-    textDecoration: "none",
   },
 
   content: {
@@ -66,12 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingLeft: 0,
       paddingRight: 0,
     }
-  },
-
-  navIconHide: {
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
   },
 
   drawerPaper: {
@@ -105,28 +73,7 @@ export default function Layout(props: Props) {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={() => setMobileDrawerOpen(true)}
-            className={classes.navIconHide}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Link to="/" className={classes.toolbarTitle}>
-            <img src={logo} alt="Logo" height="32" />
-            &nbsp;
-            <IntlTypography variant="h6" noWrap={true} color="inherit">
-              APP_NAME
-            </IntlTypography>
-          </Link>
-
-          <UserDisplay />
-        </Toolbar>
-      </AppBar>
+      <AppBar setMobileDrawerOpen={setMobileDrawerOpen} />
 
       <CustomDrawer mobileDrawerOpen={mobileDrawerOpen} setMobileDrawerOpen={setMobileDrawerOpen}>
         {drawerContent}

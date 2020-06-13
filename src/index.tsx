@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Index from "./routes"
+import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 
 let dispatch: ((registration: ServiceWorkerRegistration) => void) | null = null
@@ -9,7 +9,7 @@ const swUpdateEventGenerator = new Promise<ServiceWorkerRegistration>((resolve) 
   dispatch = resolve
 })
 
-ReactDOM.render(<Index swUpdateEventGenerator={swUpdateEventGenerator} />, document.getElementById("root"))
+ReactDOM.render(<App swUpdateEventGenerator={swUpdateEventGenerator} />, document.getElementById("root"))
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

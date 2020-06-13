@@ -1,10 +1,7 @@
 import {  createStyles,    Theme, Toolbar,  WithStyles, withStyles,  Snackbar, } from "@material-ui/core"
-
 import * as React from "react"
 import { FormattedMessage } from "react-intl"
 import {  Route, Switch } from "react-router-dom"
-import withRoot from "../components/WithRoot"
-
 import { withLanguage, WithLanguageProps } from "../providers/withLanguage"
 
 import IntlTypography from "../components/Intl/IntlTypography"
@@ -13,7 +10,7 @@ import Lead from "./Lead"
 import Dashboard from "./Dashboard"
 
 
-import UpdateServiceWorker from "./Layout/UpdateServiceWorker"
+
 import Layout from "./Layout"
 
 const drawerWidth = 240
@@ -45,7 +42,7 @@ interface State {
 }
 
 interface Props extends WithStyles<typeof styles>, WithLanguageProps {
-  swUpdateEventGenerator: Promise<ServiceWorkerRegistration>
+
 }
 
 class Index extends React.Component<Props, State> {
@@ -102,7 +99,7 @@ class Index extends React.Component<Props, State> {
   }
 
   public render() {
-    const { classes, swUpdateEventGenerator } = this.props
+    const { classes } = this.props
     const { navPortal, offline, offlineSnackbarOpen } = this.state
 
     return (
@@ -125,8 +122,6 @@ class Index extends React.Component<Props, State> {
           <Route path="/" component={Dashboard} />
         </Switch>
 
-        <UpdateServiceWorker swUpdateEventGenerator={swUpdateEventGenerator} />
-
         <Snackbar
           open={offlineSnackbarOpen}
           onClose={this.closeSnackbar}
@@ -139,4 +134,4 @@ class Index extends React.Component<Props, State> {
   }
 }
 
-export default withRoot(withLanguage(withStyles(styles)(Index)))
+export default withLanguage(withStyles(styles)(Index))

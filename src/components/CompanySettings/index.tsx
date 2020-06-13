@@ -1,5 +1,10 @@
 import React from "react"
+import Layout from "../Layout"
 
 export default function CompanySettings() {
-  return (<div></div>)
+  return (
+    <Layout>
+      HI
+    </Layout>
+  )
 }
