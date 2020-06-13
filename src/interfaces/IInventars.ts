@@ -29,15 +29,12 @@ export interface ICustomInventar {
 export interface IInventars {
   MoveServiceInventars: IInventar[]
   CustomMoveServiceInventars: ICustomInventar[]
-  MoveServiceComment: string
 
   DisposalServiceInventars: IInventar[]
   CustomDisposalServiceInventars: ICustomInventar[]
-  DisposalServiceComment: string
 
   StorageServiceInventars: IInventar[]
   CustomStorageServiceInventars: ICustomInventar[]
-  StorageServiceComment: string
 }
 
 
@@ -52,13 +49,10 @@ export enum InventoryKeysEnum {
 export const emptyInventory: IInventars  = {
   MoveServiceInventars: [],
   CustomMoveServiceInventars: [],
-  MoveServiceComment: "",
 
   DisposalServiceInventars: [],
   CustomDisposalServiceInventars: [],
-  DisposalServiceComment: "",
 
   StorageServiceInventars: [],
   CustomStorageServiceInventars: [],
-  StorageServiceComment: "",
 }

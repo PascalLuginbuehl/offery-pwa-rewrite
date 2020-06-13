@@ -4,8 +4,8 @@ import IntlTypography from "./Intl/IntlTypography"
 import { FormattedMessage } from "react-intl"
 
 export default function OfflineUnavailable({ offline, children, nextPage}: {offline: boolean; children: ReactNode; nextPage?: () => void}) {
-  console.log(nextPage)
-  console.log(nextPage !== undefined)
+  // console.log(nextPage)
+  // console.log(nextPage !== undefined)
   return <>
     {children}
     {

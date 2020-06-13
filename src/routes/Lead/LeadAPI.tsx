@@ -130,6 +130,7 @@ class LeadAPI {
 
   // Saves it in Offline Storage
   SaveOriginToOffline = (container: ILeadContainer) => {
+    console.log(container)
     return set(container.Lead.LeadId, container)
   }
 

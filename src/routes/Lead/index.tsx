@@ -118,7 +118,7 @@ class Lead extends Component<Props, State> {
           [name]: value
         }
 
-        LeadAPI.SaveToChangesToOffline(newContainer)
+        await LeadAPI.SaveToChangesToOffline(newContainer)
 
         return
       }
@@ -134,7 +134,7 @@ class Lead extends Component<Props, State> {
         this.handleChange(response, name)
 
         // saveWasSuccessFull, update offlineOrigin and offline
-        this.saveLeadToOfflineOrigin({...container, [name]: response})
+        await LeadAPI.SaveOriginToOffline({...container, [name]: response})
 
       } catch (e) {
         // Check if it is an offline error
@@ -158,6 +158,8 @@ class Lead extends Component<Props, State> {
         }
       }
     }
+
+    return
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -190,6 +192,7 @@ class Lead extends Component<Props, State> {
     // Get differences origin and changes
     // Primitive comparison. extend l8er
     const changesWhileOffline = getContainerDiffKeys(origin, offlineChanges)
+    console.log(getContainerDiffKeys)
 
     // Get differnces origin and API
     const whileOfflineAPIChanges = getContainerDiffKeys(origin, onlineState)
@@ -206,13 +209,6 @@ class Lead extends Component<Props, State> {
           offlineChanges: bothChangedSameAPI.map(key => offlineChanges[key]),
         }
       })
-
-      console.log("Offline Changed :(",
-        {
-          origin: bothChangedSameAPI.map(key => origin[key]),
-          offlineOrigin: bothChangedSameAPI.map(key => onlineState[key]),
-          offline: bothChangedSameAPI.map(key => offlineChanges[key])
-        })
 
 
       this.setState({ offlineSyncInProgress: false })
@@ -266,10 +262,10 @@ class Lead extends Component<Props, State> {
 
 
       // CLear changes
-      LeadAPI.RemoveChangesFromOffline(leadId)
+      await LeadAPI.RemoveChangesFromOffline(leadId)
 
       // Updating for offline origin with current container
-      LeadAPI.SaveOriginToOffline(containerClone)
+      await LeadAPI.SaveOriginToOffline(containerClone)
       this.setState({ container: containerClone, offlineSyncInProgress: false})
 
     } catch(e) {
@@ -280,6 +276,8 @@ class Lead extends Component<Props, State> {
 
       throw new Error("Could not save")
     }
+
+    return
   }
 
   loadLead = async (leadId: number) => {
@@ -300,15 +298,20 @@ class Lead extends Component<Props, State> {
 
       // Try to save. when still online  load from offline origin
       if (!offline && onlineAPIContainer) {
-        this.saveDifferencesToOnline(leadId, onlineAPIContainer, offlineChanges)
+        try {
+          // Only set when succeeds
+          await this.saveDifferencesToOnline(leadId, onlineAPIContainer, offlineChanges)
+          this.setState({ container: offlineChanges })
+        } catch (e) {
+          this.setState({ container: offlineChanges })
+        }
       }
 
       // #FIXME include onliune state
-      this.setState({ container: offlineChanges })
     } else {
       // No changes, override
       if (onlineAPIContainer) {
-        this.saveLeadToOfflineOrigin(onlineAPIContainer)
+        await LeadAPI.SaveOriginToOffline(onlineAPIContainer)
         this.setState({ container: onlineAPIContainer })
       } else {
         if (offline) {
@@ -322,6 +325,8 @@ class Lead extends Component<Props, State> {
 
       }
     }
+
+    return
   }
 
   componentDidMount() {
@@ -346,10 +351,6 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  // This saves to Offline and Changes
-  saveLeadToOfflineOrigin = (container: ILeadContainer) => {
-    LeadAPI.SaveOriginToOffline(container)
-  }
 
   fetchLeadOnline = async (potentialLeadId: number): Promise<ILeadContainer> => {
     const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
