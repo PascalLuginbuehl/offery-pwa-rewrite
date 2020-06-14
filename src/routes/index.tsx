@@ -38,7 +38,6 @@ interface State {
   navPortal: HTMLDivElement | null
   offline: boolean
   offlineSnackbarOpen: boolean
-  updateServiceWorkerFunction: (() => void) | null
 }
 
 interface Props extends WithStyles<typeof styles>, WithLanguageProps {
@@ -50,7 +49,6 @@ class Index extends React.Component<Props, State> {
     navPortal: null,
     offline: false,
     offlineSnackbarOpen: false,
-    updateServiceWorkerFunction: null
   }
 
   handleOfflineChange = (offline: boolean) => {

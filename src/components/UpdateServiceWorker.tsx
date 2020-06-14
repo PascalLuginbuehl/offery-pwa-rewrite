@@ -9,8 +9,8 @@ interface Props {
 }
 
 export default function UpdateServiceWorker(props: Props) {
-  const [updateServiceFunction, setUpdateServiceFunction] = useState<(() => void) | null>(null)
   const { swUpdateEventGenerator } = props
+  const [updateServiceFunction, setUpdateServiceFunction] = useState<(() => void) | null>(() => console.log("asd"))
 
 
   useEffect(() => {
@@ -34,9 +34,10 @@ export default function UpdateServiceWorker(props: Props) {
         }
       }
 
-      setUpdateServiceFunction(updateServiceWorker)
-    }).catch(() => { })
-  })
+      // App updated automaticly, forgot =>
+      setUpdateServiceFunction(() => updateServiceWorker)
+    })
+  }, [swUpdateEventGenerator])
 
   return (
     <Snackbar
