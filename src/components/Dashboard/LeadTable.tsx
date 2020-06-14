@@ -41,7 +41,7 @@ type Order = "asc" | "desc";
 
 function getSorting(
   order: Order,
-  orderBy: keyof ICompressedLead | "CustomerCombined",
+  orderBy: keyof ICompressedLead | "ComputedName" | "StatusId",
 ): (a: ICompressedLead, b: ICompressedLead) => number {
   // @ts-ignore
   return order === "desc" ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy)
@@ -70,7 +70,7 @@ export default function LeadTable({ leads }: _Props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const [order, setOrder] = React.useState<Order>("desc")
-  const [orderBy, setOrderBy] = React.useState<keyof ICompressedLead | "CustomerCombined">("Created")
+  const [orderBy, setOrderBy] = React.useState<keyof ICompressedLead | "ComputedName" | "StatusId">("Created")
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage)
@@ -83,7 +83,7 @@ export default function LeadTable({ leads }: _Props) {
     setPage(0)
   }
 
-  const handleSort = (property: keyof ICompressedLead | "CustomerCombined") => (_event: React.MouseEvent<unknown>) => {
+  const handleSort = (property: keyof ICompressedLead | "ComputedName" | "StatusId") => (_event: React.MouseEvent<unknown>) => {
     const isAsc = orderBy === property && order === "asc"
     setOrder(isAsc ? "desc" : "asc")
     setOrderBy(property)
@@ -99,9 +99,9 @@ export default function LeadTable({ leads }: _Props) {
           <TableRow>
             <StyledTableCell variant="head" style={{width: 90}}>
               <TableSortLabel
-                active={orderBy === "Status"}
-                direction={orderBy === "Status" ? order : "asc"}
-                onClick={handleSort("Status")}
+                active={orderBy === "StatusId"}
+                direction={orderBy === "StatusId" ? order : "asc"}
+                onClick={handleSort("StatusId")}
               >
                 <FormattedMessage id="STATUS" />
               </TableSortLabel>
@@ -109,9 +109,9 @@ export default function LeadTable({ leads }: _Props) {
 
             <StyledTableCell variant="head" style={{ width: 170}}>
               <TableSortLabel
-                active={orderBy === "CustomerCombined"}
-                direction={orderBy === "CustomerCombined" ? order : "asc"}
-                onClick={handleSort("CustomerCombined")}
+                active={orderBy === "ComputedName"}
+                direction={orderBy === "ComputedName" ? order : "asc"}
+                onClick={handleSort("ComputedName")}
               >
                 <FormattedMessage id="CUSTOMER" />
               </TableSortLabel>
@@ -155,15 +155,25 @@ export default function LeadTable({ leads }: _Props) {
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? stableSort(leads.map((lead) => ({CustomerCombined: lead.Customer.Lastname + lead.Customer.Firstname, ...lead})), getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            ? stableSort(
+              leads.map((lead) => {
+
+                let ComputedName: string
+
+                if (lead.Customer.CompanyName.length > 0) {
+                  ComputedName = lead.Customer.CompanyName + ", " + lead.Customer.Lastname + " " + lead.Customer.Firstname
+                } else {
+                  ComputedName = lead.Customer.Lastname + ' ' + lead.Customer.Firstname
+                }
+
+                return { StatusId: lead.Status.StatusId, ComputedName, ...lead}
+              }),
+              getSorting(order, orderBy)
+            ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : leads
           ).map((lead) => {
-            let computedName: string
-            if (lead.Customer.CompanyName.length > 0) {
-              computedName = lead.Customer.CompanyName + ", " + lead.Customer.Firstname + " " + lead.Customer.Lastname
-            } else {
-              computedName = lead.Customer.Firstname + " " + lead.Customer.Lastname
-            }
+            //@ts-ignore
+            const ComputedName = lead.ComputedName
 
             return (
               <TableRow key={lead.LeadId}>
@@ -173,9 +183,9 @@ export default function LeadTable({ leads }: _Props) {
                   </PlainLink>
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Tooltip title={computedName}>
+                  <Tooltip title={ComputedName}>
                     <Typography noWrap variant="body2">
-                      {computedName}
+                      {ComputedName}
                     </Typography>
                   </Tooltip>
                 </StyledTableCell>
