@@ -59,7 +59,7 @@ export default function OfferOverride(props: OfferOverrideProps) {
       <Grid item xs={12}>
         <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
         <Typography>
-          <IntlTypography component="span">{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</IntlTypography>
+          <Typography component="span">{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
           <Link target="_blank" to={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
         </Typography>
         <hr />
@@ -125,7 +125,7 @@ export default function OfferOverride(props: OfferOverrideProps) {
                   (() => {
                     if (lead.ConfirmedOrderVerbal && lead.ConfirmedOffer) {
                       return <>
-                        <IntlTypography>{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</IntlTypography>
+                        <Typography>{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
                         <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
                       </>
                     }

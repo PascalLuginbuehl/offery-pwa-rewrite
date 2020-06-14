@@ -100,7 +100,7 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
       }
 
       <Detail title='FULL_NAME'>
-        <Typography>{intl.formatMessage({ id: Lead.Customer.IsMale ? "MR" : "MRS" })}. {Lead.Customer.Firstname} {Lead.Customer.Lastname}</Typography>
+        <Typography>{intl.formatMessage({ id: Lead.Customer.IsMale ? "MR" : "MRS" })}. {Lead.Customer.Lastname} {Lead.Customer.Firstname}</Typography>
       </Detail>
 
       {Lead.Customer.Email.length > 0 ?
