@@ -338,3 +338,6 @@ NEW_PRICE,New price,Neuer preis
 CHANGE,Change,Ändern
 ADDRESSES,Addresses,Adressen
 BASE_PRICE,Base Price,Grundpreis
+
+
+REMOVE_OFFLINE_CHANGES, Remove offline changes, Offline änderungen löschen

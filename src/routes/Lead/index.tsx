@@ -22,6 +22,7 @@ import IntlTypography from "../../components/Intl/IntlTypography"
 import { FormattedMessage } from "react-intl"
 import differenceInDays from "date-fns/differenceInDays"
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
+import { red } from "@material-ui/core/colors"
 
 const styles = (theme: Theme) => createStyles({
   backdrop: {
@@ -176,12 +177,19 @@ class Lead extends Component<Props, State> {
     }
   }
 
-  saveDifferencesToOnline = async (leadId: number, onlineState: ILeadContainer, offlineChanges: ILeadContainer) => {
-    const origin = await LeadAPI.FetchFromOfflineOrigin(leadId)
+  saveDifferencesToOnline = async (leadId: number, onlineState: ILeadContainer, offlineChanges: ILeadContainer, overrideOnline?: boolean) => {
+    let offlineOrigin = await LeadAPI.FetchFromOfflineOrigin(leadId)
 
-    if (!origin) {
+    if (!offlineOrigin) {
       throw new Error("No Origin was ever defined. Fatal Error")
     }
+
+    // This makes so everything in changes that is not online gets overwritten
+    if (overrideOnline) {
+      offlineOrigin = onlineState
+      console.log("I will now override the online store")
+    }
+
 
     this.setState({ offlineSyncInProgress: true })
 
@@ -191,11 +199,12 @@ class Lead extends Component<Props, State> {
 
     // Get differences origin and changes
     // Primitive comparison. extend l8er
-    const changesWhileOffline = getContainerDiffKeys(origin, offlineChanges)
+    const changesWhileOffline = getContainerDiffKeys(offlineOrigin, offlineChanges)
     console.log(getContainerDiffKeys)
 
     // Get differnces origin and API
-    const whileOfflineAPIChanges = getContainerDiffKeys(origin, onlineState)
+    const whileOfflineAPIChanges = getContainerDiffKeys(offlineOrigin, onlineState)
+    console.log(offlineOrigin, onlineState)
 
     // FInd instances in which offline also deffered from last cache
     const bothChangedSameAPI = whileOfflineAPIChanges.filter(apiOffline => changesWhileOffline.findIndex(e => apiOffline === e) !== -1)
@@ -204,7 +213,8 @@ class Lead extends Component<Props, State> {
 
       this.setState({ OfflineConflict:
         {
-          offlineOrigin: bothChangedSameAPI.map(key => origin[key]),
+          // @ts-ignore offlineOrigin cannnot be null
+          offlineOrigin: bothChangedSameAPI.map(key => offlineOrigin[key]),
           onlineState: bothChangedSameAPI.map(key => onlineState[key]),
           offlineChanges: bothChangedSameAPI.map(key => offlineChanges[key]),
         }
@@ -280,6 +290,43 @@ class Lead extends Component<Props, State> {
     return
   }
 
+  overrideWithOfflineChanges = async () => {
+    const leadId = this.state.container?.Lead.LeadId
+
+    if(!leadId) {
+      throw new Error("No lead id")
+    }
+
+    const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
+
+    if (!offlineChanges) {
+      throw new Error("No offlineChanges left :(")
+    }
+
+    const onlineAPIContainer = await this.fetchLeadOnline(leadId)
+
+    await this.saveDifferencesToOnline(leadId, onlineAPIContainer, offlineChanges, true)
+
+
+    this.setState({ OfflineConflict: null })
+  }
+
+  dontOverrideOnlineWithOfflineChanges = async () => {
+    const leadId = this.state.container?.Lead.LeadId
+
+    if (!leadId) {
+      throw new Error("No lead id")
+    }
+
+    // CLear changes
+    await LeadAPI.RemoveChangesFromOffline(leadId)
+
+    // COntainer set to null for reainizliationzt
+    this.setState({ OfflineConflict: null, container: null })
+
+    await this.loadLead(leadId)
+  }
+
   loadLead = async (leadId: number) => {
     const offlineChanges = await LeadAPI.FetchFromOfflineChanges(leadId)
     let onlineAPIContainer = null
@@ -313,6 +360,7 @@ class Lead extends Component<Props, State> {
       if (onlineAPIContainer) {
         await LeadAPI.SaveOriginToOffline(onlineAPIContainer)
         this.setState({ container: onlineAPIContainer })
+        console.log("Updated Container")
       } else {
         if (offline) {
           const offlineOrigin = await LeadAPI.FetchFromOfflineOrigin(leadId)
@@ -451,8 +499,11 @@ class Lead extends Component<Props, State> {
               </details>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => this.setState({ OfflineConflict: null })} color="primary">
-                OK
+              <Button onClick={() => this.dontOverrideOnlineWithOfflineChanges()} style={{color: red[500]}}>
+                <FormattedMessage id="REMOVE_OFFLINE_CHANGES" />
+              </Button>
+              <Button onClick={() => this.overrideWithOfflineChanges()} color="primary">
+                <FormattedMessage id="OVERRIDE" />
               </Button>
             </DialogActions>
           </Dialog>
