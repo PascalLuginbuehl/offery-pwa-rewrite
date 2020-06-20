@@ -1,6 +1,5 @@
-
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles"
+import { createMuiTheme, MuiThemeProvider, responsiveFontSizes } from "@material-ui/core/styles"
 import * as React from "react"
 // import { HashRouter } from 'react-router-dom'
 // import { ResourceProvider } from 'providers/withResource';
@@ -17,7 +16,7 @@ import { I18nextProvider } from "react-i18next"
 // A theme with custom primary and secondary color.
 // It's optional.
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   palette: {
     primary: {
       light: "#18ABE4",
@@ -46,6 +45,7 @@ const theme = createMuiTheme({
   },
 })
 
+theme = responsiveFontSizes(theme)
 
 export default function Container(props: {children: React.ReactNode}){
   const {children} = props
