@@ -31,7 +31,12 @@ export interface WithResourceProps {
 }
 
 const contextData: ContextData = { resource: null, selectedCompany: null }
-const { Provider, Consumer } = React.createContext(contextData)
+const ResourceContext = React.createContext(contextData)
+const { Provider, Consumer } = ResourceContext
+
+export default ResourceContext
+
+
 
 export class ResourceProvider extends React.Component<Props, State> {
   public state: State = {

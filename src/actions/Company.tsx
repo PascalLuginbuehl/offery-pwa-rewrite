@@ -2,23 +2,23 @@ import { ThunkAction } from "redux-thunk"
 
 import { ApplicationState } from "../store"
 import { authorizedFetch } from "./AuthorizedRequest"
-import { CompanyModel } from "../models"
+import { AdminCompanyModel } from "../models"
 
 
 interface RequestMeAction {
-  type: "REQUEST_ME"
+  type: "REQUEST_COMPANY"
 }
 
 interface ReceiveMeAction {
-  type: "RECEIVE_ME"
-  company: CompanyModel
+  type: "RECEIVE_COMPANY"
+  company: AdminCompanyModel
 }
 interface UpdateMeAction {
   type: "UPDATE_ME"
-  company: CompanyModel
+  company: AdminCompanyModel
 }
 interface FailedMeAction {
-  type: "FAILED_ME"
+  type: "FAILED_REQUEST"
   error: Error
 }
 
@@ -28,17 +28,18 @@ type AppThunk<ReturnType = void> = ThunkAction<ReturnType, ApplicationState, nul
 
 export const CompanyActionCreators = {
   // me
-  requestMe: (): AppThunk<Promise<void>> => async (dispatch, getState) => {
+  requestCompany: (companyId: number): AppThunk<Promise<void>> => async (dispatch, getState) => {
     const { company } = getState()
 
-    console.info("Request Me...")
-    dispatch({ type: "REQUEST_ME" })
+    console.info("Request Company...")
+    dispatch({ type: "REQUEST_COMPANY" })
     try {
-      const data = await authorizedFetch<CompanyModel>(`user/me`)
-      dispatch({ type: "RECEIVE_ME", company: data })
+      const data = await authorizedFetch<AdminCompanyModel>(`company/${companyId}`)
+      dispatch({ type: "RECEIVE_COMPANY", company: data })
+
       return
     } catch (e) {
-      dispatch({ type: "FAILED_ME", error: e })
+      dispatch({ type: "FAILED_REQUEST", error: e })
       throw e
     }
   }

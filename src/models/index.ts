@@ -1,1 +1,1 @@
-export * from "./CompanyModel"
+export * from "./AdminCompanyModel"
