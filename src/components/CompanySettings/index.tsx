@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { CompanyActionCreators } from "../../actions"
 import ResourceContext from "../../providers/withResource"
 import { ApplicationState } from "../../store"
-import { CircularProgress, Paper, Container, Typography, Grid } from "@material-ui/core"
+import { CircularProgress,  Typography, Grid } from "@material-ui/core"
 import { Formik, Form } from "formik"
 import { FormikTextField } from "../Formik"
 import { useTranslation } from "react-i18next"
 import { AdminCompanyModel } from "../../models"
-
+import Container from "../Container"
 
 type FormValues = AdminCompanyModel
 
@@ -33,7 +33,7 @@ export default function CompanySettings() {
 
   return (
     <Layout>
-      <Container component={Paper} maxWidth="md">
+      <Container maxWidth='md'>
         <Formik<FormValues>
           initialValues={company}
           onSubmit={async (values) => {
@@ -44,19 +44,45 @@ export default function CompanySettings() {
             <Form>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
-                  <Typography variant="h2" paragraph>{t("TEST")}</Typography>
+                  <Typography variant="h2" paragraph>{t("COMPANYSETTINGS.MASTERDATA")}</Typography>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
                   <FormikTextField<FormValues>
-                    label={t("NAME")}
+                    label={t("FIELDS.NAME")}
                     name="Name"
                   />
                 </Grid>
 
+                <Grid item xs={12} md={6}>
+                  <FormikTextField<FormValues>
+                    label={t("FIELDS.EMAIL")}
+                    name="Email"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormikTextField<FormValues>
+                    label={t("FIELDS.PHONE")}
+                    name="Telephone"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormikTextField<FormValues>
+                    label="VatUID"
+                    name="VatUID"
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <FormikTextField<FormValues>
+                    label={t("FIELDS.WEBSITE_URL")}
+                    name="WebsiteURL"
+                  />
+                </Grid>
 
               </Grid>
-
             </Form>
           )}
         </Formik>

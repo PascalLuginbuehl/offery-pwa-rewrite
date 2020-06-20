@@ -1,3 +1,11 @@
 {
-  "TEST": "tst"
+  "COMPANYSETTINGS": {
+    "MASTERDATA": "Stammdaten"
+  },
+  "FIELDS": {
+    "NAME": "Name",
+    "EMAIL": "E-Mail",
+    "PHONE": "Telefonnummer",
+    "WEBSITE_URL": "Website-Url"
+  }
 }

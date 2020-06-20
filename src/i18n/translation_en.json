@@ -1,3 +1,11 @@
 {
-  "TEST": "tst_englisch"
+  "COMPANYSETTINGS": {
+    "MASTERDATA": "Masterdata"
+  },
+  "FIELDS": {
+    "NAME": "Name",
+    "EMAIL": "E-Mail",
+    "PHONE": "Telefonnummer",
+    "WEBSITE_URL": "Website-Url"
+  }
 }

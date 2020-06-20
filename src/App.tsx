@@ -2,7 +2,7 @@ import React from "react"
 import UpdateServiceWorker from "./components/UpdateServiceWorker"
 import { Route, Switch } from "react-router-dom"
 import LeadRoutes from "./routes"
-import Container from "./components/Container"
+import RootContainer from "./components/RootContainer"
 
 import CompanySettings from "./components/CompanySettings"
 
@@ -14,7 +14,7 @@ export default function App(props: Props) {
   const { swUpdateEventGenerator } = props
 
   return (
-    <Container>
+    <RootContainer>
       <Switch>
         <Route path="/company">
           <CompanySettings />
@@ -25,6 +25,6 @@ export default function App(props: Props) {
 
 
       <UpdateServiceWorker swUpdateEventGenerator={swUpdateEventGenerator} />
-    </Container>
+    </RootContainer>
   )
 }
