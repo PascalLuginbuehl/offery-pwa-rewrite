@@ -9,25 +9,25 @@ export interface FormikSubmitProps extends Omit<ButtonProps, "type" | "disabled"
 }
 
 export default function FormikSubmit(props: FormikSubmitProps) {
-    const {
-        label,
-        color = "primary",
-        variant = "contained",
+  const {
+    label,
+    color = "primary",
+    variant = "contained",
 
-        ...buttonProps
-    } = props
+    ...buttonProps
+  } = props
 
-    const { isSubmitting } = useFormikContext()
+  const { isSubmitting } = useFormikContext()
 
-    return (
-        <Button
-            variant={variant}
-            color={color}
-            type="submit"
-            disabled={isSubmitting}
-            {...buttonProps}
-        >
-            {label}
-        </Button>
-    )
+  return (
+    <Button
+      variant={variant}
+      color={color}
+      type="submit"
+      disabled={isSubmitting}
+      {...buttonProps}
+    >
+      {label}
+    </Button>
+  )
 }

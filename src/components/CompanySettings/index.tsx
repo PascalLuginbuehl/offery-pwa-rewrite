@@ -1,31 +1,29 @@
 import React, { useEffect, useContext } from "react"
 import Layout from "../Layout"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchCompanyById } from "../../slicers"
+import {  useSelector } from "react-redux"
+import { fetchCompanyById, updateCompany } from "../../slicers"
 import ResourceContext from "../../providers/withResource"
-import { RootState } from "../../store"
+import { RootState, useAppDispatch } from "../../store"
 import { CircularProgress,  Typography, Grid } from "@material-ui/core"
 import { Formik, Form } from "formik"
-import { FormikTextField } from "../Formik"
+import { FormikTextField, FormikSubmit } from "../Formik"
 import { useTranslation } from "react-i18next"
-import { AdminCompanyModel } from "../../models"
+import { CompanyUpdateModel } from "../../models"
 import Container from "../Container"
 
-type FormValues = AdminCompanyModel
+type FormValues = CompanyUpdateModel
 
-export default function CompanySettings() {
-
-  const dispatch = useDispatch()
+export default function Index() {
+  const dispatch = useAppDispatch()
   const resource = useContext(ResourceContext)
 
-  const { company, loading } = useSelector((state: RootState) => state.company)
+  const { company, companyLoading: loading } = useSelector((state: RootState) => state.company)
 
   useEffect(() => {
     if (resource.selectedCompany && loading === "idle") {
-      dispatch(fetchCompanyById(resource.selectedCompany.CompanyId))
+      void dispatch(fetchCompanyById(resource.selectedCompany.CompanyId))
     }
   }, [resource, dispatch])
-
 
   const { t } = useTranslation()
 
@@ -39,14 +37,16 @@ export default function CompanySettings() {
         <Formik<FormValues>
           initialValues={company}
           onSubmit={async (values) => {
-            console.log(values)
+            await dispatch(updateCompany(values))
+
+            return
           }}
         >
           {() => (
             <Form>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
-                  <Typography variant="h2" paragraph>{t("COMPANYSETTINGS.MASTERDATA")}</Typography>
+                  <Typography variant="h4" paragraph>{t("COMPANYSETTINGS.MASTERDATA")}</Typography>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
@@ -84,6 +84,9 @@ export default function CompanySettings() {
                   />
                 </Grid>
 
+                <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-end"}}>
+                  <FormikSubmit label={t("SAVE")} />
+                </Grid>
               </Grid>
             </Form>
           )}

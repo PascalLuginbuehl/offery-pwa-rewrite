@@ -4,7 +4,7 @@ import Hidden from "@material-ui/core/Hidden"
 import { makeStyles,  Theme, createStyles } from "@material-ui/core/styles"
 import AppBar from "./AppBar"
 
-import MyDrawer from "./MyDrawer"
+import NavigationDrawer from "../CompanySettings/NavigationDrawer"
 
 const drawerWidth = 240
 
@@ -75,7 +75,7 @@ export default function Layout(props: ResponsiveDrawerProps) {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            <MyDrawer />
+            <NavigationDrawer />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -86,10 +86,11 @@ export default function Layout(props: ResponsiveDrawerProps) {
             variant="permanent"
             open
           >
-            <MyDrawer />
+            <NavigationDrawer />
           </Drawer>
         </Hidden>
       </nav>
+
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children}

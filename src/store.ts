@@ -1,8 +1,9 @@
 import { connectRouter, routerMiddleware, RouterState } from "connected-react-router"
 import { createHashHistory } from "history"
-import {  Reducer, configureStore, MiddlewareArray } from "@reduxjs/toolkit"
+import {  Reducer, configureStore } from "@reduxjs/toolkit"
 import { companySlice } from "./slicers"
 import thunk from "redux-thunk"
+import { useDispatch } from "react-redux"
 
 
 export const history = createHashHistory({
@@ -16,8 +17,15 @@ export const store = configureStore({
     company: companySlice.reducer,
     router: connectRouter(history) as any as Reducer<RouterState<any>>, // LocationState
   },
-  middleware: new MiddlewareArray().concat(routerMiddleware(history), thunk),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware()
+      .concat(routerMiddleware(history))
+      .concat(thunk),
   devTools: true
 })
 
+export type AppDispatch = typeof store.dispatch
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()
 export type RootState = ReturnType<typeof store.getState>
+
