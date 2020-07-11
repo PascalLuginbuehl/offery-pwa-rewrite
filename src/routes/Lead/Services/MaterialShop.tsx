@@ -23,7 +23,7 @@ import {  FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl
 import SelectGridItem from "../../../components/ShopElements/SelectGridItem"
 import PageHeader from "../../../components/PageHeader"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
-import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import { ILead } from "../../../interfaces/ILead"
 import { MaterialShopRow } from "./MateriallShopRow"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
@@ -144,7 +144,10 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
             </Grid>
           </Grid>
 
-          <Field name="DeliveryCostFix" label="FIX_DELIVERY_COST" component={FormikPrice} />
+          <Grid item xs={6} md={3}>
+            <FormikPrice name="DeliveryCostFix" label="FIX_DELIVERY_COST" />
+          </Grid>
+
           {selectedCompany.Settings.EnableMaterialOrderDelivery ? (<Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>) : null }
 
           {selectedCompany.Settings.EnableMaterialOrderComment ? (<Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }

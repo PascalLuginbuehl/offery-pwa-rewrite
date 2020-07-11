@@ -6,7 +6,7 @@ import MuiTextField, { TextFieldProps as MuiTextFieldProps } from "@material-ui/
 import { useFormikContext } from "formik"
 import useFormikField, { FormikFieldConfig } from "./FormikFieldConfig"
 
-type FormikTextFieldProps<FormValues> =  FormikFieldConfig<FormValues> & Omit<MuiTextFieldProps, "error" | "onChange" | "name" | "value" | "variant">
+export type FormikTextFieldProps<FormValues> =  FormikFieldConfig<FormValues> & Omit<MuiTextFieldProps, "error" | "onChange" | "name" | "value" | "variant">
 
 export default function FormikTextField<FormValues>(props: FormikTextFieldProps<FormValues>) {
   const {

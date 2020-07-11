@@ -8,7 +8,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import PageHeader from "../../../components/PageHeader"
 import { IMoveServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
-import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
 import { IPutMoveService } from "../../../interfaces/IService"
@@ -55,7 +55,11 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                 {selectedCompany.Settings.EnableServiceMoveBoreAmount ?
                   (<Field label="AMOUNT" name="moveConditions.BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />) : null }
                 {selectedCompany.Settings.EnableServiceMoveBorePrice ?
-                  (<Field label="PRICE" name="moveConditions.BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
+                  (
+                    <Grid item xs={6}>
+                      <FormikPrice label="PRICE" name="moveConditions.BorePrice" />
+                    </Grid>
+                  ) : null }
               </FormikGroups>
               ) : null}
 
@@ -71,22 +75,25 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                     inputProps={{ step: 1, min: 0 }}
                     overrideGrid={{ xs: 6, md: undefined }}
                   />) : null }
-                {selectedCompany.Settings.EnableServiceMoveLampDemontagePrice ?
-                  (<Field label="PRICE" name="moveConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null}
+                {selectedCompany.Settings.EnableServiceMoveLampDemontagePrice ? (
+                  <Grid item xs={6}>
+                    <FormikPrice label="PRICE" name="moveConditions.LampDemontagePrice" />
+                  </Grid>
+                ) : null}
               </FormikGroups>
               ) : null}
 
             {showFurnitureLift || showPiano || showHeavyLift || showMontageCondition || showDeMontageCondition ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {showFurnitureLift ? <Field label="FURNITURE_LIFT" name="moveConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
+                {showFurnitureLift ? <Grid item xs={6} md={3}><FormikPrice label="FURNITURE_LIFT" name="moveConditions.FurnitureLiftPrice" /></Grid> : null}
 
-                {showPiano ? <Field label="PIANO" name="moveConditions.PianoPrice" component={FormikPrice} /> : null}
+                {showPiano ? <Grid item xs={6} md={3}><FormikPrice label="PIANO" name="moveConditions.PianoPrice" /></Grid> : null}
 
-                {showMontageCondition ? <Field label="MONTAGE_SERVICE" name="moveConditions.MontageServicePrice" component={FormikPrice} /> : null}
+                {showMontageCondition ? <Grid item xs={6} md={3}><FormikPrice label="MONTAGE_SERVICE" name="moveConditions.MontageServicePrice" /></Grid> : null}
 
-                {showDeMontageCondition ? <Field label="DE_MONTAGE_SERVICE" name="moveConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
+                {showDeMontageCondition ? <Grid item xs={6} md={3}><FormikPrice label="DE_MONTAGE_SERVICE" name="moveConditions.DeMontageServicePrice" /></Grid> : null}
 
-                {showHeavyLift ? <Field label="HEAVY_LIFT_PRICE" name="moveConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {showHeavyLift ? <Grid item xs={6} md={3}><FormikPrice label="HEAVY_LIFT_PRICE" name="moveConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
               </FormikGroups>
             ) : null}
           </ServiceConditions>

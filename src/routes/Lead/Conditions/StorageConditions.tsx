@@ -9,7 +9,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import PageHeader from "../../../components/PageHeader"
 import {   IStorageServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
-import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
@@ -57,7 +57,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
                 {selectedCompany.Settings.EnableServiceStorageBoreAmount ?
                   (<Field label="AMOUNT" name="storageConditions.BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />) : null }
                 {selectedCompany.Settings.EnableServiceStorageBorePrice ?
-                  (<Field label="PRICE" name="storageConditions.BorePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
+                  (<Grid item xs={6}><FormikPrice label="PRICE" name="storageConditions.BorePrice" /></Grid>) : null }
               </FormikGroups>
               ) : null}
 
@@ -74,21 +74,21 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
                     overrideGrid={{ xs: 6, md: undefined }}
                   />) : null }
                 {selectedCompany.Settings.EnableServiceStorageLampDemontagePrice ?
-                  (<Field label="PRICE" name="storageConditions.LampDemontagePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />) : null }
+                  (<Grid item xs={6}><FormikPrice label="PRICE" name="storageConditions.LampDemontagePrice" /></Grid>) : null }
               </FormikGroups>
               ) : null}
 
             {showFurnitureLiftPrice || showPiano || showMontagePrice || showDeMontagePrice || showHeavyLiftPrice ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {showFurnitureLiftPrice ? <Field label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" component={FormikPrice} /> : null}
+                {showFurnitureLiftPrice ? <Grid item xs={6} md={3}><FormikPrice label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" /></Grid> : null}
 
-                {showPiano ? <Field label="PIANO" name="storageConditions.PianoPrice" component={FormikPrice} /> : null}
+                {showPiano ? <Grid item xs={6} md={3}><FormikPrice label="PIANO" name="storageConditions.PianoPrice" /></Grid> : null}
 
-                {showMontagePrice ? <Field label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" component={FormikPrice} /> : null}
+                {showMontagePrice ? <Grid item xs={6} md={3}><FormikPrice label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" /></Grid> : null}
 
-                {showDeMontagePrice ? <Field label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" component={FormikPrice} /> : null}
+                {showDeMontagePrice ? <Grid item xs={6} md={3}><FormikPrice label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" /></Grid> : null}
 
-                {showHeavyLiftPrice ? <Field label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {showHeavyLiftPrice ? <Grid item xs={6} md={3}><FormikPrice label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
               </FormikGroups>
             ) : null}
           </ServiceConditions>

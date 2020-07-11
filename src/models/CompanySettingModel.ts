@@ -33,11 +33,11 @@ export interface CompanyBuildingSettingDTO {
 
 export interface CompanySettingModel {
 DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
-  DefaultFurnitureLiftPrice: number | undefined
-  DefaultPianoPrice: number | undefined
-  DefaultHeavyLiftPrice: number | undefined
-  DefaultCostEntry: number | undefined
-  DefaultCostPerCubicInMoney: number | undefined
+  DefaultFurnitureLiftPrice: number | null
+  DefaultPianoPrice: number | null
+  DefaultHeavyLiftPrice: number | null
+  DefaultCostEntry: number | null
+  DefaultCostPerCubicInMoney: number | null
   DefaultPaymentMethodTextKey: string
 
 

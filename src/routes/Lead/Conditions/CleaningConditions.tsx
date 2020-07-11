@@ -8,7 +8,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import PageHeader from "../../../components/PageHeader"
 import { ICleaningServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
-import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
@@ -85,16 +85,16 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
               overrideGrid={{ xs: 6, md: 3 }}
             />) : null}
 
-            <Field label="BASE_PRICE" name="cleaningConditions.FixPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: 3 }} />
+            <Grid item xs={6} md={3}><FormikPrice label="BASE_PRICE" name="cleaningConditions.FixPrice" /></Grid>
           </FormikGroups>
 
           {showHighPressureGaragePrice || showHighPressureTerracePrice ? (
             <FormikGroups label="HIGH_PRESURE_CLEANING_FIX_PRICE" xs={6} md={3}>
               {showHighPressureTerracePrice ? (
-                <Field label="TERRACE" name="cleaningConditions.HighPressureTerraceCleaningFixPrice" component={FormikPrice} overrideGrid={{ xs: 6 }} />
+                <Grid item xs={6}><FormikPrice label="TERRACE" name="cleaningConditions.HighPressureTerraceCleaningFixPrice" /></Grid>
               ) : null}
               {showHighPressureGaragePrice ? (
-                <Field label="GARAGE" name="cleaningConditions.HighPressureGarageCleaningFixPrice" component={FormikPrice} overrideGrid={{ xs: 6 }} />
+                <Grid item xs={6}><FormikPrice label="GARAGE" name="cleaningConditions.HighPressureGarageCleaningFixPrice" /></Grid>
               ) : null}
             </FormikGroups>
           ) : null}
@@ -123,16 +123,16 @@ class CleaningConditions extends React.Component<Props & FormikProps<Values>, {}
               ? (
                 <FormikGroups label="CLEANING_PRICES" xs={12} md={6}>
                   {showFirePlacePrice ? (
-                    <Field label="FIREPLACE" name="cleaningConditions.CleaningFireplacePrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                    <Grid item xs={6}><FormikPrice label="FIREPLACE" name="cleaningConditions.CleaningFireplacePrice"/></Grid>
                   ) : null}
                   {showCarpetPrice ? (
-                    <Field label="CLEANING_CARPET" name="cleaningConditions.CleaningCarpetPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                    <Grid item xs={6}><FormikPrice label="CLEANING_CARPET" name="cleaningConditions.CleaningCarpetPrice"/></Grid>
                   ) : null}
                   {showWindowPrice ? (
-                    <Field label="WINDOWS" name="cleaningConditions.CleaningWindowsPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                    <Grid item xs={6}><FormikPrice label="WINDOWS" name="cleaningConditions.CleaningWindowsPrice"/></Grid>
                   ) : null}
                   {showWindowShuttersPrice ? (
-                    <Field label="WINDOWS_WITH_SHUTTERS" name="cleaningConditions.CleaningWindowsWithShuttersPrice" component={FormikPrice} overrideGrid={{ xs: 6, md: undefined }} />
+                    <Grid item xs={6}><FormikPrice label="WINDOWS_WITH_SHUTTERS" name="cleaningConditions.CleaningWindowsWithShuttersPrice"/></Grid>
                   ) : null}
                 </FormikGroups>
               ) : null

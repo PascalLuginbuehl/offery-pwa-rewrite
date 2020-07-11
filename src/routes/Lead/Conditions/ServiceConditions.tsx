@@ -3,7 +3,7 @@ import { Tab, Tabs,   Grid,  InputAdornment, TextField as MuiTextField } from "@
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 import { IServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
-import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikPercent from "../../../components/FormikFields/Numbers/FormikPercent"
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
@@ -109,7 +109,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           ) : null}
 
           {selectedCompany.Settings.EnableWorkerExpenses && (values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate) ? (
-            <Field label="EXPENSES" name={`${prefix}.ServiceConditions.Expenses`} component={FormikPrice} overrideGrid={disabledVehicles ? { xs: 6, md: 3 } : { xs: 6 }} />
+            <Grid item xs={6} md={disabledVehicles ? 3 : undefined}>
+              <FormikPrice label="EXPENSES" name={`${prefix}.ServiceConditions.Expenses`} />
+            </Grid>
           ) : null}
 
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
@@ -167,7 +169,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
         <FormikGroups label="PRICE" xs={12} md={!values.ServiceConditions.IsHourlyRate && !values.ServiceConditions.HasCostCeiling ? 12 : 6}>
           {/* Calculations */}
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
-            <Field label="FIX_PRICE" name={`${prefix}.ServiceConditions.FixPrice`} component={FormikPrice} overrideGrid={{ xs: 5 }} />
+            <Grid item xs={5}>
+              <FormikPrice label="FIX_PRICE" name={`${prefix}.ServiceConditions.FixPrice`} />
+            </Grid>
           ) : null}
 
           <Field label="DISCOUNT_IN_PERCENT" name={`${prefix}.ServiceConditions.DiscountInPercent`} component={FormikPercent} overrideGrid={{ xs: 2, md: undefined }} />

@@ -21,7 +21,7 @@ export const updateCompany = createAsyncThunk<CompanyAdminModel, CompanyUpdateMo
 )
 
 export const fetchCompanySettingById = createAsyncThunk<CompanySettingModel, number>(
-  "company/updateById",
+  "company/fetchSettingById",
   async (companyId: number) => {
     return await authorizedFetch<CompanySettingModel>(`csettingcondition/company/${companyId}`)
   }
@@ -33,7 +33,7 @@ interface UpdateCompanySetting {
 }
 
 export const updateCompanySetting = createAsyncThunk<CompanySettingModel, UpdateCompanySetting>(
-  "company/updateById",
+  "company/updateSettingById",
   async ({companyId, companySetting}: UpdateCompanySetting) => {
     return await authorizedFetch<CompanySettingModel>(`csettingcondition/company/${companyId}`, {
       method: "PUT",

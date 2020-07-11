@@ -2,14 +2,14 @@ import * as React from "react"
 import Form from "../../../components/FormikFields/Form"
 import { createStyles, Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
-import { FormikProps, withFormik, Field } from "formik"
+import { FormikProps, withFormik } from "formik"
 
 import PageHeader from "../../../components/PageHeader"
 import { IPackServiceConditions } from "../../../interfaces/IConditions"
 import { injectIntl, WrappedComponentProps } from "react-intl"
 import ServiceConditions from "./ServiceConditions"
 import { IPutPackService } from "../../../interfaces/IService"
-import FormikPrice from "../../../components/FormikFields/Numbers/FormikPrice"
+import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 
 
@@ -48,7 +48,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
           >
             {showHeavyLift ?
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {showHeavyLift ? <Field label="HEAVY_LIFT_PRICE" name="packConditions.ServiceConditions.HeavyLiftPrice" component={FormikPrice} /> : null}
+                {showHeavyLift ? <Grid item xs={6} md={3}><FormikPrice label="HEAVY_LIFT_PRICE" name="packConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
               </FormikGroups>
               : null }
           </ServiceConditions>

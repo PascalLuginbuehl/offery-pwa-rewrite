@@ -1,13 +1,11 @@
 import * as React from "react"
-import { injectIntl } from "react-intl"
 import { InputAdornment } from "@material-ui/core"
 import FormikTextField, { FormikTextFieldProps } from "../FormikTextField"
 
-type newProps = Omit<FormikTextFieldProps, "type" | "InputProps">
+export type FormikPriceProps<FormValues> = Omit<FormikTextFieldProps<FormValues>, "type" | "InputProps">
 
-const FormikPrice: React.ComponentType<newProps> = (props) => (
-  //@ts-ignore
-  <FormikTextField
+export default function FormikPrice<FormValues>(props: FormikPriceProps<FormValues>) {
+  return <FormikTextField<FormValues>
     InputProps={{
       startAdornment: (
         <InputAdornment position="start">
@@ -21,14 +19,8 @@ const FormikPrice: React.ComponentType<newProps> = (props) => (
       min: 0,
     }}
 
-    overrideGrid={{ xs: 6, md: 3 }}
-
     type="number"
 
     {...props}
   />
-)
-
-
-export default injectIntl(FormikPrice)
-
+}
