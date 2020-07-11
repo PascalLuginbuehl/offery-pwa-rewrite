@@ -36,7 +36,7 @@ const { Provider, Consumer } = ResourceContext
 
 export default ResourceContext
 
-
+export const useResourceContext = () => React.useContext(ResourceContext)
 
 export class ResourceProvider extends React.Component<Props, State> {
   public state: State = {

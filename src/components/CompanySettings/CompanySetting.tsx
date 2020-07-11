@@ -1,8 +1,8 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect } from "react"
 import Layout from "../Layout"
 import { useSelector } from "react-redux"
 import {   fetchCompanySettingById, updateCompanySetting } from "../../slicers"
-import ResourceContext from "../../providers/withResource"
+import { useResourceContext } from "../../providers/withResource"
 import { RootState, useAppDispatch } from "../../store"
 import { CircularProgress, Typography, Grid } from "@material-ui/core"
 import { Formik, Form } from "formik"
@@ -17,7 +17,7 @@ type FormValues = CompanySettingModel
 
 export default function CompanySetting() {
   const dispatch = useAppDispatch()
-  const resource = useContext(ResourceContext)
+  const resource = useResourceContext()
 
   const { company, companySetting, companySettingLoading } = useSelector((state: RootState) => state.company)
 
