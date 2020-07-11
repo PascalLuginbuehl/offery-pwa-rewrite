@@ -5,10 +5,7 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "react",
-    "import",
-    "jsx-a11y",
-    "unused-imports"
+    "react"
   ],
   "extends": [
     "eslint:recommended",
@@ -18,26 +15,12 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "off",
-    "no-unused-vars": "off",
-    "unused-imports/no-unused-vars": "off",
-    "unused-imports/no-unused-imports": "off",
-    "unused-imports/no-unused-imports-ts": 2,
-    "unused-imports/no-unused-vars-ts": "warn",
     "indent": [
       "error",
       2,
       {
         "SwitchCase": 1
       }
-    ],
-    "react/jsx-indent": [
-      "error",
-      2
-    ],
-    "react/jsx-indent-props": [
-      "error",
-      2
     ],
     "quotes": [
       "error",
@@ -51,28 +34,37 @@
       "error",
       "never"
     ],
-    "@typescript-eslint/interface-name-prefix": [
-      "warn",
+    "keyword-spacing": [
+      "error",
       {
-        "prefixWithI": "always",
-        "allowUnderscorePrefix": true
+        "before": true
       }
     ],
-    "@typescript-eslint/class-name-casing": [
-      "warn",
+    "space-before-blocks": "error",
+    "no-multiple-empty-lines": [
+      "error",
       {
-        "allowUnderscorePrefix": true
+        "max": 1,
+        "maxEOF": 0
       }
+    ],
+    "react/jsx-indent": [
+      "error",
+      4
+    ],
+    "react/jsx-indent-props": [
+      "error",
+      4
     ],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {
         "multiline": {
           "delimiter": "none",
-          "requireLast": true
+          "requireLast": false
         },
         "singleline": {
-          "delimiter": "semi",
+          "delimiter": "comma",
           "requireLast": false
         }
       }
