@@ -1,9 +1,9 @@
 import React, { useEffect, useContext } from "react"
 import Layout from "../Layout"
 import { useDispatch, useSelector } from "react-redux"
-import { CompanyActionCreators } from "../../actions"
+import { fetchCompanyById } from "../../slicers"
 import ResourceContext from "../../providers/withResource"
-import { ApplicationState } from "../../store"
+import { RootState } from "../../store"
 import { CircularProgress,  Typography, Grid } from "@material-ui/core"
 import { Formik, Form } from "formik"
 import { FormikTextField } from "../Formik"
@@ -14,20 +14,22 @@ import Container from "../Container"
 type FormValues = AdminCompanyModel
 
 export default function CompanySettings() {
+
   const dispatch = useDispatch()
   const resource = useContext(ResourceContext)
 
+  const { company, loading } = useSelector((state: RootState) => state.company)
+
   useEffect(() => {
-    if (resource.selectedCompany) {
-      dispatch(CompanyActionCreators.requestCompany(resource.selectedCompany.CompanyId))
+    if (resource.selectedCompany && loading === "idle") {
+      dispatch(fetchCompanyById(resource.selectedCompany.CompanyId))
     }
   }, [resource, dispatch])
 
-  const { company, companyLoading } = useSelector((state: ApplicationState) => state.company)
 
   const { t } = useTranslation()
 
-  if (!company || companyLoading) {
+  if (!company || loading !== "succeeded") {
     return <CircularProgress />
   }
 

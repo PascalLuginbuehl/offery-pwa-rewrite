@@ -5,7 +5,7 @@
   "FIELDS": {
     "NAME": "Name",
     "EMAIL": "E-Mail",
-    "PHONE": "Telefonnummer",
+    "PHONE": "Telephone",
     "WEBSITE_URL": "Website-Url"
   }
 }

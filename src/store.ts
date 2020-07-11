@@ -1,42 +1,23 @@
-import { applyMiddleware, combineReducers, compose, createStore, Store, Middleware, Reducer } from "redux"
+import { connectRouter, routerMiddleware, RouterState } from "connected-react-router"
+import { createHashHistory } from "history"
+import {  Reducer, configureStore, MiddlewareArray } from "@reduxjs/toolkit"
+import { companySlice } from "./slicers"
 import thunk from "redux-thunk"
-import { connectRouter, routerMiddleware, RouterState, LocationChangeAction } from "connected-react-router"
-import { History } from "history"
-import { reducers, CompanyState, companyInitialState } from "./reducers"
 
 
-export interface ApplicationState {
-  company: CompanyState
-}
+export const history = createHashHistory({
+  hashType: "slash",
+  getUserConfirmation: (message, callback) => callback(window.confirm(message))
+})
 
-export default function configureStore(history?: History): Store<ApplicationState> {
-  const middleware: Middleware<unknown>[] = [thunk]
 
-  const prepareReducers: typeof reducers & { router?: Reducer<RouterState, LocationChangeAction> } = {
-    ...reducers
-  }
+export const store = configureStore({
+  reducer: {
+    company: companySlice.reducer,
+    router: connectRouter(history) as any as Reducer<RouterState<any>>, // LocationState
+  },
+  middleware: new MiddlewareArray().concat(routerMiddleware(history), thunk),
+  devTools: true
+})
 
-  // Disable react router in legacy code
-  if (history) {
-    middleware.push(routerMiddleware(history))
-
-    prepareReducers.router = connectRouter(history)
-  }
-
-  const rootReducer = combineReducers(prepareReducers)
-
-  const enhancers = []
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const windowIfDefined = typeof window === "undefined" ? null : (window as any)
-
-  if (windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__) {
-    enhancers.push(windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__())
-  }
-
-  const initialState = {
-    company: companyInitialState,
-  }
-
-  return createStore(rootReducer, initialState, compose(applyMiddleware(...middleware), ...enhancers))
-}
+export type RootState = ReturnType<typeof store.getState>

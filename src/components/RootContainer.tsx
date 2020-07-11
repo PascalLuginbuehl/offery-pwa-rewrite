@@ -5,8 +5,7 @@ import * as React from "react"
 // import { ResourceProvider } from 'providers/withResource';
 
 import { ResourceProvider } from "../providers/withResource"
-import configureStore from "../store"
-import { createHashHistory } from "history"
+import { store, history } from "../store"
 import { ConnectedRouter } from "connected-react-router"
 import { Provider } from "react-redux"
 import { LanguageChanged, setupI18n } from "../i18n/setupi18next"
@@ -49,14 +48,6 @@ theme = responsiveFontSizes(theme)
 
 export default function RootContainer(props: {children: React.ReactNode}){
   const {children} = props
-
-  const history = createHashHistory({
-    hashType: "slash",
-    getUserConfirmation: (message, callback) => callback(window.confirm(message))
-  })
-
-  // Get the application-wide store instance, prepopulating with state from the server where available.
-  const store = configureStore(history)
 
   const i18n = setupI18n()
 

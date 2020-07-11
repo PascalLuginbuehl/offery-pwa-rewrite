@@ -1,5 +1,6 @@
 import LoginService from "../services/LoginService"
 
+
 export async function authorizedFetch<T>(input: string, init?: RequestInit): Promise<T> {
   const defaultFetchParams: RequestInit = {
     method: "GET",
@@ -19,17 +20,17 @@ export async function authorizedFetch<T>(input: string, init?: RequestInit): Pro
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let json: any
+  let json: T
   try {
     // may throw an error if there is no body
-    json = await response.json()
+    json = await response.json() as T
   } catch (e) {
     throw new Error(`Unexpected server response: ${response.statusText} (Status:${response.status})`)
   }
   // console.log(json)
 
   if (!response.ok) {
-    throw new Error(json)
+    throw new Error(await response.text())
   }
 
   return json
