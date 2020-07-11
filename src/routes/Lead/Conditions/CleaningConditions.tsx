@@ -137,7 +137,7 @@ export default function CleaningConditions(props: CleaningConditionProps) {
               />) : null}
 
               <Grid item xs={6} md={3}><FormikPrice label={formatMessage({ id: "BASE_PRICE" })} name="cleaningConditions.FixPrice" /></Grid>
-              </FormikGroups>
+            </FormikGroups>
 
             {showHighPressureGaragePrice || showHighPressureTerracePrice ? (
               <FormikGroups label="HIGH_PRESURE_CLEANING_FIX_PRICE" xs={6} md={3}>
@@ -147,7 +147,7 @@ export default function CleaningConditions(props: CleaningConditionProps) {
                 {showHighPressureGaragePrice ? (
                   <Grid item xs={6}><FormikPrice label="GARAGE" name="cleaningConditions.HighPressureGarageCleaningFixPrice" /></Grid>
                 ) : null}
-                </FormikGroups>
+              </FormikGroups>
             ) : null}
 
             {selectedCompany.Settings.EnableServiceCleaningDovelhole && cleaningService.DovelholeService &&
@@ -185,7 +185,7 @@ export default function CleaningConditions(props: CleaningConditionProps) {
                     {showWindowShuttersPrice ? (
                       <Grid item xs={6}><FormikPrice label={formatMessage({ id: "WINDOWS_WITH_SHUTTERS" })} name="cleaningConditions.CleaningWindowsWithShuttersPrice" /></Grid>
                     ) : null}
-                    </FormikGroups>
+                  </FormikGroups>
                 ) : null
             }
 
@@ -208,8 +208,8 @@ export default function CleaningConditions(props: CleaningConditionProps) {
                   type="number"
                   InputProps={{ startAdornment: <InputAdornment position="start">CHF</InputAdornment> }}
                 />
-                </Grid>
-              </FormikGroups>
+              </Grid>
+            </FormikGroups>
 
             <Field
               label="PAYMENT_METHOD"
@@ -220,8 +220,8 @@ export default function CleaningConditions(props: CleaningConditionProps) {
 
             {selectedCompany.Settings.EnableServiceCleaningComment ?
               (<Field name="cleaningService.Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />) : null}
-            </Form>
-          </Grid>
+          </Form>
+        </Grid>
       )}
     />
   )
