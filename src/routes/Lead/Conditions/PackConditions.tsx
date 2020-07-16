@@ -12,7 +12,6 @@ import { IPutPackService } from "../../../interfaces/IService"
 import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 
-
 const styles = (theme: Theme) => createStyles({})
 
 interface Values {
@@ -29,8 +28,10 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
-    const { values, isSubmitting, status, setFieldValue, selectedCompany, packService } = this.props
+    const { values, isSubmitting, intl, setFieldValue, selectedCompany, packService } = this.props
     const showHeavyLift = (packService.HeavyLiftService && selectedCompany.Settings.EnableServicePackHeavyLift && selectedCompany.Settings.EnableServicePackHeavyLiftPrice)
+
+    const formatMessage = intl.formatMessage.bind(intl)
 
     return (
       <Grid item xs={12}>
@@ -48,7 +49,7 @@ class PackConditions extends React.Component<Props & FormikProps<Values>, {}> {
           >
             {showHeavyLift ?
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {showHeavyLift ? <Grid item xs={6} md={3}><FormikPrice label="HEAVY_LIFT_PRICE" name="packConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
+                {showHeavyLift ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "HEAVY_LIFT_PRICE"})} name="packConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
               </FormikGroups>
               : null }
           </ServiceConditions>

@@ -38,6 +38,8 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
     const showHeavyLiftPrice = (storageService.HeavyLiftService && selectedCompany.Settings.EnableServiceStorageHeavyLift && selectedCompany.Settings.EnableServiceStorageHeavyLiftPrice)
     const showPiano = (storageService.PianoService && selectedCompany.Settings.EnableServiceStoragePiano && selectedCompany.Settings.EnableServiceStoragePianoPrice)
 
+    const formatMessage = intl.formatMessage.bind(intl)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -57,7 +59,7 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
                 {selectedCompany.Settings.EnableServiceStorageBoreAmount ?
                   (<Field label="AMOUNT" name="storageConditions.BoreAmount" type="number" component={FormikTextField} inputProps={{ step: 1, min: 0 }} overrideGrid={{ xs: 6, md: undefined }} />) : null }
                 {selectedCompany.Settings.EnableServiceStorageBorePrice ?
-                  (<Grid item xs={6}><FormikPrice label="PRICE" name="storageConditions.BorePrice" /></Grid>) : null }
+                  (<Grid item xs={6}><FormikPrice label={formatMessage({id: "PRICE"})} name="storageConditions.BorePrice" /></Grid>) : null }
               </FormikGroups>
               ) : null}
 
@@ -74,21 +76,21 @@ class StorageConditions extends React.Component<Props & FormikProps<Values>, {}>
                     overrideGrid={{ xs: 6, md: undefined }}
                   />) : null }
                 {selectedCompany.Settings.EnableServiceStorageLampDemontagePrice ?
-                  (<Grid item xs={6}><FormikPrice label="PRICE" name="storageConditions.LampDemontagePrice" /></Grid>) : null }
+                  (<Grid item xs={6}><FormikPrice label={formatMessage({id: "PRICE"})} name="storageConditions.LampDemontagePrice" /></Grid>) : null }
               </FormikGroups>
               ) : null}
 
             {showFurnitureLiftPrice || showPiano || showMontagePrice || showDeMontagePrice || showHeavyLiftPrice ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {showFurnitureLiftPrice ? <Grid item xs={6} md={3}><FormikPrice label="FURNITURE_LIFT" name="storageConditions.FurnitureLiftPrice" /></Grid> : null}
+                {showFurnitureLiftPrice ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "FURNITURE_LIFT"})} name="storageConditions.FurnitureLiftPrice" /></Grid> : null}
 
-                {showPiano ? <Grid item xs={6} md={3}><FormikPrice label="PIANO" name="storageConditions.PianoPrice" /></Grid> : null}
+                {showPiano ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "PIANO"})} name="storageConditions.PianoPrice" /></Grid> : null}
 
-                {showMontagePrice ? <Grid item xs={6} md={3}><FormikPrice label="MONTAGE_SERVICE" name="storageConditions.MontageServicePrice" /></Grid> : null}
+                {showMontagePrice ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "MONTAGE_SERVICE"})} name="storageConditions.MontageServicePrice" /></Grid> : null}
 
-                {showDeMontagePrice ? <Grid item xs={6} md={3}><FormikPrice label="DE_MONTAGE_SERVICE" name="storageConditions.DeMontageServicePrice" /></Grid> : null}
+                {showDeMontagePrice ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "DE_MONTAGE_SERVICE"})} name="storageConditions.DeMontageServicePrice" /></Grid> : null}
 
-                {showHeavyLiftPrice ? <Grid item xs={6} md={3}><FormikPrice label="HEAVY_LIFT_PRICE" name="storageConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
+                {showHeavyLiftPrice ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "HEAVY_LIFT_PRICE"})} name="storageConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
               </FormikGroups>
             ) : null}
           </ServiceConditions>

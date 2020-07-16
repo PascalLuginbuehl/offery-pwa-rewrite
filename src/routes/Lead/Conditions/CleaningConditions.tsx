@@ -7,7 +7,7 @@ import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
 import PageHeader from "../../../components/PageHeader"
 import { ICleaningServiceConditions } from "../../../interfaces/IConditions"
-import {  useIntl } from "react-intl"
+import { useIntl } from "react-intl"
 import FormikPrice from "../../../components/Formik/CustomComponents/FormikPrice"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import FormikButtonCheckbox from "../../../components/FormikFields/FormikButtonCheckbox"
@@ -63,7 +63,10 @@ const getCost = (values: FormValues): number => {
 export default function CleaningConditions(props: CleaningConditionProps) {
   const { cleaningService, onChangeAndSave, nextPage } = props
   const { resource, selectedCompany } = useResourceContext()
-  const { formatMessage } = useIntl()
+
+  const intl = useIntl()
+
+  const formatMessage = intl.formatMessage.bind(intl)
 
   if (!resource || !selectedCompany) {
     return null
@@ -142,10 +145,10 @@ export default function CleaningConditions(props: CleaningConditionProps) {
             {showHighPressureGaragePrice || showHighPressureTerracePrice ? (
               <FormikGroups label="HIGH_PRESURE_CLEANING_FIX_PRICE" xs={6} md={3}>
                 {showHighPressureTerracePrice ? (
-                  <Grid item xs={6}><FormikPrice label="TERRACE" name="cleaningConditions.HighPressureTerraceCleaningFixPrice" /></Grid>
+                  <Grid item xs={6}><FormikPrice label={formatMessage({id: "TERRACE"})} name="cleaningConditions.HighPressureTerraceCleaningFixPrice" /></Grid>
                 ) : null}
                 {showHighPressureGaragePrice ? (
-                  <Grid item xs={6}><FormikPrice label="GARAGE" name="cleaningConditions.HighPressureGarageCleaningFixPrice" /></Grid>
+                  <Grid item xs={6}><FormikPrice label={formatMessage({id: "GARAGE"})} name="cleaningConditions.HighPressureGarageCleaningFixPrice" /></Grid>
                 ) : null}
               </FormikGroups>
             ) : null}

@@ -13,7 +13,6 @@ import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import ServiceConditions from "./ServiceConditions"
 import { IPutMoveService } from "../../../interfaces/IService"
 
-
 const styles = (theme: Theme) => createStyles({})
 
 interface Values  {
@@ -37,6 +36,8 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
     const showMontageCondition = (moveService.MontageService && selectedCompany.Settings.EnableServiceMoveMontage && selectedCompany.Settings.EnableServiceMoveMontagePrice)
     const showDeMontageCondition = (moveService.DeMontageService && selectedCompany.Settings.EnableServiceMoveDemontage && selectedCompany.Settings.EnableServiceMoveDemontagePrice)
 
+    const formatMessage = intl.formatMessage.bind(intl)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -57,7 +58,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                 {selectedCompany.Settings.EnableServiceMoveBorePrice ?
                   (
                     <Grid item xs={6}>
-                      <FormikPrice label="PRICE" name="moveConditions.BorePrice" />
+                      <FormikPrice label={formatMessage({id: "PRICE"})} name="moveConditions.BorePrice" />
                     </Grid>
                   ) : null }
               </FormikGroups>
@@ -77,7 +78,7 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
                   />) : null }
                 {selectedCompany.Settings.EnableServiceMoveLampDemontagePrice ? (
                   <Grid item xs={6}>
-                    <FormikPrice label="PRICE" name="moveConditions.LampDemontagePrice" />
+                    <FormikPrice label={formatMessage({id: "PRICE"})} name="moveConditions.LampDemontagePrice" />
                   </Grid>
                 ) : null}
               </FormikGroups>
@@ -85,15 +86,15 @@ class MoveConditions extends React.Component<Props & FormikProps<Values>, {}> {
 
             {showFurnitureLift || showPiano || showHeavyLift || showMontageCondition || showDeMontageCondition ? (
               <FormikGroups label="PRICES" xs={12} md={6}>
-                {showFurnitureLift ? <Grid item xs={6} md={3}><FormikPrice label="FURNITURE_LIFT" name="moveConditions.FurnitureLiftPrice" /></Grid> : null}
+                {showFurnitureLift ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "FURNITURE_LIFT"})} name="moveConditions.FurnitureLiftPrice" /></Grid> : null}
 
-                {showPiano ? <Grid item xs={6} md={3}><FormikPrice label="PIANO" name="moveConditions.PianoPrice" /></Grid> : null}
+                {showPiano ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "PIANO"})} name="moveConditions.PianoPrice" /></Grid> : null}
 
-                {showMontageCondition ? <Grid item xs={6} md={3}><FormikPrice label="MONTAGE_SERVICE" name="moveConditions.MontageServicePrice" /></Grid> : null}
+                {showMontageCondition ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "MONTAGE_SERVICE"})} name="moveConditions.MontageServicePrice" /></Grid> : null}
 
-                {showDeMontageCondition ? <Grid item xs={6} md={3}><FormikPrice label="DE_MONTAGE_SERVICE" name="moveConditions.DeMontageServicePrice" /></Grid> : null}
+                {showDeMontageCondition ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "DE_MONTAGE_SERVICE"})} name="moveConditions.DeMontageServicePrice" /></Grid> : null}
 
-                {showHeavyLift ? <Grid item xs={6} md={3}><FormikPrice label="HEAVY_LIFT_PRICE" name="moveConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
+                {showHeavyLift ? <Grid item xs={6} md={3}><FormikPrice label={formatMessage({id: "HEAVY_LIFT_PRICE"})} name="moveConditions.ServiceConditions.HeavyLiftPrice" /></Grid> : null}
               </FormikGroups>
             ) : null}
           </ServiceConditions>

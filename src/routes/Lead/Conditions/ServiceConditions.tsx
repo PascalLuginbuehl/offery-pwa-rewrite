@@ -70,6 +70,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
     } = this.props
 
     const enabledPaymentMethods = resource.PaymentMethods.filter(p => selectedCompany.Settings.EnabledPaymentMethodTextKeys.includes(p.NameTextKey))
+    const formatMessage = intl.formatMessage.bind(intl)
 
     return (
       <>
@@ -110,7 +111,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
           {selectedCompany.Settings.EnableWorkerExpenses && (values.ServiceConditions.HasCostCeiling || values.ServiceConditions.IsHourlyRate) ? (
             <Grid item xs={6} md={disabledVehicles ? 3 : undefined}>
-              <FormikPrice label="EXPENSES" name={`${prefix}.ServiceConditions.Expenses`} />
+              <FormikPrice label={formatMessage({id: "EXPENSES"})} name={`${prefix}.ServiceConditions.Expenses`} />
             </Grid>
           ) : null}
 
@@ -170,7 +171,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
           {/* Calculations */}
           {!values.ServiceConditions.HasCostCeiling && !values.ServiceConditions.IsHourlyRate ? (
             <Grid item xs={5}>
-              <FormikPrice label="FIX_PRICE" name={`${prefix}.ServiceConditions.FixPrice`} />
+              <FormikPrice label={formatMessage({id: "FIX_PRICE"})} name={`${prefix}.ServiceConditions.FixPrice`} />
             </Grid>
           ) : null}
 
@@ -233,7 +234,6 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
       </>
     )
   }
-
 
   getPricePerHour = (HoursOfWork: number): number | undefined => {
     const {

@@ -37,6 +37,8 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
     const showHeavyLiftPrice = (disposalService.HeavyLiftService && selectedCompany.Settings.EnableServiceDisposalHeavyLift && selectedCompany.Settings.EnableServiceDisposalHeavyLiftPrice)
     const showFurnitureLiftPrice = (disposalService.FurnitureLiftService && selectedCompany.Settings.EnableServiceDisposalFurnitureLift && selectedCompany.Settings.EnableServiceDisposalFurnitureLiftPrice)
 
+    const formatMessage = intl.formatMessage.bind(intl)
+
     return (
       <Grid item xs={12}>
         <Form>
@@ -49,7 +51,7 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
             prefix={"disposalConditions"}
             commentPrefix={"disposalService"}
             commentEnabled={selectedCompany.Settings.EnableServiceDisposalComment}
-            personalCostAddon={<Grid item xs={3}><FormikPrice label="ENTRY_COST" name="disposalConditions.CostEntry" /></Grid>}
+            personalCostAddon={<Grid item xs={3}><FormikPrice label={formatMessage({id: "ENTRY_COST"})} name="disposalConditions.CostEntry" /></Grid>}
           >
             {selectedCompany.Settings.EnableServiceDisposalLampDemontage && disposalService.LampDemontageService &&
               (selectedCompany.Settings.EnableServiceDisposalLampDemontageAmount || selectedCompany.Settings.EnableServiceDisposalLampDemontagePrice) ?
@@ -64,17 +66,17 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
                     overrideGrid={{ xs: 6, md: undefined }}
                   />) : null }
                 {selectedCompany.Settings.EnableServiceDisposalLampDemontagePrice ?
-                  (<Grid item xs={6}><FormikPrice label="PRICE" name="disposalConditions.LampDemontagePrice"/></Grid>) : null }
+                  (<Grid item xs={6}><FormikPrice label={formatMessage({id: "PRICE"})} name="disposalConditions.LampDemontagePrice"/></Grid>) : null }
               </FormikGroups>
               ) : null}
 
             {showFurnitureLiftPrice || showHeavyLiftPrice || showDeMontagePrice ? (
               <FormikGroups label="PRICES" xs={6} md={3}>
-                {showFurnitureLiftPrice ? <Grid item xs={6}><FormikPrice label="FURNITURE_LIFT" name="disposalConditions.FurnitureLiftPrice"/></Grid> : null }
+                {showFurnitureLiftPrice ? <Grid item xs={6}><FormikPrice label={formatMessage({id: "FURNITURE_LIFT"})} name="disposalConditions.FurnitureLiftPrice"/></Grid> : null }
 
-                {showHeavyLiftPrice ? <Grid item xs={6}><FormikPrice label="HEAVY_LIFT_PRICE" name="disposalConditions.ServiceConditions.HeavyLiftPrice"/></Grid> : null}
+                {showHeavyLiftPrice ? <Grid item xs={6}><FormikPrice label={formatMessage({id: "HEAVY_LIFT_PRICE"})} name="disposalConditions.ServiceConditions.HeavyLiftPrice"/></Grid> : null}
 
-                {showDeMontagePrice ? <Grid item xs={6}><FormikPrice label="DE_MONTAGE_SERVICE" name="disposalConditions.DeMontageServicePrice"/></Grid> : null}
+                {showDeMontagePrice ? <Grid item xs={6}><FormikPrice label={formatMessage({id: "DE_MONTAGE_SERVICE"})} name="disposalConditions.DeMontageServicePrice"/></Grid> : null}
               </FormikGroups>
             ) : null}
 
@@ -91,7 +93,7 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
 
               <Grid item xs={5} md={6}>
                 <MuiTextField
-                  label={intl.formatMessage({ id: "DISPOSAL_FEES" })}
+                  label={formatMessage({ id: "DISPOSAL_FEES" })}
                   value={(values.disposalConditions.Volume ? values.disposalConditions.Volume : 0) * (values.disposalConditions.CostPerCubicInMoney ? values.disposalConditions.CostPerCubicInMoney : 0)}
                   disabled={true}
                   type="number"
@@ -104,7 +106,6 @@ class DisposalConditions extends React.Component<Props & FormikProps<Values>, {}
       </Grid>
     )
   }
-
 
   getAdditionalCost = (): number => {
     const {
