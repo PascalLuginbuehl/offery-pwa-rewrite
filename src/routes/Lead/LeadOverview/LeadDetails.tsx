@@ -13,6 +13,7 @@ import { ILead } from "../../../interfaces/ILead"
 import Services from "../Services"
 import { IntlStyledTableCell, StyledTableCell } from "."
 import { makeStyles } from "@material-ui/styles"
+import { IAddress } from "../../../interfaces/ICompany"
 
 interface Services {
   disposalService: IDisposalSerivce | null
@@ -22,43 +23,26 @@ interface Services {
   cleaningService: ICleaningService | null
 }
 
-interface FormattedAddressProps {
-  building: IBuilding
-  services: Services
-}
-
-
 const useStyles = makeStyles({
   root: {
     padding: "4px 0"
   }
 })
 
-function FormattedAddress(props: FormattedAddressProps) {
-  const { building, services } = props
-  const { Address } = building
-  const classes = useStyles()
-
-  return (
-    <>
-      <div className={classes.root}>
-        <Link href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${Address.PLZ} ${Address.City}, ${Address.Street}`)} target="_blank">
-          <span>
-            {Address.Street}
-            <br />
-            {Address.PLZ} {Address.City}
-          </span>
-        </Link>
-
-        <br/>
-
-        <BuildingTags services={services} building={building} />
-      </div>
-      <Divider />
-    </>
-  )
+interface FormattedAddressLinkProps {
+  address: IAddress
 }
 
+function FormattedAddressLink(props: FormattedAddressLinkProps) {
+  const { address } = props
+  return (
+    <Link href={"https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(`${address.Street} ${address.PLZ} ${address.City}`)} target="_blank">
+      {address.Street}
+      <br />
+      {address.PLZ} {address.City}
+    </Link>
+  )
+}
 
 interface detailProps {
   title: string
@@ -75,7 +59,6 @@ function Detail(props: detailProps) {
   )
 }
 
-
 interface LeadDetailsMobileProps {
   leadContainer: ILeadContainer
 }
@@ -84,6 +67,7 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
   const { leadContainer: { Lead, buildings, ...restLead}} = props
   const intl = useIntl()
   const services = { disposalService: restLead.disposalService, moveService: restLead.moveService, packService: restLead.packService, storageService: restLead.storageService, cleaningService: restLead.cleaningService }
+  const classes = useStyles()
 
   return (
     <div>
@@ -120,12 +104,22 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
       <Detail title="SERVICES">
         <Typography><ServiceIcons lead={Lead} services={Lead.Services} /></Typography>
       </Detail>
+
       <Divider />
 
       <Detail title='BUILDINGS'>
         {
           buildings.map(building => (
-            <FormattedAddress services={services} building={building} key={building.BuildingId} />
+            <React.Fragment key={building.BuildingId}>
+              <div className={classes.root}>
+                <FormattedAddressLink address={building.Address} />
+
+                <br />
+
+                <BuildingTags services={services} building={building} />
+              </div>
+              <Divider />
+            </React.Fragment>
           ))
         }
       </Detail>
@@ -139,7 +133,6 @@ export function LeadDetailsMobile(props: LeadDetailsMobileProps) {
     </div>
   )
 }
-
 
 interface LeadDetailsTableProps {
   leadContainer: ILeadContainer
@@ -189,7 +182,6 @@ export function LeadDetailsTable(props: LeadDetailsTableProps) {
           <StyledTableCell><ServiceIcons lead={lead} services={lead.Services} /></StyledTableCell>
         </TableRow>
 
-
         <TableRow >
           <IntlStyledTableCell component="th" scope="row" colSpan={2}>BUILDINGS</IntlStyledTableCell>
         </TableRow>
@@ -200,11 +192,7 @@ export function LeadDetailsTable(props: LeadDetailsTableProps) {
               {/* <IntlStyledTableCell component="th" scope="row">TO</IntlStyledTableCell> */}
 
               <StyledTableCell>
-                <Link href={"https://www.google.com/maps/dir/?api=1&destination" + encodeURIComponent(`${building.Address.PLZ} ${building.Address.City}, ${building.Address.Street}`)} target="_blank">
-                  {building.Address.Street}
-                  <br />
-                  {building.Address.PLZ} {building.Address.City}
-                </Link>
+                <FormattedAddressLink address={building.Address} />
               </StyledTableCell>
               <StyledTableCell>
                 <BuildingTags services={services} building={building} />
@@ -217,8 +205,6 @@ export function LeadDetailsTable(props: LeadDetailsTableProps) {
 
   )
 }
-
-
 
 interface LeadDatesProps{
   lead: ILead
@@ -260,7 +246,6 @@ function LeadDates(props: LeadDatesProps) {
           : null
       }
 
-
       {
         lead.DeliveryDate ?
           <TableRow>
@@ -269,7 +254,6 @@ function LeadDates(props: LeadDatesProps) {
           </TableRow>
           : null
       }
-
 
       {
         lead.StorageDate ?
