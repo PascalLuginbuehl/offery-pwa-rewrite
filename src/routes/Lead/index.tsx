@@ -14,10 +14,8 @@ import Navigation from "./CombinedRoutes/Navigation"
 import ReactDOM from "react-dom"
 import LeadOverview from "./LeadOverview"
 
-
-
 import { diff } from "deep-object-diff"
-import {   DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, Button,  CircularProgress, Backdrop, Theme } from "@material-ui/core"
+import {   DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, Button,  CircularProgress, Backdrop, Theme, Breadcrumbs, Link, Typography } from "@material-ui/core"
 import IntlTypography from "../../components/Intl/IntlTypography"
 import { FormattedMessage } from "react-intl"
 import differenceInDays from "date-fns/differenceInDays"
@@ -124,11 +122,9 @@ class Lead extends Component<Props, State> {
         return
       }
 
-
       try {
         // TODO get Repsone and save into container here
         // else this will stay outdated : (
-
 
         // Save instantly
         const response = await savePromise()
@@ -170,7 +166,7 @@ class Lead extends Component<Props, State> {
       this.componentDidMount()
     }
 
-    if(this.props.offline !== prevProps.offline) {
+    if (this.props.offline !== prevProps.offline) {
       if (!this.props.offline && this.state.container) {
         this.loadLead(this.state.container.Lead.LeadId)
       }
@@ -190,12 +186,10 @@ class Lead extends Component<Props, State> {
       console.log("I will now override the online store")
     }
 
-
     this.setState({ offlineSyncInProgress: true })
 
     // only compare keys that are relevant. No Server keys
     // var IMyTable: Array<keyof IMyTable> = ["id", "title", "createdAt", "isDeleted"];
-
 
     // Get differences origin and changes
     // Primitive comparison. extend l8er
@@ -219,7 +213,6 @@ class Lead extends Component<Props, State> {
           offlineChanges: bothChangedSameAPI.map(key => offlineChanges[key]),
         }
       })
-
 
       this.setState({ offlineSyncInProgress: false })
       throw "Offline Changed"
@@ -270,7 +263,6 @@ class Lead extends Component<Props, State> {
       console.log("changesWhileOffline", changesWhileOffline)
       console.log("whileOfflineAPIChanges", whileOfflineAPIChanges)
 
-
       // CLear changes
       await LeadAPI.RemoveChangesFromOffline(leadId)
 
@@ -278,7 +270,7 @@ class Lead extends Component<Props, State> {
       await LeadAPI.SaveOriginToOffline(containerClone)
       this.setState({ container: containerClone, offlineSyncInProgress: false})
 
-    } catch(e) {
+    } catch (e) {
 
       // TODO: add more Error handling here
       console.log(e)
@@ -293,7 +285,7 @@ class Lead extends Component<Props, State> {
   overrideWithOfflineChanges = async () => {
     const leadId = this.state.container?.Lead.LeadId
 
-    if(!leadId) {
+    if (!leadId) {
       throw new Error("No lead id")
     }
 
@@ -306,7 +298,6 @@ class Lead extends Component<Props, State> {
     const onlineAPIContainer = await this.fetchLeadOnline(leadId)
 
     await this.saveDifferencesToOnline(leadId, onlineAPIContainer, offlineChanges, true)
-
 
     this.setState({ OfflineConflict: null })
   }
@@ -365,7 +356,7 @@ class Lead extends Component<Props, State> {
         if (offline) {
           const offlineOrigin = await LeadAPI.FetchFromOfflineOrigin(leadId)
 
-          if(offlineOrigin) {
+          if (offlineOrigin) {
             differenceInDays(offlineOrigin.lastUpdated, new Date())
             this.setState({ container: offlineOrigin })
           }
@@ -398,7 +389,6 @@ class Lead extends Component<Props, State> {
       console.log("Is not a leadId", potentialLeadId)
     }
   }
-
 
   fetchLeadOnline = async (potentialLeadId: number): Promise<ILeadContainer> => {
     const lead = await LeadAPI.FetchFromOnline(potentialLeadId)
@@ -438,6 +428,12 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link color="inherit" href="/getting-started/installation/">
+              Lead
+            </Link>
+            <Typography color="textPrimary">{container.Lead.Customer.Firstname} {container.Lead.Customer.Lastname}</Typography>
+          </Breadcrumbs>
 
           <Backdrop className={classes.backdrop} open={offlineSyncInProgress}>
             <div style={{textAlign: "center"}}>
@@ -481,7 +477,6 @@ class Lead extends Component<Props, State> {
             handleChangeAndSave={this.handleChangeAndSave}
             redirectToNextPage={this.redirectToNextPage}
           />
-
 
           <Dialog
             open={!!this.state.OfflineConflict}
@@ -529,7 +524,6 @@ class Lead extends Component<Props, State> {
       throw e
     }
   }
-
 
   redirectToNextPage = (currentPage: string) => (stringAddition = "") => {
     const { container } = this.state
