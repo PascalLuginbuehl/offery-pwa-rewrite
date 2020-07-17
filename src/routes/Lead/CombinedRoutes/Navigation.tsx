@@ -1,11 +1,12 @@
 import React from "react"
 import  { ILeadContainer } from "../LeadAPI"
-import { ListSubheader, Collapse } from "@material-ui/core"
+import { ListSubheader, Collapse, Chip } from "@material-ui/core"
 import { FormattedMessage } from "react-intl"
 import NavFolder from "../../../components/Navigation/NavFolder"
 import NavItem from "../../../components/Navigation/NavItem"
 import NavItemBuilding from "../../../components/Navigation/NavItemBuilding"
 import AddCircleIcon from "@material-ui/icons/AddCircle"
+import { NavLink } from "react-router-dom"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -24,6 +25,8 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
       <ListSubheader>
         <FormattedMessage id="EDIT_LEAD" />
       </ListSubheader>
+
+      <NavItem to={`${matchUrl}/notes`} title="NOTES" secondaryAction={Lead.Notes.length > 0 ? <Chip label={Lead.Notes.length}/> : null} />
 
       <NavItem to={`${matchUrl}`} title="LEAD_OVERVIEW" />
 

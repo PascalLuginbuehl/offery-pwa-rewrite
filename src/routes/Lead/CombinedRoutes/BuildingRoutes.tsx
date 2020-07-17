@@ -9,6 +9,7 @@ import OfflineUnavailable from "../../../components/OfflineUnavailable"
 
 import Building from "../Customer/Building"
 import BuildingsOverview from "../Customer/BuildingsOverview"
+import Notes from "../InternalNotes"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -24,6 +25,23 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
 
   return (
     <>
+
+      <Route
+        exact
+        path={`${matchUrl}/notes`}
+        render={routeProps => (
+          <Notes
+            {...routeProps}
+            lead={Lead}
+            onChangeAndSave={lead => {
+              // Fixing PostLead to Lead back together
+              return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+            }}
+            nextPage={redirectToNextPage("/customer")}
+          />
+        )}
+      />
+
       <Route
         exact
         path={`${matchUrl}/customer`}
@@ -59,7 +77,6 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
           </OfflineUnavailable>
         )}
       />
-
 
       {buildings.map((building, buildingIndex) => (
         <Route

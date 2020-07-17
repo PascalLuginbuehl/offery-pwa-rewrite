@@ -1,7 +1,6 @@
 import React from "react"
-import { makeStyles, createStyles, Theme, useTheme, useMediaQuery, Grid } from "@material-ui/core";
-import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
-
+import { makeStyles, createStyles, Theme, useTheme, useMediaQuery, Grid } from "@material-ui/core"
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,7 +12,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-
 
 /**
  * Be careful using this hook. It only works because the number of
@@ -33,7 +31,6 @@ function useWidth() {
     }, null) || "xs"
   )
 }
-
 
 export default function GridContainer(props: {children: React.ReactNode}) {
   const { children } = props

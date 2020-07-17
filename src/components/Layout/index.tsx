@@ -55,7 +55,6 @@ export default function Layout(props: ResponsiveDrawerProps) {
     setMobileOpen(!mobileOpen)
   }
 
-
   return (
     <div className={classes.root}>
       <AppBar setMobileDrawerOpen={setMobileOpen} />

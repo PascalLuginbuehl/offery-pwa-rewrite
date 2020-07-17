@@ -27,6 +27,9 @@ const styles = (theme: Theme) => createStyles({
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
+  breadcrumbs: {
+    padding: "2px 0 0 8px;",
+  },
 })
 
 interface State {
@@ -428,7 +431,7 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
             <Link color="inherit" href="/getting-started/installation/">
               Lead
             </Link>

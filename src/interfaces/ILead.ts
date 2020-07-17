@@ -3,7 +3,6 @@ import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceCond
 import { IOffer } from "./IOffer"
 import { IServices } from "./IService"
 
-
 export interface IPostCustomer {
   Firstname: string
   Lastname: string
@@ -14,9 +13,7 @@ export interface IPostCustomer {
   PrefferedLanguage: "DE" | "IT" | "FR" | "EN"
 }
 
-export interface IUpdateCustomer extends IPostCustomer {
-
-}
+export type IUpdateCustomer = IPostCustomer
 
 export interface IStatus {
   StatusId: number
@@ -26,7 +23,21 @@ export interface IStatus {
 export interface ICustomer extends IUpdateCustomer {
   CustomerId: number
 }
+
+export interface RegisterInternalNote {
+  Note: string
+}
+
+export interface InternalNote {
+  InternalNoteId: number
+  Note: string
+  UserId: string
+  UserFirstName: string
+  UserLastName: string
+}
 export interface IPostLead {
+  Notes: Array<InternalNote | RegisterInternalNote>
+
   Customer: IPostCustomer
   VisitDate: Date | null
   MoveDate: Date | null
@@ -65,8 +76,8 @@ export interface ICompressedLead extends IUpdateLead {
   Addresses: IAddress[]
 }
 
-
 export interface ILead extends ICompressedLead {
+  Notes: InternalNote[]
 
   StatusHistories: Array<{
     StatusHistoryId: number
@@ -119,4 +130,5 @@ export const emptyLead: IPostLead = {
   Comment: "",
 
   Customer: emptyCustomer,
+  Notes: [],
 }
