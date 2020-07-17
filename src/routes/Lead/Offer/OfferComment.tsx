@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Grid, makeStyles, Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography } from "@material-ui/core"
+import { Grid, makeStyles, Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography, Divider } from "@material-ui/core"
 import { Formik } from "formik"
 import Form from "../../../components/FormikFields/Form"
 import PageHeader from "../../../components/PageHeader"
@@ -25,6 +25,9 @@ export default function OfferComment(props: OfferCommentProps) {
     onChangeAndSave
   } = props
 
+  // Set initial value according to if commented
+  const [accordionOpen, setAccordionOpen] = useState<boolean>(lead.Comment.length > 0)
+
   return (
     <Formik<FormValues>
       initialValues={{
@@ -44,7 +47,7 @@ export default function OfferComment(props: OfferCommentProps) {
       }}
     >
       {() => (
-        <Accordion>
+        <Accordion expanded={accordionOpen} onChange={() => setAccordionOpen(!accordionOpen)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1c-content"
@@ -52,17 +55,18 @@ export default function OfferComment(props: OfferCommentProps) {
           >
             <Typography variant="subtitle1">OFFER_COMMENT</Typography>
           </AccordionSummary>
+          <Divider />
           <AccordionDetails>
-            <Form disableSubmit>
+            <Form disableSubmit style={{width: "100%"}}>
 
               <Grid item xs={12}>
                 <FormikTextField<FormValues> label="COMMENT" name="Comment" multiline />
               </Grid>
             </Form>
           </AccordionDetails>
-
+          <Divider />
           <AccordionActions>
-            <FormikSubmit label="SEND_COMMENT" />
+            <FormikSubmit label="SAVE_COMMENT" />
           </AccordionActions>
         </Accordion>
       )}

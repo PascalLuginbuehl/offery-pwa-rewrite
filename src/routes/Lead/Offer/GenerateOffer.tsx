@@ -79,7 +79,7 @@ export default function GenerateOffer(props: GenerateOfferProps) {
 
       // Update Lead
       onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
-      nextPage("/" + offer.OfferId)
+      nextPage("/" + offer.OfferId.toString())
     } catch (e) {
       setIsUploading(false)
       if (e.json && e.json.Message) {
