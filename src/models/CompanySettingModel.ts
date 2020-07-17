@@ -1,5 +1,39 @@
 
+export enum AppointmentTypeEnum {
+  Visit = 0,
+  Move = 1,
+  PackServiceDate = 2,
+  DisposalDate = 3,
+  StorageDate = 4,
+  CleaningDate = 5,
+  HandOverDate = 6,
+  DeliveryDate = 7
+}
+
+export enum EmailTypeEnum {
+  VisitConfirm = 0,
+  Offer = 1,
+  AcceptConfirm = 2,
+  CancelConfirm = 3,
+  AppointmentReminder = 4,
+  OfferWithNoVisit = 5,
+  OfferChanged = 6,
+}
+
+export interface EmailTypeModel {
+
+  CSettingEmailTypeId: number
+  EmailType: EmailTypeEnum
+
+  AppointmentType: AppointmentTypeEnum | null
+  SubjectTextKey: string | null
+  BodyContentIntroTextKey: string | null
+  BodyContentMainTextKey: string | null
+  BodyContentOutroTextKey: string | null
+}
 export interface CompanyBuildingSettingDTO {
+  EmailTypes: EmailTypeModel[]
+
   RoomAmount: boolean
   TotalArea: boolean
   StairsToEntryAmount: boolean
@@ -40,8 +74,7 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   DefaultCostPerCubicInMoney: number | null
   DefaultPaymentMethodTextKey: string
 
-
-
+  //Conditiontypes Hourly/CostCeiling/Fixprice
   EnableHourPice: boolean
   EnableDefaultHourPrice: boolean
   HourlyPriceRangeJSON: number[]  //info: JsonConvert.SerializeObject(new double[]{ 80.00, 100.00, 120.00 })
@@ -53,7 +86,7 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   EnabledPaymentMethodTextKeys: string[] //info: JsonConvert.SerializeObject(new string[]{ Consts.CASH, etc. })
   EnableWorkerExpenses: boolean
 
-
+  //Move
   EnableServiceMove: boolean
   EnableServiceMoveBore: boolean
   EnableServiceMoveBoreAmount: boolean
@@ -73,8 +106,7 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   EnableServiceMovePianoPrice: boolean
   EnableServiceMoveComment: boolean
 
-
-
+  //Cleaning
   EnableServiceCleaning: boolean
   EnableServiceCleaningEstimatedHoursOfWorkWhenFixPrice: boolean
   EnableServiceCleaningWorkersAmount: boolean
@@ -98,8 +130,7 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   EnableServiceCleaningSpecialPrice: boolean
   EnableServiceCleaningComment: boolean
 
-
-
+  //Disposal
   EnableServiceDisposal: boolean
   EnableServiceDisposalLampDemontage: boolean
   EnableServiceDisposalLampDemontageAmount: boolean
@@ -112,16 +143,14 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   EnableServiceDisposalFurnitureLiftPrice: boolean
   EnableServiceDisposalComment: boolean
 
-
-
+  //Pack
   EnableServicePack: boolean
   EnableServicePackOut: boolean
   EnableServicePackHeavyLift: boolean
   EnableServicePackHeavyLiftPrice: boolean
   EnableServicePackComment: boolean
 
-
-
+  //Storage
   EnableServiceStorage: boolean
   EnableServiceStorageBore: boolean
   EnableServiceStorageBoreAmount: boolean
@@ -145,8 +174,7 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   EnableServiceStorageContactPersonEMail: boolean
   EnableServiceStorageComment: boolean
 
-
-
+  //Material Order
   EnableMaterialOrder: boolean
   EnableMaterialOrderDelivery: boolean
   EnableMaterialOrderRent: boolean
@@ -154,8 +182,7 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   EnableMaterialOrderFree: boolean
   EnableMaterialOrderComment: boolean
 
-
-
+  //Buildings
   DefaultBuildingSetting: CompanyBuildingSettingDTO
   CleaningServiceBuildingSetting: CompanyBuildingSettingDTO
   DisposalServiceBuildingSetting: CompanyBuildingSettingDTO
@@ -165,18 +192,6 @@ DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   StorageServiceInBuildingSetting: CompanyBuildingSettingDTO
   StorageServiceStorageInBuildingSetting: CompanyBuildingSettingDTO
   StorageServiceOutBuildingSetting: CompanyBuildingSettingDTO
-
-
-
-  VisitConfirmEmailSubjectTextKey: string
-  VisitConfirmEmailBodyContentnumberroTextKey: string
-  VisitConfirmEmailBodyContentOutroTextKey: string
-
-  OfferEmailSubjectTextKey: string
-  OfferEmailBodyContentnumberroTextKey: string
-  OfferEmailBodyContentOutroTextKey: string
-
-
 
   ApponumbermentVisitDuration: number
   ApponumbermentMoveDuration: number
