@@ -2,7 +2,6 @@ import * as React from "react"
 import { Form as FormikForm, FormikFormProps, useFormikContext } from "formik"
 import Grid from "@material-ui/core/Grid"
 
-
 import {  Typography } from "@material-ui/core"
 import { Prompt } from "react-router"
 import { injectIntl, WrappedComponentProps, FormattedMessage } from "react-intl"
@@ -11,7 +10,7 @@ import Submit from "./Submit"
 import IntlTypography from "../Intl/IntlTypography"
 import GridContainer from "../GridContainer"
 
-class ErrorBoundary extends React.Component<{ children: React.ReactNode; data: { [key: string]: any } }, { error: any; errorInfo: any }> {
+class ErrorBoundary extends React.Component<{ children: React.ReactNode, data: { [key: string]: any } }, { error: any, errorInfo: any }> {
   state = { error: null, errorInfo: null }
 
   componentDidCatch(error: any, errorInfo: any) {
@@ -85,7 +84,7 @@ interface Props extends FormikFormProps, WrappedComponentProps {
   disableGridContainer?: boolean
 }
 
-const Form: React.ComponentType<Props> = ({ intl, children, routerDisabled, disableSubmit = false, disableGridContainer = false }: Props) => {
+const Form: React.ComponentType<Props> = ({ intl, children, routerDisabled, disableSubmit = false, disableGridContainer = false, ...props }: Props) => {
   const { dirty } = useFormikContext()
 
   const handleUnload = (e: BeforeUnloadEvent) => {
@@ -123,7 +122,7 @@ const Form: React.ComponentType<Props> = ({ intl, children, routerDisabled, disa
 
   return (
     <ErrorBoundary data={values}>
-      <FormikForm autoComplete="off">
+      <FormikForm autoComplete="off" {...props}>
         {routerDisabled ?
           null
           :

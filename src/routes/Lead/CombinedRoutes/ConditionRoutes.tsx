@@ -180,9 +180,7 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
         exact
         path={`${matchUrl}/offer/generate`}
         render={routeProps => (
-          <OfflineUnavailable offline={offline}>
-            <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
-          </OfflineUnavailable>
+          <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
         )}
       />
 
@@ -191,7 +189,6 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
           <PreviewOffer {...routeProps} offline={offline} lead={Lead} nextPage={redirectToNextPage("/offer/preview")} />
         </OfflineUnavailable>
       } />
-
 
       <Route
         exact

@@ -18,6 +18,7 @@ import Lottie from "lottie-react-web"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import Dropzone from "react-dropzone" //https://github.com/react-dropzone/react-dropzone
 import IntlTypography from "../../../components/Intl/IntlTypography"
+import OfflineUnavailable from "../../../components/OfflineUnavailable"
 
 const styles = (theme: Theme) => createStyles({
   dropzone: {
@@ -87,57 +88,60 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, State> 
       selectedCompany,
       buildings,
       values,
-      classes
+      classes,
+      offline
     } = this.props
     const { isUploading } = this.state
 
-
     return (
-      <Grid item xs={12}>
-        <Form>
-          <PageHeader title="GENERATE_OFFER" />
+      <Grid item xs={12} style={{ position: "relative" }}>
+        <OfflineUnavailable offline={true}>
 
-          <Field
-            label="TEMPLATE_CATEGORY"
-            name="templateCategoryId"
-            component={FormikSimpleSelect}
-            // Fixme, there is no 2 possible
-            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
-          />
+          <Form>
+            <PageHeader title="GENERATE_OFFER" />
 
-          <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
+            <Field
+              label="TEMPLATE_CATEGORY"
+              name="templateCategoryId"
+              component={FormikSimpleSelect}
+              // Fixme, there is no 2 possible
+              options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
+            />
 
-          {
-            isSubmitting || isUploading ?
-              <Grid item xs={12}>
-                <Lottie
-                  height={256}
-                  width={256}
-                  options={{
-                    animationData: animation,
-                    // loop: false,
-                  }}
-                />
-              </Grid>
-              :
-              null
-          }
+            <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-        </Form>
+            {
+              isSubmitting || isUploading ?
+                <Grid item xs={12}>
+                  <Lottie
+                    height={256}
+                    width={256}
+                    options={{
+                      animationData: animation,
+                      // loop: false,
+                    }}
+                  />
+                </Grid>
+                :
+                null
+            }
 
-        <Dropzone onDrop={acceptedFiles => this.uploadOffer(acceptedFiles[0])}>
-          {({getRootProps, getInputProps}) => (
-            <section>
-              <div {...getRootProps({className: classes.dropzone})}>
-                <input {...getInputProps({
-                  accept: ".docx",
-                  multiple: false
-                })} />
-                <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
-              </div>
-            </section>
-          )}
-        </Dropzone>
+          </Form>
+
+          <Dropzone onDrop={acceptedFiles => this.uploadOffer(acceptedFiles[0])}>
+            {({getRootProps, getInputProps}) => (
+              <section>
+                <div {...getRootProps({className: classes.dropzone})}>
+                  <input {...getInputProps({
+                    accept: ".docx",
+                    multiple: false
+                  })} />
+                  <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </OfflineUnavailable>
       </Grid>
     )
   }
