@@ -92,13 +92,17 @@ export function Note(props: NoteProps) {
         primary={
           <Typography>
             {formatName({ Firstname, Lastname })}
-            <Typography
-              component="span"
-              variant="caption"
-              onClick={() => setEditing(true)}
-            >
-              EDIT
-            </Typography>
+
+            {(isRegisteredInternalNote(note) ? resource?.CurrentUser.Id == note.UserId : true) ? (
+              <Typography
+                component="span"
+                variant="caption"
+                onClick={() => setEditing(true)}
+              >
+                EDIT
+              </Typography>
+            ) : null}
+
           </Typography>
         }
         secondary={
