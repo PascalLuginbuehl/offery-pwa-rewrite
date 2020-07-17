@@ -13,6 +13,8 @@ import PreviewOffer from "../Offer/PreviewOffer"
 import SendOffer from "../Offer/SendOffer"
 import Done from "../Offer/Done"
 import OfflineUnavailable from "../../../components/OfflineUnavailable"
+import OfferComment from "../Offer/OfferComment"
+import { ILead } from "../../../interfaces/ILead"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -180,7 +182,20 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
         exact
         path={`${matchUrl}/offer/generate`}
         render={routeProps => (
-          <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+          <>
+            <OfferComment
+              lead={Lead}
+              onChangeAndSave={(lead) => {
+                return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+              }}
+            />
+
+            <div style={{position: "relative"}}>
+              <OfflineUnavailable offline={offline}>
+                <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
+              </OfflineUnavailable>
+            </div>
+          </>
         )}
       />
 

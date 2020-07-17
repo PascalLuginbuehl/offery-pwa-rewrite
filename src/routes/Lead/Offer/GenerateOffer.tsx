@@ -116,54 +116,51 @@ export default function GenerateOffer(props: GenerateOfferProps) {
       }}
     >
       {({ isSubmitting }) => (
-        <OfflineUnavailable offline={offline}>
+        <Form style={{position: "relative"}}>
+          <PageHeader title="GENERATE_OFFER" />
 
-          <Form>
-            <PageHeader title="GENERATE_OFFER" />
+          <Field
+            label="TEMPLATE_CATEGORY"
+            name="templateCategoryId"
+            component={FormikSimpleSelect}
+            // Fixme, there is no 2 possible
+            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
+          />
 
-            <Field
-              label="TEMPLATE_CATEGORY"
-              name="templateCategoryId"
-              component={FormikSimpleSelect}
-              // Fixme, there is no 2 possible
-              options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
-            />
+          <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
 
-            <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
+          {
+            isSubmitting || isUploading ?
+              <Grid item xs={12}>
+                <Lottie
+                  height={256}
+                  width={256}
+                  options={{
+                    animationData: animation,
+                    // loop: false,
+                  }}
+                />
+              </Grid>
+              :
+              null
+          }
 
-            {
-              isSubmitting || isUploading ?
-                <Grid item xs={12}>
-                  <Lottie
-                    height={256}
-                    width={256}
-                    options={{
-                      animationData: animation,
-                      // loop: false,
-                    }}
-                  />
-                </Grid>
-                :
-                null
-            }
-
-            <Grid item xs={12}>
-              <Dropzone onDrop={acceptedFiles => uploadOffer(acceptedFiles[0])}>
-                {({ getRootProps, getInputProps }) => (
-                  <section>
-                    <div {...getRootProps({ className: classes.dropzone })}>
-                      <input {...getInputProps({
-                        accept: ".docx",
-                        multiple: false
-                      })} />
-                      <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
-                    </div>
-                  </section>
-                )}
-              </Dropzone>
-            </Grid>
-          </Form>
-        </OfflineUnavailable>
+          <Grid item xs={12}>
+            <Dropzone onDrop={acceptedFiles => uploadOffer(acceptedFiles[0])}>
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps({ className: classes.dropzone })}>
+                    <input {...getInputProps({
+                      accept: ".docx",
+                      multiple: false
+                    })} />
+                    <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+          </Grid>
+        </Form>
       )}
     </Formik>
   )
