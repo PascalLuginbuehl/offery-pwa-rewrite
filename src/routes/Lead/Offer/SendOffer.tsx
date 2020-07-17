@@ -15,6 +15,7 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { RouteComponentProps, useRouteMatch } from "react-router"
 import DateHelper from "../../../helpers/DateHelper"
 import { SendOfferEmailModel } from "../../../models/Offer"
+import { FormikAutocompleteSimple } from "../../../components/Formik"
 
 interface FormValues extends Omit<SendOfferEmailModel, "OfferId" | "CSettingEmailTypeId">  {
   OfferId: number | null
@@ -59,6 +60,10 @@ export default function SendOffer(props: Props) {
     }
 
     return { OfferId: null, Comment: "", CCEmailList: [], CSettingEmailTypeId: null }
+  }
+
+  if (!selectedCompany) {
+    throw new Error("Selected company not defined")
   }
 
   return (
@@ -143,6 +148,18 @@ export default function SendOffer(props: Props) {
                     </ListItem>
                   </List>
                 )}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <FormikAutocompleteSimple<FormValues, false, true, false>
+                options={
+                  selectedCompany.Settings.EmailTypes.map(email => ({ label: intl.formatMessage({id: email.SubjectTextKey ?? "NO_SUBJECT"}), value: email.CSettingEmailTypeId }))
+                }
+                name="CSettingEmailTypeId"
+                label={"SUBJECT_TEXT"}
+                required
+                disableClearable
               />
             </Grid>
 

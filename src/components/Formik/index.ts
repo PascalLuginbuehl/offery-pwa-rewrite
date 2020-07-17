@@ -16,5 +16,11 @@ export * from "./FormikSubmit"
 export { default as FormikSwitch } from "./FormikSwitch"
 export * from "./FormikSwitch"
 
-export { default as FormikTextField } from ".//FormikTextField"
+export { default as FormikTextField } from "./FormikTextField"
 export * from "./FormikTextField"
+
+export { default as FormikAutocomplete } from "./FormikAutocomplete"
+export * from "./FormikAutocomplete"
+
+export { default as FormikAutocompleteSimple } from "./FormikAutocompleteSimple"
+export * from "./FormikAutocompleteSimple"
