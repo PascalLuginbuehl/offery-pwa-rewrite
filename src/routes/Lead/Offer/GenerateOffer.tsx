@@ -1,7 +1,7 @@
-import { createStyles,   Theme, WithStyles, withStyles, Grid } from "@material-ui/core"
-import * as React from "react"
-import { withResource, WithResourceProps } from "../../../providers/withResource"
-import {  FormikProps, Field,   withFormik } from "formik"
+import { createStyles,   Theme, WithStyles, withStyles, Grid, makeStyles } from "@material-ui/core"
+import React, { useState } from "react"
+import { withResource, WithResourceProps, useResourceContext } from "../../../providers/withResource"
+import {  FormikProps, Field,   withFormik, Formik } from "formik"
 
 import Form from "../../../components/FormikFields/Form"
 
@@ -20,7 +20,7 @@ import Dropzone from "react-dropzone" //https://github.com/react-dropzone/react-
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import OfflineUnavailable from "../../../components/OfflineUnavailable"
 
-const styles = (theme: Theme) => createStyles({
+const useStyles = makeStyles({
   dropzone: {
     flex: "1",
     display: "flex",
@@ -38,16 +38,12 @@ const styles = (theme: Theme) => createStyles({
   }
 })
 
-interface State {
-  isUploading: boolean
-}
-
-interface Values {
+interface FormValues {
   templateCategoryId: number | null
   billBuildingId: number | null
 }
 
-interface Props extends WithResourceProps, WithStyles<typeof styles> {
+interface GenerateOfferProps {
   nextPage: (stringAddition?: string) => void
   // onSaveAndNextPage: (templateCategoryId: number, type: number, outAddressId: number, inAddressId: number) => Promise<any>
   buildings: IBuilding[]
@@ -56,46 +52,71 @@ interface Props extends WithResourceProps, WithStyles<typeof styles> {
   onChange: (value: any, name: keyof ILeadContainer) => void
 }
 
-class GenerateOffer extends React.Component<Props & FormikProps<Values>, State> {
-  state: State = {
-    isUploading: false
+export default function GenerateOffer(props: GenerateOfferProps) {
+  const {
+    buildings,
+    offline,
+    lead,
+    onChange,
+    nextPage
+  } = props
+
+  const [isUploading, setIsUploading] = useState<boolean>(false)
+
+  const classes = useStyles()
+  const { selectedCompany } = useResourceContext()
+
+  if (!selectedCompany) {
+    throw new Error("selected company not defined")
   }
 
-  async uploadOffer(file: any) {
+  const { OfferTemplateCategories } = selectedCompany
+
+  const uploadOffer = async (file: any) => {
     try {
-      const { lead } = this.props
-      this.setState({isUploading: true})
+      setIsUploading(true)
       const offer = await OfferService.uploadOffer(lead.LeadId, file)
 
       // Update Lead
-      this.props.onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
-      this.props.nextPage("/" + offer.OfferId)
-    }
-    catch (e) {
-      this.setState({isUploading: false})
+      onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
+      nextPage("/" + offer.OfferId)
+    } catch (e) {
+      setIsUploading(false)
       if (e.json && e.json.Message) {
         alert(e.json.Message)
       }
     }
   }
 
-  public render() {
-    const {
-      values: { templateCategoryId, billBuildingId },
-      isSubmitting,
-      status,
-      resource,
-      selectedCompany,
-      buildings,
-      values,
-      classes,
-      offline
-    } = this.props
-    const { isUploading } = this.state
+  return (
+    <Formik<FormValues>
+      initialValues={{
+        templateCategoryId: OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null,
+        billBuildingId: lead.BillBuildingId,
+      }}
+      onSubmit={async (values, actions) => {
+        try {
+          const { templateCategoryId, billBuildingId } = values
+          if (templateCategoryId && billBuildingId) {
+            const offer = await OfferService.getOffer(lead.LeadId, templateCategoryId, billBuildingId)
 
-    return (
-      <Grid item xs={12} style={{ position: "relative" }}>
-        <OfflineUnavailable offline={true}>
+            onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
+
+            actions.setSubmitting(false)
+            actions.resetForm()
+            nextPage("/" + offer.OfferId.toString())
+          } else {
+            actions.setSubmitting(false)
+            actions.resetForm()
+            nextPage()
+          }
+        } catch (e) {
+          actions.setStatus(e)
+        }
+      }}
+    >
+      {({ isSubmitting }) => (
+        <OfflineUnavailable offline={offline}>
 
           <Form>
             <PageHeader title="GENERATE_OFFER" />
@@ -126,62 +147,24 @@ class GenerateOffer extends React.Component<Props & FormikProps<Values>, State> 
                 null
             }
 
+            <Grid item xs={12}>
+              <Dropzone onDrop={acceptedFiles => uploadOffer(acceptedFiles[0])}>
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div {...getRootProps({ className: classes.dropzone })}>
+                      <input {...getInputProps({
+                        accept: ".docx",
+                        multiple: false
+                      })} />
+                      <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+            </Grid>
           </Form>
-
-          <Dropzone onDrop={acceptedFiles => this.uploadOffer(acceptedFiles[0])}>
-            {({getRootProps, getInputProps}) => (
-              <section>
-                <div {...getRootProps({className: classes.dropzone})}>
-                  <input {...getInputProps({
-                    accept: ".docx",
-                    multiple: false
-                  })} />
-                  <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
-                </div>
-              </section>
-            )}
-          </Dropzone>
         </OfflineUnavailable>
-      </Grid>
-    )
-  }
-}
-
-export default withStyles(styles)(
-  withResource(
-    withFormik<Props, Values>({
-      mapPropsToValues: props => {
-        // Default values asignment
-        const { selectedCompany: { OfferTemplateCategories }, lead: { BillBuildingId } } = props
-
-        const templateCategoryId = OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null
-        const billBuildingId =  BillBuildingId
-
-        return { templateCategoryId, billBuildingId }
-      },
-
-      handleSubmit: async (values, actions) => {
-        try {
-          const { templateCategoryId, billBuildingId } = values
-          if (templateCategoryId && billBuildingId) {
-            const offer = await OfferService.getOffer(actions.props.lead.LeadId, templateCategoryId, billBuildingId)
-
-            // Update Lead
-            const { props } = actions
-            props.onChange({ ...props.lead, Offers: [...props.lead.Offers, offer] }, "Lead")
-
-            actions.setSubmitting(false)
-            actions.resetForm()
-            actions.props.nextPage("/" + offer.OfferId)
-          } else {
-            actions.setSubmitting(false)
-            actions.resetForm()
-            actions.props.nextPage()
-          }
-        } catch (e) {
-          actions.setStatus(e)
-        }
-      },
-    })(GenerateOffer)
+      )}
+    </Formik>
   )
-)
+}
