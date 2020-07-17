@@ -1,7 +1,7 @@
 import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IOffer } from "../interfaces/IOffer"
-
+import { SendOfferEmailModel } from "../models/Offer"
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -48,7 +48,7 @@ class ServicesService {
       .then(json => this.toSpecificType<IOffer>(json))
   }
 
-  async sendOffer(OfferId: number, CCEmailList: string[], Comment: string): Promise<any> {
+  async sendOffer(sendOfferEmail: SendOfferEmailModel): Promise<any> {
     return fetch(
       API_URL + "/offer/send",
       await LoginService.authorizeRequest({
@@ -56,7 +56,7 @@ class ServicesService {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ OfferId, CCEmailList, Comment }),
+        body: JSON.stringify(sendOfferEmail),
       })
     )
       .then(errorFunction)

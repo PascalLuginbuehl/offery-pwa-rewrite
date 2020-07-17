@@ -1,9 +1,9 @@
-import * as React from "react"
+import React, { useState } from "react"
 import { createStyles, Theme, WithStyles, withStyles, Grid,    Button, ListItem, List, IconButton, ListItemText, ListItemSecondaryAction, TextField, ListSubheader } from "@material-ui/core"
-import {  FormikProps, withFormik, Field, FieldArray } from "formik"
-import { injectIntl, WrappedComponentProps,  FormattedMessage } from "react-intl"
+import {  FormikProps, withFormik, Field, FieldArray, Formik } from "formik"
+import { injectIntl, WrappedComponentProps,  FormattedMessage, useIntl } from "react-intl"
 import Form from "../../../components/FormikFields/Form"
-import { withResource, WithResourceProps } from "../../../providers/withResource"
+import { withResource, WithResourceProps, useResourceContext } from "../../../providers/withResource"
 import PageHeader from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
@@ -12,178 +12,149 @@ import LeadAPI from "../LeadAPI"
 import OfferService from "../../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
-import { RouteComponentProps } from "react-router"
+import { RouteComponentProps, useRouteMatch } from "react-router"
 import DateHelper from "../../../helpers/DateHelper"
+import { SendOfferEmailModel } from "../../../models/Offer"
 
-function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-  return value !== null && value !== undefined
-}
-
-const styles = (theme: Theme) => createStyles({})
-
-interface Values {
+interface FormValues extends Omit<SendOfferEmailModel, "OfferId" | "CSettingEmailTypeId">  {
   OfferId: number | null
-  CCEmailList: string[]
-  Comment: string
+  CSettingEmailTypeId: number | null
 }
 
-
-interface Props extends RouteComponentProps<{ offerId?: string }>, WithResourceProps, WithStyles<typeof styles>, WrappedComponentProps {
+interface Props extends RouteComponentProps {
   nextPage: () => void
   lead: ILead
   offline: boolean
 }
 
-interface State {
-  emailValue: string
-}
-
 // KWIKFIX for email
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-class SendOffer extends React.Component<Props & FormikProps<Values>, State> {
-  state: State = {
-    emailValue: "",
+export default function SendOffer(props: Props) {
+  const { lead, nextPage } = props
+  const intl = useIntl()
+
+  const [emailValue, setEmailValue] = useState<string>("")
+
+  const { selectedCompany } = useResourceContext()
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmailValue(event.target.value)
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ emailValue: event.target.value })
+  const match = useRouteMatch<{ offerId?: string }>()
+
+  // const {  } = selectedCompany.Settings.
+
+  const getInitialValues = (): FormValues => {
+    if (match?.params.offerId) {
+      const selectedOfferId = parseInt(match.params.offerId)
+      if (!isNaN(selectedOfferId)) {
+        const offer = props.lead.Offers.find(offer => offer.OfferId === selectedOfferId)
+
+        if (offer) {
+          return { OfferId: selectedOfferId, Comment: "", CCEmailList: [], CSettingEmailTypeId: null }
+        }
+      }
+    }
+
+    return { OfferId: null, Comment: "", CCEmailList: [], CSettingEmailTypeId: null }
   }
 
-  public render() {
-    const { isSubmitting, status, resource, selectedCompany, values, lead, intl } = this.props
-    const { OfferEmailBodyContentIntroTextKey, OfferEmailSubjectTextKey, OfferEmailBodyContentOutroTextKey } = selectedCompany.Settings
-    const { emailValue } = this.state
-    return (
-      <Grid item xs={12}>
-        <Form disableSubmit>
-          <PageHeader title="SEND_OFFER" />
-          {/* <Grid item xs={12}>
+  return (
+    <Formik<FormValues>
+      initialValues={getInitialValues()}
+      onSubmit={async(values, actions) => {
+        try {
+          const { OfferId, CSettingEmailTypeId } = values
 
-            <Typography>
-              <b><FormattedHTMLMessage id={OfferEmailSubjectTextKey} /></b>
-            </Typography>
+          actions.setSubmitting(true)
 
-            <Typography>
-              <FormattedHTMLMessage id={OfferEmailBodyContentIntroTextKey} />
-            </Typography>
+          // If fields are empty
+          if (!OfferId || !CSettingEmailTypeId) {
+            actions.setSubmitting(false)
+            return
+          }
 
-            <Typography>
-              <FormattedHTMLMessage id={OfferEmailBodyContentOutroTextKey} />
-            </Typography>
-          </Grid> */}
+          await OfferService.sendOffer({ ...values, OfferId, CSettingEmailTypeId })
+          actions.setSubmitting(false)
+          actions.resetForm()
+          nextPage()
 
-          <Field
-            label="OFFER"
-            name="OfferId"
-            component={FormikSimpleSelect}
-            notTranslated
-            options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-              label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
-              value: offer.OfferId,
-            }))}
-          />
+        } catch (e) {
+          actions.setStatus(e)
+        }
+      }}
+    >
+      {({ isSubmitting, values }) =>
+        (
+          <Form disableSubmit>
+            <PageHeader title="SEND_OFFER" />
 
-          <Grid item xs={12} md={6}>
-            <FieldArray
-              name="CCEmailList"
-              render={arrayHelpers => (
-                <List
-                  dense
-                  subheader={
-                    <ListSubheader>
-                      <FormattedMessage id="CC_EMAILS"></FormattedMessage>
-                    </ListSubheader>
-                  }
-                >
-                  {values.CCEmailList.map((email, index) => (
-                    <ListItem key={index} dense>
-                      <ListItemText primary={email} />
+            <Field
+              label="OFFER"
+              name="OfferId"
+              component={FormikSimpleSelect}
+              notTranslated
+              options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
+                label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+                value: offer.OfferId,
+              }))}
+            />
+
+            <Grid item xs={12} md={6}>
+              <FieldArray
+                name="CCEmailList"
+                render={arrayHelpers => (
+                  <List
+                    dense
+                    subheader={
+                      <ListSubheader>
+                        <FormattedMessage id="CC_EMAILS"></FormattedMessage>
+                      </ListSubheader>
+                    }
+                  >
+                    {values.CCEmailList.map((email, index) => (
+                      <ListItem key={index} dense>
+                        <ListItemText primary={email} />
+                        <ListItemSecondaryAction>
+                          <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
+                            <RemoveCircleOutlineIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+
+                    <ListItem>
+                      <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={handleChange} />} />
+
                       <ListItemSecondaryAction>
-                        <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
-                          <RemoveCircleOutlineIcon />
+                        <IconButton
+                          disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())}
+                          onClick={() => {
+                            arrayHelpers.push(emailValue)
+                            setEmailValue("")
+                          }}
+                          edge="end"
+                        >
+                          <AddIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
-                  ))}
+                  </List>
+                )}
+              />
+            </Grid>
 
-                  <ListItem>
-                    <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={this.handleChange} />} />
+            <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())}
-                        onClick={() => {
-                          arrayHelpers.push(emailValue)
-                          this.setState({ emailValue: "" })
-                        }}
-                        edge="end"
-                      >
-                        <AddIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-              )}
-            />
-          </Grid>
-
-          <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-
-          <Grid item xs={12}>
-            <Button onClick={this.sendAndSubmit} disabled={!values.OfferId || isSubmitting} variant="contained" color="primary">
-              <FormattedMessage id="SEND_EMAIL" />
-            </Button>
-          </Grid>
-        </Form>
-      </Grid>
-    )
-  }
-
-  sendAndSubmit = async () => {
-    const { lead, submitForm, values, setSubmitting } = this.props
-    const { OfferId, Comment, CCEmailList } = values
-
-    setSubmitting(true)
-
-    if (LeadAPI.isCompleteLead(lead) && OfferId) {
-      await OfferService.sendOffer(OfferId, CCEmailList, Comment)
-    }
-
-    submitForm()
-  }
-}
-
-export default injectIntl(
-  withStyles(styles)(
-    withResource(
-      withFormik<Props, Values>({
-        mapPropsToValues: props => {
-          if (props.match.params.offerId) {
-            const selectedOfferId = parseInt(props.match.params.offerId)
-            if (!isNaN(selectedOfferId)) {
-              const offer = props.lead.Offers.find(offer => offer.OfferId === selectedOfferId)
-
-              if (offer) {
-                return { OfferId: selectedOfferId, Comment: "", CCEmailList: [] }
-              }
-            }
-          }
-
-          return { OfferId: null, Comment: "", CCEmailList: [] }
-        },
-
-        handleSubmit: (values, actions) => {
-          try {
-            actions.setSubmitting(false)
-
-            actions.resetForm()
-            actions.props.nextPage()
-          } catch (e) {
-            actions.setStatus(e)
-          }
-        },
-      })(SendOffer)
-    )
+            <Grid item xs={12}>
+              <Button disabled={!values.OfferId || !values.CSettingEmailTypeId || isSubmitting} variant="contained" color="primary" type="submit">
+                <FormattedMessage id="SEND_EMAIL" />
+              </Button>
+            </Grid>
+          </Form>
+        )}
+    </Formik>
   )
-)
+}

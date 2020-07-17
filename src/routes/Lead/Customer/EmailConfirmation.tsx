@@ -8,15 +8,12 @@ import { withResource, WithResourceProps } from "../../../providers/withResource
 import PageHeader from "../../../components/PageHeader"
 import FormikTextField from "../../../components/FormikFields/FormikTextField"
 
-
 import {  ILead } from "../../../interfaces/ILead"
 import FormikDateTimePicker from "../../../components/FormikFields/FormikDateTimePicker"
-
 
 import LeadAPI from "../LeadAPI"
 import LeadService from "../../../services/LeadService"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
-
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -41,7 +38,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   public render() {
     const { selectedCompany, values, lead, buildings } = this.props
-    const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
+    // const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
 
     const initialDate = new Date()
     initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)

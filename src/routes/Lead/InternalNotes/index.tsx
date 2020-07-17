@@ -97,7 +97,7 @@ export function Note(props: NoteProps) {
               <Typography
                 component="span"
                 variant="caption"
-                onClick={() => setEditing(true)}
+                onClick={() => setEditing(!editing)}
               >
                 EDIT
               </Typography>

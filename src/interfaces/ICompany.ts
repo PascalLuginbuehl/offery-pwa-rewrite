@@ -19,7 +19,41 @@ export interface IOfferTemplateCategory {
   OfferTemplates: IOfferTemplate[]
 }
 
+enum AppointmentType {
+  Visit = 0,
+  Move = 1,
+  PackServiceDate = 2,
+  DisposalDate = 3,
+  StorageDate = 4,
+  CleaningDate = 5,
+  HandOverDate = 6,
+  DeliveryDate = 7
+}
+
+enum EmailType {
+  VisitConfirm = 0,
+  Offer = 1,
+  AcceptConfirm = 2,
+  CancelConfirm = 3,
+  AppointmentReminder = 4,
+  OfferWithNoVisit = 5,
+  OfferChanged = 6,
+}
+
+interface EmailTypeModel {
+  CSettingEmailTypeId: number
+  EmailType: EmailType
+
+  AppointmentType: AppointmentType | null
+  SubjectTextKey: string | null
+  BodyContentIntroTextKey:  string | null
+  BodyContentMainTextKey: string | null
+  BodyContentOutroTextKey: string | null
+}
+
 export interface ICompanySetting {
+  EmailTypes: EmailTypeModel[]
+
   //Default Values
   DefaultServiceTimeStart: number | null
   DefaultFurnitureLiftPrice: number | null
@@ -145,14 +179,6 @@ export interface ICompanySetting {
   StorageServiceInBuildingSetting: IBuildingSetting
   StorageServiceStorageInBuildingSetting: IBuildingSetting
   StorageServiceOutBuildingSetting: IBuildingSetting
-
-  //Email
-  VisitConfirmEmailSubjectTextKey: string
-  VisitConfirmEmailBodyContentIntroTextKey: string
-  VisitConfirmEmailBodyContentOutroTextKey: string
-  OfferEmailSubjectTextKey: string
-  OfferEmailBodyContentIntroTextKey: string
-  OfferEmailBodyContentOutroTextKey: string
 
   AppointmentVisitDuration: number
   AppointmentMoveDuration: number
