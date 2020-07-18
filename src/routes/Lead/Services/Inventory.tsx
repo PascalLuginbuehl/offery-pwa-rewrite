@@ -83,6 +83,7 @@ interface _IState {
   editCustomItemIndex: number | null
   pageIndex: number
   fuse: Fuse<IFurnitureTranslated, typeof fuseOptions> | null
+  searchStringShadow: string
 }
 
 interface AutoSubmitProps {
@@ -105,7 +106,6 @@ const AutoSubmit: React.FC<AutoSubmitProps> = ({ values, submitForm }) => {
     }
   }, [values, submitForm])
 
-
   return null
 }
 
@@ -117,7 +117,8 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     fuse: null,
     pageIndex: 0,
     customItemModelOpen: false,
-    editCustomItemIndex: null
+    editCustomItemIndex: null,
+    searchStringShadow: "",
   }
 
   constructor(props: _IProps & FormikProps<IInventars>) {
@@ -270,7 +271,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     }
   }
 
-  openCreateCustomModal = ()=> {
+  openCreateCustomModal = () => {
     this.setState({customItemModelOpen: true})
   }
 
@@ -318,7 +319,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     const selectedItemList = this.getSelectedList()
     const selectedCustomItemList = this.getCustomSelectedList()
 
-    const { currentlyOpenInventory, selectedFurnitureCategory, filteredFurnitures, pageIndex, customItemModelOpen, editCustomItemIndex } = this.state
+    const { currentlyOpenInventory, selectedFurnitureCategory, filteredFurnitures, pageIndex, customItemModelOpen, editCustomItemIndex, searchStringShadow } = this.state
     const FurnitureCategories = resource.FurnitureCategories
 
     return (
@@ -351,6 +352,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
             onSubmit={( { search }, actions ) => {
               this.filterFurnitures(search)
               actions.setSubmitting(false)
+              this.setState({searchStringShadow: search})
             }}
           >
             {({submitForm, values, setFieldValue}) => (
@@ -399,7 +401,8 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                             }
                             key={index}
                           />
-                        )),
+                          // Ugly fix. Always show special items at the end
+                        )).concat([<InventoryCategoryFolder key={10000} category={{ Furnitures: [], FurnitureCategoryId: 1, NameTextKey: "CUSTOM_ITEM" }} onSelect={() => this.openCreateCustomModal()} />]),
                         this.getBreakpointWith() * 3)
                         .map((chunkedItems, index) => (<div key={index}><Grid style={{ margin: 0, width: "100%" }} container spacing={1}>{chunkedItems}</Grid></div>)
                         )
@@ -439,7 +442,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
             name={"Custom" + currentlyOpenInventory}
             render={(arrayHelpers: ArrayHelpers) => (
               <>
-                <CustomInventory open={customItemModelOpen} handleClose={this.closeCustomItemModal} onSave={this.onCreateItem(arrayHelpers)} />
+                <CustomInventory initialItemName={searchStringShadow} open={customItemModelOpen} handleClose={this.closeCustomItemModal} onSave={this.onCreateItem(arrayHelpers)} />
 
                 {/*
                 // @ts-ignore */}
@@ -552,7 +555,6 @@ export default withWidth()(
           mapPropsToValues: props => props.inventory,
           handleSubmit: async (values, actions) => {
             try {
-              console.log("H2I")
               await actions.props.onChangeAndSave(values)
 
               actions.setSubmitting(false)

@@ -3,12 +3,7 @@ import * as React from "react"
 
 import IntlTypography from "../Intl/IntlTypography"
 import { FormattedMessage } from "react-intl"
-
-
-
-
 import {  IFurniture } from "../../interfaces/IResource"
-
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 
 const styles = (theme: Theme) =>
@@ -88,7 +83,6 @@ class InventoryItems extends React.Component<Props, State> {
   public render() {
     const { classes, furniture, onSelect } = this.props
     const { moreOpen, selectedSizeId, selectedMaterialId } = this.state
-
 
     function handleIOSClick(event: React.TouchEvent<any>) {
       const now = (new Date()).getTime()
@@ -206,5 +200,3 @@ class InventoryItems extends React.Component<Props, State> {
 }
 
 export default withStyles(styles)(InventoryItems)
-
-

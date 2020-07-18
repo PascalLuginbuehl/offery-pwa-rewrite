@@ -13,16 +13,18 @@ interface Props {
   handleClose: () => void
   onSave: (customInventar: ICustomInventar) => void
   editItem?: ICustomInventar
+  initialItemName?: string
 }
 
-export default function CustomInventory({ open, handleClose, editItem, onSave}: Props) {
+export default function CustomInventory(props: Props) {
+  const { open, handleClose, editItem, onSave, initialItemName } = props
 
   console.log(editItem)
   return (
     <Dialog open={open} onClose={handleClose}>
       <Formik<ICustomInventar>
         initialValues={editItem ? editItem : {
-          Name: "",
+          Name: initialItemName ?? "",
           Description: "",
           Amount: 1,
         }}
