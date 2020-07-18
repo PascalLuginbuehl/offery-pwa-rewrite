@@ -7,9 +7,9 @@ import Switch from "../Switch"
 import Address from "./Address"
 import FormikGroups from "./Groups"
 import FormikNumberEndAdornmentText from "../Numbers/FormikNumberEndAdornmentText"
-import { IBuildingSetting } from "../../../interfaces/ICompany"
+import { CompanyBuildingSettingDTO } from "../../../models"
 
-export default function BuildingEdit({ prefix: _prefix, resource, buildingSetting }: { prefix?: string; resource: IResource; buildingSetting: IBuildingSetting }) {
+export default function BuildingEdit({ prefix: _prefix, resource, buildingSetting }: { prefix?: string, resource: IResource, buildingSetting: CompanyBuildingSettingDTO }) {
   const prefix = _prefix ? _prefix + "." : ""
 
   return (
@@ -70,8 +70,6 @@ export default function BuildingEdit({ prefix: _prefix, resource, buildingSettin
             overrideGrid={{ xs: 12, sm: 6, md: 3 }}
           />) : null }
       </FormikGroups>
-
-
 
       {buildingSetting.StairsToEntryAmount ?
         (<Field

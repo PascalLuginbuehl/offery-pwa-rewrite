@@ -32,8 +32,6 @@ export interface EmailTypeModel {
   BodyContentOutroTextKey: string | null
 }
 export interface CompanyBuildingSettingDTO {
-  EmailTypes: EmailTypeModel[]
-
   RoomAmount: boolean
   TotalArea: boolean
   StairsToEntryAmount: boolean
@@ -66,7 +64,9 @@ export interface CompanyBuildingSettingDTO {
 }
 
 export interface CompanySettingModel {
-DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
+  EmailTypes: EmailTypeModel[]
+
+  DefaultServiceTimeStart: number //0 - 24 -> 8 => 08:00
   DefaultFurnitureLiftPrice: number | null
   DefaultPianoPrice: number | null
   DefaultHeavyLiftPrice: number | null

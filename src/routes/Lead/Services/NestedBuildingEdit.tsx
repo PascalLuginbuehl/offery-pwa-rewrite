@@ -8,10 +8,10 @@ import { Formik } from "formik"
 import { IResource } from "../../../interfaces/IResource"
 import { makeStyles } from "@material-ui/styles"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import { green } from "@material-ui/core/colors";
-import IntlTypography from "../../../components/Intl/IntlTypography";
-import Submit from "../../../components/FormikFields/Submit";
-import { IBuildingSetting } from "../../../interfaces/ICompany"
+import { green } from "@material-ui/core/colors"
+import IntlTypography from "../../../components/Intl/IntlTypography"
+import Submit from "../../../components/FormikFields/Submit"
+import { CompanyBuildingSettingDTO } from "../../../models"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,7 +35,7 @@ interface Props {
   saveBuilding: (building: IBuilding) => Promise<any>
   buildings: IBuilding[]
   resource: IResource
-  buildingSetting: IBuildingSetting
+  buildingSetting: CompanyBuildingSettingDTO
 }
 
 export default function NestedBuildingEdit(props: Props) {
@@ -47,7 +47,6 @@ export default function NestedBuildingEdit(props: Props) {
   useEffect(() => {
     console.log("ReInizializing")
   }, [buildingId])
-
 
   const classes = useStyles()
 
@@ -71,7 +70,6 @@ export default function NestedBuildingEdit(props: Props) {
       </Grid>
     )
   }
-
 
   return (
     <Grid item xs={12}>

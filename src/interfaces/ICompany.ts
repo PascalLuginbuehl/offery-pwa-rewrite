@@ -1,23 +1,12 @@
 import { IUser } from "./IUser"
 import { IProduct } from "./IProduct"
-import { CompanySettingModel } from "../models"
+import { CompanySettingModel, OfferTemplateCategoryDTO } from "../models"
 
 export interface IAddress {
   AddressId: number
   Street: string
   PLZ: string
   City: string
-}
-export interface IOfferTemplate {
-  OfferTemplateId: number
-  Name: string
-  DocName: string
-  LanguageCode: string
-}
-export interface IOfferTemplateCategory {
-  NameTextKey: string
-  OfferTemplateCategoryId: number
-  OfferTemplates: IOfferTemplate[]
 }
 
 export interface ICarType {
@@ -34,7 +23,7 @@ export interface ICompany {
   HeadQuarter: IAddress
   EmployeeUsers: IUser[]
   ShopProducts: IProduct[]
-  OfferTemplateCategories: IOfferTemplateCategory[]
+  OfferTemplateCategories: OfferTemplateCategoryDTO[]
   ContactPerson: IUser
   Addresses: IAddress[]
   Settings: CompanySettingModel

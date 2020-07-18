@@ -1,5 +1,4 @@
 
-
 export interface AddressRegisterDTO {
   Street: string
   PLZ: string
@@ -28,8 +27,6 @@ export interface CompanyRegisterModel {
   WebsiteURL: string
   HeadQuarter: AddressRegisterDTO
 }
-
-
 
 export interface OfferyUserDTO {
   Id: number

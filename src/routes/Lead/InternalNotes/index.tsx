@@ -143,22 +143,6 @@ export default function Notes(props: Props) {
       <Grid container spacing={1} style={{ padding: 8 }}>
         <PageHeader title="NOTES" />
 
-        <Grid item xs={12}>
-
-          <List>
-            {lead.Notes.map((note, index) => (
-              <Note key={index} note={note} onEdit={async (note) => {
-                const notes = [...lead.Notes]
-                notes[index] = note
-
-                await onChangeAndSave({ ...lead, Notes: notes })
-
-                return
-              }} />
-            ))}
-          </List>
-        </Grid>
-
         <FormikGroups label="NEW_COMMENT" xs={12}>
           <Grid item xs={12}>
             <NoteTextField
@@ -173,6 +157,21 @@ export default function Notes(props: Props) {
             />
           </Grid>
         </FormikGroups>
+
+        <Grid item xs={12}>
+          <List dense>
+            {lead.Notes.reverse().map((note, index) => (
+              <Note key={index} note={note} onEdit={async (note) => {
+                const notes = [...lead.Notes]
+                notes[index] = note
+
+                await onChangeAndSave({ ...lead, Notes: notes })
+
+                return
+              }} />
+            ))}
+          </List>
+        </Grid>
       </Grid>
     </Grid>
   )
