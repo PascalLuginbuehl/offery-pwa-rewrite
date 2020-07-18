@@ -7,5 +7,13 @@
     "EMAIL": "E-Mail",
     "PHONE": "Telefonnummer",
     "WEBSITE_URL": "Website-Url"
+  },
+  "NOTES": {
+    "NOTES": "Notizen",
+    "NOTE": "Notiz",
+    "EDITED": "bearbeitet",
+    "EDIT": "Bearbeiten",
+    "NEW_COMMENT": "Kommentar verfassen",
+    "SUBMIT_NOTE": "Kommentieren"
   }
 }

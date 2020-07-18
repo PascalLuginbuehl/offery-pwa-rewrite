@@ -1,8 +1,6 @@
 import i18next, { i18n } from "i18next"
 import { initReactI18next } from "react-i18next"
-
-import moment from "moment"
-import "moment/locale/de"
+import LanguageDetector from "i18next-browser-languagedetector"
 
 import translationEN from "./translation_en.json"
 import translationDE from "./translation_de.json"
@@ -34,11 +32,11 @@ export function setupI18n(): i18n {
   }
 
   i18next
+    .use(LanguageDetector)
     .use(initReactI18next)
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-      lng: "en",
-      fallbackLng: "en",
+      fallbackLng: "de",
 
       ns: ["common"],
       defaultNS: "common",
@@ -54,6 +52,12 @@ export function setupI18n(): i18n {
         escapeValue: false, // not needed for react as it escapes by default
       },
 
+      detection: {
+        lookupLocalStorage: "OFFERY_INTL_LOCALE",
+        caches: ["localStorage"],
+        order: ["querystring", "localStorage", "navigator"],
+      },
+
       resources: {
         en: { common: translationEN },
         de: { common: translationDE },
@@ -66,7 +70,7 @@ export function setupI18n(): i18n {
   // by listening to the change language event.
   i18next.on("languageChanged", newlocale => {
     console.log("languageChanged: ", newlocale)
-    moment.locale(newlocale)
+    // moment.locale(newlocale)
   })
 
   return i18next

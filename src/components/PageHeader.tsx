@@ -3,8 +3,7 @@ import * as React from "react"
 import Grid from "@material-ui/core/Grid"
 import withWidth, { WithWidthProps } from "@material-ui/core/withWidth"
 import IntlTypography from "./Intl/IntlTypography"
-import { Breadcrumbs } from "@material-ui/core"
-
+import { Breadcrumbs, Typography } from "@material-ui/core"
 
 interface Props extends WithWidthProps {
   title: string
@@ -13,7 +12,7 @@ interface Props extends WithWidthProps {
 
 class PageHeader extends React.Component<Props> {
   public render() {
-    if(this.props.width !== "xs") {
+    if (this.props.width !== "xs") {
       return (
         <Grid item xs={12}>
           <IntlTypography variant="h5">{this.props.title}</IntlTypography>
@@ -31,6 +30,18 @@ class PageHeader extends React.Component<Props> {
       )
     }
   }
+}
+
+interface NewPageHeaderProps {
+  title: string
+}
+
+export function NewPageHeader(props: NewPageHeaderProps) {
+  const { title } = props
+
+  return (
+    <Typography variant="h5">{title}</Typography>
+  )
 }
 
 export default withWidth()(PageHeader)

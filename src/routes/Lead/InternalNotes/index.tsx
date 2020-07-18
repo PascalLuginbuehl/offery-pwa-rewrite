@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link, Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, ListItemIcon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography, ListItemAvatar, Avatar, Tooltip } from "@material-ui/core"
-import PageHeader from "../../../components/PageHeader"
+import PageHeader, { NewPageHeader } from "../../../components/PageHeader"
 import HomeIcon from "@material-ui/icons/Home"
 import { useRouteMatch } from "react-router"
 import { IBuilding } from "../../../interfaces/IBuilding"
@@ -19,6 +19,7 @@ import Form from "../../../components/FormikFields/Form"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { useFormattedName } from "../../../utils"
 import { RegisterInternalNoteModel, InternalNoteModel } from "../../../models/InternalNoteModel"
+import { useTranslation } from "react-i18next"
 interface Props {
   nextPage: () => void
   onChangeAndSave: (lead: IPostLead) => Promise<void>
@@ -36,16 +37,17 @@ const isRegisteredInternalNote = (note: InternalNoteModel | RegisterInternalNote
 }
 
 interface NoteTextFieldProps {
-  noteValue: RegisterInternalNoteModel
+  initialNoteValue?: RegisterInternalNoteModel
   onSave: (note: RegisterInternalNoteModel, helpers: FormikHelpers<RegisterInternalNoteModel>) => Promise<any>
 }
 
 export function NoteTextField(props: NoteTextFieldProps) {
-  const { onSave, noteValue } = props
+  const { onSave, initialNoteValue } = props
+  const { t } = useTranslation()
 
   return (
     <Formik<FormValues>
-      initialValues={noteValue}
+      initialValues={initialNoteValue ?? { Note: "" }}
       onSubmit={onSave}
     >
       {() => (
@@ -53,11 +55,11 @@ export function NoteTextField(props: NoteTextFieldProps) {
           <FormikTextField<FormValues>
             name="Note"
             multiline
-            label="NOTE"
+            label={initialNoteValue ? t("NOTES.NOTE") : t("NOTES.NEW_COMMENT")}
           />
 
           <div style={{ paddingLeft: 8 }}>
-            <FormikSubmit label="SUBMIT_NOTE" />
+            <FormikSubmit label={t("NOTES.SUBMIT_NOTE")} />
           </div>
         </Form>
       )}
@@ -74,6 +76,7 @@ export function Note(props: NoteProps) {
   const { note, onEdit } = props
   const formatName = useFormattedName()
   const { resource } = useResourceContext()
+  const { t } = useTranslation()
 
   const [ editing, setEditing ] = useState<boolean>(false)
 
@@ -141,7 +144,7 @@ export function Note(props: NoteProps) {
                     variant="caption"
                     color="textSecondary"
                   >
-                    EDITED
+                    {t("NOTES.EDITED")}
                   </Typography>
                 </Tooltip>
               </>
@@ -159,7 +162,7 @@ export function Note(props: NoteProps) {
                   color="textSecondary"
                   onClick={() => setEditing(!editing)}
                 >
-                  EDIT
+                  {t("NOTES.EDIT")}
                 </Typography>
               </>
             ) : null}
@@ -169,7 +172,7 @@ export function Note(props: NoteProps) {
         secondary={
           editing ? (
             <NoteTextField
-              noteValue={note}
+              initialNoteValue={note}
               onSave={async (note) => {
                 await onEdit(note)
 
@@ -197,45 +200,36 @@ export function Note(props: NoteProps) {
 export default function Notes(props: Props) {
   const { lead, nextPage, onChangeAndSave } = props
   const intl = useIntl()
-  const formatMessage = intl.formatMessage.bind(intl)
+  const { t } = useTranslation()
 
   return (
-    <Grid item xs={12}>
-      <Grid container spacing={1} style={{ padding: 8 }}>
-        <PageHeader title="NOTES" />
+    <div style={{padding: 8}}>
+      <NewPageHeader title={t("NOTES.NOTES")} />
 
-        <FormikGroups label="NEW_COMMENT" xs={12}>
-          <Grid item xs={12}>
-            <NoteTextField
-              noteValue={{ Note: "" }}
-              onSave={async (note, helpers) => {
-                const notes = [...lead.Notes, note]
+      <NoteTextField
+        onSave={async (note, helpers) => {
+          const notes = [...lead.Notes, note]
 
-                await onChangeAndSave({ ...lead, Notes: notes })
+          await onChangeAndSave({ ...lead, Notes: notes })
 
-                helpers.resetForm()
+          helpers.resetForm()
 
-                return
-              }}
-            />
-          </Grid>
-        </FormikGroups>
+          return
+        }}
+      />
 
-        <Grid item xs={12}>
-          <List dense>
-            {lead.Notes.reverse().map((note, index) => (
-              <Note key={index} note={note} onEdit={async (note) => {
-                const notes = [...lead.Notes]
-                notes[index] = note
+      <List dense>
+        {lead.Notes.reverse().map((note, index) => (
+          <Note key={index} note={note} onEdit={async (note) => {
+            const notes = [...lead.Notes]
+            notes[index] = note
 
-                await onChangeAndSave({ ...lead, Notes: notes })
+            await onChangeAndSave({ ...lead, Notes: notes })
 
-                return
-              }} />
-            ))}
-          </List>
-        </Grid>
-      </Grid>
-    </Grid>
+            return
+          }} />
+        ))}
+      </List>
+    </div>
   )
 }
