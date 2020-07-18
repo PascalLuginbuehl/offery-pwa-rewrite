@@ -5,12 +5,12 @@ import {  FormikProps, Field,   withFormik, Formik } from "formik"
 
 import Form from "../../../components/FormikFields/Form"
 
-import PageHeader from "../../../components/PageHeader"
+import PageHeader, { NewPageHeader } from "../../../components/PageHeader"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
 import SelectBuilding from "../../../components/FormikFields/Bundled/SelectBuilding"
 
 import OfferService from "../../../services/OfferService"
-import { ILead } from "../../../interfaces/ILead"
+import { ILead, IPostLead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
 
 import animation from "../../../components/lottie/12818-file-recover.json"
@@ -19,6 +19,8 @@ import { IBuilding } from "../../../interfaces/IBuilding"
 import Dropzone from "react-dropzone" //https://github.com/react-dropzone/react-dropzone
 import IntlTypography from "../../../components/Intl/IntlTypography"
 import OfflineUnavailable from "../../../components/OfflineUnavailable"
+import OfferComment from "./OfferComment"
+import { useIntl } from "react-intl"
 
 const useStyles = makeStyles({
   dropzone: {
@@ -50,6 +52,7 @@ interface GenerateOfferProps {
   lead: ILead
   offline: boolean
   onChange: (value: any, name: keyof ILeadContainer) => void
+  onChangeAndSave: (building: IPostLead) => Promise<void>
 }
 
 export default function GenerateOffer(props: GenerateOfferProps) {
@@ -58,10 +61,14 @@ export default function GenerateOffer(props: GenerateOfferProps) {
     offline,
     lead,
     onChange,
-    nextPage
+    nextPage,
+    onChangeAndSave,
   } = props
 
   const [isUploading, setIsUploading] = useState<boolean>(false)
+
+  const intl = useIntl()
+  const formatMessage = intl.formatMessage.bind(intl)
 
   const classes = useStyles()
   const { selectedCompany } = useResourceContext()
@@ -89,79 +96,90 @@ export default function GenerateOffer(props: GenerateOfferProps) {
   }
 
   return (
-    <Formik<FormValues>
-      initialValues={{
-        templateCategoryId: OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null,
-        billBuildingId: lead.BillBuildingId,
-      }}
-      onSubmit={async (values, actions) => {
-        try {
-          const { templateCategoryId, billBuildingId } = values
-          if (templateCategoryId && billBuildingId) {
-            const offer = await OfferService.getOffer(lead.LeadId, templateCategoryId, billBuildingId)
+    <div style={{padding: 8}}>
+      <div style={{ position: "relative" }}>
+        <NewPageHeader title={formatMessage({id: "GENERATE_OFFER"})} />
 
-            onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
+        <OfferComment
+          lead={lead}
+          onChangeAndSave={onChangeAndSave}
+        />
 
-            actions.setSubmitting(false)
-            actions.resetForm()
-            nextPage("/" + offer.OfferId.toString())
-          } else {
-            actions.setSubmitting(false)
-            actions.resetForm()
-            nextPage()
-          }
-        } catch (e) {
-          actions.setStatus(e)
-        }
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form style={{position: "relative"}}>
-          <PageHeader title="GENERATE_OFFER" />
+        <OfflineUnavailable offline={offline}>
+          <Formik<FormValues>
+            initialValues={{
+              templateCategoryId: OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null,
+              billBuildingId: lead.BillBuildingId,
+            }}
+            onSubmit={async (values, actions) => {
+              try {
+                const { templateCategoryId, billBuildingId } = values
+                if (templateCategoryId && billBuildingId) {
+                  const offer = await OfferService.getOffer(lead.LeadId, templateCategoryId, billBuildingId)
 
-          <Field
-            label="TEMPLATE_CATEGORY"
-            name="templateCategoryId"
-            component={FormikSimpleSelect}
-            // Fixme, there is no 2 possible
-            options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
-          />
+                  onChange({ ...lead, Offers: [...lead.Offers, offer] }, "Lead")
 
-          <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
-
-          {
-            isSubmitting || isUploading ?
-              <Grid item xs={12}>
-                <Lottie
-                  height={256}
-                  width={256}
-                  options={{
-                    animationData: animation,
-                    // loop: false,
-                  }}
+                  actions.setSubmitting(false)
+                  actions.resetForm()
+                  nextPage("/" + offer.OfferId.toString())
+                } else {
+                  actions.setSubmitting(false)
+                  actions.resetForm()
+                  nextPage()
+                }
+              } catch (e) {
+                actions.setStatus(e)
+              }
+            }}
+          >
+            {({ isSubmitting }) => (
+              <Form>
+                <Field
+                  label="TEMPLATE_CATEGORY"
+                  name="templateCategoryId"
+                  component={FormikSimpleSelect}
+                  // Fixme, there is no 2 possible
+                  options={selectedCompany.OfferTemplateCategories.map(e => ({ label: e.NameTextKey, value: e.OfferTemplateCategoryId }))}
                 />
-              </Grid>
-              :
-              null
-          }
 
-          <Grid item xs={12}>
-            <Dropzone onDrop={acceptedFiles => uploadOffer(acceptedFiles[0])}>
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div {...getRootProps({ className: classes.dropzone })}>
-                    <input {...getInputProps({
-                      accept: ".docx",
-                      multiple: false
-                    })} />
-                    <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
-                  </div>
-                </section>
-              )}
-            </Dropzone>
-          </Grid>
-        </Form>
-      )}
-    </Formik>
+                <Field name="billBuildingId" label="BILL_BUILDING" buildings={buildings} component={SelectBuilding} />
+
+                {
+                  isSubmitting || isUploading ?
+                    <Grid item xs={12}>
+                      <Lottie
+                        height={256}
+                        width={256}
+                        options={{
+                          animationData: animation,
+                          // loop: false,
+                        }}
+                      />
+                    </Grid>
+                    :
+                    null
+                }
+
+                <Grid item xs={12}>
+                  <Dropzone onDrop={acceptedFiles => uploadOffer(acceptedFiles[0])}>
+                    {({ getRootProps, getInputProps }) => (
+                      <section>
+                        <div {...getRootProps({ className: classes.dropzone })}>
+                          <input {...getInputProps({
+                            accept: ".docx",
+                            multiple: false
+                          })} />
+                          <IntlTypography color="inherit">DROPZONE_FIELD_DRAGORCLICK</IntlTypography>
+                        </div>
+                      </section>
+                    )}
+                  </Dropzone>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </OfflineUnavailable>
+      </div>
+    </div>
   )
 }

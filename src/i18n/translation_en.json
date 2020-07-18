@@ -15,5 +15,10 @@
     "EDIT": "Edit",
     "NEW_COMMENT": "Write a comment",
     "SUBMIT_NOTE": "Comment"
+  },
+  "OFFER": {
+    "OFFER_COMMENT": "Offer comment",
+    "COMMENT": "Comment",
+    "SAVE_COMMENT": "Save comment"
   }
 }

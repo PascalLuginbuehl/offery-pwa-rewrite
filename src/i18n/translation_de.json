@@ -15,5 +15,10 @@
     "EDIT": "Bearbeiten",
     "NEW_COMMENT": "Kommentar verfassen",
     "SUBMIT_NOTE": "Kommentieren"
+  },
+  "OFFER": {
+    "OFFER_COMMENT": "Bemerkung Offerte",
+    "COMMENT": "Bemerkung",
+    "SAVE_COMMENT": "Bemerkung Speichern"
   }
 }

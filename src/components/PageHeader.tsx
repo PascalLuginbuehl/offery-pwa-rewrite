@@ -40,7 +40,7 @@ export function NewPageHeader(props: NewPageHeaderProps) {
   const { title } = props
 
   return (
-    <Typography variant="h5">{title}</Typography>
+    <Typography variant="h5" gutterBottom>{title}</Typography>
   )
 }
 

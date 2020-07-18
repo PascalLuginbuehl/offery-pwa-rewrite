@@ -8,6 +8,7 @@ import { FormikSubmit, FormikTextField } from "../../../components/Formik"
 import { IPostBuilding } from "../../../interfaces/IBuilding"
 import FormikActions from "../../../components/Formik/FormikActions"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import { useTranslation } from "react-i18next"
 
 interface OfferCommentProps {
   onChangeAndSave: (building: IPostLead) => Promise<void>
@@ -19,11 +20,12 @@ interface FormValues {
 }
 
 export default function OfferComment(props: OfferCommentProps) {
-
   const {
     lead,
     onChangeAndSave
   } = props
+
+  const { t } = useTranslation()
 
   // Set initial value according to if commented
   const [accordionOpen, setAccordionOpen] = useState<boolean>(lead.Comment.length > 0)
@@ -40,35 +42,34 @@ export default function OfferComment(props: OfferCommentProps) {
           await onChangeAndSave({...lead, Comment: Comment})
 
           actions.setSubmitting(false)
-          actions.resetForm()
+
+          return
         } catch (e) {
           actions.setStatus(e)
         }
       }}
     >
       {() => (
-        <Accordion expanded={accordionOpen} onChange={() => setAccordionOpen(!accordionOpen)}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1c-content"
-            id="panel1c-header"
-          >
-            <Typography variant="subtitle1">OFFER_COMMENT</Typography>
-          </AccordionSummary>
-          <Divider />
-          <AccordionDetails>
-            <Form disableSubmit style={{width: "100%"}}>
+        <Form disableSubmit disableGridContainer style={{ width: "100%" }}>
+          <Accordion expanded={accordionOpen} onChange={() => setAccordionOpen(!accordionOpen)}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1c-content"
+              id="panel1c-header"
+            >
+              <Typography variant="subtitle1">{t("OFFER.OFFER_COMMENT")}</Typography>
+            </AccordionSummary>
+            <Divider />
+            <AccordionDetails>
+              <FormikTextField<FormValues> label={t("OFFER.COMMENT")} name="Comment" multiline />
+            </AccordionDetails>
+            <Divider />
 
-              <Grid item xs={12}>
-                <FormikTextField<FormValues> label="COMMENT" name="Comment" multiline />
-              </Grid>
-            </Form>
-          </AccordionDetails>
-          <Divider />
-          <AccordionActions>
-            <FormikSubmit label="SAVE_COMMENT" />
-          </AccordionActions>
-        </Accordion>
+            <AccordionActions>
+              <FormikSubmit label={t("OFFER.SAVE_COMMENT")} />
+            </AccordionActions>
+          </Accordion>
+        </Form>
       )}
     </Formik>
 

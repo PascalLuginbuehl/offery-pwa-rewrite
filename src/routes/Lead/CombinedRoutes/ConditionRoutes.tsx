@@ -182,20 +182,17 @@ export default function ConditionRoutes({ leadContainer, redirectToNextPage, mat
         exact
         path={`${matchUrl}/offer/generate`}
         render={routeProps => (
-          <>
-            <OfferComment
-              lead={Lead}
-              onChangeAndSave={(lead) => {
-                return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
-              }}
-            />
-
-            <div style={{position: "relative"}}>
-              <OfflineUnavailable offline={offline}>
-                <GenerateOffer offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/offer/generate")} onChange={handleChange} />
-              </OfflineUnavailable>
-            </div>
-          </>
+          <GenerateOffer
+            offline={offline}
+            {...routeProps}
+            lead={Lead}
+            buildings={buildings}
+            nextPage={redirectToNextPage("/offer/generate")}
+            onChange={handleChange}
+            onChangeAndSave={(lead) => {
+              return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+            }}
+          />
         )}
       />
 
