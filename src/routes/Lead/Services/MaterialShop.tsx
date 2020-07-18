@@ -11,6 +11,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
+  Chip,
 } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
@@ -52,9 +54,16 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
 
   getDefaultCurrentlyOpen(): CurrentlyOpenStateEnum {
     const { selectedCompany } = this.props
-    return selectedCompany.Settings.EnableMaterialOrderBuy ? CurrentlyOpenStateEnum.Buy :
-      selectedCompany.Settings.EnableMaterialOrderRent ? CurrentlyOpenStateEnum.Rent :
-        CurrentlyOpenStateEnum.Free
+
+    if (selectedCompany.Settings.EnableMaterialOrderRent) {
+      return CurrentlyOpenStateEnum.Rent
+    }
+
+    if (selectedCompany.Settings.EnableMaterialOrderBuy ) {
+      return CurrentlyOpenStateEnum.Buy
+    }
+
+    return CurrentlyOpenStateEnum.Free
   }
 
   addItemToList = (product: IProduct, amount: number) => {
@@ -124,6 +133,10 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
 
     const selectedItemList = values.OrderPositions
 
+    const itemCountBuy = selectedItemList.filter(this.filterShowList(CurrentlyOpenStateEnum.Buy)).length
+    const itemCountFree = selectedItemList.filter(this.filterShowList(CurrentlyOpenStateEnum.Free)).length
+    const itemCountRent = selectedItemList.filter(this.filterShowList(CurrentlyOpenStateEnum.Rent)).length
+
     const { currentlyOpen } = this.state
     const ShopProducts = selectedCompany.ShopProducts
 
@@ -145,19 +158,18 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
           </Grid>
 
           <Grid item xs={6} md={3}>
-            <FormikPrice name="DeliveryCostFix" label="FIX_DELIVERY_COST" />
+            <FormikPrice label={intl.formatMessage({id: "FIX_DELIVERY_COST"})} name="DeliveryCostFix" />
           </Grid>
 
           {selectedCompany.Settings.EnableMaterialOrderDelivery ? (<Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>) : null }
 
           {selectedCompany.Settings.EnableMaterialOrderComment ? (<Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
-
           <Grid item xs={12}>
             <Tabs value={currentlyOpen} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
-              {selectedCompany.Settings.EnableMaterialOrderBuy ? (<Tab label={intl.formatMessage({ id: "BUY" })} value={CurrentlyOpenStateEnum.Buy} />) : null }
-              {selectedCompany.Settings.EnableMaterialOrderRent ? (<Tab label={intl.formatMessage({ id: "RENT" })} value={CurrentlyOpenStateEnum.Rent} />) : null }
-              {selectedCompany.Settings.EnableMaterialOrderFree ? (<Tab label={intl.formatMessage({ id: "INCLUSIVE" })} value={CurrentlyOpenStateEnum.Free} />) : null }
+              {selectedCompany.Settings.EnableMaterialOrderBuy ? (<Tab label={<Typography variant="subtitle2">{intl.formatMessage({ id: "BUY" })} <Chip label={itemCountBuy} size="small" /></Typography>} value={CurrentlyOpenStateEnum.Buy} />) : null }
+              {selectedCompany.Settings.EnableMaterialOrderRent ? (<Tab label={<Typography variant="subtitle2">{intl.formatMessage({ id: "RENT" })} <Chip label={itemCountRent} size="small" /></Typography>} value={CurrentlyOpenStateEnum.Rent} />) : null }
+              {selectedCompany.Settings.EnableMaterialOrderFree ? (<Tab label={<Typography variant="subtitle2">{intl.formatMessage({ id: "INCLUSIVE" })} <Chip label={itemCountFree} size="small" /></Typography>} value={CurrentlyOpenStateEnum.Free} />) : null }
             </Tabs>
           </Grid>
           <Grid item xs={12}>

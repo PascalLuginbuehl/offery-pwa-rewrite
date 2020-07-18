@@ -1,4 +1,4 @@
-import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider,  Typography, InputAdornment,  } from "@material-ui/core"
+import { createStyles, Tab, Tabs, Theme, WithStyles, withStyles, Grid, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Toolbar, Divider,  Typography, InputAdornment, Chip,  } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import IntlTypography from "../../../components/Intl/IntlTypography"
@@ -432,9 +432,9 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
 
           <Grid item xs={12}>
             <Tabs value={currentlyOpenInventory} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth" centered>
-              <Tab label={intl.formatMessage({ id: "MOVE" })} value={InventoryKeysEnum.Move} />
-              <Tab label={intl.formatMessage({ id: "DISPOSAL" })} value={InventoryKeysEnum.Disposal} />
-              <Tab label={intl.formatMessage({ id: "STORAGE" })} value={InventoryKeysEnum.Storage} />
+              <Tab label={<Typography variant="subtitle2">{intl.formatMessage({ id: "MOVE" })} <Chip label={values.MoveServiceInventars.length + values.CustomMoveServiceInventars.length} size="small" /></Typography>} value={InventoryKeysEnum.Move} />
+              <Tab label={<Typography variant="subtitle2">{intl.formatMessage({ id: "DISPOSAL" })} <Chip label={values.DisposalServiceInventars.length + values.CustomDisposalServiceInventars.length} size="small" /></Typography>} value={InventoryKeysEnum.Disposal} />
+              <Tab label={<Typography variant="subtitle2">{intl.formatMessage({ id: "STORAGE" })} <Chip label={values.StorageServiceInventars.length + values.CustomStorageServiceInventars.length} size="small" /></Typography>} value={InventoryKeysEnum.Storage} />
             </Tabs>
           </Grid>
 
