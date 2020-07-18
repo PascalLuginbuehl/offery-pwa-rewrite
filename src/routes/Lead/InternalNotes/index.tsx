@@ -1,17 +1,16 @@
 import React, { useState } from "react"
-import { Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, ListItemIcon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography, ListItemAvatar, Avatar } from "@material-ui/core"
+import { Link, Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, ListItemIcon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography, ListItemAvatar, Avatar, Tooltip } from "@material-ui/core"
 import PageHeader from "../../../components/PageHeader"
 import HomeIcon from "@material-ui/icons/Home"
 import { useRouteMatch } from "react-router"
-import { Link } from "react-router-dom"
 import { IBuilding } from "../../../interfaces/IBuilding"
 import AddCircleIcon from "@material-ui/icons/AddCircle"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { useIntl } from "react-intl"
+import { useIntl, FormattedDate } from "react-intl"
 import FormikMockSubmit from "../../../components/FormikFields/FormikMockSubmit"
 import LeadAPI from "../LeadAPI"
-import { IPostLead, RegisterInternalNote, InternalNote } from "../../../interfaces/ILead"
-import { Formik } from "formik"
+import { IPostLead } from "../../../interfaces/ILead"
+import { Formik, FormikHelpers } from "formik"
 import { FormikTextField, FormikSubmit } from "../../../components/Formik"
 import PersonIcon from "@material-ui/icons/Person"
 import { useResourceContext } from "../../../providers/withResource"
@@ -19,15 +18,16 @@ import FormikActions from "../../../components/Formik/FormikActions"
 import Form from "../../../components/FormikFields/Form"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { useFormattedName } from "../../../utils"
+import { RegisterInternalNoteModel, InternalNoteModel } from "../../../models/InternalNoteModel"
 interface Props {
   nextPage: () => void
   onChangeAndSave: (lead: IPostLead) => Promise<void>
   lead: IPostLead
 }
 
-type FormValues = RegisterInternalNote
+type FormValues = RegisterInternalNoteModel
 
-const isRegisteredInternalNote = (note: InternalNote | RegisterInternalNote): note is InternalNote => {
+const isRegisteredInternalNote = (note: InternalNoteModel | RegisterInternalNoteModel): note is InternalNoteModel => {
   if (Object.prototype.hasOwnProperty.call(note, "InternalNoteId")) {
     return true
   }
@@ -36,8 +36,8 @@ const isRegisteredInternalNote = (note: InternalNote | RegisterInternalNote): no
 }
 
 interface NoteTextFieldProps {
-  noteValue: RegisterInternalNote
-  onSave: (note: RegisterInternalNote) => Promise<any>
+  noteValue: RegisterInternalNoteModel
+  onSave: (note: RegisterInternalNoteModel, helpers: FormikHelpers<RegisterInternalNoteModel>) => Promise<any>
 }
 
 export function NoteTextField(props: NoteTextFieldProps) {
@@ -49,12 +49,16 @@ export function NoteTextField(props: NoteTextFieldProps) {
       onSubmit={onSave}
     >
       {() => (
-        <Form disableSubmit disableGridContainer>
-          <FormikTextField<FormValues> name="Note" multiline label="NOTE" />
+        <Form disableSubmit disableGridContainer style={{display: "flex", alignItems: "center"}}>
+          <FormikTextField<FormValues>
+            name="Note"
+            multiline
+            label="NOTE"
+          />
 
-          <FormikActions>
+          <div style={{ paddingLeft: 8 }}>
             <FormikSubmit label="SUBMIT_NOTE" />
-          </FormikActions>
+          </div>
         </Form>
       )}
     </Formik>
@@ -62,8 +66,8 @@ export function NoteTextField(props: NoteTextFieldProps) {
 }
 
 interface NoteProps {
-  note: RegisterInternalNote | InternalNote
-  onEdit: (note: RegisterInternalNote) => Promise<any>
+  note: RegisterInternalNoteModel | InternalNoteModel
+  onEdit: (note: RegisterInternalNoteModel) => Promise<any>
 }
 
 export function Note(props: NoteProps) {
@@ -73,17 +77,21 @@ export function Note(props: NoteProps) {
 
   const [ editing, setEditing ] = useState<boolean>(false)
 
-  let [Firstname, Lastname] = ["User not found", ""]
+  if (!resource) {
+    throw new Error("Resource not defined")
+  }
+
+  let {FirstName, LastName} = resource.CurrentUser
 
   if (isRegisteredInternalNote(note)) {
-    Firstname = note.UserFirstName
-    Lastname = note.UserLastName
+    FirstName = note.UserFirstName
+    LastName = note.UserLastName
   }
 
   return (
-    <ListItem alignItems="flex-start">
+    <ListItem alignItems="flex-start" disableGutters>
       <ListItemAvatar>
-        <Avatar alt={formatName({ Firstname, Lastname })}>
+        <Avatar alt={formatName({ Firstname: FirstName, Lastname: LastName })}>
           <PersonIcon />
         </Avatar>
       </ListItemAvatar>
@@ -91,16 +99,69 @@ export function Note(props: NoteProps) {
       <ListItemText
         primary={
           <Typography>
-            {formatName({ Firstname, Lastname })}
+            {formatName({ Firstname: FirstName, Lastname: LastName })}
 
-            {(isRegisteredInternalNote(note) ? resource?.CurrentUser.Id == note.UserId : true) ? (
-              <Typography
-                component="span"
-                variant="caption"
-                onClick={() => setEditing(!editing)}
-              >
-                EDIT
-              </Typography>
+            {isRegisteredInternalNote(note) ? (
+              <>
+                &nbsp;
+                &ndash;
+                &nbsp;
+                <Typography
+                  component="span"
+                  variant="caption"
+                  color="textSecondary"
+                >
+                  <FormattedDate
+                    day="numeric"
+                    month="numeric"
+                    year="numeric"
+                    hour="numeric"
+                    minute="numeric"
+                    value={note.CreatedDate}
+                  />
+                </Typography>
+              </>
+            ) : null}
+
+            {isRegisteredInternalNote(note) && note.ChangedDate !== note.CreatedDate ?
+              <>
+                &nbsp;
+                &ndash;
+                &nbsp;
+                <Tooltip title={<FormattedDate
+                  day="numeric"
+                  month="numeric"
+                  year="numeric"
+                  hour="numeric"
+                  minute="numeric"
+                  value={note.ChangedDate}
+                />}>
+                  <Typography
+                    component="span"
+                    variant="caption"
+                    color="textSecondary"
+                  >
+                    EDITED
+                  </Typography>
+                </Tooltip>
+              </>
+              : null
+            }
+
+            {(isRegisteredInternalNote(note) ? resource.CurrentUser.Id === note.UserId : true) ? (
+              <>
+                &nbsp;
+                &ndash;
+                &nbsp;
+                <Typography
+                  component={Link}
+                  variant="caption"
+                  color="textSecondary"
+                  onClick={() => setEditing(!editing)}
+                >
+                  EDIT
+                </Typography>
+              </>
             ) : null}
 
           </Typography>
@@ -147,10 +208,12 @@ export default function Notes(props: Props) {
           <Grid item xs={12}>
             <NoteTextField
               noteValue={{ Note: "" }}
-              onSave={async (note) => {
+              onSave={async (note, helpers) => {
                 const notes = [...lead.Notes, note]
 
                 await onChangeAndSave({ ...lead, Notes: notes })
+
+                helpers.resetForm()
 
                 return
               }}

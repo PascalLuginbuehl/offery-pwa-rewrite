@@ -11,13 +11,12 @@ export enum AppointmentTypeEnum {
 }
 
 export enum EmailTypeEnum {
-  VisitConfirm = 0,
+  AppointmentConfirm = 0,
   Offer = 1,
   AcceptConfirm = 2,
   CancelConfirm = 3,
   AppointmentReminder = 4,
-  OfferWithNoVisit = 5,
-  OfferChanged = 6,
+  GeneralCommunication = 5,
 }
 
 export interface EmailTypeModel {

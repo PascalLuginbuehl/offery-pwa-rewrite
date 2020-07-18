@@ -1,6 +1,6 @@
-import { IUser } from "./IUser"
 import { IProduct } from "./IProduct"
 import { CompanySettingModel, OfferTemplateCategoryDTO } from "../models"
+import { OfferyUserModel } from "../models/OfferyUserModel"
 
 export interface IAddress {
   AddressId: number
@@ -21,10 +21,10 @@ export interface ICompany {
   Telephone: string
   VatUID: string
   HeadQuarter: IAddress
-  EmployeeUsers: IUser[]
+  EmployeeUsers: OfferyUserModel[]
   ShopProducts: IProduct[]
   OfferTemplateCategories: OfferTemplateCategoryDTO[]
-  ContactPerson: IUser
+  ContactPerson: OfferyUserModel
   Addresses: IAddress[]
   Settings: CompanySettingModel
   CarTypes: ICarType[]

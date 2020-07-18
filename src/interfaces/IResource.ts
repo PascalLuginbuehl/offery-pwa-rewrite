@@ -1,8 +1,7 @@
 import { ICompany } from "./ICompany"
 import { IText } from "./IText"
-import { IUser } from "./IUser"
 import { IFSize, IFMaterial } from "./IInventars"
-
+import { OfferyUserModel } from "../models/OfferyUserModel"
 
 export interface IBuildingAge {
   BuildingAgeId: number
@@ -81,7 +80,8 @@ export interface IStatus {
 }
 
 export interface IResource {
-  CurrentUser: IUser
+  APIVersion: string
+  CurrentUser: OfferyUserModel
   CurrentCompanies: ICompany[]
   Texts: IText[]
   BuildingAges: IBuildingAge[]

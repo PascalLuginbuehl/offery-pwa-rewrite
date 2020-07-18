@@ -2,6 +2,7 @@ import {  IAddress } from "./IAddress"
 import { IPackServiceConditions, ICleaningServiceConditions, IStorageServiceConditions, IDisposalServiceConditions, IMoveServiceConditions } from "./IConditions"
 import { IOffer } from "./IOffer"
 import { IServices } from "./IService"
+import { RegisterInternalNoteModel, InternalNoteModel } from "../models/InternalNoteModel"
 
 export interface IPostCustomer {
   Firstname: string
@@ -24,19 +25,8 @@ export interface ICustomer extends IUpdateCustomer {
   CustomerId: number
 }
 
-export interface RegisterInternalNote {
-  Note: string
-}
-
-export interface InternalNote {
-  InternalNoteId: number
-  Note: string
-  UserId: string
-  UserFirstName: string
-  UserLastName: string
-}
 export interface IPostLead {
-  Notes: Array<InternalNote | RegisterInternalNote>
+  Notes: Array<InternalNoteModel | RegisterInternalNoteModel>
 
   Customer: IPostCustomer
   VisitDate: Date | null
@@ -77,7 +67,7 @@ export interface ICompressedLead extends IUpdateLead {
 }
 
 export interface ILead extends ICompressedLead {
-  Notes: InternalNote[]
+  Notes: InternalNoteModel[]
 
   StatusHistories: Array<{
     StatusHistoryId: number

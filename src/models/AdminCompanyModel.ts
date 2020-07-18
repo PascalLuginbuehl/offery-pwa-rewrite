@@ -28,28 +28,12 @@ export interface CompanyRegisterModel {
   HeadQuarter: AddressRegisterDTO
 }
 
-export interface OfferyUserDTO {
-  Id: number
-  Email: string
-  PhoneNumber: string
-
-  Settings: UserSettingDTO
-}
-
 export interface ProductDTO {
   ProductId: number
   NameTextKey: string
   DescriptionTextKey: string
   SellPrice: number
   RentPrice: number
-}
-
-export interface UserSettingDTO {
-  UserSettingId: number
-  PrefferedLanguage: string
-  LastMailedPerson: string
-  HasAccessToOffery: boolean
-  IsSuperAdmin: boolean
 }
 
 export interface OfferTemplateDTO {
