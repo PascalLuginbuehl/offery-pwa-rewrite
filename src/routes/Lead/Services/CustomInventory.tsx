@@ -16,6 +16,12 @@ interface Props {
   initialItemName?: string
 }
 
+const capitalize = (s: string | unknown) => {
+  if (typeof s !== "string") return ""
+
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 export default function CustomInventory(props: Props) {
   const { open, handleClose, editItem, onSave, initialItemName } = props
 
@@ -24,7 +30,7 @@ export default function CustomInventory(props: Props) {
     <Dialog open={open} onClose={handleClose}>
       <Formik<ICustomInventar>
         initialValues={editItem ? editItem : {
-          Name: initialItemName ?? "",
+          Name: capitalize(initialItemName) ?? "",
           Description: "",
           Amount: 1,
         }}

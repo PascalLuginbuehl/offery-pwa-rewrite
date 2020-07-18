@@ -12,6 +12,14 @@ export interface FormikTextFieldProps extends WrappedComponentProps, FieldProps,
   overrideGrid?: Partial<Record<Breakpoint, boolean | GridSize>>
 }
 
+function trimStringOrUnknown(stringToTrim: string | unknown) {
+  if (typeof stringToTrim !== "string") {
+    return stringToTrim
+  }
+
+  return stringToTrim.trim()
+}
+
 class FormikTextField extends React.Component<FormikTextFieldProps> {
   render() {
     const defaultGrid: FormikTextFieldProps["overrideGrid"] = { xs: 12, md: 6 }
@@ -36,6 +44,11 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
     const fieldError = getIn(errors, name)
     const showError = getIn(touched, name) && !!fieldError
 
+    function trimOnBlur(e: React.FocusEvent<any>) {
+      form.setFieldValue(field.name, trimStringOrUnknown(field.value))
+      field.onBlur(e)
+    }
+
     const TextFieldElement = (
       <MuiTextField
         error={showError}
@@ -47,6 +60,7 @@ class FormikTextField extends React.Component<FormikTextFieldProps> {
         {...props}
         {...field}
         value={field.value === undefined || field.value === null ? "" : field.value }
+        onBlur={trimOnBlur}
       >
         {children}
       </MuiTextField>
