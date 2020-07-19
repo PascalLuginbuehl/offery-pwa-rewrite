@@ -77,7 +77,8 @@ function getContainerDiffKeys(originContainer: ILeadContainer, changesContainer:
       "Offers",
       "ConfirmedOrderVerbal",
       "ConfirmedOrder",
-      "ConfirmedOffer"
+      "ConfirmedOffer",
+      "Notes",
     ]
 
     // console.log(key)
