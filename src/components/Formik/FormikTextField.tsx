@@ -54,6 +54,7 @@ export default function FormikTextField<FormValues>(props: FormikTextFieldProps<
 
     {...otherProps}
     {...field}
+    value={field.value === undefined || field.value === null ? "" : field.value}
 
     onBlur={trimOnBlur}
   >

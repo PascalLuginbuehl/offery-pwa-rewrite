@@ -1,10 +1,15 @@
 interface NameObject {
-  Firstname: string
-  Lastname: string
+  Company?: string
+  FirstName: string
+  LastName: string
 }
 
 export default function useFormattedName() {
   return function FormatName(name: NameObject): string {
-    return `${name.Firstname} ${name.Lastname}`
+    if (name.Company) {
+      return `${name.Company}, ${name.FirstName} ${name.LastName}`
+
+    }
+    return `${name.FirstName} ${name.LastName}`
   }
 }

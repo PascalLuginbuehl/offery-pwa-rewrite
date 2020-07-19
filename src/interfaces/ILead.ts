@@ -19,6 +19,7 @@ export type IUpdateCustomer = IPostCustomer
 export interface IStatus {
   StatusId: number
   NameTextKey: string
+  OrderNumber: number | null
 }
 
 export interface ICustomer extends IUpdateCustomer {
@@ -74,6 +75,7 @@ export interface ILead extends ICompressedLead {
     Created: Date
     Status: IStatus
     Comment: string
+    CSettingEmailTypeId: number | null
   }>
 
   AppointmentReminders: Array<{

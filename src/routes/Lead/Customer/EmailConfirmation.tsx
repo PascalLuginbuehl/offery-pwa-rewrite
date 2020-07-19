@@ -50,32 +50,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
         <Form>
           <PageHeader title="EMAIL_CONFIRMATION" />
 
-          {/* <Grid item xs={12}> */}
-          {/* <Typography>
-            <b><FormattedHTMLMessage id={VisitConfirmEmailSubjectTextKey} /></b>
-          </Typography>
-
-          <Typography>
-            <FormattedHTMLMessage id={VisitConfirmEmailBodyContentIntroTextKey} />
-          </Typography> */}
-
-          {/* lead.VisitDate ? (
-          <>
-            <IntlTypography>VISITING_DATE</IntlTypography>
-            <Typography>
-              <FormattedDate value={lead.VisitDate} month="numeric" day="numeric" year="numeric" hour="numeric" minute="numeric" />
-            </Typography>
-          </>
-        )
-          : null
-        } */}
-
           <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required overrideGrid={{xs: 12, md: 6}}/>
-
-          {/* <Typography>
-            <FormattedHTMLMessage id={VisitConfirmEmailBodyContentOutroTextKey} />
-             </Typography>
-         </Grid> */}
 
           <Field component={SelectBuilding} label="VISIT_ADDRESS" name="BuildingId" buildings={buildings} required/>
           {/* <SelectAddress label="" name="BuildingId" buildings={buildingOptions} /> */}
@@ -103,7 +78,7 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
       setSubmitting(false)
       return
     }
-    await LeadService.sendVisitConfirmation({ LeadId: lead.LeadId, Comment: Comment, BuildingId: BuildingId, VisitDate: VisitDate })
+    await LeadService.sendAppointmentConfirmationEmail({ LeadId: lead.LeadId, Comment: Comment, BuildingId: BuildingId, VisitDate: VisitDate })
 
     submitForm()
   }

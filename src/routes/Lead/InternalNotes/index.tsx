@@ -94,7 +94,7 @@ export function Note(props: NoteProps) {
   return (
     <ListItem alignItems="flex-start" disableGutters>
       <ListItemAvatar>
-        <Avatar alt={formatName({ Firstname: FirstName, Lastname: LastName })}>
+        <Avatar alt={formatName({ FirstName: FirstName, LastName: LastName })}>
           <PersonIcon />
         </Avatar>
       </ListItemAvatar>
@@ -102,7 +102,7 @@ export function Note(props: NoteProps) {
       <ListItemText
         primary={
           <Typography>
-            {formatName({ Firstname: FirstName, Lastname: LastName })}
+            {formatName({ FirstName: FirstName, LastName: LastName })}
 
             {isRegisteredInternalNote(note) ? (
               <>

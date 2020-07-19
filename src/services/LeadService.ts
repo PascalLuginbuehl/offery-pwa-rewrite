@@ -1,4 +1,4 @@
-import { IVisitConfirmation } from "../interfaces/IVisitConfirmation"
+import { SendAppointmentConfirmationEmailModel } from "../models/SendAppointmentConfirmationModel"
 import { errorFunction } from "./errorFunction"
 import { ILead, IPutLead, IUpdateLead, ICompressedLead, IPostLead } from "../interfaces/ILead"
 import LoginService from "./LoginService"
@@ -119,16 +119,15 @@ class LeadService {
       .then(json => json.map(this.toComporessedCustomer))
   }
 
-  public async sendVisitConfirmation(visit: IVisitConfirmation) {
-
+  public async sendAppointmentConfirmationEmail(appointmentConfirmation: SendAppointmentConfirmationEmailModel) {
     return fetch(
-      API_URL + "/lead/sendvisitconfirm",
+      API_URL + "/send/appointmentconfirmation",
       await LoginService.authorizeRequest({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...visit, VisitDate: this.formatDate(visit.VisitDate)}),
+        body: JSON.stringify(appointmentConfirmation),
       })
     ).then(errorFunction)
   }
@@ -149,6 +148,5 @@ class LeadService {
       .then(json => this.toCustomer(json))
   }
 }
-
 
 export default new LeadService()
