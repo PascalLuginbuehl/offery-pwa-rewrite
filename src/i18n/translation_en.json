@@ -20,5 +20,8 @@
     "OFFER_COMMENT": "Offer comment",
     "COMMENT": "Comment",
     "SAVE_COMMENT": "Save comment"
+  },
+  "EMAIL": {
+    "SUBJECT_TEXT": "Subject text"
   }
 }

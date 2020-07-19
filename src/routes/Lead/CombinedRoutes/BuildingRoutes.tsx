@@ -124,7 +124,18 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
         path={`${matchUrl}/building/email-confirmation`}
         render={routeProps =>
           <OfflineUnavailable offline={offline} nextPage={redirectToNextPage("/building/email-confirmation")}>
-            <EmailConfirmation offline={offline} {...routeProps} lead={Lead} buildings={buildings} nextPage={redirectToNextPage("/building/email-confirmation")} />
+            <EmailConfirmation
+              offline={offline}
+              {...routeProps}
+              lead={Lead}
+              buildings={buildings}
+              nextPage={redirectToNextPage("/building/email-confirmation")}
+
+              onChangeAndSave={lead => {
+                // Fixing PostLead to Lead back together
+                return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+              }}
+            />
           </OfflineUnavailable>
         }
       />

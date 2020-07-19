@@ -1,8 +1,6 @@
-export interface SendAppointmentConfirmationEmailModel {
+export interface SendGeneralCommunicationEmailModel {
   LeadId: number
   Comment: string
-  BuildingId: number
   CSettingEmailTypeId: number
-
   CCEmailList: string[]
 }

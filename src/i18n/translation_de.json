@@ -20,5 +20,8 @@
     "OFFER_COMMENT": "Bemerkung Offerte",
     "COMMENT": "Bemerkung",
     "SAVE_COMMENT": "Bemerkung Speichern"
+  },
+  "EMAIL": {
+    "SUBJECT_TEXT": "Betreff"
   }
 }

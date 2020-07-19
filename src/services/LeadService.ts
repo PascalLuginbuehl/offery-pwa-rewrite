@@ -121,7 +121,7 @@ class LeadService {
 
   public async sendAppointmentConfirmationEmail(appointmentConfirmation: SendAppointmentConfirmationEmailModel) {
     return fetch(
-      API_URL + "/send/appointmentconfirmation",
+      API_URL + "/email/send/appointmentconfirmation",
       await LoginService.authorizeRequest({
         method: "POST",
         headers: {

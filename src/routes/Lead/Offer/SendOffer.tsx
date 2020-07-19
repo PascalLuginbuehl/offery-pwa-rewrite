@@ -18,6 +18,9 @@ import { SendOfferEmailModel } from "../../../models/Offer"
 import { FormikAutocompleteSimple } from "../../../components/Formik"
 import { EmailTypeEnum } from "../../../models/EmailTypeModel"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
+import CCEmailList from "../../../components/Formik/CustomComponents/FormikCCEmailList"
+import FormikCCEmailList from "../../../components/Formik/CustomComponents/FormikCCEmailList"
+import { useTranslation } from "react-i18next"
 
 interface FormValues extends Omit<SendOfferEmailModel, "OfferId" | "CSettingEmailTypeId">  {
   OfferId: number | null
@@ -30,20 +33,11 @@ interface Props extends RouteComponentProps {
   offline: boolean
 }
 
-// KWIKFIX for email
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
 export default function SendOffer(props: Props) {
   const { lead, nextPage } = props
   const intl = useIntl()
-
-  const [emailValue, setEmailValue] = useState<string>("")
-
   const { selectedCompany } = useResourceContext()
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailValue(event.target.value)
-  }
+  const { t } = useTranslation()
 
   const match = useRouteMatch<{ offerId?: string }>()
 
@@ -111,47 +105,7 @@ export default function SendOffer(props: Props) {
             />
 
             <Grid item xs={12} md={6}>
-              <FieldArray
-                name="CCEmailList"
-                render={arrayHelpers => (
-                  <List
-                    dense
-                    subheader={
-                      <ListSubheader>
-                        <FormattedMessage id="CC_EMAILS"></FormattedMessage>
-                      </ListSubheader>
-                    }
-                  >
-                    {values.CCEmailList.map((email, index) => (
-                      <ListItem key={index} dense>
-                        <ListItemText primary={email} />
-                        <ListItemSecondaryAction>
-                          <IconButton edge="end" onClick={() => arrayHelpers.remove(index)}>
-                            <RemoveCircleOutlineIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-
-                    <ListItem>
-                      <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={handleChange} />} />
-
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())}
-                          onClick={() => {
-                            arrayHelpers.push(emailValue)
-                            setEmailValue("")
-                          }}
-                          edge="end"
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
-                )}
-              />
+              <FormikCCEmailList<FormValues> name="CCEmailList" />
             </Grid>
 
             <Grid item xs={12} md={6}>
@@ -160,7 +114,7 @@ export default function SendOffer(props: Props) {
                   selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.Offer).map(email => ({ label: intl.formatMessage({id: email.SubjectTextKey ?? "NO_SUBJECT"}), value: email.CSettingEmailTypeId }))
                 }
                 name="CSettingEmailTypeId"
-                label={"SUBJECT_TEXT"}
+                label={t("EMAIL.SUBJECT_TEXT")}
                 required
               />
             </Grid>
