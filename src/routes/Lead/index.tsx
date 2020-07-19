@@ -21,6 +21,7 @@ import { FormattedMessage } from "react-intl"
 import differenceInDays from "date-fns/differenceInDays"
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
 import { red } from "@material-ui/core/colors"
+import LeadBreadcrumbs from "../../components/LeadBreadcrumbs"
 
 const styles = (theme: Theme) => createStyles({
   backdrop: {
@@ -432,12 +433,7 @@ class Lead extends Component<Props, State> {
     } else if (container) {
       return (
         <>
-          <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
-            <Link color="inherit" href="/getting-started/installation/">
-              Lead
-            </Link>
-            <Typography color="textPrimary">{container.Lead.Customer.Firstname} {container.Lead.Customer.Lastname}</Typography>
-          </Breadcrumbs>
+          <LeadBreadcrumbs lead={container.Lead} />
 
           <Backdrop className={classes.backdrop} open={offlineSyncInProgress}>
             <div style={{textAlign: "center"}}>
