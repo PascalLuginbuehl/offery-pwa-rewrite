@@ -100,6 +100,9 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         <NavItem to={`${matchUrl}/offer/preview`} title="PREVIEW" nested />
         <NavItem to={`${matchUrl}/offer/send`} title="SEND" nested />
       </NavFolder>
+
+      <NavItem to={`${matchUrl}/general-communication`} title="GENERAL_COMMUNICATION" />
+
     </>
   )
 }

@@ -2,6 +2,7 @@ import { errorFunction } from "./errorFunction"
 import LoginService from "./LoginService"
 import { IOffer } from "../interfaces/IOffer"
 import { SendOfferEmailModel } from "../models/Offer"
+import { SendGeneralCommunicationEmailModel } from "../models/SendGeneralCommunicationEmailModel"
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -60,6 +61,24 @@ class ServicesService {
       })
     )
       .then(errorFunction)
+      .then(response => response.json())
+      // .then(json => this.toSpecificType<IOffer>(json))
+  }
+
+  async sendGeneralCommunication(sendGeneralCommunication: SendGeneralCommunicationEmailModel): Promise < any > {
+    return fetch(
+      API_URL + "/email/send/sendgeneralcommunication",
+      await LoginService.authorizeRequest({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sendGeneralCommunication),
+      })
+    )
+      .then(errorFunction)
+      .then(response => response.json())
+      // .then(json => this.toSpecificType<IOffer>(json))
   }
 }
 

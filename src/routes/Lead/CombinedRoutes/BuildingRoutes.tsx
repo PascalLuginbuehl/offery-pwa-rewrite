@@ -10,6 +10,7 @@ import OfflineUnavailable from "../../../components/OfflineUnavailable"
 import Building from "../Customer/Building"
 import BuildingsOverview from "../Customer/BuildingsOverview"
 import Notes from "../InternalNotes"
+import GeneralCommunication from "../InternalNotes/GeneralCommunication"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -131,6 +132,25 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
               buildings={buildings}
               nextPage={redirectToNextPage("/building/email-confirmation")}
 
+              onChangeAndSave={lead => {
+                // Fixing PostLead to Lead back together
+                return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
+              }}
+            />
+          </OfflineUnavailable>
+        }
+      />
+
+      {/* E-Mail confirmation */}
+      <Route
+        exact
+        path={`${matchUrl}/general-communication`}
+        render={routeProps =>
+          <OfflineUnavailable offline={offline} nextPage={redirectToNextPage("/general-communication")}>
+            <GeneralCommunication
+              {...routeProps}
+              lead={Lead}
+              nextPage={redirectToNextPage("/offer/send")}
               onChangeAndSave={lead => {
                 // Fixing PostLead to Lead back together
                 return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))

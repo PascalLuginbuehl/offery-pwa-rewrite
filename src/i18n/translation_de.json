@@ -23,5 +23,8 @@
   },
   "EMAIL": {
     "SUBJECT_TEXT": "Betreff"
+  },
+  "GENERAL_COMMUNICATION": {
+    "HEADER": "Allgemeine Kommunikation"
   }
 }
