@@ -105,10 +105,6 @@ export default function SendOffer(props: Props) {
             />
 
             <Grid item xs={12} md={6}>
-              <FormikCCEmailList<FormValues> name="CCEmailList" />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
               <FormikSelectSimple<FormValues>
                 options={
                   selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.Offer).map(email => ({ label: intl.formatMessage({id: email.SubjectTextKey ?? "NO_SUBJECT"}), value: email.CSettingEmailTypeId }))
@@ -117,6 +113,10 @@ export default function SendOffer(props: Props) {
                 label={t("EMAIL.SUBJECT_TEXT")}
                 required
               />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormikCCEmailList<FormValues> name="CCEmailList" />
             </Grid>
 
             <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />

@@ -39,6 +39,8 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         <NavItem to={`${matchUrl}/building/new`} icon={<AddCircleIcon color="primary" />} title="CREATE_NEW_BUILDING" nested />
       </NavFolder>
 
+      <NavItem to={`${matchUrl}/general-communication`} title="GENERAL_COMMUNICATION" />
+
       <NavItem to={`${matchUrl}/building/email-confirmation`} title="EMAIL_CONFIRMATION" />
 
       <NavFolder to={`${matchUrl}/services`} title="SERVICES">
@@ -100,9 +102,6 @@ export default function Navigation({ leadContainer, matchUrl, portal }: Props) {
         <NavItem to={`${matchUrl}/offer/preview`} title="PREVIEW" nested />
         <NavItem to={`${matchUrl}/offer/send`} title="SEND" nested />
       </NavFolder>
-
-      <NavItem to={`${matchUrl}/general-communication`} title="GENERAL_COMMUNICATION" />
-
     </>
   )
 }

@@ -346,3 +346,5 @@ REMOVE_OFFLINE_CHANGES, Remove offline changes, Offline änderungen löschen
 NOTES,Notes,Notizen
 SUBJECT_TEXT,Subject text,Betreff
 GENERAL_COMMUNICATION,General communication,Allgemeine Kommunikation
+EMAIL_SENT,Email sent,E-Mail versandt
+EMAIL_HAS_BEEN_SENT,Email has been sent,Die E-Mail wurde versandt

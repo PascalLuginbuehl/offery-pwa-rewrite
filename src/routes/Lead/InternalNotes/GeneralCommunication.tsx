@@ -68,7 +68,9 @@ export default function GeneralCommunication(props: GeneralCommunicationProps) {
       {({ isSubmitting, values }) =>
         (
           <Form disableSubmit>
-            <NewPageHeader title={t("GENERAL_COMMUNICATION.HEADER")} />
+            <Grid item xs={12}>
+              <NewPageHeader title={t("GENERAL_COMMUNICATION.HEADER")} />
+            </Grid>
 
             <Grid item xs={12} md={6}>
               <FormikSelectSimple<FormValues>

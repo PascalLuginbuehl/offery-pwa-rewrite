@@ -97,15 +97,16 @@ export default function GenerateOffer(props: GenerateOfferProps) {
 
   return (
     <div style={{padding: 8}}>
+      <NewPageHeader title={formatMessage({id: "GENERATE_OFFER"})} />
+
+      <OfferComment
+        lead={lead}
+        onChangeAndSave={onChangeAndSave}
+      />
+
       <div style={{ position: "relative" }}>
-        <NewPageHeader title={formatMessage({id: "GENERATE_OFFER"})} />
-
-        <OfferComment
-          lead={lead}
-          onChangeAndSave={onChangeAndSave}
-        />
-
         <OfflineUnavailable offline={offline}>
+
           <Formik<FormValues>
             initialValues={{
               templateCategoryId: OfferTemplateCategories.length === 1 ? OfferTemplateCategories[0].OfferTemplateCategoryId : null,

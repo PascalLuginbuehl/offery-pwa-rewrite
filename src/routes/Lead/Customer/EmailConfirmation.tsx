@@ -30,6 +30,7 @@ interface FormValues extends Omit<SendAppointmentConfirmationEmailModel, "Buildi
   BuildingId: number | null
 
   VisitDate: Date | null
+  DeliveryDate: Date | null
   CSettingEmailTypeId: number | null
 }
 
@@ -47,10 +48,15 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
     const { selectedCompany, values, lead, buildings, intl } = this.props
     // const { VisitConfirmEmailSubjectTextKey, VisitConfirmEmailBodyContentOutroTextKey, VisitConfirmEmailBodyContentIntroTextKey } = selectedCompany.Settings
 
+    const { VisitDate } = lead
+
     const initialDate = new Date()
     initialDate.setHours(selectedCompany.Settings.DefaultServiceTimeStart || 8)
     initialDate.setMinutes(0)
     initialDate.setSeconds(0)
+
+    const VisitDatePlus1 = VisitDate ? new Date(VisitDate) : new Date(initialDate)
+    VisitDatePlus1.setDate(VisitDatePlus1.getDate() + 7)
 
     return (
       <Grid item xs={12}>
@@ -68,9 +74,12 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
             />
           </Grid>
 
-          <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required overrideGrid={{xs: 12, md: 6}}/>
+          <Field component={SelectBuilding} label="ADDRESS" name="BuildingId" buildings={buildings} required />
 
-          <Field component={SelectBuilding} label="VISIT_ADDRESS" name="BuildingId" buildings={buildings} required />
+          <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required overrideGrid={{ xs: 12, md: 6 }} />
+
+          {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
+            (<Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} overrideGrid={{ xs: 12, md: 6 }} />) : null}
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 
@@ -79,7 +88,7 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
           </Grid>
 
           <Grid item xs={12}>
-            <Button onClick={this.sendAndSubmit} disabled={!values.BuildingId || !values.VisitDate} variant="contained">
+            <Button onClick={this.sendAndSubmit} disabled={!values.BuildingId || (!values.VisitDate && !values.DeliveryDate)} variant="contained">
               <FormattedMessage id="SEND_EMAIL" />
             </Button>
           </Grid>
@@ -89,25 +98,27 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
   }
 
   sendAndSubmit = async () => {
+    const {  setSubmitting } = this.props
     try {
-      const { lead, submitForm, values, setSubmitting, intl, onChangeAndSave, setStatus } = this.props
-      const { BuildingId, Comment, CSettingEmailTypeId, VisitDate} = values
+      const { lead, submitForm, values, intl, onChangeAndSave, setStatus } = this.props
+      const { BuildingId, Comment, CSettingEmailTypeId, VisitDate, DeliveryDate } = values
 
       setSubmitting(true)
 
-      if (!LeadAPI.isCompleteLead(lead) || !BuildingId || !VisitDate || !CSettingEmailTypeId) {
+      if (!LeadAPI.isCompleteLead(lead) || !BuildingId || (!VisitDate && !DeliveryDate) || !CSettingEmailTypeId) {
         alert(intl.formatMessage({ id: "VISIT_AND_ADDRESS_REQUIRED" }))
         setSubmitting(false)
         return
       }
 
-      await onChangeAndSave({...lead, VisitDate })
+      await onChangeAndSave({...lead, VisitDate, DeliveryDate })
 
       await LeadService.sendAppointmentConfirmationEmail({LeadId: lead.LeadId, ...values, BuildingId, CSettingEmailTypeId})
 
       submitForm()
     } catch (e) {
       const { setStatus } = this.props
+      setSubmitting(false)
 
       setStatus(e)
     }
@@ -119,12 +130,13 @@ export default injectIntl(
     withResource(
       withFormik<Props, FormValues>({
         mapPropsToValues: props => {
-          const { lead: { VisitDate }, selectedCompany } = props
+          const { lead: { VisitDate, DeliveryDate }, selectedCompany } = props
 
           return {
             BuildingId: null,
             Comment: "",
             VisitDate,
+            DeliveryDate,
             CCEmailList: [],
             CSettingEmailTypeId: selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.AppointmentConfirm && email.AppointmentType == AppointmentTypeEnum.Visit)[0].CSettingEmailTypeId ?? null
           }

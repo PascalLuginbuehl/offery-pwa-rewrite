@@ -1,5 +1,5 @@
 import React from "react"
-import { Route } from "react-router"
+import { Route, useHistory } from "react-router"
 import NewCustomer from "../Customer"
 import LeadAPI, { ILeadContainer } from "../LeadAPI"
 import EmailConfirmation from "../Customer/EmailConfirmation"
@@ -11,6 +11,7 @@ import Building from "../Customer/Building"
 import BuildingsOverview from "../Customer/BuildingsOverview"
 import Notes from "../InternalNotes"
 import GeneralCommunication from "../InternalNotes/GeneralCommunication"
+import EmailSent from "../InternalNotes/EmailSent"
 
 interface Props {
   leadContainer: ILeadContainer
@@ -23,6 +24,7 @@ interface Props {
 
 export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matchUrl, handleChangeAndSave, handleChange, offline}: Props) {
   const { Lead, buildings } = leadContainer
+  const history = useHistory()
 
   return (
     <>
@@ -150,7 +152,8 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
             <GeneralCommunication
               {...routeProps}
               lead={Lead}
-              nextPage={redirectToNextPage("/offer/send")}
+
+              nextPage={() => history.push("/lead/" + Lead.LeadId + "/email-sent")}
               onChangeAndSave={lead => {
                 // Fixing PostLead to Lead back together
                 return handleChangeAndSave(lead, "Lead", () => LeadAPI.SaveLead(lead as ILead))
@@ -159,6 +162,12 @@ export default function BuidlingRoutes({ leadContainer, redirectToNextPage, matc
           </OfflineUnavailable>
         }
       />
+
+      <Route exact path={`${matchUrl}/email-sent`} render={routeProps =>
+        <OfflineUnavailable offline={offline}>
+          <EmailSent {...routeProps} lead={Lead} />
+        </OfflineUnavailable>
+      } />
     </>
   )
 }

@@ -63,9 +63,9 @@ export default function InventoryTableRow(props: Props) {
         </TableCell>
 
         <TableCell padding="none" align="right" style={{ whiteSpace: "nowrap" }}>
-          <IconButton onClick={() => setItemAmount(item.Amount - 1)} classes={{ root: classes.buttonSmallPadding }}>
+          {/* <IconButton onClick={() => setItemAmount(item.Amount - 1)} classes={{ root: classes.buttonSmallPadding }}>
             <RemoveCircleOutlineIcon />
-          </IconButton>
+          </IconButton> */}
 
           <IconButton onClick={() => setItemAmount(0)} classes={{ root: classes.buttonSmallPadding }}>
             <DeleteForeverIcon />
