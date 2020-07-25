@@ -130,7 +130,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
         {disabledVehicles ? null : (
           <FormikGroups label="VEHICLES" xs={12} md={6}>
-            <Field component={CarSelection} name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
+            <CarSelection name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
           </FormikGroups>
         )}
 
