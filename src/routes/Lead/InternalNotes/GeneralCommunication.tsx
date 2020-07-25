@@ -75,7 +75,7 @@ export default function GeneralCommunication(props: GeneralCommunicationProps) {
             <Grid item xs={12} md={6}>
               <FormikSelectSimple<FormValues>
                 options={
-                  selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.GeneralCommunication).map(email => ({ label: intl.formatMessage({ id: email.SubjectTextKey ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
+                  selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.GeneralCommunication).map(email => ({ label: intl.formatMessage({ id: email.Name ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
                 }
                 name="CSettingEmailTypeId"
                 label={t("EMAIL.SUBJECT_TEXT")}

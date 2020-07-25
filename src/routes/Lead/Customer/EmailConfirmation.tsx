@@ -66,7 +66,7 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
           <Grid item xs={12} md={6}>
             <FormikSelectSimple<FormValues>
               options={
-                selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.AppointmentConfirm).map(email => ({ label: intl.formatMessage({ id: email.SubjectTextKey ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
+                selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.AppointmentConfirm).map(email => ({ label: intl.formatMessage({ id: email.Name ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
               }
               name="CSettingEmailTypeId"
               label={intl.formatMessage({id: "SUBJECT_TEXT"})}

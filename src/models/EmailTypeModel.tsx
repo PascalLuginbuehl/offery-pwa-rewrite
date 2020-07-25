@@ -25,6 +25,8 @@ export interface EmailTypeModel {
   CSettingEmailTypeId: number
   EmailType: EmailTypeEnum
 
+  Name: string
+
   AppointmentType: AppointmentTypeEnum | null
   SubjectTextKey: string | null
   BodyContentIntroTextKey: string | null
