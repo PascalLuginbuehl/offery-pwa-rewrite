@@ -163,6 +163,8 @@ class MaterialShop extends React.Component<Props & FormikProps<Values>, State> {
 
           {selectedCompany.Settings.EnableMaterialOrderDelivery ? (<Field name="lead.DeliveryDate" label="PACKING_DELIVERY_DATE" component={FormikDateTimePicker} initialFocusedDate={initialDate}/>) : null }
 
+          {selectedCompany.Settings.EnableMaterialOrderDelivery ? (<Field name="lead.CollectBackDate" label="COLLECTBACKDATE" component={FormikDateTimePicker} initialFocusedDate={initialDate} />) : null}
+
           {selectedCompany.Settings.EnableMaterialOrderComment ? (<Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12 }} />) : null }
 
           <Grid item xs={12}>

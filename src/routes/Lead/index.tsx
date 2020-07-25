@@ -22,6 +22,7 @@ import differenceInDays from "date-fns/differenceInDays"
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles"
 import { red } from "@material-ui/core/colors"
 import LeadBreadcrumbs from "../../components/LeadBreadcrumbs"
+import { containerCSS } from "react-select/src/components/containers"
 
 const styles = (theme: Theme) => createStyles({
   backdrop: {
@@ -214,6 +215,7 @@ class Lead extends Component<Props, State> {
         {
           // @ts-ignore offlineOrigin cannnot be null
           offlineOrigin: bothChangedSameAPI.map(key => offlineOrigin[key]),
+          javaScriptState: this.state.container,
           onlineState: bothChangedSameAPI.map(key => onlineState[key]),
           offlineChanges: bothChangedSameAPI.map(key => offlineChanges[key]),
         }

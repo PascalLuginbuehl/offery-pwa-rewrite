@@ -38,6 +38,7 @@ export interface IPostLead {
   CleaningDate: Date | null
   HandOverDate: Date | null
   DeliveryDate: Date | null
+  CollectBackDate: Date | null
 
   Comment: string
 }
@@ -118,6 +119,7 @@ export const emptyLead: IPostLead = {
   CleaningDate: null,
   HandOverDate: null,
   DeliveryDate: null,
+  CollectBackDate: null,
 
   Comment: "",
 

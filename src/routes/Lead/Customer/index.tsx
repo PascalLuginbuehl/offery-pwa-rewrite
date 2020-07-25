@@ -33,7 +33,6 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
     return
   }
 
-
   public render() {
     const { values, isSubmitting, status, resource, selectedCompany } = this.props
     const { VisitDate, MoveDate } = values
@@ -101,7 +100,11 @@ class Customer extends React.Component<Props & FormikProps<Values>, {}> {
             {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
               (<Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />) : null }
 
-            {selectedCompany.Settings.EnableServicePack ? (<Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
+            {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
+              (<Field name="CollectBackDate" label="COLLECTBACKDATE" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} />) : null}
+
+            {selectedCompany.Settings.EnableServicePack ? (<Field name="PackServiceDate" label="PACKINGSERVICE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null}
+
             {selectedCompany.Settings.EnableServiceMove ? (<Field name="MoveDate" label="MOVING" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus7} />) : null }
             {selectedCompany.Settings.EnableServiceStorage ? (<Field name="StorageDate" label="STORAGE" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
             {selectedCompany.Settings.EnableServiceDisposal ? (<Field name="DisposalDate" label="DISPOSAL" component={FormikDateTimePicker} initialFocusedDate={MoveDate ? MoveDate : VisitDatePlus7} />) : null }
