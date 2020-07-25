@@ -78,7 +78,7 @@ class FormikSimpleSelect extends React.Component<FormikSelectProps & WrappedComp
             <MenuItem value={building.BuildingId} dense key={index}>
               <ListItemText
                 primary={building.Address.Street + ", " + building.Address.PLZ + " " + building.Address.City}
-                // secondary={intl.formatMessage({ id: building.label })}
+                secondary={building.Name}
               />
             </MenuItem>
           ))}

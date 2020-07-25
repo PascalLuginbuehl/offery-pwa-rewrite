@@ -17,6 +17,7 @@ export default function BuildingEdit({ prefix: _prefix, resource, buildingSettin
       <Address prefix={prefix + "Address"} />
 
       <FormikGroups label="BUILDING" xs={12}>
+        <Field label="BUILDINGNAMEOPTIONAL" name={`${prefix}Name`} component={FormikTextField} overrideGrid={{ xs: 12 }} />
 
         {buildingSetting.BuildingType ?
           (<Field

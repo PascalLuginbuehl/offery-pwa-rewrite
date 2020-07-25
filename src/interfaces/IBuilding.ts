@@ -1,8 +1,7 @@
 import { IPostAddress, emtpyAddress, IAddress } from "./IAddress"
 
-
-
 export interface IPostBuilding {
+  Name: string | null
   Address: IPostAddress
   ElevatorId: number | null
   RoomAmount: number | null
@@ -23,12 +22,10 @@ export interface IPostBuilding {
 
   PeopleLivingAmount: number | null
 
-
   // Move Out Building
 
   // Storage
   // StorageCompany: IPostStorageCompany
-
 
 // Disposal
   // PeopleLivingAmount: number | null
@@ -65,7 +62,6 @@ export interface IPostBuilding {
 
   // BuildingTypeId: number | null
 
-
   // Address: IPostAddress
   // RoomAmount: number | null
   // TotalArea: number | null
@@ -82,8 +78,8 @@ export interface IBuilding extends IPostBuilding {
   // StorageCompany: IStorageCompany
 }
 
-
 export const emptyBuilding: IPostBuilding = {
+  Name: null,
   BuildingAgeId: null,
   PeopleLivingAmount: null,
 
@@ -95,7 +91,6 @@ export const emptyBuilding: IPostBuilding = {
   TotalArea: null,
   StairsToEntryAmount: null,
   MetersToParking: null,
-
 
   Address: { ...emtpyAddress },
 
@@ -122,8 +117,3 @@ export const emptyBuilding: IPostBuilding = {
   PollutionDegreeId: null,
   BuiltInWardrobeRangeId: null,
 }
-
-
-
-
-
