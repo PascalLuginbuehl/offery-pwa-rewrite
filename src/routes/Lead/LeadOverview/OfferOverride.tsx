@@ -1,5 +1,5 @@
-import * as React from "react"
-import { Theme, Grid, Typography, Button, ButtonGroup, createStyles, makeStyles, useMediaQuery, Link } from "@material-ui/core"
+import React, { useState } from "react"
+import { Theme, Grid, Typography, Button, ButtonGroup, createStyles, makeStyles, useMediaQuery, Link, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@material-ui/core"
 import { Formik, Field, Form } from "formik"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -16,6 +16,7 @@ import HttpErrorHandler from "../../../components/HttpErrorHandler"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
+import { useTranslation } from "react-i18next"
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -41,10 +42,12 @@ interface OfferOverrideProps {
 
 export default function OfferOverride(props: OfferOverrideProps) {
   const { lead, handleChangeAndSave } = props
-  const [overrideConfirmation, setOverrideConfirmation] = React.useState<boolean>(false)
+  const [overrideConfirmation, setOverrideConfirmation] = useState<boolean>(false)
   const intl = useIntl()
   const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"))
   const classes = useStyles()
+  const { t } = useTranslation()
+  const [ dialogOpen, setDialogOpen ] = useState<boolean>(false)
 
   if (lead.ConfirmedOffer && !overrideConfirmation)  {
     return (
@@ -52,7 +55,7 @@ export default function OfferOverride(props: OfferOverrideProps) {
         <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
         <Typography>
           <Typography component="span">{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
-          <Link target="_blank" href={`/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
+          <Link target="_blank" href={`/#/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
         </Typography>
         <hr />
         {lead.ConfirmedOrder != null &&
@@ -65,129 +68,149 @@ export default function OfferOverride(props: OfferOverrideProps) {
     )
   }
 
+  if (lead.Offers.length === 0) {
+    return (
+      <Grid item xs={12}>
+        <Typography>{t("NO_OFFER_GENERATED")}</Typography>
+        <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
+          <FormattedMessage id="CANCEL_ORDER" />
+        </Button>
+
+        <Dialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">{t("CANCEL_THIS_ORDER")}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              {t("CANCEL_THIS_ORDER_TEXT")}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialogOpen(false)} color="primary">
+              {t("CANCEL")}
+            </Button>
+            <Button onClick={() => setDialogOpen(false)} color="primary">
+              {t("AGREE")}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Grid>
+    )
+
+  }
+
   return (
-    <Formik<{
+    <Grid item xs={12}>
+      <Formik<{
         OfferId: number | null
         ConfirmedOrderVerbal: boolean
         ConfirmedOrder: boolean | null
         Comment: string
       }>
-      initialValues={{
-        OfferId: lead.ConfirmedOffer ? lead.ConfirmedOffer.OfferId : null,
-        ConfirmedOrderVerbal: lead.ConfirmedOrderVerbal,
-        ConfirmedOrder: lead.ConfirmedOrder,
-        Comment: "",
-      }}
-      onSubmit={async (values, actions) => {
-        try {
-          const {
-            OfferId,
-            ConfirmedOrderVerbal,
-            ConfirmedOrder,
-            Comment,
-          } = values
-
-          if (OfferId) {
-            const order: IConfirmOffer = {
-              LeadId: lead.LeadId,
+        initialValues={{
+          OfferId: lead.ConfirmedOffer ? lead.ConfirmedOffer.OfferId : null,
+          ConfirmedOrderVerbal: lead.ConfirmedOrderVerbal,
+          ConfirmedOrder: lead.ConfirmedOrder,
+          Comment: "",
+        }}
+        onSubmit={async (values, actions) => {
+          try {
+            const {
               OfferId,
               ConfirmedOrderVerbal,
-              ConfirmedOrder: ConfirmedOrder,
+              ConfirmedOrder,
               Comment,
+            } = values
+
+            if (OfferId) {
+              const order: IConfirmOffer = {
+                LeadId: lead.LeadId,
+                OfferId,
+                ConfirmedOrderVerbal,
+                ConfirmedOrder: ConfirmedOrder,
+                Comment,
+              }
+
+              const offer = lead.Offers.find(offer => offer.OfferId === OfferId)
+
+              await handleChangeAndSave({ ...lead, ConfirmedOffer: offer, ConfirmedOrderVerbal, ConfirmedOrder }, "Lead", () => LeadService.confirmOffer(order))
+              actions.setSubmitting(false)
+              actions.resetForm()
+              setOverrideConfirmation(false)
             }
-
-            const offer = lead.Offers.find(offer => offer.OfferId === OfferId)
-
-            await handleChangeAndSave({ ...lead, ConfirmedOffer: offer, ConfirmedOrderVerbal, ConfirmedOrder }, "Lead", () => LeadService.confirmOffer(order))
-            actions.setSubmitting(false)
-            actions.resetForm()
-            setOverrideConfirmation(false)
+          } catch (e) {
+            actions.setStatus(e)
           }
-        } catch (e) {
-          actions.setStatus(e)
-        }
-      }}
-    >
-      {({ setFieldValue, values: { OfferId, ConfirmedOrder, ConfirmedOrderVerbal }, isSubmitting, status }) => (
-        <Form>
-          <Grid container spacing={1}>
-            {
-              lead.ConfirmedOrderVerbal && lead.ConfirmedOffer ? (
-                <Grid item xs={12}>
-                  <IntlTypography>OFFER_SENT_EMAIL</IntlTypography>
-                  <Typography>{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
-                  <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
-                </Grid>
-              ) : null
-            }
-
-            <Grid item xs={12}>
-              <IntlTypography variant="subtitle1" style={{ fontWeight: "bold" }}>
-                MANUAL_OVERRIDE
-              </IntlTypography>
-            </Grid>
-
-            {
-              lead.Offers.length > 0 ? (
-                <Grid item xs={12}>
-                  <Grid container>
-                    <Grid item style={{ flexGrow: 1 }}>
-                      <Field
-                        label="OFFER"
-                        name="OfferId"
-                        component={FormikSimpleSelect}
-                        notTranslated
-                        required
-                        options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-                          label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
-                          value: offer.OfferId,
-                        }))}
-                        overrideGrid={{}}
-                        disableGrid
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Link target="_blank" href={`/lead/${lead.LeadId}/offer/preview/${OfferId}`}><OpenInNewIcon /></Link>
-                    </Grid>
+        }}
+      >
+        {({ setFieldValue, values: { OfferId, ConfirmedOrder, ConfirmedOrderVerbal }, isSubmitting, status }) => (
+          <Form>
+            <Grid container spacing={1}>
+              {
+                lead.ConfirmedOrderVerbal && lead.ConfirmedOffer ? (
+                  <Grid item xs={12}>
+                    <IntlTypography>OFFER_SENT_EMAIL</IntlTypography>
+                    <Typography>{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
+                    <IntlTypography>CUSTOMER_VERBAL_CONFIRMATION</IntlTypography>
                   </Grid>
-                </Grid>
-              ) : null
-            }
+                ) : null
+              }
 
-            <Grid item xs={12}>
-              <ButtonGroup className={classes.buttonGroupPadding} orientation={matches ? "horizontal" : "vertical"}>
-                {
-                  lead.Offers.length > 0 ? (
-                    <>
-                      {!lead.ConfirmedOrderVerbal ?
-                        <Button onClick={() => { setFieldValue("ConfirmedOrderVerbal", true); setFieldValue("ConfirmedOrder", null) }} classes={{ root: classes.buttonRootText }} color={ConfirmedOrderVerbal ? "primary" : "inherit"} variant={ConfirmedOrderVerbal ? "contained" : "outlined"} >
-                          <FormattedMessage id="VERBAL_CONFIRMATION" />
-                        </Button> : null
-                      }
-                      <Button onClick={() => { setFieldValue("ConfirmedOrder", true); setFieldValue("ConfirmedOrderVerbal", false) }} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder ? "primary" : "inherit"} variant={ConfirmedOrder ? "contained" : "outlined"}>
-                        <FormattedMessage id="CONFIRMED" />
-                      </Button>
-                    </>
-                  ) : null
-                }
-                <Button onClick={() => { setFieldValue("ConfirmedOrder", false); setFieldValue("ConfirmedOrderVerbal", false) }} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder === false ? "primary" : "inherit"} variant={ConfirmedOrder === false ? "contained" : "outlined"}>
-                  <FormattedMessage id="DECLINED" />
+              <Grid item xs={12}>
+                <IntlTypography variant="subtitle1" style={{ fontWeight: "bold" }}>
+                  MANUAL_OVERRIDE
+                </IntlTypography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Field
+                  label="OFFER"
+                  name="OfferId"
+                  component={FormikSimpleSelect}
+                  notTranslated
+                  required
+                  options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
+                    label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
+                    value: offer.OfferId,
+                  }))}
+                  overrideGrid={{}}
+                  disableGrid
+                />
+                <Link target="_blank" href={`/#/lead/${lead.LeadId}/offer/preview/${OfferId}`}><OpenInNewIcon /></Link>
+              </Grid>
+
+              <Grid item xs={12}>
+                <ButtonGroup className={classes.buttonGroupPadding} orientation={matches ? "horizontal" : "vertical"}>
+                  {!lead.ConfirmedOrderVerbal ?
+                    <Button onClick={() => { setFieldValue("ConfirmedOrderVerbal", true); setFieldValue("ConfirmedOrder", null) }} classes={{ root: classes.buttonRootText }} color={ConfirmedOrderVerbal ? "primary" : "inherit"} variant={ConfirmedOrderVerbal ? "contained" : "outlined"} >
+                      <FormattedMessage id="VERBAL_CONFIRMATION" />
+                    </Button> : null
+                  }
+                  <Button onClick={() => { setFieldValue("ConfirmedOrder", true); setFieldValue("ConfirmedOrderVerbal", false) }} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder ? "primary" : "inherit"} variant={ConfirmedOrder ? "contained" : "outlined"}>
+                    <FormattedMessage id="CONFIRMED" />
+                  </Button>
+                  <Button onClick={() => { setFieldValue("ConfirmedOrder", false); setFieldValue("ConfirmedOrderVerbal", false) }} classes={{ root: classes.buttonRootText }} color={ConfirmedOrder === false ? "primary" : "inherit"} variant={ConfirmedOrder === false ? "contained" : "outlined"}>
+                    <FormattedMessage id="DECLINED" />
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+
+              <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
+
+              <HttpErrorHandler status={status} data={{ OfferId, ConfirmedOrder, ConfirmedOrderVerbal }} />
+
+              <Grid item xs={12} className={classes.rightAlign}>
+                <Button variant="contained" color="primary" type="submit" disabled={isSubmitting || !OfferId}>
+                  <FormattedMessage id="SAVE" />
                 </Button>
-              </ButtonGroup>
+              </Grid>
             </Grid>
-          </Grid>
-
-          <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
-
-          <HttpErrorHandler status={status} data={{ OfferId, ConfirmedOrder, ConfirmedOrderVerbal }} />
-
-          <Grid item xs={12} className={classes.rightAlign}>
-            <Button variant="contained" color="primary" type="submit" disabled={isSubmitting || lead.Offers.length > 0 && !OfferId}>
-              <FormattedMessage id="SAVE" />
-            </Button>
-          </Grid>
-        </Form>
-      )}
-    </Formik>
+          </Form>
+        )}
+      </Formik>
+    </Grid>
   )
 }
