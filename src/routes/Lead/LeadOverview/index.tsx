@@ -5,47 +5,21 @@ import {     useIntl } from "react-intl"
 
 import PageHeader from "../../../components/PageHeader"
 
-
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import IntlTableCell from "../../../components/Intl/IntlTableCell"
 
-
-
-
 import  { ILeadContainer } from "../LeadAPI"
-
-
-
-
-
-
 import { LeadDetailsMobile, LeadDetailsTable } from "./LeadDetails"
 import ReminderHistory from "./ReminderHistory"
 import StatusHistory from "./StatusHistory"
 import OfferOverride from "./OfferOverride"
+import OfflineUnavailable from "../../../components/OfflineUnavailable"
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  buttonGroupPadding: {
-    padding: 4,
-  },
-  buttonRootText: {
-    textTransform: "none"
-  },
-  rightAlign: {
-    padding: theme.spacing(2),
-    width: "100%",
-    textAlign: "right",
-  },
-  infoMessage: {
-    color: "orange"
-  },
-  errorRow: {
-    backgroundColor: "lightpink"
-  },
-  successRow: {
+  positionRelative: {
+    position: "relative",
   }
 }))
-
 
 export const StyledTableCell = withStyles((theme: Theme) => ({
   root: {
@@ -95,10 +69,11 @@ export default function LeadOverview(props: _Props) {
           </Grid>
         </FormikGroups>
 
-        <FormikGroups label="OFFER_STATUS" xs={12} md={6}>
-          <OfferOverride lead={Lead} handleChangeAndSave={handleChangeAndSave} />
+        <FormikGroups label="OFFER_STATUS" xs={12} md={6} className={classes.positionRelative}>
+          <OfflineUnavailable offline={offline}>
+            <OfferOverride lead={Lead} handleChangeAndSave={handleChangeAndSave} />
+          </OfflineUnavailable>
         </FormikGroups>
-
 
         <ReminderHistory lead={Lead} />
 

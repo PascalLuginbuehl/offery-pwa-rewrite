@@ -17,7 +17,7 @@ export interface IOffer {
 
 export interface IConfirmOffer {
   LeadId: number
-  OfferId: number
+  OfferId: number | null
 
   ConfirmedOrderVerbal: boolean
   ConfirmedOrder: boolean | null
