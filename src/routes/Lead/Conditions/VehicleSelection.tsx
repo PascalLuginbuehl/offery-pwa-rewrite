@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText, TextField, MenuItem, Menu, Button } from "@material-ui/core"
+import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText, TextField, MenuItem, Menu, Button, Typography } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import { ArrayHelpers, FieldProps, FieldArray, useFormikContext } from "formik"
 import { ICarType } from "../../../interfaces/ICompany"
@@ -11,19 +11,21 @@ import { string } from "yup"
 import { useFormikField, FormikFieldConfig } from "../../../components/Formik"
 import LocalShippingIcon from "@material-ui/icons/LocalShipping"
 import { useTranslation } from "react-i18next"
+import FormikDivider from "../../../components/FormikFields/FormikDivider"
 
 interface FormikVehicleSelectionProps<FormValues> extends FormikFieldConfig<FormValues> {
   carTypes: ICarType[]
+  label: string
 }
 
 export default function FormikVehicleSelection<FormValues>(props: FormikVehicleSelectionProps<FormValues>) {
-  const [selectedCarType, setSelectedCarType] = useState<number | null>(null)
   const {
     carTypes,
+    label,
   } = props
 
-  const { isSubmitting, values } = useFormikContext()
-  const [field, meta, helpers] = useFormikField<ICarAmount[], FormValues>({...props, validate: () => "not gud"})
+  const [field, meta, helpers] = useFormikField<ICarAmount[], FormValues>(props)
+
   const intl = useIntl()
   const { value } = field
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -35,13 +37,6 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
 
   const handleClose = () => {
     setAnchorEl(null)
-  }
-
-  function handleChange (event: React.ChangeEvent<HTMLInputElement>) {
-    const parsedString = parseInt(event.target.value)
-    if (!Number.isNaN(parsedString)) {
-      setSelectedCarType(parsedString)
-    }
   }
 
   function removeCar(arrayHelpers: ArrayHelpers, removeId: number) {
@@ -75,18 +70,21 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
       }
     }
 
-    setSelectedCarType(null)
     handleClose()
   }
 
   return (
-    <Grid item xs={12}>
+    <>
+      <FormikDivider />
+      <Typography variant="subtitle1" style={{ fontWeight: "bold" }}>
+        {label}
+      </Typography>
 
       <FieldArray
-        // eslint-disable-next-line react/prop-types
+      // eslint-disable-next-line react/prop-types
         name={props.name}
         render={arrayHelpers => (
-          <List dense>
+          <List dense disablePadding>
             {value.length === 0 ? (
               <ListItem dense disableGutters>
                 <ListItemText primary={t("VEHICLE_SELECTION.NOTHING_SELECTED")} />
@@ -129,6 +127,6 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
           </List>
         )}
       />
-    </Grid>
+    </>
   )
 }

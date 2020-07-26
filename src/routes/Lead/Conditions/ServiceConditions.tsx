@@ -129,9 +129,9 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
         </FormikGroups>
 
         {disabledVehicles ? null : (
-          <FormikGroups label="VEHICLES" xs={12} md={6}>
-            <VehicleSelection name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
-          </FormikGroups>
+          <Grid xs={12} md={6} item>
+            <VehicleSelection label={formatMessage({id: "VEHICLES"})} name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
+          </Grid>
         )}
 
         {children}
