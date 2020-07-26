@@ -13,7 +13,6 @@ import OfferService from "../../../services/OfferService"
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { RouteComponentProps, useRouteMatch } from "react-router"
-import DateHelper from "../../../helpers/DateHelper"
 import { SendOfferEmailModel } from "../../../models/Offer"
 import { FormikAutocompleteSimple } from "../../../components/Formik"
 import { EmailTypeEnum } from "../../../models/EmailTypeModel"
@@ -21,6 +20,8 @@ import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSel
 import CCEmailList from "../../../components/Formik/CustomComponents/FormikCCEmailList"
 import FormikCCEmailList from "../../../components/Formik/CustomComponents/FormikCCEmailList"
 import { useTranslation } from "react-i18next"
+import FormikSelectOffer from "../../../components/Formik/CustomComponents/FormikSelectOffer"
+import FormikSelectEmailType from "../../../components/Formik/CustomComponents/FormikSelectEmailType"
 
 interface FormValues extends Omit<SendOfferEmailModel, "OfferId" | "CSettingEmailTypeId">  {
   OfferId: number | null
@@ -92,23 +93,18 @@ export default function SendOffer(props: Props) {
           <Form disableSubmit>
             <PageHeader title="SEND_OFFER" />
 
-            <Field
-              label="OFFER"
-              name="OfferId"
-              component={FormikSimpleSelect}
-              notTranslated
-              required
-              options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-                label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
-                value: offer.OfferId,
-              }))}
-            />
+            <Grid item xs={12} md={6}>
+              <FormikSelectOffer
+                label={intl.formatMessage({id: "OFFER"})}
+                name="OfferId"
+                required
+                offers={lead.Offers}
+              />
+            </Grid>
 
             <Grid item xs={12} md={6}>
-              <FormikSelectSimple<FormValues>
-                options={
-                  selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.Offer).map(email => ({ label: intl.formatMessage({id: email.Name ?? "NO_SUBJECT"}), value: email.CSettingEmailTypeId }))
-                }
+              <FormikSelectEmailType<FormValues>
+                emailType={EmailTypeEnum.Offer}
                 name="CSettingEmailTypeId"
                 label={t("EMAIL.SUBJECT_TEXT")}
                 required

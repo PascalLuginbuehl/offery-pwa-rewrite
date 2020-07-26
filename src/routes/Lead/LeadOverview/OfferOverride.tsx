@@ -17,6 +17,7 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
 import { useTranslation } from "react-i18next"
+import FormikSelectOffer from "../../../components/Formik/CustomComponents/FormikSelectOffer"
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -166,18 +167,11 @@ export default function OfferOverride(props: OfferOverrideProps) {
               </Grid>
 
               <Grid item xs={12}>
-                <Field
-                  label="OFFER"
+                <FormikSelectOffer
+                  label={intl.formatMessage({ id: "OFFER" })}
                   name="OfferId"
-                  component={FormikSimpleSelect}
-                  notTranslated
                   required
-                  options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-                    label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
-                    value: offer.OfferId,
-                  }))}
-                  overrideGrid={{}}
-                  disableGrid
+                  offers={lead.Offers}
                 />
                 <Link target="_blank" href={`/#/lead/${lead.LeadId}/offer/preview/${OfferId}`}><OpenInNewIcon /></Link>
               </Grid>

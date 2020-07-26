@@ -16,6 +16,7 @@ import { PDFDocumentProxy } from "pdfjs-dist"
 import { RouteComponentProps } from "react-router"
 import { IOffer, IOFile } from "../../../interfaces/IOffer"
 import DateHelper from "../../../helpers/DateHelper"
+import FormikSelectOffer from "../../../components/Formik/CustomComponents/FormikSelectOffer"
 
 const styles = (theme: Theme) => createStyles({
   snackbar: {
@@ -127,16 +128,15 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
       <Grid item xs={12}>
         <Form>
           <PageHeader title="PREVIEW" />
-          <Field
-            label="OFFER"
-            name="selectedOfferId"
-            component={FormikSimpleSelect}
-            notTranslated
-            options={lead.Offers.sort((offer1, offer2) => DateHelper.parseDateNotNull(offer2.Created).getTime() - DateHelper.parseDateNotNull(offer1.Created).getTime()).map(offer => ({
-              label: intl.formatDate(DateHelper.parseDateNotNull(offer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }),
-              value: offer.OfferId,
-            }))}
-          />
+
+          <Grid item xs={12} md={6}>
+            <FormikSelectOffer
+              label={intl.formatMessage({ id: "OFFER" })}
+              name="selectedOfferId"
+              required
+              offers={lead.Offers}
+            />
+          </Grid>
           <Grid item xs={6}>
             <Button onClick={this.previewPDF} disabled={!values.selectedOfferId} variant="contained" color="primary">
               <FormattedMessage id="DISPLAY_PDF" />

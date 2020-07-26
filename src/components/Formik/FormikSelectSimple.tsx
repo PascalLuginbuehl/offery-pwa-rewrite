@@ -1,6 +1,6 @@
 import * as React from "react"
 import { FormattedMessage } from "react-intl"
-import { MenuItem } from "@material-ui/core"
+import { MenuItem, ListItemText } from "@material-ui/core"
 import FormikTextField, { FormikTextFieldProps } from "./FormikTextField"
 
 export interface FormikSelectSimpleOptions {
@@ -9,11 +9,11 @@ export interface FormikSelectSimpleOptions {
   secondaryLabel?: string
 }
 
-export interface FormikSelectProps<FormValues> extends FormikTextFieldProps<FormValues> {
+export interface FormikSelectSimpleProps<FormValues> extends FormikTextFieldProps<FormValues> {
   options: FormikSelectSimpleOptions[]
 }
 
-export default function FormikSelectSimple<FormValues>(props: FormikSelectProps<FormValues>) {
+export default function FormikSelectSimple<FormValues>(props: FormikSelectSimpleProps<FormValues>) {
   const { options, required, ...remainingProps } = props
 
   return (
@@ -31,7 +31,10 @@ export default function FormikSelectSimple<FormValues>(props: FormikSelectProps<
       {
         options.map(option => (
           <MenuItem key={option.value} value={option.value}>
-            {option.label}
+            <ListItemText
+              primary={option.label}
+              secondary={option.secondaryLabel}
+            />
           </MenuItem>
         ))
       }

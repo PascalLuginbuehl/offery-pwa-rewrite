@@ -19,6 +19,7 @@ import FormikCCEmailList from "../../../components/Formik/CustomComponents/Formi
 import FormikSelectSimple from "../../../components/Formik/FormikSelectSimple"
 import { EmailTypeEnum, AppointmentTypeEnum } from "../../../models/EmailTypeModel"
 import { useTranslation } from "react-i18next"
+import FormikSelectEmailType from "../../../components/Formik/CustomComponents/FormikSelectEmailType"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -64,12 +65,10 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
           <PageHeader title="EMAIL_CONFIRMATION" />
 
           <Grid item xs={12} md={6}>
-            <FormikSelectSimple<FormValues>
-              options={
-                selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.AppointmentConfirm).map(email => ({ label: intl.formatMessage({ id: email.Name ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
-              }
+            <FormikSelectEmailType<FormValues>
+              emailType={EmailTypeEnum.AppointmentConfirm}
               name="CSettingEmailTypeId"
-              label={intl.formatMessage({id: "SUBJECT_TEXT"})}
+              label={intl.formatMessage({id: "EMAIL.SUBJECT_TEXT"})}
               required
             />
           </Grid>
@@ -138,6 +137,7 @@ export default injectIntl(
             VisitDate,
             DeliveryDate,
             CCEmailList: [],
+            // Defaultselect
             CSettingEmailTypeId: selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.AppointmentConfirm && email.AppointmentType == AppointmentTypeEnum.Visit)[0].CSettingEmailTypeId ?? null
           }
         },

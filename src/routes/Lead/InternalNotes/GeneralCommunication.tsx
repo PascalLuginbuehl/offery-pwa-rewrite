@@ -15,6 +15,7 @@ import FormikCCEmailList from "../../../components/Formik/CustomComponents/Formi
 import { useTranslation } from "react-i18next"
 import { SendGeneralCommunicationEmailModel } from "../../../models/SendGeneralCommunicationEmailModel"
 import OfferService from "../../../services/OfferService"
+import FormikSelectEmailType from "../../../components/Formik/CustomComponents/FormikSelectEmailType"
 
 interface FormValues extends Omit<SendGeneralCommunicationEmailModel, "CSettingEmailTypeId" | "LeadId"> {
   CSettingEmailTypeId: number | null
@@ -73,10 +74,8 @@ export default function GeneralCommunication(props: GeneralCommunicationProps) {
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <FormikSelectSimple<FormValues>
-                options={
-                  selectedCompany.Settings.EmailTypes.filter(email => email.EmailType === EmailTypeEnum.GeneralCommunication).map(email => ({ label: intl.formatMessage({ id: email.Name ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
-                }
+              <FormikSelectEmailType<FormValues>
+                emailType={EmailTypeEnum.GeneralCommunication}
                 name="CSettingEmailTypeId"
                 label={t("EMAIL.SUBJECT_TEXT")}
                 required
