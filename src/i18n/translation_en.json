@@ -31,5 +31,13 @@
   "VEHICLE_SELECTION": {
     "NOTHING_SELECTED": "No vehicles selected",
     "ADD": "Add vehicle"
+  },
+  "ORDER_OVERRIDE": {
+    "CANCEL_ORDER": "Cancel order",
+    "NO_OFFERS_GENERATED": "No offers generated",
+    "CANCEL_THIS_ORDER": "Cancel this order?",
+    "CANCEL": "Cancel",
+    "AGREE": "Einverstanden",
+    "TO_OVERRIDE_GENERATE": "To override you need to generate an offer first"
   }
 }

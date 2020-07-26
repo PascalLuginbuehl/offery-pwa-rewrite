@@ -22,9 +22,9 @@ export default function FormikSelectEmailType<FormValues>(props: FormikSelectEma
     <FormikSelectSimple<FormValues> options={
       selectedCompany.Settings.EmailTypes
         .filter(email => email.EmailType === emailType)
-        .map(email => ({ label: intl.formatMessage({ id: email.Name ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId }))
+        .map(email => ({ label: intl.formatMessage({ id: email.Name ?? "NO_SUBJECT" }), value: email.CSettingEmailTypeId, secondaryLabel: intl.formatMessage({ id: email.SubjectTextKey ?? "NO_SUBJECT" }) }))
     }
-      {...selectProps}
+    {...selectProps}
     />
   )
 }

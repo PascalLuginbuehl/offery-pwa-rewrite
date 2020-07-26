@@ -18,6 +18,7 @@ import { ILead } from "../../../interfaces/ILead"
 import { ILeadContainer } from "../LeadAPI"
 import { useTranslation } from "react-i18next"
 import FormikSelectOffer from "../../../components/Formik/CustomComponents/FormikSelectOffer"
+import { useFormattedName } from "../../../utils"
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   buttonGroupPadding: {
@@ -49,15 +50,18 @@ export default function OfferOverride(props: OfferOverrideProps) {
   const classes = useStyles()
   const { t } = useTranslation()
   const [ dialogOpen, setDialogOpen ] = useState<boolean>(false)
+  const formatName = useFormattedName()
 
-  if (lead.ConfirmedOffer && !overrideConfirmation)  {
+  if (lead.ConfirmedOrder !== null && !overrideConfirmation)  {
     return (
       <Grid item xs={12}>
         <IntlTypography>{lead.ConfirmedOrder ? "OFFER_CONFIRMED" : "OFFER_DECLINED"}</IntlTypography>
-        <Typography>
-          <Typography component="span">{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
-          <Link target="_blank" href={`/#/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
-        </Typography>
+        {lead.ConfirmedOffer ? (
+          <Typography>
+            <Typography component="span">{intl.formatDate(DateHelper.parseDateNotNull(lead.ConfirmedOffer.Created), { month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })}</Typography>
+            <Link target="_blank" href={`/#/lead/${lead.LeadId}/offer/preview/${lead.ConfirmedOffer.OfferId}`}><OpenInNewIcon /></Link>
+          </Typography>
+        ) : null}
         <hr />
         {lead.ConfirmedOrder != null &&
           <IntlTypography className={classes.infoMessage}>{"OFFER_RESENT_MAIL_CANCELFIRST"}</IntlTypography>
@@ -72,10 +76,16 @@ export default function OfferOverride(props: OfferOverrideProps) {
   if (lead.Offers.length === 0) {
     return (
       <Grid item xs={12}>
-        <Typography>{t("NO_OFFER_GENERATED")}</Typography>
-        <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-          <FormattedMessage id="CANCEL_ORDER" />
-        </Button>
+        <Typography>{t("ORDER_OVERRIDE.NO_OFFERS_GENERATED")}</Typography>
+        {
+          lead.ConfirmedOrder === false ? (
+            <Typography>{t("ORDER_OVERRIDE.TO_OVERRIDE_GENERATE")}</Typography>
+          ) : (
+            <Button variant = "contained" color = "primary" onClick = { () => setDialogOpen(true) }>
+              { t("ORDER_OVERRIDE.CANCEL_ORDER") }
+            </Button>
+          )
+        }
 
         <Dialog
           open={dialogOpen}
@@ -83,24 +93,39 @@ export default function OfferOverride(props: OfferOverrideProps) {
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle id="alert-dialog-slide-title">{t("CANCEL_THIS_ORDER")}</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title">{t("ORDER_OVERRIDE.CANCEL_THIS_ORDER")}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              {t("CANCEL_THIS_ORDER_TEXT")}
+              <Typography>
+                {formatName({ FirstName: lead.Customer.Firstname, LastName: lead.Customer.Lastname, Company: lead.Customer.CompanyName})}
+              </Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setDialogOpen(false)} color="primary">
-              {t("CANCEL")}
+              {t("ORDER_OVERRIDE.CANCEL")}
             </Button>
-            <Button onClick={() => setDialogOpen(false)} color="primary">
-              {t("AGREE")}
+            <Button onClick={async () => {
+              const order: IConfirmOffer = {
+                LeadId: lead.LeadId,
+                OfferId: null,
+                ConfirmedOrderVerbal: false,
+                ConfirmedOrder: false,
+                Comment: "",
+              }
+
+              await handleChangeAndSave({ ...lead, ConfirmedOffer: null, ConfirmedOrderVerbal: false, ConfirmedOrder: false }, "Lead", () => LeadService.confirmOffer(order))
+
+              setDialogOpen(false)
+            }}
+              color="primary"
+            >
+              {t("ORDER_OVERRIDE.AGREE")}
             </Button>
           </DialogActions>
         </Dialog>
       </Grid>
     )
-
   }
 
   return (

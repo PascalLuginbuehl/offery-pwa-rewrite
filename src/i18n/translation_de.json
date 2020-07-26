@@ -31,5 +31,13 @@
   "VEHICLE_SELECTION": {
     "NOTHING_SELECTED": "Keine Fahrzeuge ausgewählt",
     "ADD": "Fahrzeug hinzufügen"
+  },
+  "ORDER_OVERRIDE": {
+    "CANCEL_ORDER": "Auftrag ablehnen",
+    "NO_OFFERS_GENERATED": "Es wurden keine Offerten erstellt",
+    "CANCEL_THIS_ORDER": "Diesen Auftrag ablehnen?",
+    "CANCEL": "Abbrechen",
+    "AGREE": "Weiter",
+    "TO_OVERRIDE_GENERATE": "Um überschreiben zu können müssen Sie zuerst eine Offerte generieren"
   }
 }

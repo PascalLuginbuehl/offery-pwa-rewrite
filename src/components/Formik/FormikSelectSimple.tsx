@@ -1,7 +1,8 @@
 import * as React from "react"
 import { FormattedMessage } from "react-intl"
-import { MenuItem, ListItemText } from "@material-ui/core"
+import { MenuItem, ListItemText, Typography } from "@material-ui/core"
 import FormikTextField, { FormikTextFieldProps } from "./FormikTextField"
+import { useField } from "formik"
 
 export interface FormikSelectSimpleOptions {
   value: string | number
@@ -31,10 +32,18 @@ export default function FormikSelectSimple<FormValues>(props: FormikSelectSimple
       {
         options.map(option => (
           <MenuItem key={option.value} value={option.value}>
-            <ListItemText
-              primary={option.label}
-              secondary={option.secondaryLabel}
-            />
+            <div>
+              <Typography variant="body1" noWrap>
+                {option.label}
+              </Typography>
+              {
+                option.secondaryLabel ? (
+                  <Typography component="p" variant="caption" noWrap>
+                    {option.secondaryLabel}
+                  </Typography>
+                ) : null
+              }
+            </div>
           </MenuItem>
         ))
       }
