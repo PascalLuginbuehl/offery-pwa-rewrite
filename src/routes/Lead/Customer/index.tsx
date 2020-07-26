@@ -27,7 +27,7 @@ interface Props extends WithResourceProps, WithStyles<typeof styles>, WrappedCom
 
 class Customer extends React.Component<Props & FormikProps<Values>, {}> {
   validatePhoneNumber = (value: string) => {
-    if (value != undefined && value.length > 0 && isValidPhoneNumber(value) !== true) {
+    if (value !== null && value.length > 0 && isValidPhoneNumber(value) !== true) {
       return this.props.intl.formatMessage({id: "PHONE_NUMBER_INVALID"})
     }
     return

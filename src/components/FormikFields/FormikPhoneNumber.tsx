@@ -15,10 +15,14 @@ export interface FomrikPhoneNumberProps extends WrappedComponentProps, FieldProp
 
 class FormikPhoneNumber extends React.Component<FomrikPhoneNumberProps> {
 
-  handleChange = (value: Date | null) => {
+  handleChange = (value: string | null) => {
     const { field: { name }, form: { setFieldValue } } = this.props
 
-    setFieldValue(name, value)
+    if (value === "+41") {
+      setFieldValue(name, null)
+    } else {
+      setFieldValue(name, value)
+    }
   }
 
   render() {
@@ -82,5 +86,3 @@ class FormikPhoneNumber extends React.Component<FomrikPhoneNumberProps> {
 }
 
 export default injectIntl(FormikPhoneNumber)
-
-
