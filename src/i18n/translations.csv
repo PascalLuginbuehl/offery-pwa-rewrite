@@ -350,3 +350,5 @@ EMAIL_SENT,Email sent,E-Mail versandt
 EMAIL_HAS_BEEN_SENT,Email has been sent,Die E-Mail wurde versandt
 COLLECTBACKDATE,Collect packingmaterial date,Verpackungsmaterial Abholtermin
 BUILDINGNAMEOPTIONAL,Building name (optional),Gebäudename (optional)
+REMOVE,Remove,Entfernen
+REMOVE_ITEM,Remove item,Artikel entfernen

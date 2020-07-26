@@ -30,6 +30,8 @@ import { debounce } from "debounce"
 import CloseIcon from "@material-ui/icons/Close"
 import InventoryTableRow from "./InventoryTableRow"
 
+import RemoveItemModal from "./../../../components/Inventory/RemoveItemModal"
+
 const styles = (theme: Theme) =>
   createStyles({
     next: {
@@ -81,6 +83,7 @@ interface _IState {
   filteredFurnitures: IFurnitureTranslated[]
   customItemModelOpen: boolean
   editCustomItemIndex: number | null
+  removeItemIndex: number | null
   pageIndex: number
   fuse: Fuse<IFurnitureTranslated, typeof fuseOptions> | null
   searchStringShadow: string
@@ -118,6 +121,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     pageIndex: 0,
     customItemModelOpen: false,
     editCustomItemIndex: null,
+    removeItemIndex: null,
     searchStringShadow: "",
   }
 
@@ -319,7 +323,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
     const selectedItemList = this.getSelectedList()
     const selectedCustomItemList = this.getCustomSelectedList()
 
-    const { currentlyOpenInventory, selectedFurnitureCategory, filteredFurnitures, pageIndex, customItemModelOpen, editCustomItemIndex, searchStringShadow } = this.state
+    const { currentlyOpenInventory, selectedFurnitureCategory, filteredFurnitures, pageIndex, customItemModelOpen, editCustomItemIndex, searchStringShadow, removeItemIndex } = this.state
     const FurnitureCategories = resource.FurnitureCategories
 
     return (
@@ -451,6 +455,24 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
             )}
           />
 
+          {/* This is to remove items with confirmation page */}
+          <FieldArray
+            name={currentlyOpenInventory}
+            render={(arrayHelpers: ArrayHelpers) => (
+              <RemoveItemModal
+                open={removeItemIndex !== null}
+                removeItem={removeItemIndex !== null ? selectedItemList[removeItemIndex] : null}
+                furniture={removeItemIndex !== null ? this.getCorrespondingFurnitureItem(selectedItemList[removeItemIndex]) : null}
+                onClose={() => this.setState({ removeItemIndex: null })}
+                onRemove={() => {
+                  if (removeItemIndex) {
+                    arrayHelpers.remove(removeItemIndex)
+                    this.setState({ removeItemIndex: null })
+                  }
+                }} />
+            )}
+          />
+
           <Grid item xs={12}>
 
             <Table>
@@ -479,7 +501,7 @@ class Inventory extends React.Component<_IProps & FormikProps<IInventars>, _ISta
                         .map(item => {
                           const furniture = this.getCorrespondingFurnitureItem(item)
                           return (
-                            <InventoryTableRow key={item.originalIndex} setItemAmount={(amount) => this.setItemAmount({...item, Amount: amount}, item.originalIndex, arrayHelpers)} item={item} furniture={furniture} />
+                            <InventoryTableRow key={item.originalIndex} onRemove={() => this.setState({ removeItemIndex: item.originalIndex })} setItemAmount={(amount) => this.setItemAmount({...item, Amount: amount}, item.originalIndex, arrayHelpers)} item={item} furniture={furniture} />
                           )
                         })
                     ) : null

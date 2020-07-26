@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createStyles, Theme, WithStyles, withStyles, Grid,    Button } from "@material-ui/core"
+import { createStyles, Theme, WithStyles, withStyles, Grid,    Button, Divider } from "@material-ui/core"
 import {  FormikProps, withFormik, Field } from "formik"
 import { injectIntl, WrappedComponentProps,  FormattedMessage } from "react-intl"
 import { IBuilding } from "../../../interfaces/IBuilding"
@@ -20,6 +20,7 @@ import FormikSelectSimple from "../../../components/Formik/FormikSelectSimple"
 import { EmailTypeEnum, AppointmentTypeEnum } from "../../../models/EmailTypeModel"
 import { useTranslation } from "react-i18next"
 import FormikSelectEmailType from "../../../components/Formik/CustomComponents/FormikSelectEmailType"
+import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -68,17 +69,27 @@ class Customer extends React.Component<Props & FormikProps<FormValues>, {}> {
             <FormikSelectEmailType<FormValues>
               emailType={EmailTypeEnum.AppointmentConfirm}
               name="CSettingEmailTypeId"
-              label={intl.formatMessage({id: "EMAIL.SUBJECT_TEXT"})}
+              label={intl.formatMessage({id: "SUBJECT_TEXT"})}
               required
             />
           </Grid>
 
           <Field component={SelectBuilding} label="ADDRESS" name="BuildingId" buildings={buildings} required />
 
-          <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required overrideGrid={{ xs: 12, md: 6 }} />
+          <FormikGroups label="DATES" xs={12}>
+            <Field name="VisitDate" label="VISITING" component={FormikDateTimePicker} initialFocusedDate={initialDate} required overrideGrid={{ xs: 12, md: 6 }} />
 
-          {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
-            (<Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} overrideGrid={{ xs: 12, md: 6 }} />) : null}
+            {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
+              (<Field name="DeliveryDate" label="CARDBOARDBOX_DELIVERY" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} overrideGrid={{ xs: 12, md: 6 }} />) : null}
+
+            {selectedCompany.Settings.EnableMaterialOrder && selectedCompany.Settings.EnableMaterialOrderDelivery ?
+              (<Field name="CollectBackDate" label="COLLECTBACKDATE" component={FormikDateTimePicker} initialFocusedDate={VisitDatePlus1} overrideGrid={{ xs: 12, md: 6 }} />) : null}
+
+          </FormikGroups>
+
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
 
           <Field name="Comment" label="COMMENT" component={FormikTextField} multiline overrideGrid={{ xs: 12, md: undefined }} />
 

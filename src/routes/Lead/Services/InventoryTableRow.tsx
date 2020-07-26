@@ -11,6 +11,7 @@ interface Props {
   furniture: IFurniture
   item: IInventar
   setItemAmount: (amount: number) => void
+  onRemove: () => void
 }
 
 const useStyles = makeStyles({
@@ -25,6 +26,7 @@ export default function InventoryTableRow(props: Props) {
     furniture,
     item,
     setItemAmount,
+    onRemove,
   } = props
 
   const [timer, setTimer] = React.useState<NodeJS.Timeout | null>(null)
@@ -67,7 +69,7 @@ export default function InventoryTableRow(props: Props) {
             <RemoveCircleOutlineIcon />
           </IconButton> */}
 
-          <IconButton onClick={() => setItemAmount(0)} classes={{ root: classes.buttonSmallPadding }}>
+          <IconButton onClick={() => onRemove()} classes={{ root: classes.buttonSmallPadding }}>
             <DeleteForeverIcon />
           </IconButton>
         </TableCell>
