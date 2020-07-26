@@ -22,7 +22,8 @@
     "SAVE_COMMENT": "Save comment"
   },
   "EMAIL": {
-    "SUBJECT_TEXT": "Subject text"
+    "SUBJECT_TEXT": "Subject text",
+    "NOT_ADDED_TO_LIST": "Not added to list"
   },
   "GENERAL_COMMUNICATION": {
     "HEADER": "General Communication"

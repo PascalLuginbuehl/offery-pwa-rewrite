@@ -5,6 +5,7 @@ import { injectIntl, WrappedComponentProps, FormattedMessage, useIntl } from "re
 import AddIcon from "@material-ui/icons/Add"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { useFormikField } from ".."
+import { useTranslation } from "react-i18next"
 
 export interface CCEMailListProps<FormValues> {
   name: keyof FormValues & string
@@ -16,16 +17,29 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 export default function FormikCCEmailList<FormValues>(props: CCEMailListProps<FormValues>) {
   const { name } = props
 
-  const [ field ] = useFormikField<string[], FormValues>(props)
+  const { t } = useTranslation()
   const intl = useIntl()
+  const [emailValue, setEmailValue] = useState<string>("")
 
   const { isSubmitting } = useFormikContext()
+  const [field, meta, helpers] = useFormikField<string[], FormValues>({
+    ...props,
+    validate: () => {
+      if (emailValue.length > 0) {
+        return t<string>("EMAIL.NOT_ADDED_TO_LIST")
+      }
 
-  const [emailValue, setEmailValue] = useState<string>("")
+      return
+    }
+  })
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(event.target.value)
   }
+
+  const fieldError = meta.error
+  const showError = meta.touched && !!fieldError
+
   return (
     <FieldArray
       name={name}
@@ -50,13 +64,17 @@ export default function FormikCCEmailList<FormValues>(props: CCEMailListProps<Fo
           ))}
 
           <ListItem>
-            <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={handleChange} />} />
+            <ListItemText primary={<TextField label={intl.formatMessage({ id: "EMAIL" })} value={emailValue} type="email" onChange={handleChange} error={showError} helperText={showError ? fieldError : undefined} onBlur={field.onBlur}/>}  />
 
             <ListItemSecondaryAction>
               <IconButton
                 disabled={isSubmitting || !emailValue || !EMAIL_REGEX.test(emailValue.toLowerCase())}
                 onClick={() => {
                   arrayHelpers.push(emailValue)
+
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                  // @ts-ignore
+                  helpers.setError("")
                   setEmailValue("")
                 }}
                 edge="end"

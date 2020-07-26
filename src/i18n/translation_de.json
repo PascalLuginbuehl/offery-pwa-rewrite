@@ -22,7 +22,8 @@
     "SAVE_COMMENT": "Bemerkung Speichern"
   },
   "EMAIL": {
-    "SUBJECT_TEXT": "Betreff"
+    "SUBJECT_TEXT": "Betreff",
+    "NOT_ADDED_TO_LIST": "Nicht zur Liste hinzugefügt"
   },
   "GENERAL_COMMUNICATION": {
     "HEADER": "Allgemeine Kommunikation"
