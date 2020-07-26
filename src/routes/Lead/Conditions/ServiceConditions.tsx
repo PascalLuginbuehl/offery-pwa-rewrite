@@ -8,7 +8,7 @@ import FormikPercent from "../../../components/FormikFields/Numbers/FormikPercen
 import FormikNumberEndAdornmentText from "../../../components/FormikFields/Numbers/FormikNumberEndAdornmentText"
 import FormikGroups from "../../../components/FormikFields/Bundled/Groups"
 import { Field } from "formik"
-import CarSelection from "./CarSelection"
+import VehicleSelection from "./VehicleSelection"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import RemoveIcon from "@material-ui/icons/Remove"
 import FormikSimpleSelect from "../../../components/FormikFields/FormikSimpleSelect"
@@ -130,7 +130,7 @@ class ServiceConditionsBundle<Values extends { ServiceConditions: IServiceCondit
 
         {disabledVehicles ? null : (
           <FormikGroups label="VEHICLES" xs={12} md={6}>
-            <CarSelection name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
+            <VehicleSelection name={`${prefix}.CarAmounts`} carTypes={selectedCompany.CarTypes} />
           </FormikGroups>
         )}
 

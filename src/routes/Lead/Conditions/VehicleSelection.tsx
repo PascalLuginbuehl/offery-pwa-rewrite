@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText, TextField, MenuItem } from "@material-ui/core"
+import { ListItem, List, ListItemSecondaryAction, IconButton, Grid, ListItemText, TextField, MenuItem, Menu, Button } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import { ArrayHelpers, FieldProps, FieldArray, useFormikContext } from "formik"
 import { ICarType } from "../../../interfaces/ICompany"
@@ -9,6 +9,8 @@ import { ICarAmount } from "../../../interfaces/IConditions"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import { string } from "yup"
 import { useFormikField, FormikFieldConfig } from "../../../components/Formik"
+import LocalShippingIcon from "@material-ui/icons/LocalShipping"
+import { useTranslation } from "react-i18next"
 
 interface FormikVehicleSelectionProps<FormValues> extends FormikFieldConfig<FormValues> {
   carTypes: ICarType[]
@@ -24,6 +26,16 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
   const [field, meta, helpers] = useFormikField<ICarAmount[], FormValues>({...props, validate: () => "not gud"})
   const intl = useIntl()
   const { value } = field
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const { t } = useTranslation()
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   function handleChange (event: React.ChangeEvent<HTMLInputElement>) {
     const parsedString = parseInt(event.target.value)
@@ -45,17 +57,17 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
     }
   }
 
-  function addCar(arrayHelpers: ArrayHelpers) {
+  function addCar(arrayHelpers: ArrayHelpers, selectedCarTypeId: number) {
     const parsedCarAmounts = value
 
-    const index = parsedCarAmounts.findIndex(car => car.CarType.CarTypeId === selectedCarType)
+    const index = parsedCarAmounts.findIndex(car => car.CarType.CarTypeId === selectedCarTypeId)
 
     if (index !== -1) {
       const car = parsedCarAmounts[index]
 
       arrayHelpers.replace(index, { ...car, Amount: car.Amount + 1 })
     } else {
-      const carType = carTypes.find(car => car.CarTypeId === selectedCarType)
+      const carType = carTypes.find(car => car.CarTypeId === selectedCarTypeId)
 
       if (carType) {
         const newCar: ICarAmount = { Amount: 1, CarType: carType }
@@ -64,17 +76,25 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
     }
 
     setSelectedCarType(null)
+    handleClose()
   }
 
   return (
     <Grid item xs={12}>
+
       <FieldArray
         // eslint-disable-next-line react/prop-types
         name={props.name}
         render={arrayHelpers => (
           <List dense>
+            {value.length === 0 ? (
+              <ListItem dense disableGutters>
+                <ListItemText primary={t("VEHICLE_SELECTION.NOTHING_SELECTED")} />
+              </ListItem>
+            ) : null}
+
             {value.map(car => (
-              <ListItem key={car.CarType.CarTypeId} dense>
+              <ListItem key={car.CarType.CarTypeId} dense disableGutters>
                 <ListItemText primary={car.Amount + "x " + intl.formatMessage({ id: car.CarType.NameTextKey })} />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" onClick={() => removeCar(arrayHelpers, car.CarType.CarTypeId)}>
@@ -84,24 +104,27 @@ export default function FormikVehicleSelection<FormValues>(props: FormikVehicleS
               </ListItem>
             ))}
 
-            <ListItem>
+            <ListItem dense disableGutters>
               <ListItemText
                 primary={
-                  <TextField select label="Select" value={selectedCarType === null ? "" : selectedCarType} onChange={handleChange}>
-                    {carTypes.map(carType => (
-                      <MenuItem key={carType.CarTypeId} value={carType.CarTypeId}>
-                        <FormattedMessage id={carType.NameTextKey} />
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  <>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} variant="outlined" endIcon={<LocalShippingIcon />}>
+                      {t("VEHICLE_SELECTION.ADD")}
+                    </Button>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      {carTypes.map(carType => (
+                        <MenuItem key={carType.CarTypeId} value={carType.CarTypeId} onClick={() => addCar(arrayHelpers, carType.CarTypeId)}>
+                          <FormattedMessage id={carType.NameTextKey} />
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </>
                 }
               />
-
-              <ListItemSecondaryAction>
-                <IconButton disabled={isSubmitting || !selectedCarType} onClick={() => addCar(arrayHelpers)} edge="end">
-                  <AddIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
             </ListItem>
           </List>
         )}

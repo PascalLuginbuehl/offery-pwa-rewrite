@@ -26,5 +26,9 @@
   },
   "GENERAL_COMMUNICATION": {
     "HEADER": "Allgemeine Kommunikation"
+  },
+  "VEHICLE_SELECTION": {
+    "NOTHING_SELECTED": "Keine Fahrzeuge ausgewählt",
+    "ADD": "Fahrzeug hinzufügen"
   }
 }

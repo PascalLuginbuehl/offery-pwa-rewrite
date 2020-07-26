@@ -26,5 +26,9 @@
   },
   "GENERAL_COMMUNICATION": {
     "HEADER": "General Communication"
+  },
+  "VEHICLE_SELECTION": {
+    "NOTHING_SELECTED": "No vehicles selected",
+    "ADD": "Add vehicle"
   }
 }
