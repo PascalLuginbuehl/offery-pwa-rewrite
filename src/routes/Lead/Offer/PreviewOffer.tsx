@@ -1,4 +1,4 @@
-import { createStyles,   Theme, WithStyles, withStyles, Grid, Button, Snackbar } from "@material-ui/core"
+import { createStyles,   Theme, WithStyles, withStyles, Grid, Button, Snackbar, IconButton } from "@material-ui/core"
 import * as React from "react"
 import { withResource, WithResourceProps } from "../../../providers/withResource"
 import {  FormikProps, Field,   withFormik } from "formik"
@@ -17,6 +17,9 @@ import { RouteComponentProps } from "react-router"
 import { IOffer, IOFile } from "../../../interfaces/IOffer"
 import DateHelper from "../../../helpers/DateHelper"
 import FormikSelectOffer from "../../../components/Formik/CustomComponents/FormikSelectOffer"
+import { ReactComponent as PDFIcon } from "./pdficon.svg"
+import { ReactComponent as Word } from "./microsoft-word.svg"
+import VisibilityIcon from "@material-ui/icons/Visibility"
 
 const styles = (theme: Theme) => createStyles({
   snackbar: {
@@ -137,7 +140,18 @@ class PreviewOffer extends React.Component<Props & FormikProps<Values>, State> {
               offers={lead.Offers}
             />
           </Grid>
+
           <Grid item xs={6}>
+            <IconButton>
+              <PDFIcon height="24" fill="black" />
+            </IconButton>
+            <IconButton>
+              <Word height="24" fill="black" />
+            </IconButton>
+            <IconButton>
+              <VisibilityIcon />
+            </IconButton>
+
             <Button onClick={this.previewPDF} disabled={!values.selectedOfferId} variant="contained" color="primary">
               <FormattedMessage id="DISPLAY_PDF" />
             </Button>
